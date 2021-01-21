@@ -1,0 +1,91 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+
+    @*Created BY: Ashok Kallagunta
+        Created On: 12 06 2020*@
+
+    <!-- HTML5 Shim and Respond.js IE11 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 11]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+    <!-- Meta -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="keywords" content="ProformaLive">
+    <meta name="author" content="Medtronic Pvt Ltd." />
+    <link rel="icon" href="~/assets/images/favicon.png" type="image/gif" sizes="16x16">
+
+    <title>ProFormaLive</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="~/assets/scripts/angular.min.js"></script>
+    <link href="~/assets/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="~/assets/css/proforma.css?ID:900" rel="stylesheet" />
+
+</head>
+<body style="background-color:#edf7ff;" ng-app="MECC">
+    <nav style="background-color: #01254e !important; padding-bottom: 0px; padding-top: 0px; " class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
+            <a class="navbar-brand" style="font-weight: bold;" href="@Url.Action("Index", "index")">
+                <img height="26" src="~/assets/images/newlogo.png" />
+            </a>
+            <ul class="navbar-nav mr-auto mt-2 mt-lg-0 float-left ml-5">
+                <li id="menudashboard" class="nav-item">
+                    <a class="nav-link" href="@Url.Action("Index", "Dashboard")">
+                        <i class="fa fa-area-chart" aria-hidden="true"></i>&nbsp;&nbsp;Dashboard
+                    </a>
+                </li>
+                <li id="menuresource" class="nav-item">
+                    <a class="nav-link" href="@Url.Action("Index", "Resource")">
+                        <i class="fa fa-th" aria-hidden="true"></i>&nbsp;&nbsp;Proforma
+                    </a>
+                </li>
+                <li id="mastermenu" style="display:none;" class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fa fa-database" aria-hidden="true"></i>&nbsp;&nbsp;Master
+                    </a>
+                    <div class="dropdown-menu fade-up" style="border-bottom: 1px solid #939fab;" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="@Url.Action("Index", "Projects")"><i class="fa fa-cubes" aria-hidden="true"></i>&nbsp;&nbsp;Project</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="@Url.Action("Index", "AOPProject")"><i class="fa fa-cube" aria-hidden="true"></i>&nbsp;&nbsp;5Yr Capital Item Master</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="@Url.Action("Index", "ProjectChargeBack")"><i class="fa fa-braille" aria-hidden="true"></i>&nbsp;&nbsp;Project Charge Back</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="@Url.Action("Index", "ConfigureRateCard")"><i class="fa fa-usd" aria-hidden="true"></i>&nbsp;&nbsp;Configure Rate Card</a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div id="navbarTogglerDemo01" style="margin-right: 30px; background-color: #223b54; padding-left: 15px;">
+            <ul id="userprofilepanel1" style="display:none;" class="nav pull-right">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" style="color: white; border-left: 1px solid #223b54 !important; font-weight: 500; font-size: 12px; padding-left: 10px !important" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span id="loginusername">validating user..</span>
+                    </a>
+                    <div style="left: -35px; width: 230px;" class="dropdown-menu fade-up" aria-labelledby="navbarDropdownMenuLink">
+                        <a class="dropdown-item" href="#"><i class="fa fa-user-secret" aria-hidden="true"></i>&nbsp;&nbsp;Role: <span id="roles"></span></a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="@Url.Action("Index", "index")"><i class="fa fa-unlock" aria-hidden="true"></i>&nbsp;&nbsp;Log Out</a>
+                    </div>
+                </li>
+            </ul>
+            <span id="userprofilepanel2" style="display: none; color: #ffffff; display: none; padding-top: 4px; font-size: 20px; " class="pull-right"><i class="fa fa-user-circle-o"></i></span>
+        </div>
+    </nav>
+
+    @RenderBody()
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="~/assets/scripts/Layout.js?ID=2300"></script>
+
+</body>
+</html>
+

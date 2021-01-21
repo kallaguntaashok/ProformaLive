@@ -1,0 +1,163 @@
+﻿<link href="~/assets/Jexcel/jexcel.css?ID=3500" rel="stylesheet" />
+<link href="~/assets/Jexcel/jsuites.css?ID=3500" rel="stylesheet" />
+<link href="~/assets/css/delete-confirmation.css?ID=3500" rel="stylesheet" />
+
+<script src="~/assets/Jexcel/jexcel.js?ID=3500"></script>
+<script src="~/assets/Jexcel/jsuites.js?ID=3500"></script>
+<script src="~/assets/scripts/projectmaster.js?ID=3500"></script>
+
+<script src="~/assets/scripts/exportexcel/alasql.min.js?ID=3500"></script>
+<script src="~/assets/scripts/exportexcel/xlsx.core.min.js?ID=3500"></script>
+
+<style type="text/css">
+
+    .jexcel_search:focus {
+        background-color: #075cbc !important;
+        color: white !important;
+        border: 1px solid rgb(0, 0, 0);
+        border-radius: 0px;
+        outline: none;
+    }
+
+    .notification {
+        width: 100%;
+        border: 1px solid #eee;
+        background-color: #f3f3f3;
+        font-size: 13px;
+        padding-left: 10px;
+        padding-top: 5px;
+        padding-bottom: 5px;
+        text-align: center;
+        color: #037f20;
+    }
+
+    .eventbackground {
+        width: 415px;
+        border: 1px solid #707070;
+        background: #654ea3; /* fallback for old browsers */
+        background: -webkit-linear-gradient(to right, #404040, #654ea3); /* Chrome 10-25, Safari 5.1-6 */
+        background: linear-gradient(to right, #404040, #654ea3); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    }
+
+    .additem {
+        z-index: 99999;
+        padding-top: 0px;
+        padding-left: 4px;
+        padding-right: 4px;
+        padding-bottom: 0px;
+        font-size: 14px;
+        zoom: 80%;
+    }
+
+
+
+    #mainbody {
+        animation: fadein 3s;
+    }
+
+    @@keyframes fadein {
+        from {
+            opacity: 0
+        }
+
+        to {
+            opacity: 1
+        }
+    }
+</style>
+
+<div ng-controller="ProjectController" class="container-fluid">
+
+    <div id="alertbox" style="display:none; z-index:99999" class="confirmation_modal fade-up">
+        <div style="background: linear-gradient(to right, #ff4767, #790032); border: 1px solid #afafaf;" class="confirmation_modal-content confirmation_container">
+            <div class="clearfix">
+                <p style="font-size: 12px; margin-bottom:0px; font-weight: 500;"><i class="fa fa-times" aria-hidden="true"></i>&nbsp;&nbsp;<span id="alerttext">Please select project name</span> </p>
+            </div>
+        </div>
+    </div>
+
+    <br />
+    <div id="progressbar" style="z-index:999999" class="confirmation_modal fade-up">
+        <div class="confirmation_modal-content confirmation_container">
+            <div class="clearfix">
+                <p style="font-size: 12px; font-weight: 500;"><span id="progressBarText">Page is loading...</span></p>
+            </div>
+            <div style="height:10px; border-radius:0rem;" class="progress">
+                <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 0%"></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="cloneproject" style="display: none; z-index: 99999" class="confirmation_modal fade-up">
+        <div style="background: linear-gradient(to right, #1a2980, #26d0ce); border: 1px solid #afafaf;" class="confirmation_modal-content confirmation_container">
+            <div class="clearfix mb-3">
+                <p style="font-size: 14px; margin-bottom:0px; font-weight: 500;"><i class="fa fa-clone" aria-hidden="true"></i>&nbsp;&nbsp;<span>Clone Proforma</span> </p>
+            </div>
+            <div ng-show="clonealert" class="clearfix  mb-3">
+                <p style="font-size: 12px; color:#ffc0c0; margin-bottom:0px; font-weight: 500;"><i class="fa fa-remove" aria-hidden="true"></i>&nbsp;&nbsp;<span>{{clonemessage}}</span> </p>
+            </div>
+            <div class="form-row">
+                <div class="col-md-12 mb-2">
+                    <input type="text" id="newprojectid" ng-model="model_newProjectID" style="zoom:80%; border-radius: 0px; background-clip:unset;" class="form-control form-control-sm" placeholder="Enter new project id">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="col-md-12 mb-3">
+                    <input type="text" id="newprojectname" ng-model="model_newProjectName" style="zoom:80%; border-radius: 0px; background-clip:unset;" class="form-control form-control-sm" placeholder="Enter new project name">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="col-md-12">
+                    <button type="button" style="zoom:70%; margin-right:10px;" ng-click="startsubmitthecloning()" class="btn btn-success btn-sm float-left"><i class="fa fa-clone" aria-hidden="true"></i>&nbsp;&nbsp;Start Cloning</button>
+                    <button type="button" style="zoom:70%;" ng-click="closecloning();" class="btn btn-danger btn-sm float-left"><i class="fa fa-remove" aria-hidden="true"></i>&nbsp;&nbsp;Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="masterhandler" style="display: none;" class="confirmation_modal fade-up">
+        <div class="confirmation_modal-content confirmation_container eventbackground">
+            <div class="clearfix">
+                <p style="font-size: 12px; font-weight: 500;"><i class="fa fa-database" aria-hidden="true"></i>&nbsp;&nbsp;<span id="masterhandlerText">Page is loading...</span></p>
+            </div>
+            <div class="clearfix">
+                <div class="form-row">
+                    <div style="width:85%; float: left">
+                        <input type="text" id="masteritem" style="zoom:80%; border-radius: 0px; background-clip:unset;" class="form-control form-control-sm" placeholder="Enter new project category">
+                    </div>
+                    <div style="justify-content:left;width:15%; float: left">
+                        <button type="submit" style="zoom:80%; border-radius: 0px;" id="removehandler" class="btn btn-danger btn-sm float-right"><i class="fa fa-remove"></i></button>&nbsp;&nbsp;
+                        <button type="submit" id="updatemaster" style="zoom:80%; border-radius: 0px;" class="btn btn-success btn-sm float-right"><i class="fa fa-plus" aria-hidden="true"></i></button>
+                    </div>
+                </div>
+            </div>
+            <div class="clearfix">
+                <p id="success" style="font-size: 12px; display:none; font-weight: 500; margin-bottom:0px; margin-top:15px;"><i style="color:#74ff1c" class="fa fa-check-circle" aria-hidden="true"></i>&nbsp;&nbsp;<span style="color:#a9ef7d" id="successtext">new item has been added...</span></p>
+                <p id="error" style="font-size: 12px; display:none; font-weight: 500; margin-bottom:0px; margin-top:15px;"><i style="color:#f00" class="fa fa-times" aria-hidden="true"></i>&nbsp;&nbsp;<span style="color:#ef8888" id="errortext">please enter project category!</span></p>
+            </div>
+        </div>
+    </div>
+
+    <div id="mainbody" style="display:none;" class="card">
+        <div style="font-weight: 500; font-size:13px;" class="card-header">
+            <button type="button" ng-click="export_projectdata();" style="zoom:80%; margin-left:10px;" class="btn btn-success btn-sm float-right"><i class="fa fa-file-excel-o" aria-hidden="true"></i>&nbsp;&nbsp;Export To Excel</button>
+            <i class="fa fa-cubes" style="color:rgb(0, 0, 0);" aria-hidden="true"></i>&nbsp;&nbsp;Project Master<span style="font-weight:500; font-size:11px; color:#000000" class="float-right"><i class="fa fa-window-maximize" aria-hidden="true"></i>&nbsp;&nbsp; For full screen, click on <b>Escape</b> key</span>
+        </div>
+        <div class="card-body">
+            <div style="display:none;" id="notification" class="notification">
+                <span class="badge badge-light"><i class="fa fa-bell" aria-hidden="true"></i> Found</span>
+                <span style="display:none;" id="update_notificationnumber1" class="badge badge-info">0</span>
+                <span style="display:none;" id="update_notificationnumber2" class="badge badge-info">update</span>
+                <span style="display:none;" id="delete_notificationnumber1" class="badge badge-danger">0</span>
+                <span style="display:none;" id="delete_notificationnumber2" class="badge badge-danger">delete</span>
+                <span class="badge badge-light">action in the table, please save the changes.</span>
+                <span style="cursor: pointer;" ng-click="savechanges()" class="badge badge-success">Save Changes</span>
+                <span style="cursor: pointer;" ng-click="discard_project_changes()" class="badge badge-danger">Discard Changes</span>
+            </div>
+            <div id="spreadsheetprojectmaster">
+            </div>
+        </div>
+    </div>
+
+</div>
+

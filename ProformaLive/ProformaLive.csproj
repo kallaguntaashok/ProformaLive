@@ -1,0 +1,561 @@
+﻿<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props')" />
+  <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{10F1BCAA-8692-4FAD-92E3-161AACB79882}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>ProformaLive</RootNamespace>
+    <AssemblyName>ProformaLive</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <UseIISExpress>true</UseIISExpress>
+    <Use64BitIISExpress />
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication>disabled</IISExpressAnonymousAuthentication>
+    <IISExpressWindowsAuthentication>enabled</IISExpressWindowsAuthentication>
+    <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+    <TypeScriptToolsVersion>3.9</TypeScriptToolsVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Aspose.Cells, Version=5.3.3.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Aspose.Cells.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="EPPlus, Version=5.4.0.0, Culture=neutral, PublicKeyToken=ea159fdaa78159a1, processorArchitecture=MSIL">
+      <HintPath>..\packages\EPPlus.5.4.0\lib\net45\EPPlus.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="System.DirectoryServices" />
+    <Reference Include="System.DirectoryServices.AccountManagement" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Threading.Tasks" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System.Web.Razor">
+      <HintPath>..\packages\Microsoft.AspNet.Razor.3.2.7\lib\net45\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Webpages">
+      <HintPath>..\packages\Microsoft.AspNet.Webpages.3.2.7\lib\net45\System.Web.Webpages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Webpages.Deployment">
+      <HintPath>..\packages\Microsoft.AspNet.Webpages.3.2.7\lib\net45\System.Web.Webpages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Webpages.Razor">
+      <HintPath>..\packages\Microsoft.AspNet.Webpages.3.2.7\lib\net45\System.Web.Webpages.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Helpers">
+      <HintPath>..\packages\Microsoft.AspNet.Webpages.3.2.7\lib\net45\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Web.Infrastructure">
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc">
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.2.7\lib\net45\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform">
+      <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="assets\css\bootstrap.min.css" />
+    <Content Include="assets\css\delete-confirmation.css" />
+    <Content Include="assets\css\floating-labels.css" />
+    <Content Include="assets\css\font-awesome.css" />
+    <Content Include="assets\css\font-awesome.min.css" />
+    <Content Include="assets\css\landingpage.css" />
+    <Content Include="assets\css\proforma.css" />
+    <Content Include="assets\fonts\fontawesome-webfont.svg" />
+    <Content Include="assets\images\chromeicon.png" />
+    <Content Include="assets\images\Medtronic_logo.png" />
+    <Content Include="assets\Jexcel\jexcel.css" />
+    <Content Include="assets\Jexcel\jexcel.js" />
+    <Content Include="assets\Jexcel\jexcelv44.js" />
+    <Content Include="assets\Jexcel\jexcel_44.css" />
+    <Content Include="assets\Jexcel\jquery-1.11.0.min.js" />
+    <Content Include="assets\Jexcel\jquery.CongelarFilaColumna.js" />
+    <Content Include="assets\Jexcel\jsuites.css" />
+    <Content Include="assets\Jexcel\jsuites.js" />
+    <Content Include="assets\Jexcel\jsuites38.css" />
+    <Content Include="assets\Jexcel\jsuites38.js" />
+    <Content Include="assets\Jexcel\ScrollTabla.css" />
+    <Content Include="assets\scripts\browser.js" />
+    <Content Include="assets\scripts\Customjexcel.js" />
+    <Content Include="assets\scripts\Layout.js" />
+    <Content Include="assets\scripts\ProjectChargeBack.js" />
+    <Content Include="assets\scripts\AOPProject.js" />
+    <Content Include="assets\scripts\app.module.js" />
+    <Content Include="assets\scripts\exportexcel\alasql.min.js" />
+    <Content Include="assets\scripts\exportexcel\ui-bootstrap-tpls-0.12.1.min.js" />
+    <Content Include="assets\scripts\exportexcel\xlsx.core.min.js" />
+    <Content Include="assets\scripts\fixedColumnTable.directive.js" />
+    <Content Include="assets\scripts\landingpage.js" />
+    <Content Include="assets\scripts\login.js" />
+    <Content Include="assets\scripts\RateCard.js" />
+    <Content Include="assets\scripts\table.js" />
+    <Content Include="assets\scripts\ui-bootstrap-tpls-0.13.3.js" />
+    <Content Include="bin\Aspose.Cells.dll" />
+    <Content Include="Global.asax" />
+    <Content Include="assets\images\favicon.png" />
+    <Content Include="assets\images\newlogo.png" />
+    <Content Include="assets\scripts\angular-mocks.js" />
+    <Content Include="assets\scripts\angular.js" />
+    <Content Include="assets\scripts\angular.min.js" />
+    <Content Include="assets\scripts\bootstrap.bundle.js" />
+    <Content Include="assets\scripts\bootstrap.bundle.min.js" />
+    <Content Include="assets\scripts\bootstrap.js" />
+    <Content Include="assets\scripts\bootstrap.min.js" />
+    <Content Include="assets\scripts\esm\popper-utils.js" />
+    <Content Include="assets\scripts\esm\popper-utils.min.js" />
+    <Content Include="assets\scripts\esm\popper.js" />
+    <Content Include="assets\scripts\esm\popper.min.js" />
+    <Content Include="assets\scripts\popper-utils.js" />
+    <Content Include="assets\scripts\popper-utils.min.js" />
+    <Content Include="assets\scripts\popper.js" />
+    <Content Include="assets\scripts\popper.min.js" />
+    <Content Include="assets\scripts\projectmaster.js" />
+    <Content Include="assets\scripts\resource.js" />
+    <Content Include="assets\scripts\src\index.js" />
+    <Content Include="assets\scripts\src\methods\defaults.js" />
+    <Content Include="assets\scripts\src\methods\destroy.js" />
+    <Content Include="assets\scripts\src\methods\disableEventListeners.js" />
+    <Content Include="assets\scripts\src\methods\enableEventListeners.js" />
+    <Content Include="assets\scripts\src\methods\placements.js" />
+    <Content Include="assets\scripts\src\methods\update.js" />
+    <Content Include="assets\scripts\src\modifiers\applyStyle.js" />
+    <Content Include="assets\scripts\src\modifiers\arrow.js" />
+    <Content Include="assets\scripts\src\modifiers\computeStyle.js" />
+    <Content Include="assets\scripts\src\modifiers\flip.js" />
+    <Content Include="assets\scripts\src\modifiers\hide.js" />
+    <Content Include="assets\scripts\src\modifiers\index.js" />
+    <Content Include="assets\scripts\src\modifiers\inner.js" />
+    <Content Include="assets\scripts\src\modifiers\keepTogether.js" />
+    <Content Include="assets\scripts\src\modifiers\offset.js" />
+    <Content Include="assets\scripts\src\modifiers\preventOverflow.js" />
+    <Content Include="assets\scripts\src\modifiers\shift.js" />
+    <Content Include="assets\scripts\src\utils\clockwise.js" />
+    <Content Include="assets\scripts\src\utils\computeAutoPlacement.js" />
+    <Content Include="assets\scripts\src\utils\debounce.js" />
+    <Content Include="assets\scripts\src\utils\find.js" />
+    <Content Include="assets\scripts\src\utils\findCommonOffsetParent.js" />
+    <Content Include="assets\scripts\src\utils\findIndex.js" />
+    <Content Include="assets\scripts\src\utils\getBordersSize.js" />
+    <Content Include="assets\scripts\src\utils\getBoundaries.js" />
+    <Content Include="assets\scripts\src\utils\getBoundingClientRect.js" />
+    <Content Include="assets\scripts\src\utils\getClientRect.js" />
+    <Content Include="assets\scripts\src\utils\getFixedPositionOffsetParent.js" />
+    <Content Include="assets\scripts\src\utils\getOffsetParent.js" />
+    <Content Include="assets\scripts\src\utils\getOffsetRect.js" />
+    <Content Include="assets\scripts\src\utils\getOffsetRectRelativeToArbitraryNode.js" />
+    <Content Include="assets\scripts\src\utils\getOppositePlacement.js" />
+    <Content Include="assets\scripts\src\utils\getOppositeVariation.js" />
+    <Content Include="assets\scripts\src\utils\getOuterSizes.js" />
+    <Content Include="assets\scripts\src\utils\getParentNode.js" />
+    <Content Include="assets\scripts\src\utils\getPopperOffsets.js" />
+    <Content Include="assets\scripts\src\utils\getReferenceNode.js" />
+    <Content Include="assets\scripts\src\utils\getReferenceOffsets.js" />
+    <Content Include="assets\scripts\src\utils\getRoot.js" />
+    <Content Include="assets\scripts\src\utils\getRoundedOffsets.js" />
+    <Content Include="assets\scripts\src\utils\getScroll.js" />
+    <Content Include="assets\scripts\src\utils\getScrollParent.js" />
+    <Content Include="assets\scripts\src\utils\getStyleComputedProperty.js" />
+    <Content Include="assets\scripts\src\utils\getSupportedPropertyName.js" />
+    <Content Include="assets\scripts\src\utils\getViewportOffsetRectRelativeToArtbitraryNode.js" />
+    <Content Include="assets\scripts\src\utils\getWindow.js" />
+    <Content Include="assets\scripts\src\utils\getWindowSizes.js" />
+    <Content Include="assets\scripts\src\utils\includeScroll.js" />
+    <Content Include="assets\scripts\src\utils\index.js" />
+    <Content Include="assets\scripts\src\utils\isBrowser.js" />
+    <Content Include="assets\scripts\src\utils\isFixed.js" />
+    <Content Include="assets\scripts\src\utils\isFunction.js" />
+    <Content Include="assets\scripts\src\utils\isIE.js" />
+    <Content Include="assets\scripts\src\utils\isModifierEnabled.js" />
+    <Content Include="assets\scripts\src\utils\isModifierRequired.js" />
+    <Content Include="assets\scripts\src\utils\isNumeric.js" />
+    <Content Include="assets\scripts\src\utils\isOffsetContainer.js" />
+    <Content Include="assets\scripts\src\utils\removeEventListeners.js" />
+    <Content Include="assets\scripts\src\utils\runModifiers.js" />
+    <Content Include="assets\scripts\src\utils\setAttributes.js" />
+    <Content Include="assets\scripts\src\utils\setStyles.js" />
+    <Content Include="assets\scripts\src\utils\setupEventListeners.js" />
+    <Content Include="assets\scripts\umd\popper-utils.js" />
+    <Content Include="assets\scripts\umd\popper-utils.min.js" />
+    <Content Include="assets\scripts\umd\popper.js" />
+    <Content Include="assets\scripts\umd\popper.min.js" />
+    <Content Include="Proforma.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>Proforma.edmx</DependentUpon>
+      <LastGenOutput>Proforma.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="Proforma.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>Proforma.edmx</DependentUpon>
+      <LastGenOutput>Proforma.cs</LastGenOutput>
+    </Content>
+    <Content Include="Scripts\angular-mocks.js" />
+    <Content Include="Scripts\angular-sanitize.js" />
+    <Content Include="Scripts\angular-sanitize.min.js" />
+    <Content Include="Scripts\angular.js" />
+    <Content Include="Scripts\angular.min.js" />
+    <Content Include="Web.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Authorization\AuthorizeADAttribute.cs" />
+    <Compile Include="CapitalInfo.cs">
+      <DependentUpon>Proforma.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CapitalInfoList.cs">
+      <DependentUpon>Proforma.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CapitalLaborInfo.cs">
+      <DependentUpon>Proforma.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CapitalLaborInfoList.cs">
+      <DependentUpon>Proforma.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Configure_App_Master.cs">
+      <DependentUpon>Proforma.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Configure_Project.cs">
+      <DependentUpon>Proforma.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Configure_RateCard.cs">
+      <DependentUpon>Proforma.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Configure_Skill.cs">
+      <DependentUpon>Proforma.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Controllers\AOPProjectController.cs" />
+    <Compile Include="Controllers\ConfigureRateCardController.cs" />
+    <Compile Include="Controllers\DashboardController.cs" />
+    <Compile Include="Controllers\DefaultController.cs" />
+    <Compile Include="Controllers\indexController.cs" />
+    <Compile Include="Controllers\ProformaController.cs" />
+    <Compile Include="Controllers\ProjectChargeBackController.cs" />
+    <Compile Include="Controllers\ProjectsController.cs" />
+    <Compile Include="Controllers\RateCardController.cs" />
+    <Compile Include="Controllers\ResourceController.cs" />
+    <Compile Include="Controllers\unAuthorizedController.cs" />
+    <Compile Include="DirectExpensesInfo.cs">
+      <DependentUpon>Proforma.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DirectExpensesInfoList.cs">
+      <DependentUpon>Proforma.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Master_AOPProject.cs">
+      <DependentUpon>Proforma.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Master_CJI3.cs">
+      <DependentUpon>Proforma.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Master_Months.cs">
+      <DependentUpon>Proforma.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Master_ProjectChargeBack.cs">
+      <DependentUpon>Proforma.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Master_Qtr.cs">
+      <DependentUpon>Proforma.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Master_SAP_PO_Data.cs">
+      <DependentUpon>Proforma.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Master_Summary.cs">
+      <DependentUpon>Proforma.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Master_VendorList.cs">
+      <DependentUpon>Proforma.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Proforma.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Proforma.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Proforma.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Proforma.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Proforma.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Proforma.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Proforma_DataFrasfer_DuplicateData.cs">
+      <DependentUpon>Proforma.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ProjectMaster.cs">
+      <DependentUpon>Proforma.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ResourceInfo.cs">
+      <DependentUpon>Proforma.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ResourceInfoList.cs">
+      <DependentUpon>Proforma.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ResourceInfoList_old.cs">
+      <DependentUpon>Proforma.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ResourceInfo_old.cs">
+      <DependentUpon>Proforma.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Resource_TempData.cs">
+      <DependentUpon>Proforma.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SP_Config_Projects_Result.cs">
+      <DependentUpon>Proforma.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SP_EXPORT_ResourceData_Result.cs">
+      <DependentUpon>Proforma.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SP_GetCapitalData_Result.cs">
+      <DependentUpon>Proforma.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SP_GetCapitalLaborData_Result.cs">
+      <DependentUpon>Proforma.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SP_GetDirectExpensesData_Result.cs">
+      <DependentUpon>Proforma.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SP_Getlastmodifiedinfo_Result.cs">
+      <DependentUpon>Proforma.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SP_GetNewSummary_Result.cs">
+      <DependentUpon>Proforma.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SP_GetProject_Summary_Result.cs">
+      <DependentUpon>Proforma.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SP_GetResourceData_Result.cs">
+      <DependentUpon>Proforma.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SP_GetSummary_Result.cs">
+      <DependentUpon>Proforma.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SP_Get_Configure_RateCard_Result.cs">
+      <DependentUpon>Proforma.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SP_Get_Master_AOPProject_Result.cs">
+      <DependentUpon>Proforma.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SP_Get_Master_ProjectChargeBack_Result.cs">
+      <DependentUpon>Proforma.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SP_Get_Projects_Result.cs">
+      <DependentUpon>Proforma.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SP_Get_Skillmaster_Result.cs">
+      <DependentUpon>Proforma.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Temp_ProjectMaster.cs">
+      <DependentUpon>Proforma.tt</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\web.config" />
+    <Content Include="assets\fonts\FontAwesome.otf" />
+    <Content Include="assets\fonts\fontawesome-webfont.woff2" />
+    <Content Include="assets\fonts\fontawesome-webfont.woff" />
+    <Content Include="assets\fonts\fontawesome-webfont.ttf" />
+    <Content Include="assets\fonts\fontawesome-webfont.eot" />
+    <Content Include="assets\Jexcel\Accesscontrol.csv" />
+    <Content Include="assets\Jexcel\capital.csv" />
+    <Content Include="assets\Jexcel\capitallabor.csv" />
+    <Content Include="assets\Jexcel\Checkbook.csv" />
+    <Content Include="assets\Jexcel\CustomList.csv" />
+    <Content Include="assets\Jexcel\DE.csv" />
+    <Content Include="assets\Jexcel\FETsummary.csv" />
+    <Content Include="assets\Jexcel\summary.csv" />
+    <Content Include="bin\Aspose.Cells.lic" />
+    <Content Include="assets\scripts\app.controller.js" />
+    <None Include="packages.config" />
+    <Content Include="assets\scripts\angular.min.js.map" />
+    <Content Include="assets\scripts\bootstrap.bundle.js.map" />
+    <Content Include="assets\scripts\bootstrap.bundle.min.js.map" />
+    <Content Include="assets\scripts\bootstrap.js.map" />
+    <Content Include="assets\scripts\bootstrap.min.js.map" />
+    <Content Include="assets\scripts\esm\popper-utils.js.map" />
+    <Content Include="assets\scripts\esm\popper-utils.min.js.map" />
+    <Content Include="assets\scripts\esm\popper.js.map" />
+    <Content Include="assets\scripts\esm\popper.min.js.map" />
+    <Content Include="assets\scripts\index.js.flow" />
+    <Content Include="assets\scripts\popper-utils.js.map" />
+    <Content Include="assets\scripts\popper-utils.min.js.map" />
+    <Content Include="assets\scripts\popper.js.map" />
+    <Content Include="assets\scripts\popper.min.js.map" />
+    <Content Include="assets\scripts\README.md" />
+    <Content Include="assets\scripts\umd\popper-utils.js.map" />
+    <Content Include="assets\scripts\umd\popper-utils.min.js.map" />
+    <Content Include="assets\scripts\umd\popper.js.flow" />
+    <Content Include="assets\scripts\umd\popper.js.map" />
+    <Content Include="assets\scripts\umd\popper.min.js.map" />
+    <Content Include="Views\Dashboard\Index.cshtml" />
+    <Content Include="Views\Default\Index.cshtml" />
+    <Content Include="Views\Projects\Index.cshtml" />
+    <Content Include="Views\Resource\Index.cshtml" />
+    <Content Include="Views\Shared\_Layout.cshtml" />
+    <Content Include="Views\_ViewStart.cshtml" />
+    <Content Include="Views\Proforma\Index.cshtml" />
+    <EntityDeploy Include="Proforma.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>Proforma.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="Proforma.edmx.diagram">
+      <DependentUpon>Proforma.edmx</DependentUpon>
+    </Content>
+    <None Include="Properties\PublishProfiles\ProformaLive.pubxml" />
+    <Content Include="Views\index\Index.cshtml" />
+    <Content Include="Templates\ResourceSheet.xlsx" />
+    <Content Include="Templates\CapitallaborSheet.xlsx" />
+    <Content Include="Templates\DESheet.xlsx" />
+    <Content Include="Templates\CapitalSheet.xlsx" />
+    <Content Include="Views\ConfigureRateCard\Index.cshtml" />
+    <Content Include="Scripts\angular.min.js.map" />
+    <Content Include="Scripts\angular-sanitize.min.js.map" />
+    <Content Include="Views\AOPProject\Index.cshtml" />
+    <Content Include="Views\RateCard\Index.cshtml" />
+    <Content Include="Views\ProjectChargeBack\Index.cshtml" />
+    <Content Include="Templates\Summary.xlsx" />
+    <Content Include="Views\unAuthorized\Index.cshtml" />
+    <None Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+    <None Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="upload\" />
+  </ItemGroup>
+  <ItemGroup>
+    <TypeScriptCompile Include="assets\scripts\index.d.ts" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <COMReference Include="Microsoft.Office.Core">
+      <Guid>{2DF8D04C-5BFA-101B-BDE5-00AA0044DE52}</Guid>
+      <VersionMajor>2</VersionMajor>
+      <VersionMinor>8</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>primary</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
+    <COMReference Include="Microsoft.Office.Interop.Excel">
+      <Guid>{00020813-0000-0000-C000-000000000046}</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>9</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>primary</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
+    <COMReference Include="VBIDE">
+      <Guid>{0002E157-0000-0000-C000-000000000046}</Guid>
+      <VersionMajor>5</VersionMajor>
+      <VersionMinor>3</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>primary</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets')" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>60580</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:60111/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
+  </Target>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

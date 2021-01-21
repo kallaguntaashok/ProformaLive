@@ -1,0 +1,35 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@*height="541.25"*@
+
+<iframe id="powerBIreportBuilder" src="https://app.powerbi.com/reportEmbed?reportId=50aea8f3-6eee-4a45-9e60-5fb646b539f2&appId=457f7846-ef58-4b98-b622-3a2befaab781&autoAuth=true&ctid=d73a39db-6eda-495d-8000-7579f56d68b7&config=eyJjbHVzdGVyVXJsIjoiaHR0cHM6Ly93YWJpLXVzLW5vcnRoLWNlbnRyYWwtZS1wcmltYXJ5LXJlZGlyZWN0LmFuYWx5c2lzLndpbmRvd3MubmV0LyJ9" frameborder="0" allowFullScreen="true"></iframe>
+
+<script type="text/javascript">    
+    var height = parseInt(window.innerHeight) - 50;
+    var powerBIscreen = document.getElementById("powerBIreportBuilder");
+    powerBIscreen.setAttribute("style", "width:100%; height:" + height + "px;");
+</script>
+
+<script type="text/javascript">
+    loadmastersettings();
+    function loadmastersettings() {
+        var usertype = localStorage.getItem("isAdmin");
+        document.getElementById("menudashboard").setAttribute("class", "nav-item");
+        document.getElementById("menuresource").setAttribute("class", "nav-item");
+        document.getElementById("mastermenu").setAttribute("class", "nav-item dropdown");
+        document.getElementById("menudashboard").setAttribute("class", "nav-item active");
+
+        if (usertype === "true") {
+            document.getElementById("roles").innerHTML = "Admin";
+            document.getElementById("mastermenu").setAttribute("style", "display:block;");
+        }
+        else {
+            document.getElementById("roles").innerHTML = "User";
+            document.getElementById("mastermenu").setAttribute("style", "display:none;");
+        }
+    }
+</script>

@@ -1,0 +1,438 @@
+﻿<link href="~/assets/Jexcel/jexcel_44.css?ID=4000" rel="stylesheet" />
+<link href="~/assets/Jexcel/jsuites38.css?ID=4000" rel="stylesheet" />
+<link href="~/assets/css/delete-confirmation.css?ID=4000" rel="stylesheet" />
+<script src="~/assets/Jexcel/jexcelv44.js?ID=4000"></script>
+<script src="~/assets/Jexcel/jsuites38.js?ID=4000"></script>
+<script src="~/assets/scripts/resource.js?ID=4000"></script>
+<script src="~/assets/scripts/exportexcel/alasql.min.js?ID=4000"></script>
+<script src="~/assets/scripts/exportexcel/xlsx.core.min.js?ID=4000"></script>
+
+
+<div id="alertbox" style="display:none; z-index:99999" class="confirmation_modal fade-up">
+    <div style="opacity:0.7; background: linear-gradient(to right, #ff4767, #790032); border: 1px solid #afafaf;" class="confirmation_modal-content confirmation_container">
+        <div class="clearfix">
+            <p style="font-size: 12px; margin-bottom:0px; font-weight: 500;"><i class="fa fa-times" aria-hidden="true"></i>&nbsp;&nbsp;<span id="alerttext">Please select project name</span> </p>
+        </div>
+    </div>
+</div>
+
+<div id="progressbar" class="confirmation_modal fade-up">
+    <div class="confirmation_modal-content confirmation_container">
+        <div class="clearfix">
+            <p style="font-size: 12px; font-weight: 500;"><span id="progressBarText">Page is loading...</span></p>
+        </div>
+        <div style="height:10px; border-radius:0rem;" class="progress">
+            <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 0%"></div>
+        </div>
+    </div>
+</div>
+
+<div id="mainbody" style="opacity:0" ng-controller="MECCController" class="container-fluid">
+    <br />
+
+    <div id="cloneproject" style="display: none; z-index: 99999" class="confirmation_modal fade-up">
+        <div style="background: linear-gradient(to right, #1a2980, #26d0ce); border: 1px solid #afafaf;" class="confirmation_modal-content confirmation_container">
+            <div class="clearfix mb-3">
+                <p style="font-size: 14px; margin-bottom:0px; font-weight: 500;"><i class="fa fa-clone" aria-hidden="true"></i>&nbsp;&nbsp;<span>Clone Proforma</span> </p>
+            </div>
+            <div ng-show="clonealert" class="clearfix  mb-3">
+                <p style="font-size: 12px; color:#ffc0c0; margin-bottom:0px; font-weight: 500;"><i class="fa fa-remove" aria-hidden="true"></i>&nbsp;&nbsp;<span>{{clonemessage}}</span> </p>
+            </div>
+            <div class="form-row">
+                <div class="col-md-12 mb-2">
+                    <input type="text" id="newprojectid" ng-model="model_newProjectID" style="zoom:80%; border-radius: 0px; background-clip:unset;" class="form-control form-control-sm" placeholder="Enter new project id">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="col-md-12 mb-3">
+                    <input type="text" id="newprojectname" ng-model="model_newProjectName" style="zoom:80%; border-radius: 0px; background-clip:unset;" class="form-control form-control-sm" placeholder="Enter new project name">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="col-md-12">
+                    <button type="button" style="zoom:70%; margin-right:10px;" ng-click="startsubmitthecloning()" class="btn btn-success btn-sm float-left"><i class="fa fa-clone" aria-hidden="true"></i>&nbsp;&nbsp;Start Cloning</button>
+                    <button type="button" style="zoom:70%;" ng-click="closecloning();" class="btn btn-danger btn-sm float-left"><i class="fa fa-remove" aria-hidden="true"></i>&nbsp;&nbsp;Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-row">
+        <div class="col-md-3 mb-3">
+        </div>
+        <div class="col-md-6 mb-3">
+            <div id="dropProjects"></div>
+        </div>
+        <div class="col-md-3 mb-3">
+        </div>
+    </div>
+    <div style="display:none;" id="maincard" class="card">
+        <div style="font-weight: 500; font-size:13px;" class="card-header">
+            <i class="fa fa-th" style="color:#043a7c;" aria-hidden="true"></i>&nbsp;&nbsp;Proforma
+            <button type="button" id="clearfilters" ng-click="resetfilter();" style="zoom:80%; display:none; margin-left:10px; color:white; background: linear-gradient(to right, #ff9966, #ff5e62);" class="btn btn-warning btn-sm float-right"><i class="fa fa-filter" aria-hidden="true"></i>&nbsp;&nbsp;Clear Filters</button>
+            <button type="button" ng-click="startcloning();" style="zoom:80%; margin-left:10px; background: linear-gradient(to right, #38527f, #3a72d4);" class="btn btn-primary btn-sm float-right"><i class="fa fa-clone" aria-hidden="true"></i>&nbsp;&nbsp;Clone Proforma</button>
+            <button type="button" id="exporttoexcel" ng-click="exporttoexcel();" style="zoom:80%; margin-left:10px; background: linear-gradient(to right, #11998e, #06b347);" class="btn btn-success btn-sm float-right"><i class="fa fa-file-excel-o" aria-hidden="true"></i>&nbsp;&nbsp;Export To Excel</button>
+            <input style="zoom: 80%; display:none; margin-left:10px;" ng-click="SaveFile()" type="submit" value="Upload" class=" btn btn-warning btn-sm float-right" />
+            <span style="zoom: 80%; display:none; margin-left:10px;" class="fileUpload btn btn-outline-primary btn-sm float-right">
+                <span><i class="fa fa-upload"></i> &nbsp;&nbsp;Upload File &nbsp; {{theFile.name}}</span>
+                <input type="file" name="file" class="upload" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" onchange="angular.element(this).scope().selectFileforUpload(this.files)" required />
+            </span>
+        </div>
+        <div class="card-body">
+            <!-- Nav tabs -->
+            <ul class="nav nav-tabs" role="tablist">
+                <lable style="display:none;" id="activetabid"></lable>
+                <li ng-click="updatetabeinfo('summary')" class="nav-item">
+                    <a ng-class="tabsummaryclass" style="color: #05509f; border: 1px solid #00000008; margin-right: 5px; padding-left: 20px !important; padding-right: 20px !important; padding-top: 7px !important; padding-bottom: 7px !important; font-size: 14px;" href="#Summary"><i class="fa fa-bar-chart" aria-hidden="true"></i>&nbsp;&nbsp;Summary</a>
+                </li>
+                <li ng-click="updatetabeinfo('resource')" class="nav-item">
+                    <a ng-class="tabresourceclass" style="color: #05509f; border: 1px solid #00000008; margin-right: 5px; padding-left: 20px !important; padding-right: 20px !important; padding-top: 7px !important; padding-bottom: 7px !important; font-size: 14px;" href="#resource"><i class="fa fa-user" aria-hidden="true"></i>&nbsp;&nbsp;Resource</a>
+                </li>
+                <li ng-click="updatetabeinfo('capital')" class="nav-item">
+                    <a ng-class="tabcapitalclass" style="color: #05509f; border: 1px solid #00000008; margin-right: 5px; padding-left: 20px !important; padding-right: 20px !important; padding-top: 7px !important; padding-bottom: 7px !important; font-size: 14px;" href="#capital"><i class="fa fa-money" aria-hidden="true"></i>&nbsp;&nbsp;Capital</a>
+                </li>
+                <li ng-click="updatetabeinfo('capitallabor')" class="nav-item">
+                    <a ng-class="tabcapitallaborclass" style="color: #05509f; border: 1px solid #00000008; margin-right: 5px; padding-left: 20px !important; padding-right: 20px !important; padding-top: 7px !important; padding-bottom: 7px !important; font-size: 14px;" href="#capitallabour"><i class="fa fa-users" style="font-size:12px; padding-bottom:2px;" aria-hidden="true"></i>&nbsp;&nbsp;Capital Labor</a>
+                </li>
+                <li ng-click="updatetabeinfo('directexpenses')" class="nav-item">
+                    <a ng-class="tabdirectexpensesclass" style="color: #05509f; border: 1px solid #00000008; margin-right: 5px; padding-left: 20px !important; padding-right: 20px !important; padding-top: 7px !important; padding-bottom: 7px !important; font-size: 14px;" href="#directexpenses"><i class="fa fa-usd" style="font-size:12px;" aria-hidden="true"></i>&nbsp;&nbsp;Direct Expenses</a>
+                </li>
+                <li ng-click="updatetabeinfo('checkbook')" class="nav-item">
+                    <a ng-class="tabcheckbookclass" style="color: #05509f; border: 1px solid #00000008; margin-right: 5px; padding-left: 20px !important; padding-right: 20px !important; padding-top: 7px !important; padding-bottom: 7px !important; font-size: 14px;" href="#checkbook"><i class="fa fa-book" aria-hidden="true"></i>&nbsp;&nbsp;Checkbook</a>
+                </li>
+            </ul>
+
+            <!-- Tab panes -->
+            <div style="border-left: 1px solid #e9e8e8;  border-right: 1px solid #e9e8e8; border-bottom: 1px solid #e9e8e8;" class="tab-content">
+                <div id="Summary" style="padding-left:20px; padding-right:20px; opacity:0;">
+                    <div id="summarymaindiv">
+                        <br />
+                        <div class="form-row">
+                            <div class="col-md-2 mb-3">
+                                <div style="zoom:90%" id="drop_Summary_Finyear"></div>
+                            </div>
+                            <div class="col-md-2 mb-3">
+                                <div style="zoom: 90%" id="drop_Summary_Months"></div>
+                            </div>
+                            <div class="col-md-2 mb-3">
+                                <div style="zoom: 90%" id="drop_Summary_Quarter"></div>
+                            </div>
+                            <div class="col-md-2 mb-3">
+                                <button type="submit" ng-click="getsummary();" style="zoom:80%; margin-top: 3px; background: linear-gradient(to right, #11998e, #06b347);" class="btn btn-success btn-sm float-left"><i class="fa fa-search" aria-hidden="true"></i>&nbsp;View Summary</button>
+                                <button type="submit" ng-click="clearsummary();" style="zoom:80%; margin-top: 3px; margin-left:10px; margin-right:10px;" class="btn btn-info btn-sm float-left"><i class="fa fa-search" aria-hidden="true"></i>&nbsp;Clear</button>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                            </div>
+                        </div>
+                        <div id="summarycontainer" class="mycontainer">
+                            <table id="ST">
+                                <thead>
+                                    <tr>
+                                        <th id="tablecellname" style="width:320px;"><b>Name</b></th>
+                                        <th style="width:80px;" ng-repeat="Cols in YMNames">
+                                            {{Cols.FinYear_Month}}
+                                        </th>
+                                        <th style="width:80px;"><b>Total</b></th>
+                                    </tr>
+                                    @*
+                                        <tr>
+                                            <th style="width:320px;">Name</th>
+                                            <th style="width:80px;" ng-repeat="Cols in YMNames">
+                                                {{Cols.FinYear_Month}}
+                                            </th>
+                                            <th style="width:80px;"><b>Total</b></th>
+                                        </tr>*@
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="itm in itemName">
+                                        <th style="width:400px;">
+                                            <span ng-bind-html="updateitemname(itm.Name)"></span>
+                                        </th>
+                                        <td style="width:100px;" ng-repeat="YMNew in YMNames">
+                                            <span ng-bind-html="showYMItemDetails(itm.Name,YMNew.FinYear_Month)"></span>
+                                        </td>
+                                        <td style="width:100px;">
+                                            <span ng-bind-html="showYMColumnGrandTotal(itm.Name,YMNew.FinYear_Month)"></span>
+                                        </td>
+                                        @*
+                                            <th ng-bind-html="updateitemname(itm.Name)" style="width:400px;">
+
+                                            </th>
+                                            <td style="width:100px;" ng-bind-html="showYMItemDetails(itm.Name,YMNew.FinYear_Month)" ng-repeat="YMNew in YMNames">
+                                            </td>
+                                            <td ng-bind-html="showYMColumnGrandTotal(itm.Name,YMNew.FinYear_Month)" style="width:100px;">
+                                            </td>*@
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <br />
+                    </div>
+                </div>
+                <div id="resource" style="padding-left:20px; padding-right:20px; padding-bottom:10px; opacity:0;">
+                    <br />
+                    <div class="form-row">
+                        <div class="col-md-3 mb-2">
+                            <div id="dropOperatingExpenseWBS"></div>
+                        </div>
+                        <div class="col-md-3 mb-2">
+                            <div id="dropBusiness"></div>
+                        </div>
+                        <div class="col-md-3 mb-2">
+                            <div disabled="disabled" id="dropBU"></div>
+                        </div>
+                        <div class="col-md-3 mb-2">
+                            <div disabled="disabled" id="dropHighOrg"></div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col-md-3 mb-2">
+                            <div disabled="disabled" id="dropMidOrg"></div>
+                        </div>
+                        <div class="col-md-3 mb-2">
+                            <div disabled="disabled" id="dropTeam"></div>
+                        </div>
+                        <div class="col-md-3 mb-2">
+                            <div disabled="disabled" id="dropRequiredSkills"></div>
+                        </div>
+                        <div class="col-md-3 mb-2">
+                            <input type="text" id="resourcecomments" class="form-control form-control-sm" placeholder="Enter Comments">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        &nbsp;<button type="button" style="zoom:80%" ng-click="addresourceinfo();" class="btn btn-success btn-sm float-left"><i class="fa fa-plus-circle" aria-hidden="true"></i>&nbsp;&nbsp;Add Resource Info</button> &nbsp; <button type="button" style="zoom:80%" ng-click="Resourceclear();" class="btn btn-info btn-sm float-left"><i class="fa fa-recycle" aria-hidden="true"></i>&nbsp;&nbsp;Clear</button> &nbsp; &nbsp;
+
+                    </div>
+                    <br />
+                    <p style="font-size: 13px; font-weight: 500;">
+                        &nbsp;<i class="fa fa-list" aria-hidden="true"></i>&nbsp;&nbsp;Resource List
+                        <button type="button" style="zoom:80%; margin-left:10px;" class="btn btn-dark btn-sm float-right disabled">&nbsp;&nbsp;<i class="fa fa-window-maximize" aria-hidden="true"></i>&nbsp;&nbsp; For full screen, click on <b>Escape</b> key</button>
+                        <button id="resource_Lastmodifiedby" type="button" style="display:none;zoom:80%; margin-left:10px; background: linear-gradient(to right, #164bc1, #182848);" class="btn btn-primary btn-sm float-right disabled">&nbsp;<i class="fa fa-user" aria-hidden="true"></i>&nbsp;&nbsp;<span style="font-weight:500;">{{resource_lastmodifiedby}}</span>&nbsp;</button>
+                        <button id="resource_Lastmodifieddate" type="button" style="display: none;zoom: 80%; margin-left: 10px; background: linear-gradient(to right, #164bc1, #182848);" class="btn btn-primary btn-sm float-right disabled">&nbsp;<i class="fa fa-calendar" aria-hidden="true"></i>&nbsp;&nbsp;<span style="font-weight:500;">{{resource_lastmodifieddate}}</span>&nbsp;</button>
+                        <button type="button" style="zoom:80%; margin-left:10px; color:white; background: linear-gradient(to right, #fe8c00, #f83600);" class="btn btn-warning btn-sm float-right disabled">&nbsp;<i class="fa fa-object-group" aria-hidden="true"></i>&nbsp;&nbsp;<span style="font-weight:500;" id="resourcetotal">0</span>&nbsp;</button>
+                    </p>
+                    <div style="display:none;" id="notification" class="notification">
+                        <span class="badge badge-light"><i class="fa fa-bell" aria-hidden="true"></i> Found</span>
+                        <span style="display:none;" id="update_notificationnumber1" class="badge badge-info">0</span>
+                        <span style="display:none;" id="update_notificationnumber2" class="badge badge-info">update</span>
+                        <span style="display:none;" id="delete_notificationnumber1" class="badge badge-danger">0</span>
+                        <span style="display:none;" id="delete_notificationnumber2" class="badge badge-danger">delete</span>
+                        <span class="badge badge-light">action in the table, please save the changes.</span>
+                        <span style="cursor: pointer;" ng-click="save_resource_changes()" class="badge badge-success">Save Changes</span>
+                        <span style="cursor: pointer;" ng-click="discard_resource_changes()" class="badge badge-danger">Discard Changes</span>
+                    </div>
+                    <div id="tbl_resource">
+                    </div>
+                </div>
+                <div id="capital" style="padding-left:20px; padding-bottom:10px; padding-right:20px; opacity:0;">
+                    <br />
+                    <div class="form-row">
+                        <div class="col-md-3 mb-3">                            
+                            <div autocomplete="off" id="dropCapitalExpenditureWBSCapital"></div>
+                        </div>
+                        <div class="col-md-2 mb-3">
+                            <div id="drop_Capital_Priority"></div>
+                        </div>
+                        <div class="col-md-5 mb-3">
+                            <input type="text" id="capital_impactofnotinvesting" class="form-control form-control-sm" placeholder="Enter Impact of not investing">
+                        </div>
+                        <div class="col-md-2 mb-3">
+                            <div id="drop_Capital_Category"></div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col-md-3 mb-3">
+                            <div id="drop_Capital_Type_2"></div>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <div id="drop_Capital_AOPProject"></div>
+                        </div>
+                        <div class="col-md-5 mb-3">
+                            <input type="text" id="capital_description" class="form-control form-control-sm" placeholder="Enter Description">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        &nbsp;<button type="button" style="zoom:80%" ng-click="addcapitalinfo();" class="btn btn-success btn-sm float-left"><i class="fa fa-plus-circle" aria-hidden="true"></i>&nbsp;&nbsp;Add Capital Info</button> &nbsp; <button type="button" style="zoom:80%" ng-click="capitalclear();" class="btn btn-info btn-sm float-left"><i class="fa fa-recycle" aria-hidden="true"></i>&nbsp;&nbsp;Clear</button> &nbsp; &nbsp;
+                    </div>
+                    <br />
+                    <p style="font-size: 13px; font-weight: 500;">
+                        &nbsp;<i class="fa fa-list" aria-hidden="true"></i>&nbsp;&nbsp;Capital List
+                        <button type="button" style="zoom:80%; margin-left:10px;" class="btn btn-dark btn-sm float-right disabled">&nbsp;&nbsp;<i class="fa fa-window-maximize" aria-hidden="true"></i>&nbsp;&nbsp; For full screen, click on <b>Escape</b> key</button>
+                        <button id="capital_Lastmodifiedby" type="button" style="display: none; zoom: 80%; margin-left: 10px; background: linear-gradient(to right, #164bc1, #182848);" class="btn btn-primary btn-sm float-right disabled">&nbsp;<i class="fa fa-user" aria-hidden="true"></i>&nbsp;&nbsp;<span style="font-weight:500;">{{capital_lastmodifiedby}}</span>&nbsp;</button>
+                        <button id="capital_Lastmodifieddate" type="button" style="display: none; zoom: 80%; margin-left: 10px; background: linear-gradient(to right, #164bc1, #182848);" class="btn btn-primary btn-sm float-right disabled">&nbsp;<i class="fa fa-calendar" aria-hidden="true"></i>&nbsp;&nbsp;<span style="font-weight:500;">{{capital_lastmodifieddate}}</span>&nbsp;</button>
+                        <button type="button" style="zoom:80%; margin-left:10px; color:white; background: linear-gradient(to right, #fe8c00, #f83600);" class="btn btn-warning btn-sm float-right disabled">&nbsp;<i class="fa fa-object-group" aria-hidden="true"></i>&nbsp;&nbsp;<span style="font-weight:500;" id="capitaltotal">0</span>&nbsp;</button>
+                    </p>
+                    <div style="display:none;" id="capital_notification" class="notification">
+                        <span class="badge badge-light"><i class="fa fa-bell" aria-hidden="true"></i> Found</span>
+                        <span style="display:none;" id="capital_update_notificationnumber1" class="badge badge-info">0</span>
+                        <span style="display:none;" id="capital_update_notificationnumber2" class="badge badge-info">update</span>
+                        <span style="display:none;" id="capital_delete_notificationnumber1" class="badge badge-danger">0</span>
+                        <span style="display:none;" id="capital_delete_notificationnumber2" class="badge badge-danger">delete</span>
+                        <span class="badge badge-light">action in the table, please save the changes.</span>
+                        <span style="cursor: pointer;" ng-click="save_capital_changes()" class="badge badge-success">Save Changes</span>
+                        <span style="cursor: pointer;" ng-click="discard_capital_changes()" class="badge badge-danger">Discard Changes</span>
+                    </div>
+                    <div id="tbl_capital">
+                    </div>
+                </div>
+                <div id="capitallabour" style="padding-left:20px; padding-bottom:10px; padding-right:20px; opacity:0;">
+                    <br />
+                    <div class="form-row">
+                        <div class="col-md-3 mb-3">                            
+                            <div autocomplete="off" id="dropCapitalExpenditureWBS"></div>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <div id="drop_capital_labour_Priority"></div>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <div id="drop_Capital_Labor_Category"></div>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <div id="dropBusiness_CL"></div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col-md-3 mb-3">
+                            <div disabled="disabled" id="dropBU_CL"></div>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <div disabled="disabled" id="dropHighOrg_CL"></div>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <div disabled="disabled" id="dropMidOrg_CL"></div>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <div disabled="disabled" id="dropTeam_CL"></div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col-md-3 mb-3">
+                            <div disabled="disabled" id="dropRequiredSkills_CL"></div>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <div id="drop_Capital_AOPProject_CapitalLabor"></div>
+                        </div>
+                        <div class="col-md-5 mb-3">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        &nbsp;<button type="button" style="zoom:80%" ng-click="addcapitallaborinfo();" class="btn btn-success btn-sm float-left"><i class="fa fa-plus-circle" aria-hidden="true"></i>&nbsp;&nbsp;Add Capital Labor Info</button> &nbsp; <button type="button" style="zoom:80%" ng-click="clearcapitallabor();" class="btn btn-info btn-sm float-left"><i class="fa fa-recycle" aria-hidden="true"></i>&nbsp;&nbsp;Clear</button> &nbsp; &nbsp;
+                    </div>
+                    <br />
+                    <p style="font-size: 13px; font-weight: 500;">
+                        &nbsp;<i class="fa fa-list" aria-hidden="true"></i>&nbsp;&nbsp;Capital Labor List
+                        <button type="button" style="zoom:80%; margin-left:10px;" class="btn btn-dark btn-sm float-right disabled">&nbsp;&nbsp;<i class="fa fa-window-maximize" aria-hidden="true"></i>&nbsp;&nbsp; For full screen, click on <b>Escape</b> key</button>
+                        <button id="capitallabor_Lastmodifiedby" type="button" style="display: none; zoom: 80%; margin-left: 10px; background: linear-gradient(to right, #164bc1, #182848);" class="btn btn-primary btn-sm float-right disabled">&nbsp;<i class="fa fa-user" aria-hidden="true"></i>&nbsp;&nbsp;<span style="font-weight:500;">{{capitallabor_lastmodifiedby}}</span>&nbsp;</button>
+                        <button id="capitallabor_Lastmodifieddate" type="button" style="display: none; zoom: 80%; margin-left: 10px; background: linear-gradient(to right, #164bc1, #182848);" class="btn btn-primary btn-sm float-right disabled">&nbsp;<i class="fa fa-calendar" aria-hidden="true"></i>&nbsp;&nbsp;<span style="font-weight:500;">{{capitallabor_lastmodifieddate}}</span>&nbsp;</button>
+                        <button type="button" style="zoom:80%; margin-left:10px; color:white; background: linear-gradient(to right, #fe8c00, #f83600);" class="btn btn-warning btn-sm float-right disabled">&nbsp;<i class="fa fa-object-group" aria-hidden="true"></i>&nbsp;&nbsp;<span style="font-weight:500;" id="capitallabortotal">0</span>&nbsp;</button>
+                    </p>
+                    <div style="display:none;" id="capitallabor_notification" class="notification">
+                        <span class="badge badge-light"><i class="fa fa-bell" aria-hidden="true"></i> Found</span>
+                        <span style="display:none;" id="capitallabor_update_notificationnumber1" class="badge badge-info">0</span>
+                        <span style="display:none;" id="capitallabor_update_notificationnumber2" class="badge badge-info">update</span>
+                        <span style="display:none;" id="capitallabor_delete_notificationnumber1" class="badge badge-danger">0</span>
+                        <span style="display:none;" id="capitallabor_delete_notificationnumber2" class="badge badge-danger">delete</span>
+                        <span class="badge badge-light">action in the table, please save the changes.</span>
+                        <span style="cursor: pointer;" ng-click="save_capitallabor_changes()" class="badge badge-success">Save Changes</span>
+                        <span style="cursor: pointer;" ng-click="discard_capitallabor_changes()" class="badge badge-danger">Discard Changes</span>
+                    </div>
+                    <div id="tbl_capitallabour">
+                    </div>
+
+                </div>
+                <div id="directexpenses" style="padding-left:20px; padding-right:20px; padding-bottom:10px; opacity:0;">
+                    <br />
+                    <div class="form-row">
+                        <div class="col-md-3 mb-3">
+                            @*<input type="text" id="de_WBSNumber" class="form-control form-control-sm" placeholder="Enter WBSNumber">*@
+                            <div autocomplete="off" id="dropOperatingExpenseWBSDE"></div>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <div id="drop_DE_ExpenseCategory"></div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <input type="text" id="de_description" class="form-control form-control-sm" placeholder="Enter Description">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        &nbsp;<button type="button" style="zoom:80%" ng-click="adddirectexpenseinfo();" class="btn btn-success btn-sm float-left"><i class="fa fa-plus-circle" aria-hidden="true"></i>&nbsp;&nbsp;Add Direct Expenses Info</button> &nbsp; <button type="button" ng-click="cleardirectexpenseinfo();" style="zoom:80%" class="btn btn-info btn-sm float-left"><i class="fa fa-recycle" aria-hidden="true"></i>&nbsp;&nbsp;Clear</button> &nbsp; &nbsp;
+                    </div>
+                    <br />
+                    <p style="font-size: 13px; font-weight: 500;">
+                        &nbsp;<i class="fa fa-list" aria-hidden="true"></i>&nbsp;&nbsp;Direct Expenses List
+                        <button type="button" style="zoom:80%; margin-left:10px;" class="btn btn-dark btn-sm float-right disabled">&nbsp;&nbsp;<i class="fa fa-window-maximize" aria-hidden="true"></i>&nbsp;&nbsp; For full screen, click on <b>Escape</b> key</button>
+                        <button id="de_Lastmodifiedby" type="button" style="display: none; zoom: 80%; margin-left: 10px; background: linear-gradient(to right, #164bc1, #182848);" class="btn btn-primary btn-sm float-right disabled">&nbsp;<i class="fa fa-user" aria-hidden="true"></i>&nbsp;&nbsp;<span style="font-weight:500;">{{de_lastmodifiedby}}</span>&nbsp;</button>
+                        <button id="de_Lastmodifieddate" type="button" style="display: none; zoom: 80%; margin-left: 10px; background: linear-gradient(to right, #164bc1, #182848);" class="btn btn-primary btn-sm float-right disabled">&nbsp;<i class="fa fa-calendar" aria-hidden="true"></i>&nbsp;&nbsp;<span style="font-weight:500;">{{de_lastmodifieddate}}</span>&nbsp;</button>
+                        <button type="button" style="zoom:80%; margin-left:10px; color:white; background: linear-gradient(to right, #fe8c00, #f83600);" class="btn btn-warning btn-sm float-right disabled">&nbsp;<i class="fa fa-object-group" aria-hidden="true"></i>&nbsp;&nbsp;<span style="font-weight:500;" id="detotal">0</span>&nbsp;</button>
+                    </p>
+                    <div style="display:none;" id="de_notification" class="notification">
+                        <span class="badge badge-light"><i class="fa fa-bell" aria-hidden="true"></i> Found</span>
+                        <span style="display:none;" id="de_update_notificationnumber1" class="badge badge-info">0</span>
+                        <span style="display:none;" id="de_update_notificationnumber2" class="badge badge-info">update</span>
+                        <span style="display:none;" id="de_delete_notificationnumber1" class="badge badge-danger">0</span>
+                        <span style="display:none;" id="de_delete_notificationnumber2" class="badge badge-danger">delete</span>
+                        <span class="badge badge-light">action in the table, please save the changes.</span>
+                        <span style="cursor: pointer;" ng-click="save_de_changes()" class="badge badge-success">Save Changes</span>
+                        <span style="cursor: pointer;" ng-click="discard_de_changes()" class="badge badge-danger">Discard Changes</span>
+                    </div>
+                    <div id="tbl_directexpenses">
+                    </div>
+
+                </div>
+                <div id="checkbook" style="padding-left:20px; background: linear-gradient(to right, #141e30, #243b55); height:350px; padding-right:20px;">
+                    <div style="width:100%; font-weight:bold; color:white; font-size:20px; text-align:center;">
+                        <br /> <br /> <br /> <br /> <br /> <span><i class="fa fa-pie-chart" aria-hidden="true"></i> &nbsp; coming soon.....</span>
+                    </div>
+                    <div style="display:none;">
+                        <br />
+                        <div class="form-row">
+                            <div class="col-md-3 mb-3">
+                                <input type="text" class="form-control form-control-sm" placeholder="Program (WBS)">
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <input type="text" class="form-control form-control-sm" placeholder="Enter PO Number">
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <input type="text" class="form-control form-control-sm" placeholder="Enter SAP Supplier Name">
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <input type="text" class="form-control form-control-sm" placeholder="Enter Owner Info">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="col-md-3 mb-3">
+                                <input type="text" class="form-control form-control-sm" placeholder="Enter System">
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <input type="text" class="form-control form-control-sm" placeholder="Enter Description">
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <input type="date" class="form-control form-control-sm" data-toggle="tooltip" data-placement="top" title="Ordered Date">
+                            </div>
+                            <div class="col-md-3 mb-3">
+
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            &nbsp;<button type="button" style="zoom:80%" class="btn btn-success btn-sm float-left">Add Checkbook Info</button> &nbsp; <button type="button" style="zoom:80%" class="btn btn-info btn-sm float-left">Clear</button> &nbsp; &nbsp;
+                        </div>
+                        <br />
+                        <p style="font-size:13px; font-weight:500;">
+                            &nbsp;<i class="fa fa-list" aria-hidden="true"></i>&nbsp;&nbsp;Checkbook List
+                        </p>
+
+                        <div id="spreadsheetCheckbook">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+    function calculatesum() {        
+        angular.element(document.getElementById('mainbody')).scope().updatetotalsum();
+    }
+</script>

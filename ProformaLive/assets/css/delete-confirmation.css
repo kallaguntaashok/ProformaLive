@@ -1,0 +1,293 @@
+﻿/* Set a style for all buttons */
+.conformationbutton {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 10px;
+    margin: 8px 0;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+    opacity: 0.9;
+}
+
+    .conformationbutton:hover {
+        opacity: 1;
+    }
+
+/* Float cancel and delete buttons and add an equal width */
+.cancelbtn, .deletebtn {
+    float: left;
+    width: 50%;
+}
+
+/* Add a color to the cancel button */
+.cancelbtn {
+    background-color: #ccc;
+    color: black;
+}
+
+/* Add a color to the delete button */
+.deletebtn {
+    background-color: #f44336;
+}
+
+/* Add padding and center-align text to the container */
+.confirmation_container {
+    padding: 16px;
+    text-align: center;
+}
+
+/* The Modal (background) */
+.confirmation_modal {
+    display: block; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 999; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    /* background-color: rgba(26, 26, 27, 0.19);*/
+    padding-top: 50px;
+    -webkit-animation-name: animatetop;
+    -webkit-animation-duration: 0.5s;
+    animation-name: animatetop;
+    animation-duration: 0.5s
+}
+
+@keyframes animatetop {
+    from {
+        top: -100px;
+        opacity: 0
+    }
+
+    to {
+        top: 0;
+        opacity: 1
+    }
+}
+
+/* Modal Content/Box */
+.confirmation_modal-content {
+    background: #000428; /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #004e92, #000428); /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #004e92, #000428); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    margin: 5% auto 15% auto; /* 5% from the top, 15% from the bottom and centered */
+    border: 1px solid #000428;
+    width: 30%; /* Could be more or less, depending on screen size */
+    color: white;
+    -webkit-box-shadow: 10px 10px 160px 8px rgba(0,0,0,1);
+    -moz-box-shadow: 10px 10px 160px 8px rgba(0,0,0,1);
+    box-shadow: 10px 10px 400px 8px #007bff;
+}
+
+.confirmation_modal-content-403 {
+    background: #3f4c6b; /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #606c88, #3f4c6b); /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #606c88, #3f4c6b); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    margin: 5% auto 15% auto; /* 5% from the top, 15% from the bottom and centered */
+    border: 1px solid #000428;
+    width: 30%; /* Could be more or less, depending on screen size */
+    color: white;
+    -webkit-box-shadow: 10px 10px 160px 8px rgba(0,0,0,1);
+    -moz-box-shadow: 10px 10px 160px 8px rgba(0,0,0,1);
+    box-shadow: 10px 10px 400px 8px #3f4c6b;
+}
+
+/* Style the horizontal ruler */
+hr {
+    border: 1px solid #f1f1f1;
+    margin-bottom: 25px;
+}
+
+/* The Modal Close Button (x) */
+.close {
+    position: absolute;
+    right: 35px;
+    top: 15px;
+    font-size: 40px;
+    font-weight: bold;
+    color: #f1f1f1;
+}
+
+    .close:hover,
+    .close:focus {
+        color: #f44336;
+        cursor: pointer;
+    }
+
+/* Clear floats */
+.clearfix::after {
+    content: "";
+    clear: both;
+    display: table;
+}
+
+/* Change styles for cancel button and delete button on extra small screens */
+@media screen and (max-width: 300px) {
+    .cancelbtn, .deletebtn {
+        width: 100%;
+    }
+}
+
+
+
+#ST tbody tr:nth-child(1) {
+    background-color: rgb(0 123 255 / 25%);
+    color: rgb(0 123 255 / 0%) !important;
+    font-weight: 500;
+}
+
+    #ST tbody tr:nth-child(1) th:nth-child(1) {
+        color: black !important;
+        background-color: #b1d5f9;
+        font-size: 13px;
+        font-weight: bold;        
+    }
+
+#ST tbody tr:nth-child(5) th:nth-child(1) {
+    color: black !important;
+    background-color: #b1d5f9;
+    font-size: 13px;
+    font-weight: bold;    
+}
+
+#ST tbody tr:nth-child(12) th:nth-child(1) {
+    color: black !important;
+    background-color: #b1d5f9;
+    font-size: 13px;
+    font-weight: bold;    
+}
+
+#ST tbody tr:nth-child(19) th:nth-child(1) {
+    color: black !important;
+    background-color: #b1d5f9;
+    font-size: 13px;
+    font-weight: bold;    
+}
+
+#ST tbody tr:nth-child(5) {
+    background-color: rgb(0 123 255 / 25%);
+    color: rgb(0 123 255 / 0%) !important;
+    font-weight: 500;
+}
+
+#ST tbody tr:nth-child(12) {
+    background-color: rgb(0 123 255 / 25%);
+    color: rgb(0 123 255 / 0%) !important;
+    font-weight: 500;
+}
+
+#ST tbody tr:nth-child(19) {
+    background-color: rgb(0 123 255 / 25%);
+    color: rgb(0 123 255 / 0%) !important;
+    font-weight: 500;
+}
+
+
+
+#ST tbody tr:nth-child(3) th:nth-child(1) {
+    padding-left: 30px;    
+}
+
+#ST tbody tr:nth-child(4) th:nth-child(1) {
+    padding-left: 30px;
+}
+
+#ST tbody tr:nth-child(7) th:nth-child(1) {
+    padding-left: 30px;
+}
+
+#ST tbody tr:nth-child(8) th:nth-child(1) {
+    padding-left: 50px;
+    color: #a9a9a9;
+}
+
+#ST tbody tr:nth-child(9) th:nth-child(1) {
+    padding-left: 50px;
+    color: #a9a9a9;
+}
+
+#ST tbody tr:nth-child(10) th:nth-child(1) {
+    padding-left: 50px;
+    color: #a9a9a9;
+}
+
+#ST tbody tr:nth-child(11) th:nth-child(1) {
+    padding-left: 30px;
+}
+
+#ST tbody tr:nth-child(14) th:nth-child(1) {
+    padding-left: 30px;
+}
+
+#ST tbody tr:nth-child(18) th:nth-child(1) {
+    padding-left: 30px;
+}
+
+#ST tbody tr:nth-child(15) th:nth-child(1) {
+    padding-left: 50px;
+    color: #a9a9a9;
+}
+
+#ST tbody tr:nth-child(16) th:nth-child(1) {
+    padding-left: 50px;
+    color: #a9a9a9;
+}
+
+#ST tbody tr:nth-child(17) th:nth-child(1) {
+    padding-left: 50px;
+    color: #a9a9a9;
+}
+
+#ST tbody tr:nth-child(21) th:nth-child(1) {
+    padding-left: 30px;
+}
+
+#ST tbody tr:nth-child(24) th:nth-child(1) {
+    padding-left: 30px;
+}
+
+#ST tbody tr:nth-child(27) th:nth-child(1) {
+    padding-left: 30px;
+}
+
+#ST tbody tr:nth-child(22) th:nth-child(1) {
+    padding-left: 50px;
+    color: #a9a9a9;
+}
+
+#ST tbody tr:nth-child(23) th:nth-child(1) {
+    padding-left: 50px;
+    color: #a9a9a9;
+}
+
+#ST tbody tr:nth-child(25) th:nth-child(1) {
+    padding-left: 50px;
+    color: #a9a9a9;
+}
+
+#ST tbody tr:nth-child(26) th:nth-child(1) {
+    padding-left: 50px;
+    color: #a9a9a9;
+}
+
+#ST tbody tr:nth-child(28) th:nth-child(1) {
+    padding-left: 50px;
+    color: #a9a9a9;
+}
+
+#ST tbody tr:nth-child(29) th:nth-child(1) {
+    padding-left: 50px;
+    color: #a9a9a9;
+}
+
+#ST tbody tr:nth-child(30) th:nth-child(1) {
+    padding-left: 50px;
+    color: #a9a9a9;
+}
+
+#ST tbody tr:nth-child(31) th:nth-child(1) {
+    padding-left: 50px;
+    color: #a9a9a9;
+}

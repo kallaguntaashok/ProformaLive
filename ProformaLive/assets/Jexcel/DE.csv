@@ -1,0 +1,4 @@
+Type,Expense Category,Description,FinYear, MAY, JUN, JUL, AUG, SEP, OCT, NOV, DEC, JAN, FEB, MAR, APR
+ DE ,"Expensed Material, tooling, and spares",Materials and cell build ,FY2021,,,,,,,,," $36,000.00 "," $50,400.00 "," $64,800.00 "," $28,800.00 "
+ DE ,"Expensed Material, tooling, and spares",Materials and cell build ,FY2022,," $5,000.00 "," $5,000.00 ",," $7,000.00 "," $7,000.00 ",," $9,000.00 "," $9,000.00 "," $4,000.00 "," $4,000.00 "," $8,000.00 "
+ DE ,"Expensed Material, tooling, and spares",Materials and cell build ,FY2023,,," $5,000.00 "," $5,000.00 "," $5,000.00 ",," $5,000.00 "," $5,000.00 ",,,,

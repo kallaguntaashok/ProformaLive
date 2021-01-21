@@ -1,0 +1,46 @@
+Type,WBS Number,Priority,Capital Category,Team,MidOrg,Required Skill,Comment,Fyear,MAY,JUN,JUL,AUG,SEP,OCT,NOV,DEC,JAN,FEB,MAR,APR
+ Capital Labor ,0XXXXX.xxx,2,NPI,Process and Component Development - R&D,Program Mgt,Product/Program Mgr,"project oversight, funding",FY2021,,,,,,0.1,0.1,0.1,0.1,0.1,0.1,0.1
+ Capital Labor ,0XXXXX.xxx,2,NPI,Process and Component Development - R&D,Design and Systems Engineering,Des Eng,,FY2021,,,,,,0.25,0.25,0.25,1,1,1,1
+ Capital Labor ,0XXXXX.xxx,2,NPI,Process and Component Development - R&D,Battery/Cap Dev,Development Eng,,FY2021,,,,,,0.5,2,2,2,2,2,2
+ Capital Labor ,0XXXXX.xxx,2,NPI,Process and Component Development - R&D,Battery/Cap Dev,Dev Tech,Cell build Tech,FY2021,,,,,,,0.5,0.5,0.5,1,1,1
+ Capital Labor ,0XXXXX.xxx,2,NPI,Process and Component Development - R&D,Joining,Laser Weld Eng,,FY2021,,,,,,0.25,1,1,1,1,1,1
+ Capital Labor ,0XXXXX.xxx,2,NPI,Process and Component Development - R&D,Equipment,SW,,FY2021,,,,,,,,,,,,
+ Capital Labor ,0XXXXX.xxx,2,NPI,MECC Quality - DR&PT and Analytics,DRPT Pre-Market,Batt Reliab Eng,,FY2021,,,,,,0.25,0.5,0.5,0.5,0.5,0.5,0.5
+ Capital Labor ,0XXXXX.xxx,2,NPI,MECC Quality - DR&PT and Analytics,DRPT Pre-Market,Mtls Reliab Sci,,FY2021,,,,,,0.25,0.25,0.25,0.25,0.25,0.25,0.25
+ Capital Labor ,0XXXXX.xxx,2,NPI,MECC Quality - DR&PT and Analytics,DRPT Post-Market,Batt/Cap Test Tech,Test Technician,FY2021,,,,,,,,,,,,
+ Capital Labor ,0XXXXX.xxx,2,NPI,Research and Technology,FT Mechanical & Process Technology,Scientist,Miniature BEC/FT,FY2021,,,,,,0.25,0.5,0.5,0.5,0.5,0.5,0.5
+ Capital Labor ,0XXXXX.xxx,2,NPI,Research and Technology,Battery Research,Scientist,Design Modeling,FY2021,,,,,,0.25,0.25,0.25,0.25,0.25,0.25,0.25
+ Capital Labor ,0XXXXX.xxx,2,NPI,Research and Technology,Battery Research,Scientist,Performance model,FY2021,,,,,,,,,,,,
+ Capital Labor ,0XXXXX.xxx,2,NPI,Process and Component Development - R&D,Design and Systems Engineering,Sys,Device integration,FY2021,,,,,,,,,,,,
+ Capital Labor ,0XXXXX.xxx,2,NPI,Research and Technology,Battery Research,Scientist,Thermal modeling,FY2021,,,,,,,,,,,,
+ Capital Labor ,0XXXXX.xxx,2,NPI,Research and Technology,Battery Research,Technician,,FY2021,,,,,,,,,,,,
+ Capital Labor ,0XXXXX.xxx,2,NPI,Process and Component Development - R&D,Program Mgt,Product/Program Mgr,"project oversight, funding",FY2022,0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1
+ Capital Labor ,0XXXXX.xxx,2,NPI,Process and Component Development - R&D,Design and Systems Engineering,Des Eng,,FY2022,0.75,0.75,0.75,0.75,0.75,0.75,0.75,0.75,0.75,0.75,0.75,0.75
+ Capital Labor ,0XXXXX.xxx,2,NPI,Process and Component Development - R&D,Battery/Cap Dev,Development Eng,,FY2022,1.5,1.5,1.5,1.5,1.5,1.5,1.5,1.5,1.5,1.5,1.5,1.5
+ Capital Labor ,0XXXXX.xxx,2,NPI,Process and Component Development - R&D,Battery/Cap Dev,Dev Tech,Cell build Tech,FY2022,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5
+ Capital Labor ,0XXXXX.xxx,2,NPI,Process and Component Development - R&D,Joining,Laser Weld Eng,,FY2022,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5
+ Capital Labor ,0XXXXX.xxx,2,NPI,Process and Component Development - R&D,Equipment,SW,,FY2022,0.5,0.5,0.5,0.5,0.5,0.5,1,1,1,1,1,1
+ Capital Labor ,0XXXXX.xxx,2,NPI,MECC Quality - DR&PT and Analytics,DRPT Pre-Market,Batt Reliab Eng,,FY2022,1,1,1,1,1,1,1,1,1,1,1,1
+ Capital Labor ,0XXXXX.xxx,2,NPI,MECC Quality - DR&PT and Analytics,DRPT Pre-Market,Mtls Reliab Sci,,FY2022,0.25,0.25,0.25,0.25,0.25,0.25,0.25,0.25,0.25,0.25,0.25,0.25
+ Capital Labor ,0XXXXX.xxx,2,NPI,MECC Quality - DR&PT and Analytics,DRPT Post-Market,Batt/Cap Test Tech,Test Technician,FY2022,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5
+ Capital Labor ,0XXXXX.xxx,2,NPI,Research and Technology,FT Mechanical & Process Technology,Scientist,Miniature BEC/FT,FY2022,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5
+ Capital Labor ,0XXXXX.xxx,2,NPI,Research and Technology,Battery Research,Scientist,Design Modeling,FY2022,1,1,1,1,1,1,1,1,1,1,1,1
+ Capital Labor ,0XXXXX.xxx,2,NPI,Research and Technology,Battery Research,Scientist,Performance model,FY2022,1,1,1,1,1,1,1,1,1,1,1,1
+ Capital Labor ,0XXXXX.xxx,2,NPI,Process and Component Development - R&D,Design and Systems Engineering,Sys,Device integration,FY2022,0.5,0.5,0.5,0.5,0.5,0.5,1,1,1,1,1,1
+ Capital Labor ,0XXXXX.xxx,2,NPI,Research and Technology,Battery Research,Scientist,Thermal modeling,FY2022,1,1,1,1,1,1,1,1,1,1,1,1
+ Capital Labor ,0XXXXX.xxx,2,NPI,Research and Technology,Battery Research,Technician,,FY2022,,,,,,,0.5,0.5,0.5,0.5,0.5,0.5
+ Capital Labor ,0XXXXX.xxx,2,NPI,Process and Component Development - R&D,Program Mgt,Product/Program Mgr,"project oversight, funding",FY2023,0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1
+ Capital Labor ,0XXXXX.xxx,2,NPI,Process and Component Development - R&D,Design and Systems Engineering,Des Eng,,FY2023,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.25,0.25,0.25
+ Capital Labor ,0XXXXX.xxx,2,NPI,Process and Component Development - R&D,Battery/Cap Dev,Development Eng,,FY2023,0.75,0.75,0.75,0.75,0.75,0.75,0.5,0.5,0.5,,,
+ Capital Labor ,0XXXXX.xxx,2,NPI,Process and Component Development - R&D,Battery/Cap Dev,Dev Tech,Cell build Tech,FY2023,,,,,,,,,,,,
+ Capital Labor ,0XXXXX.xxx,2,NPI,Process and Component Development - R&D,Joining,Laser Weld Eng,,FY2023,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,,,
+ Capital Labor ,0XXXXX.xxx,2,NPI,Process and Component Development - R&D,Equipment,SW,,FY2023,1,1,1,1,1,1,0.5,0.5,0.5,,,
+ Capital Labor ,0XXXXX.xxx,2,NPI,MECC Quality - DR&PT and Analytics,DRPT Pre-Market,Batt Reliab Eng,,FY2023,1,1,1,1,1,1,0.5,0.5,0.5,0.25,0.25,0.25
+ Capital Labor ,0XXXXX.xxx,2,NPI,MECC Quality - DR&PT and Analytics,DRPT Pre-Market,Mtls Reliab Sci,,FY2023,0.25,0.25,0.25,0.25,0.25,0.25,0.25,0.25,0.25,0.25,0.25,0.25
+ Capital Labor ,0XXXXX.xxx,2,NPI,MECC Quality - DR&PT and Analytics,DRPT Post-Market,Batt/Cap Test Tech,Test Technician,FY2023,0.5,0.5,0.5,0.25,0.25,0.25,,,,,,
+ Capital Labor ,0XXXXX.xxx,2,NPI,Research and Technology,FT Mechanical & Process Technology,Scientist,Miniature BEC/FT,FY2023,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,,,
+ Capital Labor ,0XXXXX.xxx,2,NPI,Research and Technology,Battery Research,Scientist,Design Modeling,FY2023,1,1,1,1,1,1,1,1,1,0.5,0.5,0.5
+ Capital Labor ,0XXXXX.xxx,2,NPI,Research and Technology,Battery Research,Scientist,Performance model,FY2023,1,1,1,1,1,1,1,1,1,,,
+ Capital Labor ,0XXXXX.xxx,2,NPI,Process and Component Development - R&D,Design and Systems Engineering,Sys,Device integration,FY2023,1,1,1,1,1,1,0.5,0.5,0.5,0.25,0.25,0.25
+ Capital Labor ,0XXXXX.xxx,2,NPI,Research and Technology,Battery Research,Scientist,Thermal modeling,FY2023,1,1,1,1,1,1,1,1,1,,,
+ Capital Labor ,0XXXXX.xxx,2,NPI,Research and Technology,Battery Research,Technician,,FY2023,0.5,0.5,0.5,0.5,0.5,0.5,,,,,,

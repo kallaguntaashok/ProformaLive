@@ -1,0 +1,257 @@
+PRIMARY_PROJECT_NUMBER,PROJECT_NAME,PROJECT MANAGER ID,PROJECT MANAGER NAME,CATEGORY,PARENT_CHILD,WBS_ELEMENT,GPS_PROJECT_NUMBER,PROGRAM,BUSINESS_UNIT,PERIOD_BURDEN_EXPENSE,SETTLEMENT_COST_CENTER,SETTLEMENT_COST_CENTER_NAME,SUMMARY_OF_SETTLEMENT,ENDING_BUSINESS_UNIT,FUNDING_SOURCE,SCORECARD,IN_PLAN,FUNCTION,CAPITAL_GRP_TYPE,FUNDED,PCT_FUNDED,PCT_PROB_FUNDED,KEYNUM
+XR00022,LINQ II Header Line Duplication,kalamm1,"Kalam, Mohammed",Capacity,Child,TBD,TBD,linq ii,MECC,Burden,151348,CRDM PRODUCT SUPPT ALLOCATION,MECC Ops - Burden - Product Support,CRHF,MECC,MECC,No,Schwiebert,TBD,No,100,35,4219
+MA50263,CRHF Wafer Scale 3D Packaged Device,luh10,"Lu, Kelly","Core Competency
+",Parent,MA50263.MEC,MA50263,CRHF Wafer Scale 3D Packaged Device,R&T,Period,151376,TBD,TBD,CRHF,CRHF R&D,CVG,TBD,Jain,TBD,No,100,0,4043
+MA61456,Med Battery Expansion,kallaa1,"Ashok, Kallagunta","Capacity
+",Parent,MA61456.MEC,MA61456,Med Battery Expansion,Site Funded,Burden,151348,CRDM PRODUCT SUPPT ALLOCATION,MECC Ops - Burden - Product Support,CRHF,MECC,MECC,NA,Schwiebert,TBD,No,NA,0,4044
+MA61480,MECC GIDE,blockb1,"Block, Brian","Burden
+",Parent,MA61480.MEC,MA60380,MECC GIDE,Site Funded,Period,151308,MECC GENERAL MANAGER,MECC Ops - Admin - Mfg Support,CRHF,MECC,MECC,NA,Johnson,TBD,Yes,100,100,4046
+CR00010,Linq II Redesign,shimpr1,"Shimpa, Robert",TBD,Parent,CR00010,CR00010,Linq II Redesign,RTG,TBD,TBD,MECC,R&D - CHRF Settles Correctly,CRHF,CRHF R&D,CVG,TBD,Stenersen,TBD,No,100,0,4047
+CR61228,Polaris 2,kalamm2,"Kalam, Mohammed","NPI
+",Parent,CR61228.MEC,CR61228,Polaris 2,Tachy,Period,TBD,TBD,TBD,CRHF,CRHF R&D,CVG,TBD,Stenersen,TBD,No,0,0,4048
+MA61552,Delta 26H Case and Cover Transfer,luh11,"Lu, Kelly",Cost Down,Parent,MA61552.MEC,MA61552,Delta 26H Case and Cover Transfer,Site Funded,Period,151359,CRDM MFG SUPPORT ALLOCATION,MECC Ops - Admin - Mfg Support,CRHF,MECC,MECC,In Plan,Mierkiewicz,TBD,No,100,0,4049
+NE05155,3R SM2 Pump Remediation,kallaa2,"Ashok, Kallagunta","Quality/Remediation
+",Parent,NE05155.MEC,NE95155,N/A,Pelvic Health,Period,151413,PAIN MFG SUPPORT ALLOCATION,Pain mfg support,RTG,RTG - R&D,RTG,NA,Stenersen,TBD,No,0,0,4050
+NE07109-FT,CRoWN FT,blockb2,"Block, Brian",NPE,Child,N/A,N/A,CRoWN,Brain,Period,153009,BRAIN DEVELOPMENT ALLOCATION,RTG - R&D,RTG,RTG - R&D,RTG,No Plan,Stenersen,TBD,No,0,0,4051
+NE07109,CRoWN,shimpr2,"Shimpa, Robert","NPI
+",Parent,NE07109.MEC,NE07109,CRoWN,Brain,Period,153009,BRAIN DEVELOPMENT ALLOCATION,RTG - R&D,RTG,RTG - R&D,RTG,In Plan,Stenersen,TBD,No,100,1,4052
+NE07109-Bat,CRoWN Battery,kalamm3,"Kalam, Mohammed","NPI
+",Child,N/A,N/A,CRoWN,Brain,Period,153009,BRAIN DEVELOPMENT ALLOCATION,RTG - R&D,RTG,RTG - R&D,RTG,No Plan,Stenersen,TBD,No,100,1,4053
+NE07109-Conn,CRoWN Connector,luh12,"Lu, Kelly","NPI
+",Child,N/A,N/A,CRoWN,Brain,Period,153009,BRAIN DEVELOPMENT ALLOCATION,RTG - R&D,RTG,RTG - R&D,RTG,No Plan,Stenersen,TBD,No,100,1,4054
+MA50109,MECC CAPA Support,kallaa3,"Ashok, Kallagunta",Quality/Remediation,Parent,MA50109.MEC,MA50109,MECC CAPA Support,MECC,Burden,151348,CRDM PRODUCT SUPPT ALLOCATION,MECC Ops - Burden - Product Support,CRHF,MECC - PS,MECC,In Plan,Murphy,TBD,No,100,10,4055
+Batt-VS-Ops,Batt-VS-Ops,blockb3,"Block, Brian","Depreciation
+",NA,NA,NA,Capital Depreciation,NA,TBD,NA,TBD,TBD,NA,MECC,MECC,NA,Schwiebert,NA,Yes,100,100,4056
+CAP-VS-Ops,CAP-VS-Ops,shimpr3,"Shimpa, Robert","Depreciation
+",NA,NA,NA,Capital Depreciation,NA,TBD,NA,TBD,TBD,NA,MECC,MECC,NA,Schwiebert,NA,Yes,100,100,4058
+Conn-VS-Ops,Conn-VS-Ops,kalamm4,"Kalam, Mohammed","Depreciation
+",NA,NA,NA,Capital Depreciation,NA,TBD,NA,TBD,TBD,NA,MECC,MECC,NA,Schwiebert,NA,Yes,100,100,4060
+CR50297,TYRX R&D-Soft Tissue,luh13,"Lu, Kelly",NPI,Parent,CR50297.MEC,CR50297,TYRX,PI,Period,151376,CRDM DEVELOPMENT ALLOCATION,R&D - CHRF Alex JE's Out,CRHF,CRHF R&D,CVG,In Plan,Stenersen,TBD,Yes,100,100,4062
+CR60141,EZGLIDE,kallaa4,"Ashok, Kallagunta",NPI,Parent,CR60141.MEC,CR60141,EZGLIDE,PI,Period,151376,CRDM DEVELOPMENT ALLOCATION,R&D - CHRF Alex JE's Out,CRHF,CRHF R&D,CVG,NA,Stenersen,TBD,Yes,100,100,4063
+CR60845,R&T Infrastructure,blockb4,"Block, Brian",Burden,Parent,CR60845,CR60845,R&T Infrastructure,Central Funded,Period,151376,CRDM Development Allocation,NA,CRHF,Central,CVG,TBD,Jain,TBD,Yes,100,100,4064
+CR60846,MECC Incoming & Software CAPA,shimpr4,"Shimpa, Robert",Quality/Remediation,Parent,CR60846,CR60846,MECC Incoming & Software CAPA,Central Funded,Period,151376,CRDM DEVELOPMENT ALLOCATION,Central Project Stays W/ MECC R&D,CRHF,Central,CVG,TBD,Murphy,TBD,Yes,100,100,4065
+CR61197,EV ICD,kalamm5,"Kalam, Mohammed","NPI
+",Parent,CR61197.MEC,CR61197,EV ICD,Tachy,Period,151376,CRDM DEVELOPMENT ALLOCATION,R&D - CHRF Alex JE's Out,CRHF,CRHF R&D,CVG,No Plan,Stenersen,TBD,Yes,100,100,4066
+CR61238,Micra VDD,luh14,"Lu, Kelly","NPI
+",Parent,CR61238.MEC,CR62138,Micra VDD,Brady,Period,151376,CRDM DEVELOPMENT ALLOCATION,R&D - CHRF Alex JE's Out,CRHF,CRHF R&D,CVG,In Plan,Stenersen,TBD,Yes,100,100,4067
+CR61348,NG Cryoconsole System,kallaa5,"Ashok, Kallagunta","NPI
+",Parent,CR61348.MEC,CR61348,NG Cryoconsole System,AF,Period,152793,AFS - PD PBU Settlem,R&D - CHRF Settles Correctly,CRHF,AFS,CVG,In Plan,Jain,TBD,Yes,100,100,4068
+CR61475,Azure 2.0,blockb5,"Block, Brian","NPI
+",Parent,CR61475.MEC,CR61475,Azure 2.0,Brady,Period,151376,CRDM DEVELOPMENT ALLOCATION,R&D - CHRF Alex JE's Out,CRHF,CRHF R&D,CVG,In Plan,Stenersen,TBD,Yes,100,100,4069
+CR61568,MECC Polaris Battery,shimpr5,"Shimpa, Robert","NPI
+",Child,CR61568.MEC,CR61568,Polaris,Tachy,Period,151376,CRDM DEVELOPMENT ALLOCATION,R&D - CHRF Alex JE's Out,CRHF,CRHF R&D,CVG,No Plan,Stenersen,TBD,Yes,100,100,4070
+CR61594,3D Packaging,kalamm6,"Kalam, Mohammed","Core Competency
+",Parent,CR61594.MEC,CR61594,R&T Device Technology,R&T,Period,151376,CRDM DEVELOPMENT ALLOCATION,R&D - CHRF Alex JE's Out,CRHF,CRHF R&D,CVG,NA,Jain,TBD,Yes,100,100,4071
+CR61612,Cryo Sensor Technology,luh15,"Lu, Kelly","Core Competency
+",Parent,CR61612.MEC,CR61612,Cryo Sensor Technology,AF,Period,TBD,TBD,NA,CRHF,AFS,CVG,In Plan,Jain,TBD,Yes,100,100,4072
+CR62056,Polaris,kallaa6,"Ashok, Kallagunta","NPI
+",Parent,CR62056.MEC,CR62056,Polaris,Tachy,Period,151376,CRDM DEVELOPMENT ALLOCATION,R&D - CHRF Alex JE's Out,CRHF,CRHF R&D,CVG,In Plan,Stenersen,TBD,Yes,100,100,4073
+CR62174,PFA PVI Commercialization,blockb6,"Block, Brian","Core Competency
+",Parent,CR62174.MEC,CR62174,PFA PVI Commercialization,AF,Period,152793,AFS - PD PBU Settlem,R&D - CHRF Settles Correctly,CRHF,AFS,CVG,No Plan,Jain,TBD,Yes,100,100,4074
+DEV-VS,DEV-VS,shimpr6,"Shimpa, Robert","Depreciation
+",NA,NA,NA,Capital Depreciation,NA,NA,NA,TBD,NA,CRHF,MECC,MECC,NA,Stenersen,NA,Yes,100,100,4075
+Facility-VS,Facility-VS,kalamm7,"Kalam, Mohammed","Depreciation
+",NA,NA,NA,Capital Depreciation,NA,NA,NA,TBD,NA,CRHF,MECC,MECC,NA,Schwiebert,NA,Yes,100,100,4076
+FT-VS-Ops,FT-VS-Ops,luh16,"Lu, Kelly","Depreciation
+",NA,NA,NA,Capital Depreciation,NA,NA,NA,TBD,NA,CRHF,MECC,MECC,NA,Schwiebert,NA,Yes,100,100,4077
+HW10038,MCS DAY TO DAY PRODUCTION SUPPORT & NC C,kallaa7,"Ashok, Kallagunta","Core Competency
+",Parent,HW10038.MEC,HW10038,MCS DAY TO DAY PRODUCTION SUPPORT & NC C,HeartWare,Period,104562,MCS OPC Settlement,R&D - CHRF Settles Correctly,CRHF,MCS Ops,CVG,In Plan,Stenersen,TBD,Yes,100,100,4079
+IT-VS,IT-VS,blockb7,"Block, Brian","Depreciation
+",NA,NA,NA,Capital Depreciation,NA,NA,NA,TBD,TBD,NA,MECC,MECC,NA,Tarek,NA,Yes,100,100,4080
+MA09165,Project J,shimpr7,"Shimpa, Robert","Core Competency
+",Parent,MA09165.MEC,MA09165,Project J,Site Funded,TBD,153018,Non-GAAP OPC - MECC,Corportate - Non GAAP,Non-GAAP,Non-GAAP,Non-GAAP,In Plan,Stenersen,TBD,Yes,100,100,4081
+MA50099,MECC Quality Product Support,kalamm8,"Kalam, Mohammed",Burden,Parent,MA50099.MEC,MA50099,MECC Quality Product Support,MECC - PS,Burden,151348,CRDM PRODUCT SUPPT ALLOCATION,MECC Ops - Burden - Product Support,CRHF,MECC - PS,MECC,In Plan,Murphy,TBD,Yes,100,100,4082
+MA50100,MECC Development Product Support,luh17,"Lu, Kelly",Burden,Parent,MA50100.MEC,MA50100,MECC Development Product Support,MECC - PS,Burden,151348,CRDM PRODUCT SUPPT ALLOCATION,MECC Ops - Burden - Product Support,CRHF,MECC - PS,MECC,In Plan,Stenersen,TBD,Yes,100,100,4083
+MA50102,MECC R&T Product Support,kallaa8,"Ashok, Kallagunta",Burden,Parent,MA50102.MEC,MA50102,MECC R&T Product Support,MECC - PS,Burden,151348,CRDM PRODUCT SUPPT ALLOCATION,MECC Ops - Burden - Product Support,CRHF,MECC - PS,MECC,In Plan,Jain,TBD,Yes,100,100,4084
+MA50113,MECC Test and Operations Product Support,blockb8,"Block, Brian",Burden,Parent,MA50113.MEC,MA50113,MECC Test and Operations Product Support,MECC - PS,Burden,151348,CRDM PRODUCT SUPPT ALLOCATION,MECC Ops - Burden - Product Support,CRHF,MECC - PS,MECC,No Plan,Stenersen,TBD,Yes,100,100,4085
+MA50130,LINQ II Battery Equipment,shimpr8,"Shimpa, Robert",Capacity,Parent,MA50130.MEC,MA50130,LINQ II Battery Equipment,MECC,Period,151359,CRDM MFG SUPPORT ALLOCATION,MECC Ops - Admin - Mfg Support,CRHF,MECC,MECC,No Plan,Stenersen,TBD,Yes,100,100,4086
+MA50144,RGB - RVD and GTN for Blackwell,kalamm9,"Kalam, Mohammed","Quality/Remediation
+",Parent,MA50144.MEC,MA50144,RGB - RVD and GTN for Blackwell,Site Funded,Period,151359,CRDM MFG SUPPORT ALLOCATION,MECC Ops - Admin - Mfg Support,CRHF,MECC,MECC,NA,Stenersen,TBD,Yes,100,100,4087
+MA50175,Conn Detectability,luh18,"Lu, Kelly",Quality/Remediation,Parent,MA50175.MEC,MA50175,Conn Detectability,MECC,Burden,151348,CRDM PRODUCT SUPPT ALLOCATION,MECC Ops - Burden - Product Support,CRHF,MECC,MECC,No Plan,Schwiebert,TBD,Yes,100,100,4088
+MA50221,Scrap Reduction,kallaa9,"Ashok, Kallagunta",Cost Down,Parent,MA50221.MEC,MA50221,MA - MECC Sponsored,MECC,Burden,151348,CRDM PRODUCT SUPPT ALLOCATION,MECC Ops - Burden - Product Support,CRHF,MECC,MECC,NA,Schwiebert,TBD,Yes,100,100,4089
+MA50236,L4 Array,blockb9,"Block, Brian","Cost Down
+",Parent,MA50236.MEC,MA50236,L4 Array,Ops PMO,Period,151359,CRDM MFG SUPPORT ALLOCATION,MECC Ops - Admin - Mfg Support,CRHF,CRHF OPS,CVG,NA,Stenersen,TBD,Yes,100,100,4090
+MA50261,Next Generation Device Laser Processing,shimpr9,"Shimpa, Robert","Core Competency
+",Parent,MA50261.MEC,MA50261,Next Generation Device Laser Processing,Ops PMO,Period,151359,CRDM MFG SUPPORT ALLOCATION,MECC Ops - Admin - Mfg Support,CRHF,CRHF OPS,CVG,In Plan,Stenersen,TBD,Yes,100,100,4091
+MA50262,Next Generation Device Component Fabrica,kalamm10,"Kalam, Mohammed","Core Competency
+",Parent,MA50262.MEC,MA50262,Next Generation Device Component Fabrica,Ops PMO,Period,151359,CRDM MFG SUPPORT ALLOCATION,MECC Ops - Admin - Mfg Support,CRHF,CRHF OPS,CVG,In Plan,Jain,TBD,Yes,100,100,4092
+MA50270,LRM to Kersen Transfer,luh19,"Lu, Kelly","Cost Down
+",Parent,MA50270.MEC,MA50270,LRM to Kersen Transfer,SLT,TBD,153001,SLT Projects,Sourcing,CVG,SLT PMO CRHF/AFS,CVG,In Plan,Mierkiewicz,TBD,Yes,100,100,4093
+MA50271,Transfer CEC to Precision Concepts,kallaa10,"Ashok, Kallagunta",Cost Down,Parent,MA50271.MEC,MA50271,Transfer CEC to Precision Concepts,SLT,TBD,153001,SLT Projects,CVG Sourcing,CVG,SLT PMO CRHF/AFS,CVG,In Plan,Mierkiewicz,TBD,Yes,100,100,4094
+MA60162,RC Quality Remediation,blockb10,"Block, Brian","Quality/Remediation
+",Parent,MA60162.MEC,MA60162,RC Quality Remediation,PI,TBD,150395,RC BUR Quality-QIP,Rice Creek,CRHF,Rice Creek,Rice Creek,No Plan,Murphy,TBD,Yes,100,100,4095
+MA60182,TYRX Operations,shimpr10,"Shimpa, Robert","Quality/Remediation
+",Parent,MA60182.MEC,MA50182,TYRX,PI,Period,150395,RC BUR Quality-QIP,Rice Creek,CRHF,Rice Creek,CVG,In Plan,Stenersen,TBD,Yes,100,100,4096
+MA60364,Common Pin Material for Glass Feedthroug,kalamm11,"Kalam, Mohammed","Cost Down
+",Parent,MA60364.MEC,MA60364,Common Pin Material for Glass Feedthroug,Ops PMO,Period,151359,CRDM MFG SUPPORT ALLOCATION,MECC Ops - Admin - Mfg Support,CRHF,CRHF OPS,CVG,In Plan,Stenersen,TBD,Yes,100,100,4097
+MA60365,2nd Source for Elasthane/Polyurethane,luh20,"Lu, Kelly","BCP
+",Parent,MA60365.MEC,MA60365,2nd Source for Elasthane/Polyurethane,Ops PMO,Period,151359,CRDM MFG SUPPORT ALLOCATION,MECC Ops - Admin - Mfg Support,CRHF,CRHF OPS,CVG,In Plan,Mierkiewicz,TBD,Yes,100,100,4098
+MA60377,Vanadium Pentoxide,kallaa11,"Ashok, Kallagunta","BCP
+",Parent,MA60377.MEC,MA60377,Vanadium Pentoxide,Ops PMO,Period,151359,CRDM MFG SUPPORT ALLOCATION,MECC Ops - Admin - Mfg Support,CRHF,CRHF OPS,CVG,NA,Mierkiewicz,TBD,Yes,100,100,4099
+MA60390,BASF Electrolyte Facility Move and Dual,blockb11,"Block, Brian","BCP
+",Parent,MA60390.MEC,MA60390,BASF Electrolyte Facility Move and Dual,Ops PMO,Period,151359,CRDM MFG SUPPORT ALLOCATION,MECC Ops - Admin - Mfg Support,CRHF,MECC,MECC,No Plan,Mierkiewicz,TBD,Yes,100,100,4100
+XR00023,Incoming Inspection LIMS Replacement,shimpr11,"Shimpa, Robert",Burden,Parent,XR00023,XR00023,Incoming Inspection LIMS Replacement,MECC,Burden,151348,CRDM PRODUCT SUPPT ALLOCATION,MECC Ops - Burden - Product Support,CRHF,MECC,MECC,In Plan,Murphy,TBD,No,100,100,4101
+MA61265,MECC CAPA's,kalamm12,"Kalam, Mohammed","Quality/Remediation
+",Parent,MA61265.MEC,MA61265,MA - MECC Sponsored,Site Funded,Burden,151348,CRDM PRODUCT SUPPT ALLOCATION,MECC Ops - Burden - Product Support,CRHF,MECC,MECC,NA,Murphy,TBD,Yes,100,100,4102
+MA61479,MECC Recognition,luh21,"Lu, Kelly","Burden
+",Parent,MA61479.MEC,MA61479,MECC Recognition,Site Funded,Period,151308,MECC GENERAL MANAGER,MECC Ops - Admin - Mfg Support,CRHF,MECC,MECC,NA,Johnson,TBD,Yes,100,100,4103
+MA61481,MECC Site Events,kallaa12,"Ashok, Kallagunta","Burden
+",Parent,MA61481.MEC,MA61481,MECC Site Events,Site Funded,Period,151308,MECC GENERAL MANAGER,MECC Ops - Admin - Mfg Support,CRHF,MECC,MECC,NA,Johnson,TBD,Yes,100,100,4104
+MA61550,MECC Software Architecture,blockb12,"Block, Brian","Core Competency
+",Parent,MA61550.MEC,MA61550,MECC Software Architecture,Site Funded,Burden,151348,CRDM PRODUCT SUPPT ALLOCATION,MECC Ops - Burden - Product Support,CRHF,MECC,MECC,No Plan,Stenersen,TBD,Yes,100,100,4105
+MA61569,SmartSync Geo-Expansion,shimpr12,"Shimpa, Robert","NPI
+",Parent,MA61569.MEC,MA61569,Geo Expansion,CC,Period,151359,CRDM MFG SUPPORT ALLOCATION,MECC Ops - Admin - Mfg Support,CRHF,MECC,MECC,NA,Stenersen,TBD,Yes,100,100,4106
+MA61631,Augmented Reality (AR) in Manufacturing,kalamm13,"Kalam, Mohammed","Operations Technology
+",Parent,MA61631.MEC,MA61631,Augmented Reality (AR) in Manufacturing,Ops PMO,Period,151359,CRDM MFG SUPPORT ALLOCATION,MECC Ops - Admin - Mfg Support,CRHF,CRHF OPS,CVG,In Plan,Stenersen,TBD,Yes,100,100,4107
+MA61632,Factory 4.0,luh22,"Lu, Kelly","Operations Technology
+",Parent,MA61632.MEC,MA61632,Factory 4.0,Ops PMO,Period,151359,CRDM MFG SUPPORT ALLOCATION,MECC Ops - Admin - Mfg Support,CRHF,CRHF OPS,CVG,In Plan,Stenersen,TBD,Yes,100,100,4108
+MA61633,MicroMolding,kallaa13,"Ashok, Kallagunta","Operations Technology
+",Parent,MA61633.MEC,MA61633,MicroMolding,Ops PMO,Period,151359,CRDM MFG SUPPORT ALLOCATION,MECC Ops - Admin - Mfg Support,CRHF,CRHF OPS,CVG,In Plan,Stenersen,TBD,Yes,100,100,4109
+MA61634,API Insourcing,blockb13,"Block, Brian",Cost Down,Parent,MA61634.MEC,MA61634,Polaris,Ops PMO,Period,151359,CRDM MFG SUPPORT ALLOCATION,MECC Ops - Admin - Mfg Support,CRHF,CRHF OPS,CVG,In Plan,Stenersen,TBD,Yes,100,100,4110
+MA61679,Project Dadet,shimpr13,"Shimpa, Robert",BCP,Parent,MA61679.100,MA61679,Project Dadet,Ops PMO,Period,151359,CRDM MFG SUPPORT ALLOCATION,MECC Ops - Admin - Mfg Support,CRHF,CRHF OPS,CVG,NA,Mierkiewicz,TBD,Yes,100,100,4111
+MA61681,Infection Control Production Support,kalamm14,"Kalam, Mohammed","Burden
+",Parent,MA61681.MEC,MA61681,Infection Control Production Support,TYRX,Period,150038,RC BUR Infection Con,MECC Ops - Admin - Mfg Support,CRHF,Rice Creek,Rice Creek,NA,Stenersen,TBD,Yes,100,100,4112
+MA61682,Infection Control Project Support,luh23,"Lu, Kelly","NPI
+",Parent,MA61682.MEC,MA61682,Infection Control Project Support,TYRX,Period,150050,RC Pharma Projects,MECC Ops - Admin - Mfg Support,CRHF,Rice Creek,Rice Creek,NA,Stenersen,TBD,Yes,100,100,4113
+MA61702,MECC R&T Consulting,kallaa14,"Ashok, Kallagunta",Core Competency,Parent,MA61702.MEC,MA61702,MECC R&T Consulting,Central,Period,151376,R&T Consulting,MECC,CRHF,CORP,CORP,TBD,Jain,TBD,Yes,100,100,4114
+NE00020,Tier 1/2 D2D Support,blockb14,"Block, Brian","Quality/Remediation
+",Parent,NE00020.MEC,NE00020,Pelvic Health,Non CRDM,Period,153012,GU MFG SUPPORT ALLOCATION,MECC Ops - Admin - Mfg Support,RTG,CRHF OPS,CVG,No Plan,Stenersen,TBD,Yes,100,100,4115
+NE04398,Perficio Battery,shimpr14,"Shimpa, Robert","NPI
+",Parent,NE04398.MEC,NE04398,Perficio Battery,Pelvic Health,Period,153010,GU DEVELOPMENT ALLOCATION,RTG - R&D,RTG,RTG - R&D,RTG,No Plan,Stenersen,TBD,Yes,100,100,4116
+NE04399,Perficio FT,kalamm15,"Kalam, Mohammed","NPI
+",Parent,NE04399.MEC,NE04399,Perficio FT,Pelvic Health,Period,153010,GU DEVELOPMENT ALLOCATION,RTG - R&D,RTG,RTG - R&D,RTG,No Plan,Stenersen,TBD,Yes,100,100,4117
+NE05850,Olympus PC,luh24,"Lu, Kelly","NPI
+",Parent,NE05850.MEC,NE05850,Olympus PC,Brain,Period,153009,BRAIN DEVELOPMENT ALLOCATION,RTG - R&D,RTG,RTG - R&D,RTG,In Plan,Stenersen,TBD,Yes,100,100,4118
+NE05851,Olympus PC Battery,kallaa15,"Ashok, Kallagunta","NPI
+",Parent,NE05851.MEC,NE05851,Olympus PC Battery,Brain,Period,153009,BRAIN DEVELOPMENT ALLOCATION,RTG - R&D,RTG,RTG - R&D,RTG,No Plan,Stenersen,TBD,Yes,100,100,4119
+NE06153,Perficio INS,blockb15,"Block, Brian","NPI
+",Parent,NE06153.MEC,NE06153,Perficio,Pelvic Health,Period,153010,GU DEVELOPMENT ALLOCATION,RTG - R&D,RTG,RTG - R&D,RTG,In Plan,Stenersen,TBD,Yes,100,100,4120
+NE06155,Summit,shimpr15,"Shimpa, Robert","NPI
+",Parent,NE06155.MEC,NE06155,Summit,Non CRDM,Period,153009,BRAIN DEVELOPMENT ALLOCATION,RTG - R&D,RTG,RTG - R&D,RTG,NA,Stenersen,TBD,Yes,100,100,4121
+NE06382,Octave,kalamm16,"Kalam, Mohammed","NPI
+",Parent,NE06382.MEC,NE06382,Octave,Brain,Period,153009,BRAIN DEVELOPMENT ALLOCATION,RTG - R&D,RTG,RTG - R&D,RTG,No Plan,Stenersen,TBD,Yes,100,100,4122
+NE06386,TDD Ascenda Visibility,luh25,"Lu, Kelly","NPI
+",Parent,NE06386.MEC,NE06386,TDD Ascenda Visibility,Pain - Pump (TDD),Period,151379,PAIN DEVELOPMENT ALLOCATION,RTG - R&D,RTG,RTG - R&D,RTG,In Plan,Stenersen,TBD,Yes,100,100,4123
+NE06461,Battery LTO replacement,kallaa16,"Ashok, Kallagunta","BCP
+",Parent,NE06461.MEC,NE06461,Pain SCS / Stim,Non CRDM,Period,151413,PAIN MFG SUPPORT ALLOCATION,MECC Ops - Admin - Mfg Support,RTG,RTG Ops,RTG,No Plan,Stenersen,TBD,Yes,100,100,4124
+NE06499,Battery LTO Replacement - R&D,blockb16,"Block, Brian","BCP
+",Parent,NE06499.MEC,NE06499,N/A,Pain - Stim (SCS),Period,151379,PAIN DEVELOPMENT ALLOCATION,RTG - R&D,RTG,RTG - R&D,RTG,NA,Stenersen,TBD,Yes,100,100,4125
+NE06529,ISII Remediation,shimpr16,"Shimpa, Robert","Quality/Remediation
+",Parent,NE06529.MEC,NE06529,ISII Remediation,Non CRDM,Period,153010,GU DEVELOPMENT ALLOCATION,RTG - R&D,RTG,RTG - R&D,RTG,NA,Stenersen,TBD,Yes,100,100,4126
+NE06556,Activa RC + SC Remediation,kalamm17,"Kalam, Mohammed","Quality/Remediation
+",Parent,NE06556.MEC,NE06556,Activa RC + SC Remediation,Non CRDM,Period,153011,BRAIN MFG SUPPORT ALLOCATION,MECC Ops - Admin - Mfg Support,RTG,RTG Ops,RTG,In Plan,Stenersen,TBD,Yes,100,100,4127
+NE06559,"Enterra II INS, Lead & SW Remediation",luh26,"Lu, Kelly","Quality/Remediation
+",Parent,NE06559.MEC,NE06559,"Enterra II INS, Lead & SW Remediation",Non CRDM,Period,153012,GU MFG SUPPORT ALLOCATION,MECC Ops - Admin - Mfg Support,RTG,RTG Ops,RTG,In Plan,Stenersen,TBD,Yes,100,100,4128
+NE06564,Pain Primary Cell,kallaa17,"Ashok, Kallagunta","NPI
+",Parent,NE06564.MEC,NE06564,Pain Primary Cell,Pain - Stim (SCS),Period,150004,Dev Eng Neuro RD Set,RTG - R&D,RTG,RTG - R&D,RTG,In Plan,Stenersen,TBD,Yes,100,100,4129
+NE06568,Olympus PC Feedthrough,blockb17,"Block, Brian","NPI
+",Parent,NE06568.MEC,NE06568,Olympus PC Feedthrough,Pelvic Health,Period,153010,GU DEVELOPMENT ALLOCATION,RTG - R&D,RTG,RTG - R&D,RTG,NA,Stenersen,TBD,Yes,100,100,4130
+NE06581,Cranial 2.0,shimpr17,"Shimpa, Robert","NPI
+",Parent,NE06581.MEC,NE06581,Cranial 2.0,"Shared Tech R&D - Allocated to 4 BU's (PH, DBS, SCS, TDD)",Period,151379,PAIN DEVELOPMENT ALLOCATION,RTG - R&D,RTG,RTG - R&D,RTG,No Plan,Stenersen,TBD,Yes,100,100,4131
+NE06716,LCO Replacement - Ops,kalamm18,"Kalam, Mohammed","BCP
+",Parent,NE06716.MEC,NE06716,LCO Replacement - Ops,Non CRDM,Period,151413,PAIN MFG SUPPORT ALLOCATION,MECC Ops - Admin - Mfg Support,RTG,RTG Ops,RTG,In Plan,Stenersen,TBD,Yes,100,100,4132
+NE06719,LCO Replacement - R&D,luh27,"Lu, Kelly","BCP
+",Parent,NE06719.MEC,NE06719,LCO Replacement - R&D,Pain - Stim (SCS),Period,151379,PAIN DEVELOPMENT ALLOCATION,RTG - R&D,RTG,RTG - R&D,RTG,In Plan,Stenersen,TBD,Yes,100,100,4133
+NE06760,Legacy Neuro Tier 1 & 2 Cost Efficiency,kallaa18,"Ashok, Kallagunta","Cost Down
+",Parent,NE06760.MEC,NE06760,RTG VAVE Cost Down,Non CRDM,Period,151413,RTG,RTG - OPS settlement,RTG,RTG Ops,RTG,TBD,Stenersen,TBD,Yes,100,100,4134
+NE06995,Intellis Bluetooth Adv Devt,blockb18,"Block, Brian","NPI
+",Parent,NE06995.MEC,NE06996,R&T,Pain - Stim (SCS),Period,151379,PAIN DEVELOPMENT ALLOCATION,RTG - R&D,RTG,RTG - R&D,RTG,No Plan,Stenersen,TBD,Yes,100,100,4135
+Quality-VS-Ops,Quality-VS-Ops,shimpr18,"Shimpa, Robert","Depreciation
+",NA,NA,NA,Capital Depreciation,NA,NA,NA,TBD,TBD,NA,MECC,MECC,NA,Murphy,NA,Yes,100,100,4136
+Quality-VS-RD,Quality-VS-RD,kalamm19,"Kalam, Mohammed","Depreciation
+",NA,NA,NA,Capital Depreciation,NA,NA,NA,TBD,TBD,NA,MECC,MECC,NA,Murphy,NA,Yes,100,100,4137
+RT-VS,RT-VS,luh28,"Lu, Kelly","Depreciation
+",NA,NA,NA,Capital Depreciation,NA,NA,NA,TBD,TBD,NA,MECC,MECC,NA,Jain,NA,Yes,100,100,4138
+TDCO-VS,TDCO-VS,kallaa19,"Ashok, Kallagunta","Depreciation
+",NA,NA,NA,Capital Depreciation,NA,NA,NA,NA,NA,NA,MECC,MECC,NA,Schwiebert,NA,Yes,100,100,4139
+XR00008,MultiPin Micra,blockb19,"Block, Brian",NPI,Parent,XR00008,XR00008,Micra,Brady,Period,TBD,TBD,TBD,CRHF,CRHF R&D,CVG,TBD,Jain,TBD,No,100,17,4140
+MA50219,Alternate Cell and Contract Manufacturer,shimpr19,"Shimpa, Robert",BCP,Parent,MA50219.MEC,MA50219,Alternate Cell and Contract Manufacturer,Ops PMO,Period,151359,CRDM MFG SUPPORT ALLOCATION,MECC Ops - Admin - Mfg Support,CRHF,CRHF OPS,CVG,No Plan,Jain,TBD,No,100,19,4141
+MA60363,Blackwell Battery Case_Cover Re-Sourcing,kalamm20,"Kalam, Mohammed",BCP,Parent,MA60363.MEC,MA60363,Blackwell Battery Case_Cover Re-Sourcing,Ops PMO,Period,151359,CRDM MFG SUPPORT ALLOCATION,MECC Ops - Admin - Mfg Support,CRHF,MECC,MECC,In Plan,Mierkiewicz,TBD,No,100,19,4142
+CR60837,Diabetes AIM support,luh29,"Lu, Kelly",Core Competency,Parent,CR60837.MEC,CR60837,Diabetes AIM support,Non CRDM,Period,151376,CRDM DEVELOPMENT ALLOCATION,R&D - Diabetes Jason IDCM's Out,Diabetes,Diabetes,Diabetes,In Plan,Jain,TBD,No,100,20,4143
+CR60887,MECC Business Process Improvement,kallaa20,"Ashok, Kallagunta","Quality/Remediation
+",Parent,CR60887.MEC,CR60887,CR - MECC Sponsored,Central,Period,151376,CRDM DEVELOPMENT ALLOCATION,R&D - CHRF Alex JE's Out,CRHF,Central,CVG,In Plan,NA,TBD,No,0,20,4144
+CR62173,Piccolo,blockb20,"Block, Brian",NPI,Parent,CR62173.MEC,CR62173,Piccolo,R&T,Period,151376,CRDM DEVELOPMENT ALLOCATION,R&D - CHRF Alex JE's Out,CRHF,CRHF R&D,CVG,In Plan,Stenersen,TBD,No,100,20,4145
+HW10001,MCS Athena Battery,shimpr20,"Shimpa, Robert",NPI,Parent,HW10001.MEC,HW10001,MCS Athena Battery,HeartWare,Period,104561,MCS R&D Settlement,R&D - CRHF Settles Correctly,CRHF,CRHF R&D,CVG,In Plan,Stenersen,TBD,No,100,20,4146
+HW10002,MCS Athena Controller,kalamm21,"Kalam, Mohammed",NPI,Parent,HW10002.MEC,HW10002,MCS Athena Controller,HeartWare,Period,104561,MCS R&D Settlement,R&D - CHRF Settles Correctly,CRHF,CRHF R&D,CVG,In Plan,Stenersen,TBD,No,100,20,4147
+MA09172,Project 73,luh30,"Lu, Kelly","Core Competency
+",Parent,MA09172.MEC,MA09172,Project 73,Central,TBD,153018,Non-GAAP OPC - MECC,Corportate - Non GAAP,Non-GAAP,Non-GAAP,Non-GAAP,In Plan,Stenersen,TBD,No,100,20,4148
+MA50265,MIM SSBs for Blackwell and  Polaris Fami,kallaa21,"Ashok, Kallagunta",Cost Down,Parent,MA50265.MEC,MA50265,MIM SSBs for Blackwell and  Polaris Fami,MECC,Period,151359,CRDM MFG SUPPORT ALLOCATION,MECC Ops - Admin - Mfg Support,CRHF,SLT PMO CRHF/AFS,CVG,In Plan,Mierkiewicz,TBD,No,100,20,4149
+MA61537,Micra Phase 3,blockb21,"Block, Brian",NPI,Parent,MA61537.MEC,MA61537,Micra Phase 3,CRHF,Burden,151348,,,CRHF,MECC,MECC,No Plan,Stenersen,TBD,No,100,20,4150
+NE07155,Electronics Packaging,shimpr21,"Shimpa, Robert",Core Competency,Parent,NE07155.MEC,NE07155,Electronics Packaging,"Shared Tech R&D - Allocated to 4 BU's (PH, DBS, SCS, TDD)",Period,143555,NPI+RT RD Proj-Share,RTG - R&D,RTG,RTG - R&D,RTG,In Plan,Jain,TBD,No,100,20,4151
+TBD,TBD,kalamm22,"Kalam, Mohammed","TBD
+",TBD,TBD,TBD,TBD,TBD,TBD,TBD,TBD,TBD,TBD,MECC,MECC,TBD,TBD,TBD,No,80,20,4152
+TBD - Alternate CFX and Electrolyte,Alternate CFX and Electrolyte,luh31,"Lu, Kelly","BCP
+",Parent,TBD,TBD,Alternate CFX and Electrolyte,Site Funded,Period,TBD,TBD,MECC Ops - Burden - Product Support,CRHF,MECC,MECC,TBD,Jain,TBD,No,100,20,4153
+TBD - Micra Capacity,Micra Capacity,kallaa22,"Ashok, Kallagunta","Capacity
+",Parent,TBD,TBD,Micra,Site Funded,Period,TBD,CRDM PRODUCT SUPPT ALLOCATION,MECC Ops - Burden - Product Support,CRHF,MECC,MECC,TBD,Schwiebert,TBD,No,100,20,4154
+XR00003,Coporate PAN MDT Overdrive,blockb22,"Block, Brian",Core Competency,Parent,XR00003,XR00003,Coporate PAN MDT Overdrive,Central,Period,TBD,TBD,TBD,CORP,CORP,Non-GAAP,TBD,Jain,TBD,No,100,20,4155
+XR00021,Micra Pacfish,shimpr22,"Shimpa, Robert",NPI,Child,XR00020,XR00020,TBD,Brady,Period,TBD,TBD,CRHF,CRHF,R&D,R&D,TBD,Stenersen,TBD,No,100,20,4156
+XR00004,Hybrid Chemistry Knowledge,kalamm23,"Kalam, Mohammed",Core Competency,Parent,XR00004,XR00004,Hybrid Chemistry Knowledge,MECC,TBD,TBD,TBD,TBD,CRHF,MECC,MECC,TBD,Jain,TBD,No,100,21,4157
+XR00009,Polaris Battery ETFE Redesign,luh32,"Lu, Kelly",Cost Down,Parent,XR00009,XR00009,Polaris,MECC,Period,TBD,TBD,MECC,CRHF,MECC,MECC,TBD,Stenersen,TBD,No,50,23,4158
+CR50834,Vital LinQ Device Development,kallaa23,"Ashok, Kallagunta",NPI,Parent,CR50834.MEC,CR50834,Vital LinQ,Diagnostics,Period,151412,Diag RD Alloc PRO,R&D - CHRF Settles Correctly,CRHF,CRHF R&D,CVG,In Plan,Stenersen,TBD,No,100,25,4159
+MA60189,Foil Pack Battery- Ops,blockb23,"Block, Brian",NPI,Parent,MA60189.MEC,MA60189,Foil Pack Battery,Ops PMO,Period,TBD,TBD,TBD,CRHF,CRHF OPS,CVG,TBD,Jain,TBD,No,100,25,4160
+MA60395,Blackwell Cap Liner Change - Thermoforme,shimpr23,"Shimpa, Robert",Cost Down,Parent,MA60395.MEC,MA60395,Blackwell Cap Liner Change - Thermoforme,Ops PMO,Period,151359,CRDM MFG SUPPORT ALLOCATION,MECC Ops - Admin - Mfg Support,CRHF,CRHF OPS,CVG,In Plan,Mierkiewicz,TBD,No,100,25,4161
+MA60403,GTN for MR Battery,kalamm24,"Kalam, Mohammed",Cost Down,Parent,MA60403.MEC,MA60403,GTN for MR Battery,Ops PMO,Period,151359,CRDM MFG SUPPORT ALLOCATION,MECC Ops - Admin - Mfg Support,CRHF,CRHF OPS,CVG,In Plan,Stenersen,TBD,No,100,25,4162
+XR00002,Glassed Feedthrough Strategy Headers,luh33,"Lu, Kelly",Cost Down,Parent,XR00002,XR00002,Glassed Feedthrough Strategy Headers,Ops PMO,Period,TBD,TBD,CRHF Ops,CRHF,CRHF OPS,CVG,TBD,Stenersen,TBD,No,100,25,4163
+XR00017,Solvay Yield Improvement,kallaa24,"Ashok, Kallagunta",Cost Down,Parent,XR00017,XR00017,Solvay Yield Improvement,MECC,TBD,TBD,TBD,TBD,TBD,TBD,TBD,TBD,Mierkiewicz,TBD,No,100,33,4164
+MA60326,CAPA Debt Reduction,blockb24,"Block, Brian",Quality/Remediation,Parent,MA60326.MEC,MA60326,CAPA Debt Reduction,CRHF,Period,TBD,TBD,TBD,CRHF,CRHF R&D,R&D,TBD,Murphy,TBD,No,100,34,4165
+XR00016,Percept Connector Improvements,shimpr24,"Shimpa, Robert",Cost Down,Parent,XR00016,XR00016,Percept,MECC,TBD,TBD,TBD,TBD,RTG,MECC,MECC,TBD,Stenersen,TBD,No,100,34,4166
+CR62139,Restore 3.0,kalamm25,"Kalam, Mohammed",NPI,Parent,CR62139.MEC,CR62139,CR62139 - Restore 3.0,R&T,Period,151376,CRDM DEVELOPMENT ALLOCATION,R&D - CHRF Alex JE's Out,CRHF,CRHF R&D,CVG,In Plan,Jain,TBD,No,100,35,4167
+NE05858,Olympus PC Connector,luh34,"Lu, Kelly",NPI,Parent,NE05858.MEC,NE05858,Olympus PC Connector,Brain,Period,NE05850.MEC,,RTG - R&D,RTG,RTG - R&D,RTG,No Plan,Stenersen,TBD,No,100,35,4168
+MA50290,MECC IT VALUE STREAM GLOBAL TECH,kallaa25,"Ashok, Kallagunta",Core Competency,Parent,MA50290.MEC,XR00013,MECC IT VALUE STREAM GLOBAL TECH,MECC,151299,151299,MECC - IT,MECC,CRHF,MECC,MECC,TBD,Tarek,TBD,No,100,40,4169
+XR00006,Low Profile Feedthroughs,blockb25,"Block, Brian",Core Competency,Parent,XR00006,XR00006,Low Profile Feedthroughs,CRHF R&T,Period,TBD,TBD,TBD,CRHF,CRHF R&T,CVG,TBD,Jain,TBD,No,100,40,4170
+MA61551,MECC New Dry Room Line Moves,shimpr25,"Shimpa, Robert",Capacity,Parent,MA61551.MEC,MA61551,MECC New Dry Room Line Moves,MECC,Burden,151348,CRDM PRODUCT SUPPT ALLOCATION,MECC Ops - Burden - Product Support,CRHF,MECC,MECC,In Plan,Schwiebert,TBD,No,33,41,4171
+XR00005,L4 FT Knowledge Gap,kalamm26,"Kalam, Mohammed",Core Competency,Parent,XR00005,XR00005,L4 FT Knowledge Gap,MECC,Period,XR00005,TBD,TBD,CRHF,MECC,MECC,In Plan,Jain,TBD,No,100,42,4172
+MA61271,Reliability Lab Renewal,luh35,"Lu, Kelly",Capacity,Parent,MA61271.MEC,MA61271,MA - MECC Sponsored,MECC,Burden,151348,CRDM PRODUCT SUPPT ALLOCATION,MECC Ops - Burden - Product Support,CRHF,MECC,MECC,In Plan,Murphy,TBD,No,100,43,4173
+XR00012,Smart Digital Factory,kallaa26,"Ashok, Kallagunta",Cost Down,Parent,XR00012,XR00012,Smart Digital Factory,CVG,TBD,TBD,TBD,TBD,CVG,CVG OPS,CVG,TBD,Schwiebert,TBD,No,100,45,4174
+XR00001,MECC Advanced Development CAR,blockb26,"Block, Brian",Core Competency,Parent,XR00001,XR00001,MECC Advanced Development CAR,MECC,Burden,TBD,TBD,MECC,CRHF,MECC,MECC,TBD,Stenersen,TBD,No,100,49,4175
+21900.1,UB25 RSW Replacement,shimpr26,"Shimpa, Robert",BCP,Parent,21900.1,21900.1,tbd,MECC,Burden,,,MECC,CRHF,MECC,MECC,TBD,Stenersen,TBD,Yes,100,52,4176
+MA61303,MECC Laser Weld,kalamm27,"Kalam, Mohammed",BCP,Parent,MA61303.MEC,MA61303,New Laser Weld Implementation,MECC,Burden,151348,CRDM PRODUCT SUPPT ALLOCATION,MECC Ops - Burden - Product Support,CRHF,MECC,MECC,In Plan,Stenersen,TBD,Yes,100,53,4177
+MA62082,Montenegro - MECC,luh36,"Lu, Kelly",Core Competency,Parent,MA62082,MA62082,Montenegro,MECC,Burden,151348,CRDM PRODUCT SUPPT ALLOCATION,MECC,CRHF,MECC,MECC,TBD,Stenersen,TBD,Yes,100,64,4178
+CR61640,Temporary Pacemaker,kallaa27,"Ashok, Kallagunta",NPI,Parent,CR61640,CR61640,Temporary Pacemaker,PI,Period,TBD,Procedure Innovations,NA,CRHF,Procedure Innovations,CVG,R&D,Stenersen,TBD,Yes,100,65,4179
+20076.1,CAR 020076.100 - MECC Caps Line Duplication,blockb27,"Block, Brian",CAR,Parent,20076.1,20076.1,Polaris,MECC,Period,TBD,TBD,MECC,CRHF,MECC,MECC,TBD,Stenersen,TBD,Yes,100,75,4180
+20500.1,CAR 020500 - MECC HP Connector Capacity,shimpr27,"Shimpa, Robert",CAR,Parent,20500.1,20500.1,Polaris,MECC,Period,TBD,TBD,MECC,CRHF,MECC,MECC,TBD,Stenersen,TBD,Yes,100,75,4181
+21347.1,Common Line Capacity,kalamm28,"Kalam, Mohammed",Capacity,Parent,21347.1,21347.1,TBD,RTG,TBD,TBD,MECC,MECC,RTG,RTG OPS,RTG,TBD,Stenersen,TBD,Yes,100,75,4182
+21387.1,CAR 021387 - Laser,luh37,"Lu, Kelly",CAR,Parent,21387.1,21387.1,CAR 021387 - Laser,MECC,Period,TBD,TBD,MECC,CRHF,MECC,MECC,TBD,Stenersen,TBD,Yes,100,75,4183
+CR04407,Diabetes NDT Support,kallaa28,"Ashok, Kallagunta",Core Competency,Parent,CR04407.MEC,CR04407,Diabetes NDT Support,Non CRDM,Period,151376,CRDM DEVELOPMENT ALLOCATION,R&D - Diabetes Jason IDCM's Out,Diabetes,Diabetes,Diabetes,In Plan,Jain,TBD,Yes,100,75,4184
+CR50290,TYRX R&D-Bleeding Control,blockb28,"Block, Brian","NPI
+",Parent,CR50290.MEC,CR50290,TYRX,PI,Period,151376,CRDM DEVELOPMENT ALLOCATION,R&D - CHRF Alex JE's Out,CRHF,CRHF R&D,CVG,In Plan,Stenersen,TBD,Yes,100,75,4185
+CR60838,MITG Surgical Stapling,shimpr28,"Shimpa, Robert","NPI
+",Parent,CR60838.MEC,CR60838,MITG Surgical Stapling,Non CRDM,Period,151376,CRDM DEVELOPMENT ALLOCATION,R&D - MITG Jason IDCM's Out,MITG,MITG,MITG,In Plan,Stenersen,TBD,Yes,100,75,4186
+CR60839,Ventilator battery support,kalamm29,"Kalam, Mohammed",Core Competency,Parent,CR60839.MEC,CR60839,Ventilator battery support,MITG,Period,151376,CRDM DEVELOPMENT ALLOCATION,R&D - MITG Jason IDCM's Out,MITG,MITG,MITG,In Plan,Jain,TBD,Yes,100,75,4187
+CR60843,Ventilator Battery Pack Build,luh38,"Lu, Kelly",NPI,Parent,CR60843,CR60843,Ventilator Battery Pack,MITG,Period,151376,CRDM DEVELOPMENT ALLOCATION,R&D - MITG Jason IDCM's Out,MITG,MITG,MITG,TBD,Jain,TBD,Yes,100,75,4188
+CR60844,O Arm Battery Pack,kallaa29,"Ashok, Kallagunta",NPI,Parent,CR60844,CR60844,O Arm Battery Pack,MITG,Period,151376,CRDM DEVELOPMENT ALLOCATION,R&D - MITG Jason IDCM's Out,RTG,RTG,RTG,TBD,Jain,TBD,Yes,100,75,4189
+CR61401,NG-ICD Battery technology,blockb29,"Block, Brian",Core Competency,Parent,CR61401,CR61401,NG-ICD Battery technology,R&T,Period,151376,CRDM DEVELOPMENT ALLOCATION,R&D - CHRF Alex JE's Out,CRHF,CRHF R&D,CVG,TBD,Jain,TBD,Yes,100,75,4190
+CR61597,Micra EL Battery,shimpr29,"Shimpa, Robert",Core Competency,Parent,CR61597,CR61597,Micra EL Battery,R&T,Period,151376,CRDM DEVELOPMENT ALLOCATION,R&D - CHRF Alex JE's Out,CRHF,CRHF R&D,CVG,TBD,Jain,TBD,Yes,100,75,4191
+CR62149,CRHF R&T System Integration,kalamm30,"Kalam, Mohammed","NPI
+",Parent,CR62149.MEC,CR62149,System Integration,R&T,Period,151376,CRDM DEVELOPMENT ALLOCATION,R&D - CHRF Alex JE's Out,CRHF,CRHF R&D,CVG,TBD,Jain,TBD,Yes,100,75,4192
+CR62169,NG HV Capacitors,luh39,"Lu, Kelly","Core Competency
+",Parent,CR62169.MEC,CR62169,CR62169 - NG HV Capacitors,R&T,Period,151376,CRDM DEVELOPMENT ALLOCATION,R&D - CHRF Alex JE's Out,CRHF,CRHF R&D,CVG,TBD,Jain,TBD,Yes,100,75,4193
+MA50274,Next Gen Sterilizer Implementation,kallaa30,"Ashok, Kallagunta",TBD,Parent,MA50274,MA50274,Next Gen Sterilizer Implementation,TBD,Period,151359,CRDM MFG SUPPORT ALLOCATION,TBD,CRHF,CRHF OPS,CVG,TBD,Stenersen,TBD,Yes,100,75,4194
+MA50276,2nd Source Glass Filled Elasthane,blockb30,"Block, Brian",BCP,Parent,MA50276,MA50276,CRHF Materials,Ops PMO,Period,151359,CRDM MFG SUPPORT ALLOCATION,CRHF,CRHF,CRHF OPS,R&D,TBD,Mierkiewicz,TBD,Yes,100,75,4195
+MA61333,Polaris BEC 2nd Source,shimpr30,"Shimpa, Robert",Cost Down,Parent,MA61333,MA61333,Polaris BEC 2nd Source,SLT,Period,151359,Sourcing,Sourcing,CVG,SLT PMO CRHF/AFS,CVG,NA,Stenersen,NA,Yes,100,75,4196
+MA61615,MV483,kalamm31,"Kalam, Mohammed",Quality/Remediation,Parent,MA61615.MEC,MA61615,MV483,MECC,Period,151359,CRDM MFG SUPPORT ALLOCATION,MECC Ops - Admin - Mfg Support,CRHF,MECC,MECC,In Plan,Murphy,TBD,Yes,100,75,4197
+MA61694,Sourcing PMO,luh40,"Lu, Kelly",Cost Down,Parent,MA61694.MEC,MA61694,Sourcing PMO,CVG/AFS,Period,151359,CRDM MFG SUPPORT ALLOCATION,TBD,CVG,SLT PMO CRHF/AFS,CVG,In Plan,Mierkiewicz,TBD,Yes,100,75,4198
+MA61698,Alt Source for Blackwell Polaris SSB,kallaa31,"Ashok, Kallagunta",Cost Down,Parent,MA61698,MA61698,Alt Source for Blackwell Polaris SSB,CVG/AFS,Period,151359,CRDM MFG SUPPORT ALLOCATION,TBD,CVG,SLT PMO CRHF/AFS,CVG,TBD,Mierkiewicz,TBD,Yes,100,75,4199
+NE06248,Overdrive 2.0,blockb31,"Block, Brian","NPI
+",Parent,NE06248.MEC,NE06248,Overdrive 2.0,"Shared Tech R&D - Allocated to 4 BU's (PH, DBS, SCS, TDD)",Period,151379,PAIN DEVELOPMENT ALLOCATION,RTG - R&D,RTG,RTG - R&D,RTG,In Plan,Jain,TBD,Yes,100,75,4200
+NE06588,Intellis Feedthrough Glass Design,shimpr31,"Shimpa, Robert",Cost Down,Parent,NE06588.MEC,NE06588,Intellis Feedthrough Glass Design,Non CRDM,Period,151413,PAIN MFG SUPPORT ALLOCATION,MECC Ops - Admin - Mfg Support,RTG,RTG Ops,RTG,In Plan,Stenersen,TBD,Yes,100,75,4201
+NE06782,Next Gen Rechargeable (eCAPS),kalamm32,"Kalam, Mohammed",NPI,Parent,NE06782.MEC,NE06782,Next Gen Rechargeable (eCAPS),Pain - Stim (SCS),Period,151379,PAIN DEVELOPMENT ALLOCATION,RTG - R&D,RTG,RTG - R&D,RTG,NA,Stenersen,TBD,Yes,100,75,4202
+NE07156,Recharge Telemetry,luh41,"Lu, Kelly",NPI,Parent,NE07156,NE07156,TBD,RTG,Period,151379,PAIN DEVELOPMENT ALLOCATION,TBD,RTG,RTG - R&D,RTG,TBD,Jain,TBD,Yes,100,75,4203
+NE07216,NGPC Mojave,kallaa32,"Ashok, Kallagunta",NPI,Parent,NE07216,NE07216,Mojave,RTG,Period,153010,GU DEVELOPMENT ALLOCATION,RTG,RTG,RTG - R&D,RTG,In Plan,Stenersen,TBD,Yes,100,75,4204
+NE07261,Unipolar FT Wire Hardness,blockb32,"Block, Brian",TBD,Parent,NE07261,NE07261,Perficio,RTG,Period,151403,Qual Eng Labor Out,MECC,RTG,RTG Ops,RTG,TBD,Stenersen,TBD,Yes,100,75,4205
+CR50242,Micra Atrial,shimpr32,"Shimpa, Robert","NPI
+",Parent,CR50242.MEC,CR50242,Micra Atrial,Brady,Period,151376,CRDM DEVELOPMENT ALLOCATION,R&D - CHRF Alex JE's Out,CRHF,CRHF R&D,CVG,In Plan,Stenersen,TBD,Yes,100,80,4206
+MA50072,MECC UBITS,kalamm33,"Kalam, Mohammed",Capacity,Parent,MA50072.MEC,MA50072,MA - MECC Sponsored,MECC,Burden,151348,CRDM PRODUCT SUPPT ALLOCATION,MECC Ops - Burden - Product Support,CRHF,MECC,MECC,In Plan,Stenersen,TBD,Yes,100,80,4207
+MA62083,Low Voltage CFX,luh42,"Lu, Kelly",Core Competency,Parent,MA62083.MEC,MA62083,Low Voltage CFx,MECC,Burden,151348,CRDM PRODUCT SUPPT ALLOCATION,TBD,CRHF,MECC,MECC,TBD,Stenersen,TBD,Yes,100,80,4208
+NE06831,Coating Room,kallaa33,"Ashok, Kallagunta","BCP
+",Parent,NE06831.MEC,NE06831,Coating Room,Non CRDM,Period,151413,PAIN MFG SUPPORT ALLOCATION,MECC Ops - Admin - Mfg Support,RTG,RTG Ops,RTG,In Plan,Stenersen,TBD,Yes,60,80,4209
+NE07089,Intellis PTM Battery Pack,blockb33,"Block, Brian",NPI,Parent,NE07089,NE07089,Intellis PTM Battery Pack,Non CRDM,Period,151413,PAIN MFG SUPPORT ALLOCATION,RTG R&D,RTG,RTG - R&D,RTG,TBD,Jain,TBD,Yes,100,85,4210
+MA09174,Signia Non-GAAP,shimpr33,"Shimpa, Robert",NPI,Parent,MA09174.MEC,MA09174,Signia Non-GAAP,Central,TBD,153018,Non-GAAP OPC - MECC,Corportate - Non GAAP,Non-GAAP,Non-GAAP,MITG,In Plan,Stenersen,TBD,Yes,100,90,4211
+MA50131,Strata Line Replication,kalamm34,"Kalam, Mohammed",Capacity,Parent,MA50131.MEC,MA50131,Polaris,MECC,Burden,151359,CRDM MFG SUPPORT ALLOCATION,MECC Ops - Admin - Mfg Support,CRHF,MECC,MECC,In Plan,Stenersen,TBD,Yes,100,90,4212
+MA50136,MECC HP Connector Capacity,luh43,"Lu, Kelly",Capacity,Parent,MA50136.MEC,MA50136,Polaris,MECC,Burden,151348,CRDM PRODUCT SUPPT ALLOCATION,MECC Ops - Burden - Product Support,CRHF,MECC,MECC,In Plan,Stenersen,TBD,Yes,100,90,4213
+MA50178,LINQ II Line Duplication,kallaa34,"Ashok, Kallagunta",Capacity,Parent,MA50178.MEC,MA50178,LINQ II,MECC,Burden,151348,CRDM PRODUCT SUPPT ALLOCATION,MECC Ops - Burden - Product Support,CRHF,MECC,MECC,In Plan,Stenersen,TBD,Yes,100,90,4214
+MA50268,RVD Prevention,blockb34,"Block, Brian",Core Competency,Parent,MA50268.MEC,MA50268,RVD Prevention,Ops PMO,Period,151359,CRDM MFG SUPPORT ALLOCATION,MECC Ops - Admin - Mfg Support,CRHF,CRHF OPS,CVG,In Plan,Stenersen,TBD,Yes,100,90,4215
+MA61536,MECC Caps Line Duplication,shimpr34,"Shimpa, Robert",Capacity,Parent,MA61536.MEC,MA61536,Polaris,MECC,Burden,151348,CRDM PRODUCT SUPPT ALLOCATION,MECC Ops - Burden - Product Support,CRHF,MECC,MECC,In Plan,Stenersen,TBD,Yes,100,90,4216
+XR00007,MR Fill Station CAPA,kalamm35,"Kalam, Mohammed",Quality/Remediation,Parent,XR00007,XR00007,MR Fill Station,MECC,Burden,TBD,MECC,CRHF,CRHF,MECC,MECC,TBD,Schwiebert,TBD,Yes,100,90,4217
+MA62081,Micra CAPA,luh44,"Lu, Kelly",Quality/Remediation,Parent,MA62081,MA62081,Micra CAPA,MECC,Burden,151348,CRDM PRODUCT SUPPT ALLOCATION,CRHF,CRHF,MECC,MECC,In Plan,Stenersen,TBD,Yes,100,95,4218
