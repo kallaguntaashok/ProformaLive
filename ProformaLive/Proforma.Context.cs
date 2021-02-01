@@ -105,6 +105,27 @@ namespace ProformaLive
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<string>("SP_Config_Projects_ProjectCategory");
         }
     
+        public virtual int SP_CreateNew_Proforma(Nullable<int> projectID, string clonedProjectID, string clonedProjectName, string createdBy)
+        {
+            var projectIDParameter = projectID.HasValue ?
+                new ObjectParameter("ProjectID", projectID) :
+                new ObjectParameter("ProjectID", typeof(int));
+    
+            var clonedProjectIDParameter = clonedProjectID != null ?
+                new ObjectParameter("ClonedProjectID", clonedProjectID) :
+                new ObjectParameter("ClonedProjectID", typeof(string));
+    
+            var clonedProjectNameParameter = clonedProjectName != null ?
+                new ObjectParameter("ClonedProjectName", clonedProjectName) :
+                new ObjectParameter("ClonedProjectName", typeof(string));
+    
+            var createdByParameter = createdBy != null ?
+                new ObjectParameter("CreatedBy", createdBy) :
+                new ObjectParameter("CreatedBy", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SP_CreateNew_Proforma", projectIDParameter, clonedProjectIDParameter, clonedProjectNameParameter, createdByParameter);
+        }
+    
         public virtual int SP_Delete_CapitalData(Nullable<int> iD)
         {
             var iDParameter = iD.HasValue ?
@@ -306,6 +327,15 @@ namespace ProformaLive
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<string>("SP_Get_OperatingExpenseWBS", pROJECTIDParameter);
         }
     
+        public virtual ObjectResult<SP_Get_PrimaryProjectData_Result> SP_Get_PrimaryProjectData(string projectID)
+        {
+            var projectIDParameter = projectID != null ?
+                new ObjectParameter("ProjectID", projectID) :
+                new ObjectParameter("ProjectID", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_Get_PrimaryProjectData_Result>("SP_Get_PrimaryProjectData", projectIDParameter);
+        }
+    
         public virtual ObjectResult<SP_Get_Projects_Result> SP_Get_Projects()
         {
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_Get_Projects_Result>("SP_Get_Projects");
@@ -339,6 +369,19 @@ namespace ProformaLive
         public virtual ObjectResult<SP_Get_Skillmaster_Result> SP_Get_Skillmaster()
         {
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_Get_Skillmaster_Result>("SP_Get_Skillmaster");
+        }
+    
+        public virtual int SP_Get_SwapProjects(Nullable<int> primaryProject, Nullable<int> secondaryProject)
+        {
+            var primaryProjectParameter = primaryProject.HasValue ?
+                new ObjectParameter("PrimaryProject", primaryProject) :
+                new ObjectParameter("PrimaryProject", typeof(int));
+    
+            var secondaryProjectParameter = secondaryProject.HasValue ?
+                new ObjectParameter("SecondaryProject", secondaryProject) :
+                new ObjectParameter("SecondaryProject", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SP_Get_SwapProjects", primaryProjectParameter, secondaryProjectParameter);
         }
     
         public virtual ObjectResult<string> SP_Get_Team(string business, string businessUnit, string highOrg, string midOrg)
@@ -398,7 +441,7 @@ namespace ProformaLive
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_Getlastmodifiedinfo_Result>("SP_Getlastmodifiedinfo", projectIDParameter);
         }
     
-        public virtual ObjectResult<SP_GetNewSummary_Result> SP_GetNewSummary(string projectID, string fisYear, string month, string qtr)
+        public virtual int SP_GetNewSummary(string projectID, string fisYear, string month, string qtr)
         {
             var projectIDParameter = projectID != null ?
                 new ObjectParameter("ProjectID", projectID) :
@@ -416,7 +459,7 @@ namespace ProformaLive
                 new ObjectParameter("Qtr", qtr) :
                 new ObjectParameter("Qtr", typeof(string));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_GetNewSummary_Result>("SP_GetNewSummary", projectIDParameter, fisYearParameter, monthParameter, qtrParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SP_GetNewSummary", projectIDParameter, fisYearParameter, monthParameter, qtrParameter);
         }
     
         public virtual ObjectResult<SP_GetProject_Summary_Result> SP_GetProject_Summary(string projectID, string fisYear, string month, string qtr)
@@ -449,7 +492,7 @@ namespace ProformaLive
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_GetResourceData_Result>("SP_GetResourceData", projectidParameter);
         }
     
-        public virtual ObjectResult<SP_GetSummary_Result> SP_GetSummary(string projectID, string fisYear, string month, string qtr)
+        public virtual int SP_GetSummary(string projectID, string fisYear, string month, string qtr)
         {
             var projectIDParameter = projectID != null ?
                 new ObjectParameter("ProjectID", projectID) :
@@ -467,12 +510,12 @@ namespace ProformaLive
                 new ObjectParameter("Qtr", qtr) :
                 new ObjectParameter("Qtr", typeof(string));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_GetSummary_Result>("SP_GetSummary", projectIDParameter, fisYearParameter, monthParameter, qtrParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SP_GetSummary", projectIDParameter, fisYearParameter, monthParameter, qtrParameter);
         }
     
-        public virtual int SP_GetSummaryData()
+        public virtual ObjectResult<SP_GetSummaryData_Result> SP_GetSummaryData()
         {
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SP_GetSummaryData");
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_GetSummaryData_Result>("SP_GetSummaryData");
         }
     
         public virtual int SP_InsertResourcedata()

@@ -43,5 +43,6 @@ namespace ProformaLive
         public string ModifiedBy { get; set; }
         public string ModifiedOn { get; set; }
         public Nullable<int> VersionNumber { get; set; }
+        public Nullable<int> RowID { get; set; }
     }
 }

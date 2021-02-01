@@ -307,7 +307,7 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
         }
         if (parseFloat($scope.getvalues) > 0) {
 
-            if (colName === "Total Project FTEs (Operating & Capital)" || colName === "Total Site Operating FTEs" || colName === "Total Non Site Operating FTEs" || colName === "Total Site Capital FTEs" || colName === "Total Non Site Capital FTEs") {
+            if (colName === "Total Project FTEs (Operating & Capital)" || colName === "Total Site Operating FTEs" || colName === "Site Operating FTEs" || colName === "Site Non Project Charging FTEs" || colName === "Total Non Site Operating FTEs" || colName === "Non Site Operating FTEs" || colName === "Non Site Non Project Charging FTEs" || colName === "Total Site and Non Site Capital FTEs" || colName === "Site Capital FTEs" || colName === "Site Non Project Charge Capital FTEs" || colName === "Non Site Capital FTEs" || colName === "Non Site Non Project Charge Capital FTEs") {
                 return $sce.trustAsHtml("<font style='color:#007bff; font-weight:500;'><b>" + $scope.getvalues.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + "</b></font>");
                 //return $sce.trustAsHtml($scope.getvalues.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
             }
@@ -339,7 +339,7 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
             }
         }
 
-        if (colName === "Total Project FTEs (Operating & Capital)" || colName === "Total Site Operating FTEs" || colName === "Total Non Site Operating FTEs" || colName === "Total Site Capital FTEs" || colName === "Total Non Site Capital FTEs") {
+        if (colName === "Total Project FTEs (Operating & Capital)" || colName === "Total Site Operating FTEs" || colName === "Site Operating FTEs" || colName === "Site Non Project Charging FTEs" || colName === "Total Non Site Operating FTEs" || colName === "Non Site Operating FTEs" || colName === "Non Site Non Project Charging FTEs" || colName === "Total Site and Non Site Capital FTEs" || colName === "Site Capital FTEs" || colName === "Site Non Project Charge Capital FTEs" || colName === "Non Site Capital FTEs" || colName === "Non Site Non Project Charge Capital FTEs") {
             return $sce.trustAsHtml("<b>" + $scope.getColumTots.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + "</b>");
             //return $sce.trustAsHtml($scope.getColumTots.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
         }
@@ -2139,6 +2139,7 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
                 var capital_labor_team = jSuite_dropTeam_CL.getText();
                 var capital_labor_requiredskills = jSuite_dropRequiredSkills_CL.getText();
                 var capital_labor_AOPProject = jSuite_drop_Capital_AOPProject_CapitalLabor.getText();
+                var capital_labor_comments = document.getElementById('capitallabor_comments').value;
 
                 if (capital_labor_projects === "") {
                     showalert('Please select project!');
@@ -2179,7 +2180,8 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
                             "strrequiredskills": capital_labor_requiredskills,
                             "strAOPProject": capital_labor_AOPProject,
                             "userid": localStorage.getItem("userID"),
-                            "ProjectID": localStorage.getItem("projectid")
+                            "ProjectID": localStorage.getItem("projectid"),
+                            "strComments": capital_labor_comments
                         }
                     }).then(function (response) {
 
@@ -2191,12 +2193,7 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
                             params: { "ProjectID": localStorage.getItem("projectid") }
                         }).then(function (response) {
                             if (response.data.length > 0) {
-
-                                //var twidth = document.getElementById("mainbody").offsetWidth
-                                //var mywidth = (twidth - 108) + "px";
-                                //var elms = document.getElementById("tbl_capitallabour").getElementsByTagName("*");
-                                //elms[5].setAttribute("style", "width:" + mywidth);
-
+                                                               
                                 if (response.data.length === 1) {
                                     document.getElementById('tbl_capitallabour').innerHTML = "";
                                     dsCapitalLabour = response.data;
@@ -2242,6 +2239,7 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
             jSuite_dropRequiredSkills_CL.reset();
             //document.getElementById('capitallabour_WBSnumber').value = "";
             jSuite_drop_Capital_AOPProject_CapitalLabor.reset();
+            document.getElementById('capitallabor_comments').value = "";
 
             document.getElementById('dropBU_CL').setAttribute('disabled', 'disabled');
             document.getElementById('dropHighOrg_CL').setAttribute('disabled', 'disabled');
@@ -2688,6 +2686,7 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
                 { type: 'number', title: 'FEB', width: 40 },
                 { type: 'number', title: 'MAR', width: 40 },
                 { type: 'number', title: 'APR', width: 40 },
+                { type: 'text', title: 'Comments', width: 200 },
                 { type: 'text', readOnly: true, title: 'CreatedBy', width: 80 },
                 { type: 'date', readOnly: true, title: 'CreatedOn', width: 80 },
                 { type: 'text', readOnly: true, title: 'ModifiedBy', width: 80 },

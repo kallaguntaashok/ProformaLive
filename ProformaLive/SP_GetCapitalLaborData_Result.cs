@@ -38,6 +38,7 @@ namespace ProformaLive
         public Nullable<decimal> FEB { get; set; }
         public Nullable<decimal> MAR { get; set; }
         public Nullable<decimal> APR { get; set; }
+        public string Comments { get; set; }
         public string CreatedBy { get; set; }
         public string CreatedOn { get; set; }
         public string ModifiedBy { get; set; }

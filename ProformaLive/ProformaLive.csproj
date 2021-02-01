@@ -376,16 +376,13 @@
     <Compile Include="SP_Getlastmodifiedinfo_Result.cs">
       <DependentUpon>Proforma.tt</DependentUpon>
     </Compile>
-    <Compile Include="SP_GetNewSummary_Result.cs">
-      <DependentUpon>Proforma.tt</DependentUpon>
-    </Compile>
     <Compile Include="SP_GetProject_Summary_Result.cs">
       <DependentUpon>Proforma.tt</DependentUpon>
     </Compile>
     <Compile Include="SP_GetResourceData_Result.cs">
       <DependentUpon>Proforma.tt</DependentUpon>
     </Compile>
-    <Compile Include="SP_GetSummary_Result.cs">
+    <Compile Include="SP_GetSummaryData_Result.cs">
       <DependentUpon>Proforma.tt</DependentUpon>
     </Compile>
     <Compile Include="SP_Get_Configure_RateCard_Result.cs">
@@ -395,6 +392,9 @@
       <DependentUpon>Proforma.tt</DependentUpon>
     </Compile>
     <Compile Include="SP_Get_Master_ProjectChargeBack_Result.cs">
+      <DependentUpon>Proforma.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SP_Get_PrimaryProjectData_Result.cs">
       <DependentUpon>Proforma.tt</DependentUpon>
     </Compile>
     <Compile Include="SP_Get_Projects_Result.cs">

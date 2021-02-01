@@ -27,6 +27,7 @@ namespace ProformaLive
         public string Team { get; set; }
         public string RequiredSkill { get; set; }
         public Nullable<int> AOPProject { get; set; }
+        public string Comments { get; set; }
         public string CreatedBy { get; set; }
         public Nullable<System.DateTime> CreatedOn { get; set; }
         public string ModifiedBy { get; set; }

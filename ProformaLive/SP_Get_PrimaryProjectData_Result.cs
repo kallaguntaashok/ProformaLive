@@ -11,10 +11,10 @@ namespace ProformaLive
 {
     using System;
     
-    public partial class SP_GetSummary_Result
+    public partial class SP_Get_PrimaryProjectData_Result
     {
-        public int Sysid { get; set; }
-        public string Name { get; set; }
-        public Nullable<decimal> value { get; set; }
+        public int ProjectID { get; set; }
+        public string ProjectName { get; set; }
+        public string ProjectNumber { get; set; }
     }
 }

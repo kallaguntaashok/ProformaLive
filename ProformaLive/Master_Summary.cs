@@ -17,9 +17,5 @@ namespace ProformaLive
         public int Sysid { get; set; }
         public string Name { get; set; }
         public string Type { get; set; }
-        public Nullable<decimal> value { get; set; }
-        public string Formula { get; set; }
-        public string FormulaSource { get; set; }
-        public string SubFormula { get; set; }
     }
 }

@@ -424,7 +424,7 @@ app.controller('ProjectController', function ($scope, $http) {
 
         //Considers only updated records from jexcel 
         var update = function (instance, cell, col, row, value) {
-                        
+
             if (col === 22 || col === 23) {
                 if (value > 100) {
                     projectmaster.rows[row].children[(parseInt(col) + 2)].innerHTML = "100";
@@ -437,7 +437,7 @@ app.controller('ProjectController', function ($scope, $http) {
             var userid = cell.innerHTML;
             var validationstatus = true;
             if (col == 3) {
-                
+
                 $http({
                     method: 'POST',
                     url: '../Projects/validateuser',
@@ -463,14 +463,14 @@ app.controller('ProjectController', function ($scope, $http) {
                 });
             }
             else if (col == 1) {
-                
-                var projectID = cell.innerHTML;               
+
+                var projectID = cell.innerHTML;
                 $http({
                     method: 'Get',
                     url: '../Resource/validateDuplicateProjectnumber',
                     params: { "strProjectNumber": projectID }
                 }).then(function (response) {
-                    var result = response.data; 
+                    var result = response.data;
                     if (result = "False") {
                         updatetracker(validationstatus, instance, cell, col, row, value);
                     }
@@ -485,9 +485,9 @@ app.controller('ProjectController', function ($scope, $http) {
                 });
             }
             else if (col != 4) {
-                
+
                 updatetracker(validationstatus, instance, cell, col, row, value);
-            }            
+            }
         }
 
         $scope.discard_project_changes = function () {
@@ -555,6 +555,52 @@ app.controller('ProjectController', function ($scope, $http) {
         if (status === false)
             projectmaster.destroy();
 
+        var moveProjectRow = function (instance, from, to) {
+
+            var vfrom = [];
+            var vto = [];
+
+            if (from > to) {
+                vfrom = instance.jexcel.getRowData(to);
+                vto = instance.jexcel.getRowData(parseInt(to + 1));
+            }
+            else {
+                vfrom = instance.jexcel.getRowData(to);
+                vto = instance.jexcel.getRowData(parseInt(to - 1));
+            }
+                        
+            updateprogressbar(50, "Updating...");
+            $http({
+                method: 'POST',
+                url: '../Resource/moverows',
+                params: { "intFrom": vfrom[30], "intTo": vto[30], "intMasterID": vfrom[2], "strTabname": "projectmaster" }
+            }).then(function (response) {
+
+
+                $http({
+                    method: 'GET',
+                    url: '../Projects/getProjects'
+                }).then(function (response) {
+                    if (response.data.responseCode === 200) {
+                        projectmasterdata = response.data.Message;
+                        projectmaster.setData(projectmasterdata);                        
+                        updateprogressbar(100, "Completed....");
+                        document.getElementById('progressbar').style.display = 'none';
+                    }
+                }, function (error) {
+                    if (error.status === 403) {
+                        window.location.href = '../unAuthorized/Index';
+                    }
+                    else {
+                        console.error(error);
+                    }
+                });
+
+                
+            }, function (error) {
+                console.log(error);
+            });
+        }
 
         projectmaster = jexcel(document.getElementById('spreadsheetprojectmaster'), {
             data: projectmasterdata,
@@ -566,6 +612,7 @@ app.controller('ProjectController', function ($scope, $http) {
             onload: loaded,
             onchange: update,
             onbeforedeleterow: deletedRow,
+            onmoverow: moveProjectRow,
             onselection: selectionActive,
             freezeColumns: 2,
             columns: [
@@ -575,7 +622,7 @@ app.controller('ProjectController', function ($scope, $http) {
                 { type: 'text', title: 'Project Manager ID', width: 150 },
                 { type: 'text', title: 'Project Manager Name', width: 180, readOnly: true },
                 { type: 'dropdown', title: 'Project Category', width: 220, url: '/Projects/getProjectCategory', autocomplete: true },
-                { type: 'dropdown', title: 'Parent Child', width: 180, url: '/Projects/getParentChild', autocomplete: true },
+                { type: 'dropdown', title: 'Parent Child', width: 180, url: '/Projects/getParentChild', autocomplete: true, readOnly: true },
                 { type: 'text', title: 'Operating Expense WBS', width: 180 },
                 { type: 'text', title: 'Capital Expenditure WBS', width: 180 },
                 { type: 'text', title: 'GPS Project Number', width: 180 },
@@ -598,13 +645,31 @@ app.controller('ProjectController', function ($scope, $http) {
                 { type: 'hidden', title: 'Created On', width: 170 },
                 { type: 'text', readOnly: true, title: 'Modified By', width: 100 },
                 { type: 'date', readOnly: true, title: 'Modified On', width: 100 },
-                { type: 'hidden', readOnly: true, title: 'VersionNumber', width: 100 }
+                { type: 'hidden', readOnly: true, title: 'VersionNumber', width: 100 },
+                { type: 'hidden', readOnly: true, title: 'RowID', width: 80 }
             ],
             contextMenu: function (obj, x, y, e) {
                 var items = [];
                 if (y == null) {
                 }
                 else {
+
+                    // Insert new row
+                    if (obj.options.allowInsertRow == true) {
+                        items.push({
+                            title: 'Create From Template',
+                            onclick: function () {
+                                for (i = s_startvalue; i <= s_endvalue; i++) {
+                                    var jsonobj = projectmaster.getJson(false);
+                                    var rowobj = jsonobj[i];
+                                    document.getElementById('CreateNewProject').style.display = 'block';
+                                    localStorage.setItem("CReferencePID", rowobj.ProjectID);
+                                    document.getElementById("newCreateProject").value = "";
+                                    document.getElementById("newCreateProjectName").value = "";
+                                }
+                            }
+                        });
+                    }
 
                     // Insert new row
                     if (obj.options.allowInsertRow == true) {
@@ -632,6 +697,29 @@ app.controller('ProjectController', function ($scope, $http) {
                             }
                         });
                     }
+                    if (obj.options.allowInsertRow == true) {
+                        items.push({
+                            title: 'Mark As Primary Project',
+                            onclick: function () {
+                                localStorage.setItem("PID", 0);
+                                localStorage.setItem("SID", 0);
+                                document.getElementById("newPrimaryProject").value = "";
+                                document.getElementById("newSecondryprojectname").value = "";
+                                for (i = s_startvalue; i <= s_endvalue; i++) {
+                                    var jsonobj = projectmaster.getJson(false);
+                                    var rowobj = jsonobj[i];
+                                    document.getElementById('MasterProject').style.display = 'block';
+                                    $scope.primaryalert = false;
+                                    localStorage.setItem("PID", rowobj.ProjectID);
+                                    document.getElementById("newPrimaryProject").value = rowobj.ProjectNumber + "-" + rowobj.ProjectName + "   (Secondary)";
+                                    getmasterprojectdetails(rowobj.ProjectNumber);
+                                    //document.getElementById("newprojectname").value = rowobj.ProjectName;
+                                    //cloneproformafun(rowobj.ProjectNumber);
+                                }
+                            }
+                        });
+                    }
+
                     if (obj.options.allowDeleteRow == true) {
                         items.push({ type: 'line' });
                         items.push({
@@ -667,6 +755,63 @@ app.controller('ProjectController', function ($scope, $http) {
 
     }
 
+    function getmasterprojectdetails(strProjectID) {
+        $http({
+            method: 'POST',
+            url: '../Projects/getmasterproforma',
+            params: { "strProjectID": strProjectID }
+        }).then(function (response) {
+            if (response.data != null && response.data != "") {
+                document.getElementById("swappingbutton").disabled = false;
+                localStorage.setItem("SID", response.data[0].ProjectID);
+                document.getElementById("newSecondryprojectname").value = response.data[0].ProjectNumber + "-" + response.data[0].ProjectName + "   (Primary)";
+            }
+            else {
+                $scope.primaryalert = true;
+                $scope.primarymessage = "selected projects doesn't has master project";
+                document.getElementById("swappingbutton").disabled = true;
+            }
+        }, function (error) {
+            console.log(error);
+        });
+    }
+
+    $scope.startSwapping = function () {
+
+        updateprogressbar(20, "Swapping....");
+
+        $http({
+            method: 'POST',
+            url: '../Projects/swapprojects',
+            params: {
+                "intPrimaryProjectID": localStorage.getItem("PID"), "intSecondaryProjectID": localStorage.getItem("SID")
+            }
+        }).then(function (response) {
+            $http({
+                method: 'GET',
+                url: '../Projects/getProjects'
+            }).then(function (response) {
+                if (response.data.responseCode === 200) {
+                    projectmasterdata = response.data.Message;
+                    projectmaster.setData(projectmasterdata);
+                    document.getElementById('MasterProject').style.display = 'none';
+                    updateprogressbar(100, "Completed....");
+                    document.getElementById('progressbar').style.display = 'none';
+                }
+            }, function (error) {
+                if (error.status === 403) {
+                    window.location.href = '../unAuthorized/Index';
+                }
+                else {
+                    console.error(error);
+                }
+            });
+        }, function (error) {
+            console.log(error);
+        });
+
+    }
+
     function cloneproformafun(strProjectID) {
 
         $http({
@@ -677,6 +822,7 @@ app.controller('ProjectController', function ($scope, $http) {
 
             document.getElementById('cloneproject').style.display = 'block';
             $scope.clonealert = false;
+
             //document.getElementById("newprojectid").value = response.data[0].ProjectNumber + '_V' + response.data[0].VersionNumber;
             //document.getElementById("newprojectname").value = response.data[0].ProjectName + '_V' + response.data[0].VersionNumber;
             $scope.model_newProjectID = response.data[0].ProjectNumber + '_V' + response.data[0].VersionNumber;
@@ -700,7 +846,7 @@ app.controller('ProjectController', function ($scope, $http) {
 
     $scope.startsubmitthecloning = function () {
 
-        
+
         if ($scope.model_newProjectID == "" || $scope.model_newProjectID == undefined) {
             $scope.clonealert = true;
             $scope.clonemessage = "Please enter new project id";
@@ -711,6 +857,7 @@ app.controller('ProjectController', function ($scope, $http) {
         }
         else {
 
+            projectmaster_cloneproforma = [];
             for (i = s_startvalue; i <= s_endvalue; i++) {
                 var jsonobj = projectmaster.getJson(false);
                 var rowobj = jsonobj[i];
@@ -720,8 +867,69 @@ app.controller('ProjectController', function ($scope, $http) {
         }
     }
 
+    $scope.createnewproject = function () {
+
+
+
+        var newprojectID = document.getElementById("newCreateProject").value;
+        var newprojectName = document.getElementById("newCreateProjectName").value;
+
+        if (newprojectID == "" || newprojectID == undefined) {
+            $scope.createnewprojectalert = true;
+            $scope.createnewprojectmessage = "Please enter new project id";
+        }
+        else if (newprojectName == "" || newprojectName == undefined) {
+            $scope.createnewprojectalert = true;
+            $scope.createnewprojectmessage = "Please enter new project name";
+        }
+        else {
+
+            updateprogressbar(50, "Creating New Proforma....");
+
+            $http({
+                method: 'POST',
+                url: '../Projects/createnewproformat',
+                params: {
+                    "ID": localStorage.getItem("CReferencePID"), "strProjectID": newprojectID, "strProjectName": newprojectName, "strUserID": localStorage.getItem("userID")
+                }
+            }).then(function (response) {
+
+                $http({
+                    method: 'GET',
+                    url: '../Projects/getProjects'
+                }).then(function (response) {
+                    if (response.data.responseCode === 200) {
+                        projectmasterdata = response.data.Message;
+                        projectmaster.setData(projectmasterdata);
+                        document.getElementById('CreateNewProject').style.display = 'none';
+                        updateprogressbar(100, "Completed....");
+                        document.getElementById('progressbar').style.display = 'none';
+                    }
+                }, function (error) {
+                    if (error.status === 403) {
+                        window.location.href = '../unAuthorized/Index';
+                    }
+                    else {
+                        console.error(error);
+                    }
+                });
+
+            }, function (error) {
+                console.log(error);
+            });
+        }
+    }
+
     $scope.closecloning = function () {
         document.getElementById('cloneproject').style.display = 'none';
+    }
+
+    $scope.closeprimary = function () {
+        document.getElementById('MasterProject').style.display = 'none';
+    }
+
+    $scope.closecreatenew = function () {
+        document.getElementById('CreateNewProject').style.display = 'none';
     }
 
     function cloneproforma(newid, newname) {
@@ -762,7 +970,7 @@ app.controller('ProjectController', function ($scope, $http) {
                     console.error(error);
                 }
             });
-                        
+
         }, function (error) {
             console.log(error);
         });

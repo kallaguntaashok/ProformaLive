@@ -78,6 +78,20 @@ namespace MECC_ReportPortal.Controllers
         }
 
         [HttpPost]
+        public JsonResult getmasterproforma(string strProjectID)
+        {
+            var obj = db.SP_Get_PrimaryProjectData(strProjectID).ToList();
+            return Json(obj, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public JsonResult swapprojects(int intPrimaryProjectID, int intSecondaryProjectID)
+        {
+            var obj = db.SP_Get_SwapProjects(intPrimaryProjectID, intSecondaryProjectID);
+            return Json("", JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
         public JsonResult cloneproformaproject(objclone obj)
         {
             string userid = Convert.ToString(Session["userid"]);
@@ -91,6 +105,16 @@ namespace MECC_ReportPortal.Controllers
             }
 
             return Json("cloning has been done successfully!", JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public JsonResult createnewproformat(int ID, string strProjectID, string strProjectName,string strUserID)
+        {
+            if (ID != null)
+            {
+                var obj = db.SP_CreateNew_Proforma(ID, strProjectID, strProjectName, strUserID);
+            }
+            return Json("New proforma has been created successfully!", JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]

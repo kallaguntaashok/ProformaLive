@@ -449,7 +449,7 @@ namespace MECC_ReportPortal.Controllers
             return Json("", JsonRequestBehavior.AllowGet);
         }
 
-            [HttpGet]
+        [HttpGet]
         public JsonResult export_summarydata(int ProjectID, string ProjectNumber, string strProjectName)
         {
             //pivotetable();
@@ -467,7 +467,7 @@ namespace MECC_ReportPortal.Controllers
                 var obj_summary = db.SP_GetProject_Summary(Convert.ToString(ProjectID), "", "", "").ToList();
 
                 string DestinationPath = @System.Configuration.ConfigurationManager.AppSettings["UploadFiles"];
-                FileName = "Summary" + System.DateTime.Now.ToString("yyyyMMddHHMMssfff") + ".xlsx";
+                FileName = ProjectNumber.Replace("/", "") + "-" + strProjectName.Replace("/","") + "-" + System.DateTime.Now.ToString("yyyy-MMM-dd-HHMMssfff") + ".xlsx";
                 string Source = @System.Configuration.ConfigurationManager.AppSettings["Summarytemplate"];
                 System.IO.File.Copy(Source, DestinationPath + FileName);
                 FileInfo file = new FileInfo(DestinationPath + FileName);
@@ -1356,8 +1356,8 @@ namespace MECC_ReportPortal.Controllers
             int masterID = tabledata.MasterID;
 
             CapitalInfo result = (from p in db.CapitalInfoes
-                                   where p.MasterID == masterID
-                                   select p).SingleOrDefault();
+                                  where p.MasterID == masterID
+                                  select p).SingleOrDefault();
 
             result.RowID = masterID;
             db.SaveChanges();
@@ -1386,7 +1386,7 @@ namespace MECC_ReportPortal.Controllers
                 string strhighorg,
                 string strmidorg,
                 string strteam,
-                string strrequiredskills, string strAOPProject, string userid, int ProjectID)
+                string strrequiredskills, string strAOPProject, string userid, int ProjectID, string strComments)
         {
             //string userid = Convert.ToString(Session["userid"]);
             //var projectid = db.Configure_Project.Where(x => x.ProjectName == strProjectName).Select(y => y.ProjectID).ToList();
@@ -1409,6 +1409,7 @@ namespace MECC_ReportPortal.Controllers
                 MidOrg = strmidorg,
                 Team = strteam,
                 AOPProject = AOPID,
+                Comments = strComments,
                 RequiredSkill = strrequiredskills,
                 CreatedBy = userid,
                 CreatedOn = DateTime.Now
@@ -1420,8 +1421,8 @@ namespace MECC_ReportPortal.Controllers
             int masterID = tabledata.MasterID;
 
             CapitalLaborInfo result = (from p in db.CapitalLaborInfoes
-                                   where p.MasterID == masterID
-                                   select p).SingleOrDefault();
+                                       where p.MasterID == masterID
+                                       select p).SingleOrDefault();
 
             result.RowID = masterID;
             db.SaveChanges();
@@ -1466,8 +1467,8 @@ namespace MECC_ReportPortal.Controllers
             int masterID = tabledata.MasterID;
 
             DirectExpensesInfo result = (from p in db.DirectExpensesInfoes
-                                   where p.MasterID == masterID
-                                   select p).SingleOrDefault();
+                                         where p.MasterID == masterID
+                                         select p).SingleOrDefault();
 
             result.RowID = masterID;
             db.SaveChanges();
@@ -1524,7 +1525,7 @@ namespace MECC_ReportPortal.Controllers
             int masterID = tabledata.MasterID;
 
             ResourceInfo result = (from p in db.ResourceInfoes
-                             where p.MasterID == masterID
+                                   where p.MasterID == masterID
                                    select p).SingleOrDefault();
 
             result.RowID = masterID;
@@ -1580,6 +1581,7 @@ namespace MECC_ReportPortal.Controllers
                     row.MidOrg = item.MidOrg;
                     row.Team = item.Team;
                     row.RequiredSkill = item.RequiredSkill;
+                    row.Comments = item.Comments;
                     row.AOPProject = AOPID;
                     row.ModifiedBy = obj.userid;
                     row.ModifiedOn = DateTime.Now;

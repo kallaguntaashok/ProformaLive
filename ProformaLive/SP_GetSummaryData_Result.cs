@@ -11,20 +11,17 @@ namespace ProformaLive
 {
     using System;
     
-    public partial class SP_GetNewSummary_Result
+    public partial class SP_GetSummaryData_Result
     {
-        public int Sysid { get; set; }
-        public int TemplateID { get; set; }
+        public Nullable<int> ProjectID { get; set; }
+        public Nullable<int> SummaryID { get; set; }
+        public string SummaryTitle { get; set; }
+        public string Type { get; set; }
         public string ProjectNumber { get; set; }
         public string ProjectName { get; set; }
-        public string Name { get; set; }
-        public string Type { get; set; }
-        public string Formula { get; set; }
-        public decimal Total { get; set; }
-        public string FinYear_Month { get; set; }
-        public decimal Value { get; set; }
-        public string Month { get; set; }
-        public int MID { get; set; }
         public string FisYear { get; set; }
+        public Nullable<int> MID { get; set; }
+        public string FisMonth { get; set; }
+        public decimal value { get; set; }
     }
 }
