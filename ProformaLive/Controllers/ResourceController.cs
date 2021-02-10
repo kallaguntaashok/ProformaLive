@@ -450,6 +450,13 @@ namespace MECC_ReportPortal.Controllers
         }
 
         [HttpGet]
+        public JsonResult getResourceComments()
+        {
+            var obj = db.SP_Get_Resource_Comments();
+            return Json(obj, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpGet]
         public JsonResult export_summarydata(int ProjectID, string ProjectNumber, string strProjectName)
         {
             //pivotetable();

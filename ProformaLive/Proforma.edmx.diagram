@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="9075ed6576514b2a9490510932951338" Name="Diagram1">
+      <Diagram DiagramId="8500598979c84a00be47cea3e02e436f" Name="Diagram1">
         <EntityTypeShape EntityType="ProformaLiveModel.CapitalInfo" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="ProformaLiveModel.CapitalInfoList" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="ProformaLiveModel.CapitalLaborInfo" Width="1.5" PointX="2.75" PointY="3.75" IsExpanded="true" />
@@ -31,6 +31,7 @@
         <EntityTypeShape EntityType="ProformaLiveModel.Temp_ProjectMaster" Width="1.5" PointX="14.75" PointY="10.75" IsExpanded="true" />
         <EntityTypeShape EntityType="ProformaLiveModel.ResourceInfo_old" Width="1.5" PointX="14.75" PointY="13.75" IsExpanded="true" />
         <EntityTypeShape EntityType="ProformaLiveModel.ResourceInfoList_old" Width="1.5" PointX="0.75" PointY="15.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ProformaLiveModel.ResourceInfoComment" Width="1.5" PointX="9.375" PointY="15.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

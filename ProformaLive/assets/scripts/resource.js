@@ -74,9 +74,7 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
     var jSuite_dropTeam = [];
     var jSuite_dropRequiredSkills = [];
     localStorage.setItem("CurrentPage", 2);
-
-    
-
+    var resource_comments = [];
     //var dataexpenseCategory = [];
     //var sm = this;
     //var dsProjectList = [];
@@ -111,6 +109,49 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
             });
         }, 1000);
     }
+
+    //update_resource_comments();
+    //function update_resource_comments() {
+
+    //    //params: { "ProjectID": localStorage.getItem("projectid") }
+
+    //    $http({
+    //        method: 'GET',
+    //        url: '../Resource/getResourceComments'
+    //    }).then(function (response) {
+    //        resource_comments = response.data;
+    //    }, function (error) {
+    //        console.log(error);
+    //    });
+
+    //    //$http({
+    //    //    method: 'GET',
+    //    //    url: '../Resource/getResourceComments'
+    //    //}).then(function (response) {
+    //    //    var sourcedata = response.data;
+
+    //    //    var x = obj.options.data[0].length;
+    //    //    var y = obj.options.data.length;
+    //    //    for (var j = 0; j < y; j++) {
+
+    //    //        for (var i = 0; i < x; i++) {
+    //    //            obj.records[j][i].setAttribute('title', obj.records[j][i].innerHTML);
+    //    //        }
+
+    //    //        var filtered = sourcedata.filter(a => a.MasterID == obj.records[j][0].innerHTML);
+    //    //        if (filtered.length > 0) {
+    //    //            for (var k = 0; k < filtered.length; k++) {
+    //    //                obj.setComments([parseInt(filtered[k].ColumnID), j], filtered[k].Comments);
+    //    //            }
+    //    //        }                                
+    //    //    }
+
+    //    //}, function (error) {
+    //    //    console.log(error);
+    //    //});
+
+    //}
+
     function refreshtablesum() {
 
         var activetab = document.getElementById('activetabid').innerHTML;
@@ -135,6 +176,10 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
 
         if (activetab === "resource" || activetab === "capital" || activetab === "capitallabor" || activetab === "directexpenses") {
 
+            var firstrowstatus = tablobj.rows[0].getAttribute("class");
+            if (firstrowstatus == "selected")
+                tablobj.rows[0].removeAttribute("class");
+
             var MAY = 0.00; JUN = 0.00; JUL = 0.00; AUG = 0.00; SEP = 0.00; OCT = 0.00; NOV = 0.00; DEC = 0.00; JAN = 0.00; FEB = 0.00; MAR = 0.00; APR = 0.00;
 
             for (var k = 0; k < tablobj.rows.length; k++) {
@@ -156,25 +201,31 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
             tablobj.tfoot.children[0].children[in_number + 6].innerHTML = JAN.toFixed(2); tablobj.tfoot.children[0].children[in_number + 7].innerHTML = FEB.toFixed(2);
             tablobj.tfoot.children[0].children[in_number + 8].innerHTML = MAR.toFixed(2); tablobj.tfoot.children[0].children[in_number + 9].innerHTML = APR.toFixed(2);
 
+
+            var filtersource = {
+                fitems: []
+            };
+
             var filters = tablobj.filters.map(function (arr) { if (arr == null || arr == "") { return null; } else { return arr.slice(); } });
-            document.getElementById("clearfilters").setAttribute("style", "zoom:80%; display:none; margin-left:10px; color:white; background: linear-gradient(to right, #ff9966, #ff5e62);");
+            document.getElementById("clearfilters").setAttribute("style", "display:none;");
             var filtercheck = 0;
             for (var i = 0; i < filters.length; i++) {
                 if (filters[i] != null) {
                     filtercheck = filtercheck + 1;
                     var filtersinfo = tablobj.filter.children[i + 1].innerHTML;
-                    localStorage.setItem(activetab + "_filterkey", i);
-                    localStorage.setItem(activetab + "_filtervalue", filtersinfo);
-                    document.getElementById("clearfilters").setAttribute("style", "zoom:80%; display:block; margin-left:10px; color:white; background: linear-gradient(to right, #ff9966, #ff5e62);");
+                    filtersource.fitems.push({
+                        "fid": i,
+                        "fname": filtersinfo
+                    });
+                    document.getElementById("clearfilters").setAttribute("style", "display:block;");
                 }
             }
 
+            localStorage.setItem(activetab + "_filtersource", JSON.stringify(filtersource));
             if (filtercheck === 0) {
-                localStorage.removeItem(activetab + "_filterkey");
-                localStorage.removeItem(activetab + "_filtervalue");
+                localStorage.removeItem(activetab + "filtersource");
             }
         }
-
     }
 
 
@@ -1527,48 +1578,48 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
             refreshtablesum();
         }
 
-        var de_deleted = function (instance) {
+        //var de_deleted = function (instance) {
 
-            for (i = s_startvalue; i <= s_endvalue; i++) {
+        //    for (i = s_startvalue; i <= s_endvalue; i++) {
 
-                //creates json object of jexcel
-                var jsonobj = objdirectexpenses.getJson(false);
+        //        //creates json object of jexcel
+        //        var jsonobj = objdirectexpenses.getJson(false);
 
-                //getting particular row from json object       
-                var rowobj = jsonobj[i]; //row id getting from event
+        //        //getting particular row from json object       
+        //        var rowobj = jsonobj[i]; //row id getting from event
 
-                directexpenses_deleteInfo.push(rowobj);
-                if (directexpenses_updatedInfo.find(x => x.MasterID === rowobj.MasterID)) {
-                    index = directexpenses_updatedInfo.indexOf(directexpenses_updatedInfo.find(x => x.ProjectNumber === rowobj.ProjectNumber)); //getting index of that rec
-                    directexpenses_updatedInfo.splice(index, 1); //remove the existing rec from object 
-                }
+        //        directexpenses_deleteInfo.push(rowobj);
+        //        if (directexpenses_updatedInfo.find(x => x.MasterID === rowobj.MasterID)) {
+        //            index = directexpenses_updatedInfo.indexOf(directexpenses_updatedInfo.find(x => x.ProjectNumber === rowobj.ProjectNumber)); //getting index of that rec
+        //            directexpenses_updatedInfo.splice(index, 1); //remove the existing rec from object 
+        //        }
 
-                document.getElementById('de_update_notificationnumber1').innerHTML = directexpenses_updatedInfo.length;
-                document.getElementById('de_delete_notificationnumber1').innerHTML = directexpenses_deleteInfo.length;
+        //        document.getElementById('de_update_notificationnumber1').innerHTML = directexpenses_updatedInfo.length;
+        //        document.getElementById('de_delete_notificationnumber1').innerHTML = directexpenses_deleteInfo.length;
 
-                if (parseInt(directexpenses_updatedInfo.length) > 0) {
-                    document.getElementById('de_update_notificationnumber1').style.display = 'initial';
-                    document.getElementById('de_update_notificationnumber2').style.display = 'initial';
-                }
-                else {
-                    document.getElementById('de_update_notificationnumber1').style.display = 'none';
-                    document.getElementById('de_update_notificationnumber2').style.display = 'none';
-                }
+        //        if (parseInt(directexpenses_updatedInfo.length) > 0) {
+        //            document.getElementById('de_update_notificationnumber1').style.display = 'initial';
+        //            document.getElementById('de_update_notificationnumber2').style.display = 'initial';
+        //        }
+        //        else {
+        //            document.getElementById('de_update_notificationnumber1').style.display = 'none';
+        //            document.getElementById('de_update_notificationnumber2').style.display = 'none';
+        //        }
 
-                if (parseInt(directexpenses_deleteInfo.length) > 0) {
-                    document.getElementById('de_delete_notificationnumber1').style.display = 'initial';
-                    document.getElementById('de_delete_notificationnumber2').style.display = 'initial';
-                }
-                else {
-                    document.getElementById('de_delete_notificationnumber1').style.display = 'none';
-                    document.getElementById('de_delete_notificationnumber2').style.display = 'none';
-                }
-                setdeSubmitting();
-                var screenst = $scope.ProjectsTable_fullscreen;
-                loadfullscreencss(screenst);
-            }
+        //        if (parseInt(directexpenses_deleteInfo.length) > 0) {
+        //            document.getElementById('de_delete_notificationnumber1').style.display = 'initial';
+        //            document.getElementById('de_delete_notificationnumber2').style.display = 'initial';
+        //        }
+        //        else {
+        //            document.getElementById('de_delete_notificationnumber1').style.display = 'none';
+        //            document.getElementById('de_delete_notificationnumber2').style.display = 'none';
+        //        }
+        //        setdeSubmitting();
+        //        var screenst = $scope.ProjectsTable_fullscreen;
+        //        loadfullscreencss(screenst);
+        //    }
 
-        }
+        //}
         var de_update = function (instance, cell, col, row, value) {
 
             //creates json object of jexcel
@@ -1641,6 +1692,40 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
             });
         }
 
+        function deleteupdateinfo_de(masterid) {
+            if (directexpenses_updatedInfo.find(x => x.MasterID === masterid)) {
+                index = directexpenses_updatedInfo.indexOf(directexpenses_updatedInfo.find(x => x.ProjectNumber === rowobj.ProjectNumber)); //getting index of that rec
+                directexpenses_updatedInfo.splice(index, 1); //remove the existing rec from object 
+            }
+        }
+
+        function updatedeletenotificationbar_de() {
+
+            document.getElementById('de_update_notificationnumber1').innerHTML = directexpenses_updatedInfo.length;
+            document.getElementById('de_delete_notificationnumber1').innerHTML = directexpenses_deleteInfo.length;
+
+            if (parseInt(directexpenses_updatedInfo.length) > 0) {
+                document.getElementById('de_update_notificationnumber1').style.display = 'initial';
+                document.getElementById('de_update_notificationnumber2').style.display = 'initial';
+            }
+            else {
+                document.getElementById('de_update_notificationnumber1').style.display = 'none';
+                document.getElementById('de_update_notificationnumber2').style.display = 'none';
+            }
+
+            if (parseInt(directexpenses_deleteInfo.length) > 0) {
+                document.getElementById('de_delete_notificationnumber1').style.display = 'initial';
+                document.getElementById('de_delete_notificationnumber2').style.display = 'initial';
+            }
+            else {
+                document.getElementById('de_delete_notificationnumber1').style.display = 'none';
+                document.getElementById('de_delete_notificationnumber2').style.display = 'none';
+            }
+            setdeSubmitting();
+            var screenst = $scope.ProjectsTable_fullscreen;
+            loadfullscreencss(screenst);
+        }
+
         objdirectexpenses = jexcel(document.getElementById('tbl_directexpenses'), {
 
             data: dsDirectExpense,
@@ -1649,7 +1734,6 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
             onafterchanges: updateaftertable,
             onload: load_de,
             onchange: de_update,
-            onbeforedeleterow: de_deleted,
             allowManualInsertRow: false,
             tableOverflow: true,
             onmoverow: moveDERow,
@@ -1687,10 +1771,23 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
                 items.push({
                     title: "Duplicate",
                     onclick: function () {
-                        for (i = s_startvalue; i <= s_endvalue; i++) {
-                            var jsonobj = objdirectexpenses.getJson(false);
-                            var rowobj = jsonobj[i];
-                            directexpenses_duplicateInfo.push(rowobj);
+
+                        //for (i = s_startvalue; i <= s_endvalue; i++) {
+                        //    var jsonobj = objdirectexpenses.getJson(false);
+                        //    var rowobj = jsonobj[i];
+                        //    directexpenses_duplicateInfo.push(rowobj);
+                        //}
+                        //savedechanges(true);
+
+                        var rowsElement = objdirectexpenses.getSelectedRows();
+                        for (var indexRow = 0; indexRow < rowsElement.length; indexRow++) {
+                            var displaystatus = rowsElement[indexRow].style.display;
+                            if (displaystatus == "") {
+                                var y = parseInt(rowsElement[indexRow].getAttribute("data-y"));
+                                var jsonobj = objdirectexpenses.getJson(false);
+                                var rowobj = jsonobj[y];
+                                directexpenses_duplicateInfo.push(rowobj);
+                            }
                         }
                         savedechanges(true);
                     }
@@ -1704,16 +1801,40 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
                             //    obj.deleteRow(obj.getSelectedRows().length ? undefined : parseInt(y));
                             //}
 
-                            var filterstatus = checkfilters('directexpenses');
-                            if (filterstatus == 1 && obj.getSelectedRows().length > 1) {
-                                showalertsavechangesalert('Please select a single row to delete, multiple rows not possible in the filtered table.');
-                            }
-                            else {
-                                if (confirm('Are you sure do you want to delete?')) {
-                                    obj.deleteRow(obj.getSelectedRows().length ? undefined : parseInt(y));
-                                    validatefilters("directexpenses", objdirectexpenses);
+                            //var filterstatus = checkfilters('directexpenses');
+                            //if (filterstatus == 1 && obj.getSelectedRows().length > 1) {
+                            //    showalertsavechangesalert('Please select a single row to delete, multiple rows not possible in the filtered table.');
+                            //}
+                            //else {
+                            //    if (confirm('Are you sure do you want to delete?')) {
+                            //        obj.deleteRow(obj.getSelectedRows().length ? undefined : parseInt(y));
+                            //        validatefilters("directexpenses", objdirectexpenses);
+                            //    }
+                            //}
+
+                            if (confirm('Are you sure do you want to delete?')) {
+
+                                var rowsElement = obj.getSelectedRows();
+                                //console.log(rowsElement);
+
+                                for (var indexRow = 0; indexRow < rowsElement.length; indexRow++) {
+
+                                    var displaystatus = rowsElement[indexRow].style.display;
+                                    if (displaystatus == "") {
+
+                                        var y = parseInt(rowsElement[indexRow].getAttribute("data-y"));
+                                        var jsonobj = obj.getJson(false);
+                                        var rowobj = jsonobj[y];
+                                        directexpenses_deleteInfo.push(rowobj);
+                                        updatedeletenotificationbar_de();
+                                        deleteupdateinfo_de(rowobj.MasterID);
+                                        obj.deleteRow(y);
+
+                                    }
+
                                 }
                             }
+                            validatefilters("directexpenses", objdirectexpenses);
                         }
                     });
                 }
@@ -1758,18 +1879,36 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
         });
 
         //reload filter information.
-        var reloadfilterinfo = localStorage.getItem("directexpenses_filtervalue");
-        var reloadfilterkey = localStorage.getItem("directexpenses_filterkey");
-        if (reloadfilterinfo != null && reloadfilterkey != null) {
-            document.getElementById("clearfilters").setAttribute("style", "zoom:80%; display:block; margin-left:10px; color:white; background: linear-gradient(to right, #ff9966, #ff5e62);");
-            var res = reloadfilterinfo.split(";");
-            res = res.map(s => s.trim());
-            objdirectexpenses.filter.children[parseInt(reloadfilterkey) + 1].innerHTML = reloadfilterinfo;
-            objdirectexpenses.filters[reloadfilterkey] = res;
-            objdirectexpenses.closeFilter();
+        //var reloadfilterinfo = localStorage.getItem("directexpenses_filtervalue");
+        //var reloadfilterkey = localStorage.getItem("directexpenses_filterkey");
+        //if (reloadfilterinfo != null && reloadfilterkey != null) {
+        //    document.getElementById("clearfilters").setAttribute("style", "zoom:80%; display:block; margin-left:10px; color:white; background: linear-gradient(to right, #ff9966, #ff5e62);");
+        //    var res = reloadfilterinfo.split(";");
+        //    res = res.map(s => s.trim());
+        //    objdirectexpenses.filter.children[parseInt(reloadfilterkey) + 1].innerHTML = reloadfilterinfo;
+        //    objdirectexpenses.filters[reloadfilterkey] = res;
+        //    objdirectexpenses.closeFilter();
+        //}
+        //else {
+        //    document.getElementById("clearfilters").setAttribute("style", "zoom:80%; display:none; margin-left:10px; color:white; background: linear-gradient(to right, #ff9966, #ff5e62);");
+        //}
+
+        var filtersourcecopy = JSON.parse(localStorage.getItem("directexpenses_filtersource"));
+        if (filtersourcecopy != null) {
+
+            document.getElementById("clearfilters").setAttribute("style", "display:block;");
+            for (var i = 0; i < filtersourcecopy.fitems.length; i++) {
+                var fild = filtersourcecopy.fitems[i].fid;
+                var fname = filtersourcecopy.fitems[i].fname;
+                var res = fname.split(";");
+                res = res.map(s => s.trim());
+                objdirectexpenses.filter.children[parseInt(fild) + 1].innerHTML = fname;
+                objdirectexpenses.filters[fild] = res;
+                objdirectexpenses.closeFilter();
+            }
         }
         else {
-            document.getElementById("clearfilters").setAttribute("style", "zoom:80%; display:none; margin-left:10px; color:white; background: linear-gradient(to right, #ff9966, #ff5e62);");
+            document.getElementById("clearfilters").setAttribute("style", "display:none;");
         }
 
         refreshtablesum();
@@ -2193,7 +2332,7 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
                             params: { "ProjectID": localStorage.getItem("projectid") }
                         }).then(function (response) {
                             if (response.data.length > 0) {
-                                                               
+
                                 if (response.data.length === 1) {
                                     document.getElementById('tbl_capitallabour').innerHTML = "";
                                     dsCapitalLabour = response.data;
@@ -2384,48 +2523,48 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
             document.getElementById('progressbar').style.display = 'none';
             document.getElementById('capitallabour').setAttribute("style", "padding-left:20px; padding-right:20px; padding-bottom:10px; opacity:1;")
         }
-        var capitallabor_deleted = function (instance) {
+        //var capitallabor_deleted = function (instance) {
 
-            for (i = s_startvalue; i <= s_endvalue; i++) {
+        //    for (i = s_startvalue; i <= s_endvalue; i++) {
 
-                //creates json object of jexcel
-                var jsonobj = objcapitallabour.getJson(false);
+        //        //creates json object of jexcel
+        //        var jsonobj = objcapitallabour.getJson(false);
 
-                //getting particular row from json object       
-                var rowobj = jsonobj[i]; //row id getting from event
+        //        //getting particular row from json object       
+        //        var rowobj = jsonobj[i]; //row id getting from event
 
-                capitallabor_deleteInfo.push(rowobj);
-                if (capitallabor_updatedInfo.find(x => x.MasterID === rowobj.MasterID)) {
-                    index = capitallabor_updatedInfo.indexOf(capitallabor_updatedInfo.find(x => x.ProjectNumber === rowobj.ProjectNumber)); //getting index of that rec
-                    capitallabor_updatedInfo.splice(index, 1); //remove the existing rec from object 
-                }
+        //        capitallabor_deleteInfo.push(rowobj);
+        //        if (capitallabor_updatedInfo.find(x => x.MasterID === rowobj.MasterID)) {
+        //            index = capitallabor_updatedInfo.indexOf(capitallabor_updatedInfo.find(x => x.ProjectNumber === rowobj.ProjectNumber)); //getting index of that rec
+        //            capitallabor_updatedInfo.splice(index, 1); //remove the existing rec from object 
+        //        }
 
-                document.getElementById('capitallabor_update_notificationnumber1').innerHTML = capitallabor_updatedInfo.length;
-                document.getElementById('capitallabor_delete_notificationnumber1').innerHTML = capitallabor_deleteInfo.length;
+        //        document.getElementById('capitallabor_update_notificationnumber1').innerHTML = capitallabor_updatedInfo.length;
+        //        document.getElementById('capitallabor_delete_notificationnumber1').innerHTML = capitallabor_deleteInfo.length;
 
-                if (parseInt(capitallabor_updatedInfo.length) > 0) {
-                    document.getElementById('capitallabor_update_notificationnumber1').style.display = 'initial';
-                    document.getElementById('capitallabor_update_notificationnumber2').style.display = 'initial';
-                }
-                else {
-                    document.getElementById('capitallabor_update_notificationnumber1').style.display = 'none';
-                    document.getElementById('capitallabor_update_notificationnumber2').style.display = 'none';
-                }
+        //        if (parseInt(capitallabor_updatedInfo.length) > 0) {
+        //            document.getElementById('capitallabor_update_notificationnumber1').style.display = 'initial';
+        //            document.getElementById('capitallabor_update_notificationnumber2').style.display = 'initial';
+        //        }
+        //        else {
+        //            document.getElementById('capitallabor_update_notificationnumber1').style.display = 'none';
+        //            document.getElementById('capitallabor_update_notificationnumber2').style.display = 'none';
+        //        }
 
-                if (parseInt(capitallabor_deleteInfo.length) > 0) {
-                    document.getElementById('capitallabor_delete_notificationnumber1').style.display = 'initial';
-                    document.getElementById('capitallabor_delete_notificationnumber2').style.display = 'initial';
-                }
-                else {
-                    document.getElementById('capitallabor_delete_notificationnumber1').style.display = 'none';
-                    document.getElementById('capitallabor_delete_notificationnumber2').style.display = 'none';
-                }
-                setcapitallaborSubmitting();
-                var screenst = $scope.ProjectsTable_fullscreen;
-                loadfullscreencss(screenst);
-            }
+        //        if (parseInt(capitallabor_deleteInfo.length) > 0) {
+        //            document.getElementById('capitallabor_delete_notificationnumber1').style.display = 'initial';
+        //            document.getElementById('capitallabor_delete_notificationnumber2').style.display = 'initial';
+        //        }
+        //        else {
+        //            document.getElementById('capitallabor_delete_notificationnumber1').style.display = 'none';
+        //            document.getElementById('capitallabor_delete_notificationnumber2').style.display = 'none';
+        //        }
+        //        setcapitallaborSubmitting();
+        //        var screenst = $scope.ProjectsTable_fullscreen;
+        //        loadfullscreencss(screenst);
+        //    }
 
-        }
+        //}
         var capitallabor_update = function (instance, cell, col, row, value) {
 
             if (col == 5) {
@@ -2615,8 +2754,8 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
                 vfrom = instance.jexcel.getRowData(to);
                 vto = instance.jexcel.getRowData(parseInt(to - 1));
             }
-                       
-            
+
+
             $http({
                 method: 'POST',
                 url: '../Resource/moverows',
@@ -2644,6 +2783,39 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
             });
         }
 
+        function deleteupdateinfo_capitallabour(masterid) {
+            if (capitallabor_updatedInfo.find(x => x.MasterID === masterid)) {
+                index = capitallabor_updatedInfo.indexOf(capitallabor_updatedInfo.find(x => x.ProjectNumber === rowobj.ProjectNumber)); //getting index of that rec
+                capitallabor_updatedInfo.splice(index, 1); //remove the existing rec from object 
+            }
+        }
+
+        function updatedeletenotificationbar_capitallabour() {
+
+            document.getElementById('capitallabor_update_notificationnumber1').innerHTML = capitallabor_updatedInfo.length;
+            document.getElementById('capitallabor_delete_notificationnumber1').innerHTML = capitallabor_deleteInfo.length;
+
+            if (parseInt(capitallabor_updatedInfo.length) > 0) {
+                document.getElementById('capitallabor_update_notificationnumber1').style.display = 'initial';
+                document.getElementById('capitallabor_update_notificationnumber2').style.display = 'initial';
+            }
+            else {
+                document.getElementById('capitallabor_update_notificationnumber1').style.display = 'none';
+                document.getElementById('capitallabor_update_notificationnumber2').style.display = 'none';
+            }
+
+            if (parseInt(capitallabor_deleteInfo.length) > 0) {
+                document.getElementById('capitallabor_delete_notificationnumber1').style.display = 'initial';
+                document.getElementById('capitallabor_delete_notificationnumber2').style.display = 'initial';
+            }
+            else {
+                document.getElementById('capitallabor_delete_notificationnumber1').style.display = 'none';
+                document.getElementById('capitallabor_delete_notificationnumber2').style.display = 'none';
+            }
+            setcapitallaborSubmitting();
+            var screenst = $scope.ProjectsTable_fullscreen;
+            loadfullscreencss(screenst);
+        }
 
         objcapitallabour = jexcel(document.getElementById('tbl_capitallabour'), {
 
@@ -2653,7 +2825,6 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
             onafterchanges: updateaftertable,
             onload: load_capitallabor,
             onchange: capitallabor_update,
-            onbeforedeleterow: capitallabor_deleted,
             onmoverow: moveCapitallaborRow,
             allowManualInsertRow: false,
             footers: [['', '', '', '', '', '', '', '', '', '', 'Total', '=ROUND(SUM(N1:N300),2)', '=ROUND(SUM(O1:O300),2)', '=ROUND(SUM(P1:P300),2)', '=ROUND(SUM(Q1:Q300),2)', '=ROUND(SUM(R1:R300),2)', '=ROUND(SUM(S1:S300),2)', '=ROUND(SUM(T1:T300),2)', '=ROUND(SUM(U1:U300),2)', '=ROUND(SUM(V1:V300),2)', '=ROUND(SUM(W1:W300),2)', '=ROUND(SUM(X1:X300),2)', '=ROUND(SUM(Y1:Y300),2)', '']],
@@ -2699,10 +2870,23 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
                 items.push({
                     title: "Duplicate",
                     onclick: function () {
-                        for (i = s_startvalue; i <= s_endvalue; i++) {
-                            var jsonobj = objcapitallabour.getJson(false);
-                            var rowobj = jsonobj[i];
-                            capitallabor_duplicateInfo.push(rowobj);
+
+                        //for (i = s_startvalue; i <= s_endvalue; i++) {
+                        //    var jsonobj = objcapitallabour.getJson(false);
+                        //    var rowobj = jsonobj[i];
+                        //    capitallabor_duplicateInfo.push(rowobj);
+                        //}
+                        //savecapitallabor(true);
+
+                        var rowsElement = objcapitallabour.getSelectedRows(false);
+                        for (var indexRow = 0; indexRow < rowsElement.length; indexRow++) {
+                            var displaystatus = rowsElement[indexRow].style.display;
+                            if (displaystatus == "") {
+                                var y = parseInt(rowsElement[indexRow].getAttribute("data-y"));
+                                var jsonobj = objcapitallabour.getJson(false);
+                                var rowobj = jsonobj[y];
+                                capitallabor_duplicateInfo.push(rowobj);
+                            }
                         }
                         savecapitallabor(true);
                     }
@@ -2717,16 +2901,40 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
                             //    validatefilters("capitallabor", objcapitallabour);
                             //}
 
-                            var filterstatus = checkfilters('capitallabor');
-                            if (filterstatus == 1 && obj.getSelectedRows().length > 1) {
-                                showalertsavechangesalert('Please select a single row to delete, multiple rows not possible in the filtered table.');
-                            }
-                            else {
-                                if (confirm('Are you sure do you want to delete?')) {
-                                    obj.deleteRow(obj.getSelectedRows().length ? undefined : parseInt(y));
-                                    validatefilters("capitallabor", objcapitallabour);
+                            //var filterstatus = checkfilters('capitallabor');
+                            //if (filterstatus == 1 && obj.getSelectedRows().length > 1) {
+                            //    showalertsavechangesalert('Please select a single row to delete, multiple rows not possible in the filtered table.');
+                            //}
+                            //else {
+                            //    if (confirm('Are you sure do you want to delete?')) {
+                            //        obj.deleteRow(obj.getSelectedRows().length ? undefined : parseInt(y));
+                            //        validatefilters("capitallabor", objcapitallabour);
+                            //    }
+                            //}
+
+                            if (confirm('Are you sure do you want to delete?')) {
+
+                                var rowsElement = obj.getSelectedRows();
+                                //console.log(rowsElement);
+
+                                for (var indexRow = 0; indexRow < rowsElement.length; indexRow++) {
+
+                                    var displaystatus = rowsElement[indexRow].style.display;
+                                    if (displaystatus == "") {
+
+                                        var y = parseInt(rowsElement[indexRow].getAttribute("data-y"));
+                                        var jsonobj = obj.getJson(false);
+                                        var rowobj = jsonobj[y];
+                                        capitallabor_deleteInfo.push(rowobj);
+                                        updatedeletenotificationbar_capitallabour();
+                                        deleteupdateinfo_capitallabour(rowobj.MasterID);
+                                        obj.deleteRow(y);
+
+                                    }
+
                                 }
                             }
+                            validatefilters("capitallabor", objcapitallabour);
                         }
                     });
                 }
@@ -2771,18 +2979,36 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
         });
 
         //reload filter information.
-        var reloadfilterinfo = localStorage.getItem("capitallabor_filtervalue");
-        var reloadfilterkey = localStorage.getItem("capitallabor_filterkey");
-        if (reloadfilterinfo != null && reloadfilterkey != null) {
-            document.getElementById("clearfilters").setAttribute("style", "zoom:80%; display:block; margin-left:10px; color:white; background: linear-gradient(to right, #ff9966, #ff5e62);");
-            var res = reloadfilterinfo.split(";");
-            res = res.map(s => s.trim());
-            objcapitallabour.filter.children[parseInt(reloadfilterkey) + 1].innerHTML = reloadfilterinfo;
-            objcapitallabour.filters[reloadfilterkey] = res;
-            objcapitallabour.closeFilter();
+        //var reloadfilterinfo = localStorage.getItem("capitallabor_filtervalue");
+        //var reloadfilterkey = localStorage.getItem("capitallabor_filterkey");
+        //if (reloadfilterinfo != null && reloadfilterkey != null) {
+        //    document.getElementById("clearfilters").setAttribute("style", "zoom:80%; display:block; margin-left:10px; color:white; background: linear-gradient(to right, #ff9966, #ff5e62);");
+        //    var res = reloadfilterinfo.split(";");
+        //    res = res.map(s => s.trim());
+        //    objcapitallabour.filter.children[parseInt(reloadfilterkey) + 1].innerHTML = reloadfilterinfo;
+        //    objcapitallabour.filters[reloadfilterkey] = res;
+        //    objcapitallabour.closeFilter();
+        //}
+        //else {
+        //    document.getElementById("clearfilters").setAttribute("style", "zoom:80%; display:none; margin-left:10px; color:white; background: linear-gradient(to right, #ff9966, #ff5e62);");
+        //}
+
+        var filtersourcecopy = JSON.parse(localStorage.getItem("capitallabor_filtersource"));
+        if (filtersourcecopy != null) {
+
+            document.getElementById("clearfilters").setAttribute("style", "display:block;");
+            for (var i = 0; i < filtersourcecopy.fitems.length; i++) {
+                var fild = filtersourcecopy.fitems[i].fid;
+                var fname = filtersourcecopy.fitems[i].fname;
+                var res = fname.split(";");
+                res = res.map(s => s.trim());
+                objcapitallabour.filter.children[parseInt(fild) + 1].innerHTML = fname;
+                objcapitallabour.filters[fild] = res;
+                objcapitallabour.closeFilter();
+            }
         }
         else {
-            document.getElementById("clearfilters").setAttribute("style", "zoom:80%; display:none; margin-left:10px; color:white; background: linear-gradient(to right, #ff9966, #ff5e62);");
+            document.getElementById("clearfilters").setAttribute("style", "display:none;");
         }
 
         refreshtablesum();
@@ -3116,48 +3342,48 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
             document.getElementById('capital').setAttribute("style", "padding-left:20px; padding-bottom:10px; padding-right:20px; opacity:1;")
 
         }
-        var capital_deletedRow = function (instance) {
+        //var capital_deletedRow = function (instance) {
 
-            for (i = s_startvalue; i <= s_endvalue; i++) {
+        //    for (i = s_startvalue; i <= s_endvalue; i++) {
 
-                //creates json object of jexcel
-                var jsonobj = objcapital.getJson(false);
+        //        //creates json object of jexcel
+        //        var jsonobj = objcapital.getJson(false);
 
-                //getting particular row from json object       
-                var rowobj = jsonobj[i]; //row id getting from event
+        //        //getting particular row from json object       
+        //        var rowobj = jsonobj[i]; //row id getting from event
 
-                capital_deleteInfo.push(rowobj);
-                if (capital_updatedInfo.find(x => x.MasterID === rowobj.MasterID)) {
-                    index = capital_updatedInfo.indexOf(capital_updatedInfo.find(x => x.ProjectNumber === rowobj.ProjectNumber)); //getting index of that rec
-                    capital_updatedInfo.splice(index, 1); //remove the existing rec from object 
-                }
+        //        capital_deleteInfo.push(rowobj);
+        //        if (capital_updatedInfo.find(x => x.MasterID === rowobj.MasterID)) {
+        //            index = capital_updatedInfo.indexOf(capital_updatedInfo.find(x => x.ProjectNumber === rowobj.ProjectNumber)); //getting index of that rec
+        //            capital_updatedInfo.splice(index, 1); //remove the existing rec from object 
+        //        }
 
-                document.getElementById('capital_update_notificationnumber1').innerHTML = capital_updatedInfo.length;
-                document.getElementById('capital_delete_notificationnumber1').innerHTML = capital_deleteInfo.length;
+        //        document.getElementById('capital_update_notificationnumber1').innerHTML = capital_updatedInfo.length;
+        //        document.getElementById('capital_delete_notificationnumber1').innerHTML = capital_deleteInfo.length;
 
-                if (parseInt(capital_updatedInfo.length) > 0) {
-                    document.getElementById('capital_update_notificationnumber1').style.display = 'initial';
-                    document.getElementById('capital_update_notificationnumber2').style.display = 'initial';
-                }
-                else {
-                    document.getElementById('capital_update_notificationnumber1').style.display = 'none';
-                    document.getElementById('capital_update_notificationnumber2').style.display = 'none';
-                }
+        //        if (parseInt(capital_updatedInfo.length) > 0) {
+        //            document.getElementById('capital_update_notificationnumber1').style.display = 'initial';
+        //            document.getElementById('capital_update_notificationnumber2').style.display = 'initial';
+        //        }
+        //        else {
+        //            document.getElementById('capital_update_notificationnumber1').style.display = 'none';
+        //            document.getElementById('capital_update_notificationnumber2').style.display = 'none';
+        //        }
 
-                if (parseInt(capital_deleteInfo.length) > 0) {
-                    document.getElementById('capital_delete_notificationnumber1').style.display = 'initial';
-                    document.getElementById('capital_delete_notificationnumber2').style.display = 'initial';
-                }
-                else {
-                    document.getElementById('capital_delete_notificationnumber1').style.display = 'none';
-                    document.getElementById('capital_delete_notificationnumber2').style.display = 'none';
-                }
-                setcapitalSubmitting();
-                var screenst = $scope.ProjectsTable_fullscreen;
-                loadfullscreencss(screenst);
-            }
+        //        if (parseInt(capital_deleteInfo.length) > 0) {
+        //            document.getElementById('capital_delete_notificationnumber1').style.display = 'initial';
+        //            document.getElementById('capital_delete_notificationnumber2').style.display = 'initial';
+        //        }
+        //        else {
+        //            document.getElementById('capital_delete_notificationnumber1').style.display = 'none';
+        //            document.getElementById('capital_delete_notificationnumber2').style.display = 'none';
+        //        }
+        //        setcapitalSubmitting();
+        //        var screenst = $scope.ProjectsTable_fullscreen;
+        //        loadfullscreencss(screenst);
+        //    }
 
-        }
+        //}
         var capital_update = function (instance, cell, col, row, value) {
 
             //creates json object of jexcel
@@ -3207,7 +3433,7 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
                 vfrom = instance.jexcel.getRowData(to);
                 vto = instance.jexcel.getRowData(parseInt(to - 1));
             }
-            
+
             updateprogressbar(100, "Updating...");
             $http({
                 method: 'POST',
@@ -3234,6 +3460,41 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
             });
         }
 
+        function updatedeletenotificationbar_capital() {
+
+            document.getElementById('capital_update_notificationnumber1').innerHTML = capital_updatedInfo.length;
+            document.getElementById('capital_delete_notificationnumber1').innerHTML = capital_deleteInfo.length;
+
+            if (parseInt(capital_updatedInfo.length) > 0) {
+                document.getElementById('capital_update_notificationnumber1').style.display = 'initial';
+                document.getElementById('capital_update_notificationnumber2').style.display = 'initial';
+            }
+            else {
+                document.getElementById('capital_update_notificationnumber1').style.display = 'none';
+                document.getElementById('capital_update_notificationnumber2').style.display = 'none';
+            }
+
+            if (parseInt(capital_deleteInfo.length) > 0) {
+                document.getElementById('capital_delete_notificationnumber1').style.display = 'initial';
+                document.getElementById('capital_delete_notificationnumber2').style.display = 'initial';
+            }
+            else {
+                document.getElementById('capital_delete_notificationnumber1').style.display = 'none';
+                document.getElementById('capital_delete_notificationnumber2').style.display = 'none';
+            }
+
+            setcapitalSubmitting();
+            var screenst = $scope.ProjectsTable_fullscreen;
+            loadfullscreencss(screenst);
+        }
+
+        function deleteupdateinfo_capital(masterid) {
+            if (capital_updatedInfo.find(x => x.MasterID === masterid)) {
+                index = capital_updatedInfo.indexOf(capital_updatedInfo.find(x => x.ProjectNumber === rowobj.ProjectNumber)); //getting index of that rec
+                capital_updatedInfo.splice(index, 1); //remove the existing rec from object 
+            }
+        }
+
         objcapital = jexcel(document.getElementById('tbl_capital'), {
 
             data: dsCapital,
@@ -3244,7 +3505,6 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
             onchange: capital_update,
             allowManualInsertRow: false,
             footers: [['', '', '', '', '', '', '', 'Total', '=ROUND(SUM(K1:K300),2)', '=ROUND(SUM(L1:L300),2)', '=ROUND(SUM(M1:M300),2)', '=ROUND(SUM(N1:N300),2)', '=ROUND(SUM(O1:O300),2)', '=ROUND(SUM(P1:P300),2)', '=ROUND(SUM(Q1:Q300),2)', '=ROUND(SUM(R1:R300),2)', '=ROUND(SUM(S1:S300),2)', '=ROUND(SUM(T1:T300),2)', '=ROUND(SUM(U1:U300),2)', '=ROUND(SUM(V1:V300),2)']],
-            onbeforedeleterow: capital_deletedRow,
             tableOverflow: true,
             filters: true,
             onmoverow: moveCapitalRow,
@@ -3284,10 +3544,23 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
                 items.push({
                     title: "Duplicate",
                     onclick: function () {
-                        for (i = s_startvalue; i <= s_endvalue; i++) {
-                            var jsonobj = objcapital.getJson(false);
-                            var rowobj = jsonobj[i];
-                            capital_duplicateInfo.push(rowobj);
+
+                        //for (i = s_startvalue; i <= s_endvalue; i++) {
+                        //    var jsonobj = objcapital.getJson(false);
+                        //    var rowobj = jsonobj[i];
+                        //    capital_duplicateInfo.push(rowobj);
+                        //}
+                        //savecapital(true);
+
+                        var rowsElement = objcapital.getSelectedRows();
+                        for (var indexRow = 0; indexRow < rowsElement.length; indexRow++) {
+                            var displaystatus = rowsElement[indexRow].style.display;
+                            if (displaystatus == "") {
+                                var y = parseInt(rowsElement[indexRow].getAttribute("data-y"));
+                                var jsonobj = objcapital.getJson(false);
+                                var rowobj = jsonobj[y];
+                                capital_duplicateInfo.push(rowobj);
+                            }
                         }
                         savecapital(true);
                     }
@@ -3298,21 +3571,48 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
                     items.push({
                         title: obj.options.text.deleteSelectedRows,
                         onclick: function () {
+
+
+                            if (confirm('Are you sure do you want to delete?')) {
+
+                                var rowsElement = obj.getSelectedRows();
+                                //console.log(rowsElement);
+
+                                for (var indexRow = 0; indexRow < rowsElement.length; indexRow++) {
+
+                                    var displaystatus = rowsElement[indexRow].style.display;
+                                    if (displaystatus == "") {
+
+                                        var y = parseInt(rowsElement[indexRow].getAttribute("data-y"));
+                                        var jsonobj = obj.getJson(false);
+                                        var rowobj = jsonobj[y];
+                                        capital_deleteInfo.push(rowobj);
+                                        updatedeletenotificationbar_capital();
+                                        deleteupdateinfo_capital(rowobj.MasterID);
+                                        obj.deleteRow(y);
+
+                                    }
+
+                                }
+                            }
+                            validatefilters("capital", objcapital);
+
+
                             //if (confirm('Are you sure do you want to delete?')) {
                             //    obj.deleteRow(obj.getSelectedRows().length ? undefined : parseInt(y));
                             //    validatefilters("capital", objcapital);
                             //}
 
-                            var filterstatus = checkfilters('capital');
-                            if (filterstatus == 1 && obj.getSelectedRows().length > 1) {
-                                showalertsavechangesalert('Please select a single row to delete, multiple rows not possible in the filtered table.');
-                            }
-                            else {
-                                if (confirm('Are you sure do you want to delete?')) {
-                                    obj.deleteRow(obj.getSelectedRows().length ? undefined : parseInt(y));
-                                    validatefilters("capital", objcapital);
-                                }
-                            }
+                            //var filterstatus = checkfilters('capital');
+                            //if (filterstatus == 1 && obj.getSelectedRows().length > 1) {
+                            //    showalertsavechangesalert('Please select a single row to delete, multiple rows not possible in the filtered table.');
+                            //}
+                            //else {
+                            //    if (confirm('Are you sure do you want to delete?')) {
+                            //        obj.deleteRow(obj.getSelectedRows().length ? undefined : parseInt(y));
+                            //        validatefilters("capital", objcapital);
+                            //    }
+                            //}
                         }
                     });
                 }
@@ -3357,18 +3657,36 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
         });
 
         //reload filter information.
-        var reloadfilterinfo = localStorage.getItem("capital_filtervalue");
-        var reloadfilterkey = localStorage.getItem("capital_filterkey");
-        if (reloadfilterinfo != null && reloadfilterkey != null) {
-            document.getElementById("clearfilters").setAttribute("style", "zoom:80%; display:block; margin-left:10px; color:white; background: linear-gradient(to right, #ff9966, #ff5e62);");
-            var res = reloadfilterinfo.split(";");
-            res = res.map(s => s.trim());
-            objcapital.filter.children[parseInt(reloadfilterkey) + 1].innerHTML = reloadfilterinfo;
-            objcapital.filters[reloadfilterkey] = res;
-            objcapital.closeFilter();
+        //var reloadfilterinfo = localStorage.getItem("capital_filtervalue");
+        //var reloadfilterkey = localStorage.getItem("capital_filterkey");
+        //if (reloadfilterinfo != null && reloadfilterkey != null) {
+        //    document.getElementById("clearfilters").setAttribute("style", "zoom:80%; display:block; margin-left:10px; color:white; background: linear-gradient(to right, #ff9966, #ff5e62);");
+        //    var res = reloadfilterinfo.split(";");
+        //    res = res.map(s => s.trim());
+        //    objcapital.filter.children[parseInt(reloadfilterkey) + 1].innerHTML = reloadfilterinfo;
+        //    objcapital.filters[reloadfilterkey] = res;
+        //    objcapital.closeFilter();
+        //}
+        //else {
+        //    document.getElementById("clearfilters").setAttribute("style", "zoom:80%; display:none; margin-left:10px; color:white; background: linear-gradient(to right, #ff9966, #ff5e62);");
+        //}
+
+        var filtersourcecopy = JSON.parse(localStorage.getItem("capital_filtersource"));
+        if (filtersourcecopy != null) {
+
+            document.getElementById("clearfilters").setAttribute("style", "display:block;");
+            for (var i = 0; i < filtersourcecopy.fitems.length; i++) {
+                var fild = filtersourcecopy.fitems[i].fid;
+                var fname = filtersourcecopy.fitems[i].fname;
+                var res = fname.split(";");
+                res = res.map(s => s.trim());
+                objcapital.filter.children[parseInt(fild) + 1].innerHTML = fname;
+                objcapital.filters[fild] = res;
+                objcapital.closeFilter();
+            }
         }
         else {
-            document.getElementById("clearfilters").setAttribute("style", "zoom:80%; display:none; margin-left:10px; color:white; background: linear-gradient(to right, #ff9966, #ff5e62);");
+            document.getElementById("clearfilters").setAttribute("style", "display:none;");
         }
 
         refreshtablesum();
@@ -3532,50 +3850,6 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
             c_endvalue = x2;
         }
 
-        var deletedRow = function (instance) {
-
-            for (i = s_startvalue; i <= s_endvalue; i++) {
-
-                //creates json object of jexcel
-                var jsonobj = obj.getJson(false);
-
-                //getting particular row from json object       
-                var rowobj = jsonobj[i]; //row id getting from event
-
-                deleteInfo.push(rowobj);
-                if (updatedInfo.find(x => x.MasterID === rowobj.MasterID)) {
-                    index = updatedInfo.indexOf(updatedInfo.find(x => x.ProjectNumber === rowobj.ProjectNumber)); //getting index of that rec
-                    updatedInfo.splice(index, 1); //remove the existing rec from object 
-                }
-
-                document.getElementById('update_notificationnumber1').innerHTML = updatedInfo.length;
-                document.getElementById('delete_notificationnumber1').innerHTML = deleteInfo.length;
-
-                if (parseInt(updatedInfo.length) > 0) {
-                    document.getElementById('update_notificationnumber1').style.display = 'initial';
-                    document.getElementById('update_notificationnumber2').style.display = 'initial';
-                }
-                else {
-                    document.getElementById('update_notificationnumber1').style.display = 'none';
-                    document.getElementById('update_notificationnumber2').style.display = 'none';
-                }
-
-                if (parseInt(deleteInfo.length) > 0) {
-                    document.getElementById('delete_notificationnumber1').style.display = 'initial';
-                    document.getElementById('delete_notificationnumber2').style.display = 'initial';
-                }
-                else {
-                    document.getElementById('delete_notificationnumber1').style.display = 'none';
-                    document.getElementById('delete_notificationnumber2').style.display = 'none';
-                }
-
-                setFormSubmitting();
-                var screenst = $scope.ProjectsTable_fullscreen;
-                loadfullscreencss(screenst);
-
-            }
-
-        }
 
         var update = function (instance, cell, col, row, value) {
 
@@ -3621,19 +3895,7 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
                 updatedInfo.push(rowobj); //pushing updated rec for the first time
 
             document.getElementById('update_notificationnumber1').innerHTML = updatedInfo.length;
-
-            if (parseInt(updatedInfo.length) > 0) {
-                setFormSubmitting();
-                document.getElementById('update_notificationnumber1').style.display = 'initial';
-                document.getElementById('update_notificationnumber2').style.display = 'initial';
-            }
-            else {
-                document.getElementById('update_notificationnumber1').style.display = 'none';
-                document.getElementById('update_notificationnumber2').style.display = 'none';
-            }
-
-            var screenst = $scope.ProjectsTable_fullscreen;
-            loadfullscreencss(screenst);
+            updatedeletenotificationbar();
         }
 
         ddbusinessunitFilter = function (instance, cell, c, r, source) {
@@ -3763,7 +4025,7 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
                 vfrom = instance.jexcel.getRowData(to);
                 vto = instance.jexcel.getRowData(parseInt(to - 1));
             }
-                        
+
             updateprogressbar(100, "Updating...");
             $http({
                 method: 'POST',
@@ -3784,10 +4046,45 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
                 }, function (error) {
                     console.log(error);
                 });
-                
+
             }, function (error) {
                 console.log(error);
             });
+        }
+
+        function deleteupdateinfo(masterid) {
+            if (updatedInfo.find(x => x.MasterID === masterid)) {
+                index = updatedInfo.indexOf(updatedInfo.find(x => x.ProjectNumber === rowobj.ProjectNumber)); //getting index of that rec
+                updatedInfo.splice(index, 1); //remove the existing rec from object 
+            }
+        }
+
+        function updatedeletenotificationbar() {
+
+            document.getElementById('update_notificationnumber1').innerHTML = updatedInfo.length;
+            document.getElementById('delete_notificationnumber1').innerHTML = deleteInfo.length;
+
+            if (parseInt(updatedInfo.length) > 0) {
+                document.getElementById('update_notificationnumber1').style.display = 'initial';
+                document.getElementById('update_notificationnumber2').style.display = 'initial';
+            }
+            else {
+                document.getElementById('update_notificationnumber1').style.display = 'none';
+                document.getElementById('update_notificationnumber2').style.display = 'none';
+            }
+
+            if (parseInt(deleteInfo.length) > 0) {
+                document.getElementById('delete_notificationnumber1').style.display = 'initial';
+                document.getElementById('delete_notificationnumber2').style.display = 'initial';
+            }
+            else {
+                document.getElementById('delete_notificationnumber1').style.display = 'none';
+                document.getElementById('delete_notificationnumber2').style.display = 'none';
+            }
+
+            setFormSubmitting();
+            var screenst = $scope.ProjectsTable_fullscreen;
+            loadfullscreencss(screenst);
         }
 
         //editor: new InputMaxLenght(4)
@@ -3798,7 +4095,6 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
             filters: true,
             tableWidth: mainwidth,
             allowManualInsertRow: false,
-            onbeforedeleterow: deletedRow,
             onselection: selectionActive,
             onmoverow: moveResourceRow,
             onchange: update,
@@ -3836,7 +4132,9 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
                 { type: 'hidden', readOnly: true, title: 'RowID', width: 80 }
             ],
             contextMenu: function (obj, x, y, e) {
+
                 var items = [];
+
                 if (y == null) {
                     //items.push({
                     //    title: "Hide Column",
@@ -3865,10 +4163,22 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
                     items.push({
                         title: "Duplicate",
                         onclick: function () {
-                            for (i = s_startvalue; i <= s_endvalue; i++) {
-                                var jsonobj = obj.getJson(false);
-                                var rowobj = jsonobj[i];
-                                duplicateInfo.push(rowobj);
+
+                            //for (i = s_startvalue; i <= s_endvalue; i++) {
+                            //    var jsonobj = obj.getJson(false);
+                            //    var rowobj = jsonobj[i];
+                            //    duplicateInfo.push(rowobj);
+                            //}
+
+                            var rowsElement = obj.getSelectedRows();
+                            for (var indexRow = 0; indexRow < rowsElement.length; indexRow++) {
+                                var displaystatus = rowsElement[indexRow].style.display;
+                                if (displaystatus == "") {
+                                    var y = parseInt(rowsElement[indexRow].getAttribute("data-y"));
+                                    var jsonobj = obj.getJson(false);
+                                    var rowobj = jsonobj[y];
+                                    duplicateInfo.push(rowobj);
+                                }
                             }
                             save(true);
                         }
@@ -3878,20 +4188,27 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
                         items.push({
                             title: obj.options.text.deleteSelectedRows,
                             onclick: function () {
-                                var filterstatus = checkfilters('resource');
-                                if (filterstatus == 1 && obj.getSelectedRows().length > 1) {
-                                    showalertsavechangesalert('Please select a single row to delete, multiple rows not possible in the filtered table.');
-                                }
-                                else {
-                                    if (confirm('Are you sure do you want to delete?')) {
-                                        obj.deleteRow(obj.getSelectedRows().length ? undefined : parseInt(y));
-                                        validatefilters("resource", obj);
+                                if (confirm('Are you sure do you want to delete?')) {
+
+                                    var rowsElement = obj.getSelectedRows();
+                                    for (var indexRow = 0; indexRow < rowsElement.length; indexRow++) {
+                                        var displaystatus = rowsElement[indexRow].style.display;
+                                        if (displaystatus == "") {
+                                            var y = parseInt(rowsElement[indexRow].getAttribute("data-y"));
+                                            var jsonobj = obj.getJson(false);
+                                            var rowobj = jsonobj[y];
+                                            deleteInfo.push(rowobj);
+                                            updatedeletenotificationbar();
+                                            deleteupdateinfo(rowobj.MasterID);
+                                            obj.deleteRow(y);
+                                        }
                                     }
                                 }
+                                validatefilters("resource", obj);
                             }
                         });
                     }
-                    //, editor: new InputMaxLenght(4)
+
                     //if (x) {
                     //    if (obj.options.allowComments == true) {
                     //        items.push({ type: 'line' });
@@ -3899,13 +4216,18 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
                     //        var title = obj.records[y][x].getAttribute('title') || '';
 
                     //        items.push({
-                    //            title: title ? obj.options.text.editComments : obj.options.text.addComments,
+                    //            title: (obj.records[y][x].innerHTML != title && title != "") ? obj.options.text.editComments : obj.options.text.addComments,
                     //            onclick: function () {
-                    //                obj.setComments([x, y], prompt(obj.options.text.comments, title));
+                    //                if (title != obj.records[y][x].innerHTML && title != "") {
+                    //                    obj.setComments([x, y], prompt(obj.options.text.comments, title));
+                    //                }
+                    //                else {
+                    //                    obj.setComments([x, y], prompt(obj.options.text.comments, ""));
+                    //                }
                     //            }
                     //        });
 
-                    //        if (title) {
+                    //        if (title != obj.records[y][x].innerHTML && title != "") {
                     //            items.push({
                     //                title: obj.options.text.clearComments,
                     //                onclick: function () {
@@ -3915,12 +4237,25 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
                     //        }
                     //    }
                     //}
-
                 }
+
                 return items;
             },
             updateTable: function (instance, cell, col, row, val, label, cellName) {
+
+                //debugger
+                //var filtered = resource_comments.filter(a => a.MasterID == val);
+                //if (filtered.length > 0) {
+                //    for (var k = 0; k < filtered.length; k++) {
+                //        instance.jexcel.setComments([parseInt(filtered[k].ColumnID), row], filtered[k].Comments);
+                //    }
+                //}
+                //else {
+                //    cell.setAttribute('title', cell.innerHTML);
+                //}
+
                 cell.setAttribute('title', cell.innerHTML);
+
                 // Number formating 
                 if (col == 9 || col == 10 || col == 11 || col == 12 || col == 13 || col == 14 || col == 15 || col == 16 || col == 17 || col == 18 || col == 19 || col == 20 || col == 21) {
 
@@ -3934,11 +4269,6 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
                         }
                     };
 
-
-                    //if (col != 9) {
-                    //    cell.innerHTML = Number.parseFloat(val).toFixed(2);
-                    //}
-
                     if (val === "") {
                         cell.innerHTML = '0.00';
                     }
@@ -3949,7 +4279,6 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
                     else {
                         cell.style.color = 'black';
                     }
-
                 }
 
             },
@@ -3962,21 +4291,40 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
         });
 
         //reload filter information.
-        var reloadfilterinfo = localStorage.getItem("resource_filtervalue");
-        var reloadfilterkey = localStorage.getItem("resource_filterkey");
-        if (reloadfilterinfo != null && reloadfilterkey != null) {
-            document.getElementById("clearfilters").setAttribute("style", "zoom:80%; display:block; margin-left:10px; color:white; background: linear-gradient(to right, #ff9966, #ff5e62);");
-            var res = reloadfilterinfo.split(";");
-            res = res.map(s => s.trim());
-            obj.filter.children[parseInt(reloadfilterkey) + 1].innerHTML = reloadfilterinfo;
-            obj.filters[reloadfilterkey] = res;
-            obj.closeFilter();
+        //var reloadfilterinfo = localStorage.getItem("resource_filtervalue");
+        //var reloadfilterkey = localStorage.getItem("resource_filterkey");
+        //if (reloadfilterinfo != null && reloadfilterkey != null) {
+        //    document.getElementById("clearfilters").setAttribute("style", "zoom:80%; display:block; margin-left:10px; color:white; background: linear-gradient(to right, #ff9966, #ff5e62);");
+        //    var res = reloadfilterinfo.split(";");
+        //    res = res.map(s => s.trim());
+        //    obj.filter.children[parseInt(reloadfilterkey) + 1].innerHTML = reloadfilterinfo;
+        //    obj.filters[reloadfilterkey] = res;
+        //    obj.closeFilter();
+        //}
+        //else {
+        //    document.getElementById("clearfilters").setAttribute("style", "zoom:80%; display:none; margin-left:10px; color:white; background: linear-gradient(to right, #ff9966, #ff5e62);");
+        //}
+
+        var filtersourcecopy = JSON.parse(localStorage.getItem("resource_filtersource"));
+        if (filtersourcecopy != null) {
+
+            document.getElementById("clearfilters").setAttribute("style", "display:block;");
+            for (var i = 0; i < filtersourcecopy.fitems.length; i++) {
+                var fild = filtersourcecopy.fitems[i].fid;
+                var fname = filtersourcecopy.fitems[i].fname;
+                var res = fname.split(";");
+                res = res.map(s => s.trim());
+                obj.filter.children[parseInt(fild) + 1].innerHTML = fname;
+                obj.filters[fild] = res;
+                obj.closeFilter();
+            }
         }
         else {
-            document.getElementById("clearfilters").setAttribute("style", "zoom:80%; display:none; margin-left:10px; color:white; background: linear-gradient(to right, #ff9966, #ff5e62);");
+            document.getElementById("clearfilters").setAttribute("style", "display:none;");
         }
 
         refreshtablesum();
+
 
         //method to load captial data table
         //loadDE = jexcel(document.getElementById('spreadsheetDE'), {
@@ -4576,6 +4924,7 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
     }
 
     $scope.Resourceclear = function () {
+        //console.log(obj.getConfig().comments);
         resource_clear();
     }
 
@@ -4906,27 +5255,33 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
 
     $scope.resetfilter = function () {
 
+        var tablobj = [];
         var activetablevalue = document.getElementById('activetabid').innerHTML;
         if (activetablevalue === "resource") {
-            obj.resetFilters();
-            obj.resetSearch();
+            tablobj = obj;
         }
         else if (activetablevalue === "capital") {
-            objcapital.resetFilters();
-            objcapital.resetSearch();
+            tablobj = objcapital;
         }
         else if (activetablevalue === "capitallabor") {
-            objcapitallabour.resetFilters();
-            objcapitallabour.resetSearch();
+            tablobj = objcapitallabour;
         }
         else if (activetablevalue === "directexpenses") {
-            objdirectexpenses.resetFilters();
-            objdirectexpenses.resetSearch();
+            tablobj = objdirectexpenses;
         }
 
-        document.getElementById("clearfilters").setAttribute("style", "zoom:80%; display:none; margin-left:10px; color:white; background: linear-gradient(to right, #ff9966, #ff5e62);");
-        localStorage.removeItem(activetablevalue + "_filterkey");
-        localStorage.removeItem(activetablevalue + "_filtervalue");
+        tablobj.resetFilters();
+        tablobj.resetSearch();
+
+        var filters = tablobj.filters.map(function (arr) { if (arr == null || arr == "") { return null; } else { return arr.slice(); } });
+        for (var i = 0; i < filters.length; i++) {
+            if (filters[i] != null) {
+                tablobj.filter.children[i + 1].innerHTML = "";
+            }
+        }
+
+        document.getElementById("clearfilters").setAttribute("style", "display:none;");
+        localStorage.removeItem(activetablevalue + "_filtersource");
     }
 
     function refreshresourcedata() {

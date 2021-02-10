@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="ProformaLiveModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="ProformaLiveModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="CapitalInfo">
           <Key>
             <PropertyRef Name="MasterID" />
@@ -409,6 +409,20 @@ warning 6002: The table/view 'ProformaLive.dbo.ResourceInfo_old' does not have a
           <Property Name="ModifiedBy" Type="varchar" MaxLength="50" />
           <Property Name="ModifiedOn" Type="datetime" />
         </EntityType>
+        <EntityType Name="ResourceInfoComments">
+          <Key>
+            <PropertyRef Name="Sysid" />
+          </Key>
+          <Property Name="Sysid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ProjectID" Type="int" />
+          <Property Name="MasterID" Type="int" />
+          <Property Name="ColumnID" Type="int" />
+          <Property Name="Comments" Type="varchar(max)" />
+          <Property Name="CreatedBy" Type="varchar" MaxLength="500" />
+          <Property Name="CreatedOn" Type="datetime" />
+          <Property Name="ModifiedBy" Type="varchar" MaxLength="500" />
+          <Property Name="ModifiedOn" Type="datetime" />
+        </EntityType>
         <EntityType Name="ResourceInfoList">
           <Key>
             <PropertyRef Name="ID" />
@@ -468,6 +482,9 @@ warning 6002: The table/view 'ProformaLive.dbo.ResourceInfoList_old' does not ha
         </Function>
         <Function Name="SP_Delete_ResourceData" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="ID" Type="int" Mode="In" />
+        </Function>
+        <Function Name="SP_DeleteProjectData" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="ProjectID" Type="int" Mode="In" />
         </Function>
         <Function Name="SP_Duplicate_CapitallaborRows" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="ID" Type="int" Mode="In" />
@@ -530,6 +547,7 @@ warning 6002: The table/view 'ProformaLive.dbo.ResourceInfoList_old' does not ha
           <Parameter Name="MidOrg" Type="varchar" Mode="In" />
           <Parameter Name="Team" Type="varchar" Mode="In" />
         </Function>
+        <Function Name="SP_Get_Resource_Comments" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="SP_Get_Skillmaster" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="SP_Get_SwapProjects" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="PrimaryProject" Type="int" Mode="In" />
@@ -611,6 +629,7 @@ warning 6002: The table/view 'ProformaLive.dbo.ResourceInfoList_old' does not ha
           <EntitySet Name="ProjectMaster" EntityType="Self.ProjectMaster" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Resource_TempData" EntityType="Self.Resource_TempData" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ResourceInfo" EntityType="Self.ResourceInfo" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ResourceInfoComments" EntityType="Self.ResourceInfoComments" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ResourceInfoList" EntityType="Self.ResourceInfoList" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Temp_ProjectMaster" EntityType="Self.Temp_ProjectMaster" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ResourceInfo_old" EntityType="Self.ResourceInfo_old" store:Type="Tables" store:Schema="dbo">
@@ -642,8 +661,7 @@ warning 6002: The table/view 'ProformaLive.dbo.ResourceInfoList_old' does not ha
     FROM [dbo].[ResourceInfoList_old] AS [ResourceInfoList_old]</DefiningQuery>
           </EntitySet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="ProformaLiveModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -1123,16 +1141,19 @@ warning 6002: The table/view 'ProformaLive.dbo.ResourceInfoList_old' does not ha
             <Parameter Name="CreatedBy" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="SP_Delete_CapitalData">
-            <Parameter Name="ID" Mode="In" Type="Int32" />
+          <Parameter Name="ID" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="SP_Delete_CapitalLaborInfo">
-            <Parameter Name="ID" Mode="In" Type="Int32" />
+          <Parameter Name="ID" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="SP_Delete_DirectExpensesInfo">
-            <Parameter Name="ID" Mode="In" Type="Int32" />
+          <Parameter Name="ID" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="SP_Delete_ResourceData">
-            <Parameter Name="ID" Mode="In" Type="Int32" />
+          <Parameter Name="ID" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="SP_DeleteProjectData">
+          <Parameter Name="ProjectID" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="SP_Duplicate_CapitallaborRows">
             <Parameter Name="ID" Mode="In" Type="Int32" />
@@ -1147,27 +1168,27 @@ warning 6002: The table/view 'ProformaLive.dbo.ResourceInfoList_old' does not ha
             <Parameter Name="UserID" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="SP_DuplicateRows">
-            <Parameter Name="ID" Mode="In" Type="Int32" />
+          <Parameter Name="ID" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="SP_EXPORT_ResourceData" ReturnType="Collection(ProformaLiveModel.SP_EXPORT_ResourceData_Result)">
-            <Parameter Name="projectid" Mode="In" Type="Int32" />
+          <Parameter Name="projectid" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="SP_Filter_GetFinYear" ReturnType="Collection(String)">
-            <Parameter Name="ProjectID" Mode="In" Type="Int32" />
+          <Parameter Name="ProjectID" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="SP_Filter_GetMonths" ReturnType="Collection(String)">
             <Parameter Name="ProjectID" Mode="In" Type="Int32" />
             <Parameter Name="FisYear" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="SP_Filter_GetQuarter" ReturnType="Collection(String)">
-            <Parameter Name="Month" Mode="In" Type="String" />
+          <Parameter Name="Month" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="SP_Get_Business" ReturnType="Collection(String)" />
           <FunctionImport Name="SP_Get_BusinessUnit" ReturnType="Collection(String)">
-            <Parameter Name="Business" Mode="In" Type="String" />
+          <Parameter Name="Business" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="SP_Get_CapitalExpenditureWBS" ReturnType="Collection(String)">
-            <Parameter Name="PROJECTID" Mode="In" Type="Int32" />
+          <Parameter Name="PROJECTID" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="SP_Get_Configure_RateCard" ReturnType="Collection(ProformaLiveModel.SP_Get_Configure_RateCard_Result)" />
           <FunctionImport Name="SP_Get_HighOrg" ReturnType="Collection(String)">
@@ -1182,10 +1203,10 @@ warning 6002: The table/view 'ProformaLive.dbo.ResourceInfoList_old' does not ha
             <Parameter Name="HighOrg" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="SP_Get_OperatingExpenseWBS" ReturnType="Collection(String)">
-            <Parameter Name="PROJECTID" Mode="In" Type="Int32" />
+          <Parameter Name="PROJECTID" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="SP_Get_PrimaryProjectData" ReturnType="Collection(ProformaLiveModel.SP_Get_PrimaryProjectData_Result)">
-            <Parameter Name="ProjectID" Mode="In" Type="String" />
+          <Parameter Name="ProjectID" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="SP_Get_Projects" ReturnType="Collection(ProformaLiveModel.SP_Get_Projects_Result)" />
           <FunctionImport Name="SP_Get_RequiredSkills" ReturnType="Collection(String)">
@@ -1207,16 +1228,16 @@ warning 6002: The table/view 'ProformaLive.dbo.ResourceInfoList_old' does not ha
             <Parameter Name="MidOrg" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="SP_GetCapitalData" ReturnType="Collection(ProformaLiveModel.SP_GetCapitalData_Result)">
-            <Parameter Name="projectid" Mode="In" Type="Int32" />
+          <Parameter Name="projectid" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="SP_GetCapitalLaborData" ReturnType="Collection(ProformaLiveModel.SP_GetCapitalLaborData_Result)">
-            <Parameter Name="projectid" Mode="In" Type="Int32" />
+          <Parameter Name="projectid" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="SP_GetDirectExpensesData" ReturnType="Collection(ProformaLiveModel.SP_GetDirectExpensesData_Result)">
-            <Parameter Name="projectid" Mode="In" Type="Int32" />
+          <Parameter Name="projectid" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="SP_Getlastmodifiedinfo" ReturnType="Collection(ProformaLiveModel.SP_Getlastmodifiedinfo_Result)">
-            <Parameter Name="ProjectID" Mode="In" Type="Int32" />
+          <Parameter Name="ProjectID" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="SP_GetNewSummary">
             <Parameter Name="ProjectID" Mode="In" Type="String" />
@@ -1231,7 +1252,7 @@ warning 6002: The table/view 'ProformaLive.dbo.ResourceInfoList_old' does not ha
             <Parameter Name="Qtr" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="SP_GetResourceData" ReturnType="Collection(ProformaLiveModel.SP_GetResourceData_Result)">
-            <Parameter Name="projectid" Mode="In" Type="Int32" />
+          <Parameter Name="projectid" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="SP_GetSummary">
             <Parameter Name="ProjectID" Mode="In" Type="String" />
@@ -1248,8 +1269,10 @@ warning 6002: The table/view 'ProformaLive.dbo.ResourceInfoList_old' does not ha
             <Parameter Name="TabName" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="SP_Validate_ProjectCode" ReturnType="Collection(String)">
-            <Parameter Name="ProjectNumber" Mode="In" Type="String" />
+          <Parameter Name="ProjectNumber" Mode="In" Type="String" />
           </FunctionImport>
+          <EntitySet Name="ResourceInfoComments" EntityType="ProformaLiveModel.ResourceInfoComment" />
+          <FunctionImport Name="SP_Get_Resource_Comments" ReturnType="Collection(ProformaLiveModel.SP_Get_Resource_Comments_Result)" />
         </EntityContainer>
         <ComplexType Name="SP_Config_Projects_Result">
           <Property Type="String" Name="ProjectName" Nullable="true" />
@@ -1493,6 +1516,27 @@ warning 6002: The table/view 'ProformaLive.dbo.ResourceInfoList_old' does not ha
           <Property Type="Int32" Name="MID" Nullable="true" />
           <Property Type="String" Name="FisMonth" Nullable="true" MaxLength="20" />
           <Property Type="Decimal" Name="value" Nullable="false" Precision="18" Scale="2" />
+        </ComplexType>
+        <EntityType Name="ResourceInfoComment">
+          <Key>
+            <PropertyRef Name="Sysid" />
+          </Key>
+          <Property Name="Sysid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ProjectID" Type="Int32" />
+          <Property Name="MasterID" Type="Int32" />
+          <Property Name="ColumnID" Type="Int32" />
+          <Property Name="Comments" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="CreatedBy" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="CreatedOn" Type="DateTime" Precision="3" />
+          <Property Name="ModifiedBy" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="ModifiedOn" Type="DateTime" Precision="3" />
+        </EntityType>
+        <ComplexType Name="SP_Get_Resource_Comments_Result">
+          <Property Type="Int32" Name="Sysid" Nullable="false" />
+          <Property Type="Int32" Name="ProjectID" Nullable="true" />
+          <Property Type="Int32" Name="MasterID" Nullable="true" />
+          <Property Type="Int32" Name="ColumnID" Nullable="true" />
+          <Property Type="String" Name="Comments" Nullable="true" />
         </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
@@ -2004,6 +2048,7 @@ warning 6002: The table/view 'ProformaLive.dbo.ResourceInfoList_old' does not ha
           <FunctionImportMapping FunctionImportName="SP_Delete_CapitalLaborInfo" FunctionName="ProformaLiveModel.Store.SP_Delete_CapitalLaborInfo" />
           <FunctionImportMapping FunctionImportName="SP_Delete_DirectExpensesInfo" FunctionName="ProformaLiveModel.Store.SP_Delete_DirectExpensesInfo" />
           <FunctionImportMapping FunctionImportName="SP_Delete_ResourceData" FunctionName="ProformaLiveModel.Store.SP_Delete_ResourceData" />
+          <FunctionImportMapping FunctionImportName="SP_DeleteProjectData" FunctionName="ProformaLiveModel.Store.SP_DeleteProjectData" />
           <FunctionImportMapping FunctionImportName="SP_Duplicate_CapitallaborRows" FunctionName="ProformaLiveModel.Store.SP_Duplicate_CapitallaborRows" />
           <FunctionImportMapping FunctionImportName="SP_Duplicate_CapitalRows" FunctionName="ProformaLiveModel.Store.SP_Duplicate_CapitalRows" />
           <FunctionImportMapping FunctionImportName="SP_Duplicate_Directexpenses" FunctionName="ProformaLiveModel.Store.SP_Duplicate_Directexpenses" />
@@ -2291,6 +2336,32 @@ warning 6002: The table/view 'ProformaLive.dbo.ResourceInfoList_old' does not ha
           <FunctionImportMapping FunctionImportName="SP_InsertResourcedata" FunctionName="ProformaLiveModel.Store.SP_InsertResourcedata" />
           <FunctionImportMapping FunctionImportName="SP_Resource_Moverows" FunctionName="ProformaLiveModel.Store.SP_Resource_Moverows" />
           <FunctionImportMapping FunctionImportName="SP_Validate_ProjectCode" FunctionName="ProformaLiveModel.Store.SP_Validate_ProjectCode" />
+          <EntitySetMapping Name="ResourceInfoComments">
+            <EntityTypeMapping TypeName="ProformaLiveModel.ResourceInfoComment">
+              <MappingFragment StoreEntitySet="ResourceInfoComments">
+                <ScalarProperty Name="ModifiedOn" ColumnName="ModifiedOn" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="Comments" ColumnName="Comments" />
+                <ScalarProperty Name="ColumnID" ColumnName="ColumnID" />
+                <ScalarProperty Name="MasterID" ColumnName="MasterID" />
+                <ScalarProperty Name="ProjectID" ColumnName="ProjectID" />
+                <ScalarProperty Name="Sysid" ColumnName="Sysid" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="SP_Get_Resource_Comments" FunctionName="ProformaLiveModel.Store.SP_Get_Resource_Comments">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="ProformaLiveModel.SP_Get_Resource_Comments_Result">
+                <ScalarProperty Name="Sysid" ColumnName="Sysid" />
+                <ScalarProperty Name="ProjectID" ColumnName="ProjectID" />
+                <ScalarProperty Name="MasterID" ColumnName="MasterID" />
+                <ScalarProperty Name="ColumnID" ColumnName="ColumnID" />
+                <ScalarProperty Name="Comments" ColumnName="Comments" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

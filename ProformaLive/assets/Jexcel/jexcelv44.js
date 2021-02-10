@@ -494,7 +494,7 @@ if (!jSuites && typeof (require) === 'function') {
             var searchText = document.createTextNode((obj.options.text.search) + ': ');
             obj.searchInput = document.createElement('input');
             obj.searchInput.classList.add('jexcel_search');
-            obj.searchInput.setAttribute("oninput", "calculatesum()"); 
+            obj.searchInput.setAttribute("oninput", "calculatesum()");
             obj.searchInput.placeholder = "Search List...";
             obj.searchInput.style.cssText = "width:100%; background-color: #0672ec; color: black; font-size: 12px;padding-left: 15px; padding-top: 7px; padding-bottom: 7px; border: 1px solid #0672ec;";
             //searchContainer.appendChild(searchText);
@@ -1699,6 +1699,8 @@ if (!jSuites && typeof (require) === 'function') {
             if (!obj.options.filters) {
                 console.log('JEXCEL: filters not enabled.');
             } else {
+
+
                 // Make sure is integer
                 columnId = parseInt(columnId);
                 // Reset selection
@@ -1706,10 +1708,14 @@ if (!jSuites && typeof (require) === 'function') {
                 // Load options
                 var options = [];
                 for (var j = 0; j < obj.options.data.length; j++) {
-                    var k = obj.options.data[j][columnId];
-                    var v = obj.records[j][columnId].innerHTML;
-                    if (k && v) {
-                        options[k] = v;
+
+                    var displaystatus = obj.rows[j].style.display;
+                    if (displaystatus != 'none') {
+                        var k = obj.options.data[j][columnId];
+                        var v = obj.records[j][columnId].innerHTML;
+                        if (k && v) {
+                            options[k] = v;
+                        }
                     }
                 }
                 var keys = Object.keys(options);
@@ -1739,10 +1745,10 @@ if (!jSuites && typeof (require) === 'function') {
                     autocomplete: true,
                     opened: true,
                     value: obj.filters[columnId] !== undefined ? obj.filters[columnId] : null,
-                    width: '100%',                    
+                    width: '100%',
                     position: (obj.options.tableOverflow == true || obj.options.fullscreen == true) ? true : false,
                     onclose: function (o) {
-                        obj.resetFilters();
+                        //obj.resetFilters();
                         obj.filters[columnId] = o.dropdown.getValue(true);
                         obj.filter.children[columnId + 1].innerHTML = o.dropdown.getText();
                         obj.filter.children[columnId + 1].style.paddingLeft = '';
@@ -1768,6 +1774,7 @@ if (!jSuites && typeof (require) === 'function') {
         }
 
         obj.closeFilter = function (columnId) {
+
             if (!columnId) {
                 for (var i = 0; i < obj.filter.children.length; i++) {
                     if (obj.filters[i]) {
@@ -1803,19 +1810,23 @@ if (!jSuites && typeof (require) === 'function') {
             //}
 
             var search = function (query, x, y) {
+
                 for (var i = 0; i < query.length; i++) {
 
                     var pre_queryvalue = replaceAll(query[i], ')', '').replaceAll("\\", "")
                     var queryvalue = replaceAll(pre_queryvalue, '(', '')
                     queryvalue = replaceAll(queryvalue, '&', '')
-                    
+                    queryvalue = replaceAll(queryvalue, '$', '')
+
                     var optionaldata = replaceAll(obj.options.data[y][x], ')', '').replaceAll("\\", "")
                     optionaldata = replaceAll(optionaldata, '(', '')
                     optionaldata = replaceAll(optionaldata, '&', '')
+                    optionaldata = replaceAll(optionaldata, '$', '')
 
                     var recordsdata = replaceAll(obj.records[y][x].innerHTML, ')', '').replaceAll("\\", "")
                     recordsdata = replaceAll(recordsdata, '(', '')
                     recordsdata = replaceAll(recordsdata, '&', '')
+                    recordsdata = replaceAll(recordsdata, '$', '')
 
                     if (('' + optionaldata).search(queryvalue) >= 0 || ('' + recordsdata).search(queryvalue) >= 0) {
                         return true;
@@ -1832,18 +1843,48 @@ if (!jSuites && typeof (require) === 'function') {
             //    }
             //}
 
+
             var query = obj.filters[columnId];
             obj.results = [];
             for (var j = 0; j < obj.options.data.length; j++) {
-                if (search(query, columnId, j)) {
-                    obj.results.push(j);
+                if (obj.rows[j].style.display != 'none') {
+                    if (search(query, columnId, j)) {                        
+                        obj.results.push(j);
+                    }
                 }
             }
             if (!obj.results.length) {
                 obj.results = null;
             }
 
-            obj.updateResult();
+            
+            var query = obj.filters[columnId];
+            if (query == "") {
+
+                obj.results = null;                
+                obj.updateResult();
+
+                var filters = obj.filters.map(function (arr) { if (arr == null || arr == "") { return null; } else { return arr.slice(); } });
+                for (var i = 0; i < filters.length; i++) {
+                    if (filters[i] != null) {
+                        var query = obj.filters[i];
+                        obj.results = [];
+                        for (var j = 0; j < obj.options.data.length; j++) {
+                            if (obj.rows[j].style.display != 'none') {
+                                if (search(query, i, j)) {
+                                    obj.results.push(j);
+                                }
+                            }
+                        }
+                        obj.updateResult();
+                        obj.results = [];
+                    }                    
+                }
+            }
+            else {
+                obj.updateResult();
+            }
+                        
         }
 
         /**
@@ -3850,7 +3891,7 @@ if (!jSuites && typeof (require) === 'function') {
 
             if (obj.options.search == true) {
                 if (obj.results && obj.results.length != obj.rows.length) {
-                    if (confirm(obj.options.text.thisActionWillClearYourSearchResultsAreYouSure)) {                        
+                    if (confirm(obj.options.text.thisActionWillClearYourSearchResultsAreYouSure)) {
                         obj.resetSearch();
                     } else {
                         return false;
@@ -3955,7 +3996,7 @@ if (!jSuites && typeof (require) === 'function') {
                 // Clear any search
                 if (obj.options.search == true) {
                     if (obj.results && obj.results.length != obj.rows.length) {
-                        if (confirm(obj.options.text.thisActionWillClearYourSearchResultsAreYouSure)) {                            
+                        if (confirm(obj.options.text.thisActionWillClearYourSearchResultsAreYouSure)) {
                             obj.resetSearch();
                         } else {
                             return false;
@@ -4038,8 +4079,8 @@ if (!jSuites && typeof (require) === 'function') {
          * @param integer numOfRows - number of lines
          * @return void
          */
-        obj.deleteRow = function (rowNumber, numOfRows) {   
-            
+        obj.deleteRow = function (rowNumber, numOfRows) {
+
             // Global Configuration
             if (obj.options.allowDeleteRow == true) {
                 if (obj.options.allowDeletingAllRows == true || obj.options.data.length > 0) {
@@ -4108,7 +4149,7 @@ if (!jSuites && typeof (require) === 'function') {
 
                         //    obj.results = null;
                         //}
-                        
+
                         // Remove node
                         for (var row = rowNumber; row < rowNumber + numOfRows; row++) {
                             if (Array.prototype.indexOf.call(obj.tbody.children, obj.rows[row]) >= 0) {
@@ -7046,14 +7087,14 @@ if (!jSuites && typeof (require) === 'function') {
 
         obj.updateFreezePosition = function () {
             scrollLeft = obj.content.scrollLeft;
-            var width = 0;               
+            var width = 0;
             if (scrollLeft > 50) {
                 for (var i = 0; i < obj.options.freezeColumns; i++) {
                     if (i > 0) {
                         width += parseInt(obj.options.columns[i - 1].width);
-                    }                    
+                    }
                     obj.headers[i].classList.add('jexcel_freezed');
-                    obj.headers[i].style.left = width + 'px'; 
+                    obj.headers[i].style.left = width + 'px';
                     obj.filter.children[i + 1].classList.add('jexcel_freezedfilter');
                     obj.filter.children[i + 1].style.left = width + 'px';
                     for (var j = 0; j < obj.rows.length; j++) {
@@ -7067,7 +7108,7 @@ if (!jSuites && typeof (require) === 'function') {
             } else {
                 for (var i = 0; i < obj.options.freezeColumns; i++) {
                     obj.headers[i].classList.remove('jexcel_freezed');
-                    obj.headers[i].style.left = ''; 
+                    obj.headers[i].style.left = '';
                     obj.filter.children[i + 1].classList.remove('jexcel_freezedfilter');
                     obj.filter.children[i + 1].style.left = '';
                     for (var j = 0; j < obj.rows.length; j++) {
@@ -7487,7 +7528,7 @@ if (!jSuites && typeof (require) === 'function') {
 
                     if (e.target.classList.contains('jexcel_row')) {
                         var info = e.target.getBoundingClientRect();
-                        if (jexcel.current.options.rowResize == true && info.height - e.offsetY < 6) {
+                        if (jexcel.current.options.rowResize == true && info.height - e.offsetY < 15) {
                             // Resize helper
                             jexcel.current.resizing = {
                                 element: e.target.parentNode,
@@ -7497,7 +7538,7 @@ if (!jSuites && typeof (require) === 'function') {
                             };
                             // Border indication
                             e.target.parentNode.classList.add('resizing');
-                        } else if (jexcel.current.options.rowDrag == true && info.width - e.offsetX < 6) {
+                        } else if (jexcel.current.options.rowDrag == true && info.width - e.offsetX < 15) {
                             if (jexcel.current.isRowMerged(rowId).length) {
                                 console.error('JEXCEL: This row is part of a merged cell');
                             } else if (jexcel.current.options.search == true && jexcel.current.results) {
@@ -7766,7 +7807,7 @@ if (!jSuites && typeof (require) === 'function') {
                     }
 
                     if (e.target.parentNode.parentNode.classList.contains('draggable')) {
-                        if (e.target && !x && y && (rect.width - (e.clientX - rect.left) < 6)) {
+                        if (e.target && !x && y && (rect.width - (e.clientX - rect.left) < 15)) {
                             jexcel.current.cursor = e.target;
                             jexcel.current.cursor.style.cursor = 'move';
                         } else if (e.target && x && !y && (rect.height - (e.clientY - rect.top) < 6)) {

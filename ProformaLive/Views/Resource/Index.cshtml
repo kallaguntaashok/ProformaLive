@@ -1,11 +1,12 @@
-﻿<link href="~/assets/Jexcel/jexcel_44.css?ID=4400" rel="stylesheet" />
-<link href="~/assets/Jexcel/jsuites38.css?ID=4400" rel="stylesheet" />
-<link href="~/assets/css/delete-confirmation.css?ID=4400" rel="stylesheet" />
-<script src="~/assets/Jexcel/jexcelv44.js?ID=4400"></script>
-<script src="~/assets/Jexcel/jsuites38.js?ID=4400"></script>
-<script src="~/assets/scripts/resource.js?ID=4400"></script>
-<script src="~/assets/scripts/exportexcel/alasql.min.js?ID=4400"></script>
-<script src="~/assets/scripts/exportexcel/xlsx.core.min.js?ID=4400"></script>
+﻿<link href="~/assets/Jexcel/jexcel_44.css?ID=5000" rel="stylesheet" />
+<link href="~/assets/Jexcel/jsuites38.css?ID=5000" rel="stylesheet" />
+<link href="~/assets/css/delete-confirmation.css?ID=5000" rel="stylesheet" />
+<script src="~/assets/Jexcel/jexcelv44.js?ID=5000"></script>
+<script src="~/assets/Jexcel/jsuites38.js?ID=5000"></script>
+<script src="~/assets/scripts/resource.js?ID=5000"></script>
+<script src="~/assets/scripts/exportexcel/alasql.min.js?ID=5000"></script>
+<script src="~/assets/scripts/exportexcel/xlsx.core.min.js?ID=5000"></script>
+
 
 
 <div id="alertbox" style="display:none; z-index:99999" class="confirmation_modal fade-up">
@@ -69,7 +70,6 @@
     <div style="display:none;" id="maincard" class="card">
         <div style="font-weight: 500; font-size:13px;" class="card-header">
             <i class="fa fa-th" style="color:#043a7c;" aria-hidden="true"></i>&nbsp;&nbsp;Proforma
-            <button type="button" id="clearfilters" ng-click="resetfilter();" style="zoom:80%; display:none; margin-left:10px; color:white; background: linear-gradient(to right, #ff9966, #ff5e62);" class="btn btn-warning btn-sm float-right"><i class="fa fa-filter" aria-hidden="true"></i>&nbsp;&nbsp;Clear Filters</button>
             <button type="button" ng-click="startcloning();" style="zoom:80%; margin-left:10px; background: linear-gradient(to right, #38527f, #3a72d4);" class="btn btn-primary btn-sm float-right"><i class="fa fa-clone" aria-hidden="true"></i>&nbsp;&nbsp;Clone Proforma</button>
             <button type="button" id="exporttoexcel" ng-click="exporttoexcel();" style="zoom:80%; margin-left:10px; background: linear-gradient(to right, #11998e, #06b347);" class="btn btn-success btn-sm float-right"><i class="fa fa-file-excel-o" aria-hidden="true"></i>&nbsp;&nbsp;Export To Excel</button>
             <input style="zoom: 80%; display:none; margin-left:10px;" ng-click="SaveFile()" type="submit" value="Upload" class=" btn btn-warning btn-sm float-right" />
@@ -77,6 +77,7 @@
                 <span><i class="fa fa-upload"></i> &nbsp;&nbsp;Upload File &nbsp; {{theFile.name}}</span>
                 <input type="file" name="file" class="upload" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" onchange="angular.element(this).scope().selectFileforUpload(this.files)" required />
             </span>
+            <button id="clearfilters" ng-click="resetfilter();" title="Clear filters"><i class="fa fa-filter" aria-hidden="true"></i></button>
         </div>
         <div class="card-body">
             <!-- Nav tabs -->
@@ -201,7 +202,6 @@
                     </div>
                     <div class="form-row">
                         &nbsp;<button type="button" style="zoom:80%" ng-click="addresourceinfo();" class="btn btn-success btn-sm float-left"><i class="fa fa-plus-circle" aria-hidden="true"></i>&nbsp;&nbsp;Add Resource Info</button> &nbsp; <button type="button" style="zoom:80%" ng-click="Resourceclear();" class="btn btn-info btn-sm float-left"><i class="fa fa-recycle" aria-hidden="true"></i>&nbsp;&nbsp;Clear</button> &nbsp; &nbsp;
-
                     </div>
                     <br />
                     <p style="font-size: 13px; font-weight: 500;">
@@ -209,7 +209,7 @@
                         <button type="button" style="zoom:80%; margin-left:10px;" class="btn btn-dark btn-sm float-right disabled">&nbsp;&nbsp;<i class="fa fa-window-maximize" aria-hidden="true"></i>&nbsp;&nbsp; For full screen, click on <b>Escape</b> key</button>
                         <button id="resource_Lastmodifiedby" type="button" style="display:none;zoom:80%; margin-left:10px; background: linear-gradient(to right, #164bc1, #182848);" class="btn btn-primary btn-sm float-right disabled">&nbsp;<i class="fa fa-user" aria-hidden="true"></i>&nbsp;&nbsp;<span style="font-weight:500;">{{resource_lastmodifiedby}}</span>&nbsp;</button>
                         <button id="resource_Lastmodifieddate" type="button" style="display: none;zoom: 80%; margin-left: 10px; background: linear-gradient(to right, #164bc1, #182848);" class="btn btn-primary btn-sm float-right disabled">&nbsp;<i class="fa fa-calendar" aria-hidden="true"></i>&nbsp;&nbsp;<span style="font-weight:500;">{{resource_lastmodifieddate}}</span>&nbsp;</button>
-                        <button type="button" style="zoom:80%; margin-left:10px; color:white; background: linear-gradient(to right, #fe8c00, #f83600);" class="btn btn-warning btn-sm float-right disabled">&nbsp;<i class="fa fa-object-group" aria-hidden="true"></i>&nbsp;&nbsp;<span style="font-weight:500;" id="resourcetotal">0</span>&nbsp;</button>
+                        <button type="button" style="zoom:80%; margin-left:10px; color:white; background: linear-gradient(to right, #fe8c00, #f83600);" class="btn btn-warning btn-sm float-right disabled">&nbsp;<i class="fa fa-object-group" aria-hidden="true"></i>&nbsp;&nbsp;<span style="font-weight:500;" id="resourcetotal">0</span>&nbsp;</button>                        
                     </p>
                     <div style="display:none;" id="notification" class="notification">
                         <span class="badge badge-light"><i class="fa fa-bell" aria-hidden="true"></i> Found</span>
@@ -227,7 +227,7 @@
                 <div id="capital" style="padding-left:20px; padding-bottom:10px; padding-right:20px; opacity:0;">
                     <br />
                     <div class="form-row">
-                        <div class="col-md-3 mb-3">                            
+                        <div class="col-md-3 mb-3">
                             <div autocomplete="off" id="dropCapitalExpenditureWBSCapital"></div>
                         </div>
                         <div class="col-md-2 mb-3">
@@ -278,7 +278,7 @@
                 <div id="capitallabour" style="padding-left:20px; padding-bottom:10px; padding-right:20px; opacity:0;">
                     <br />
                     <div class="form-row">
-                        <div class="col-md-3 mb-3">                            
+                        <div class="col-md-3 mb-3">
                             <div autocomplete="off" id="dropCapitalExpenditureWBS"></div>
                         </div>
                         <div class="col-md-3 mb-3">
@@ -433,7 +433,28 @@
 
 
 <script type="text/javascript">
-    function calculatesum() {        
+    function calculatesum() {
         angular.element(document.getElementById('mainbody')).scope().updatetotalsum();
     }
+
+    ////Get the button
+    //var mybutton = document.getElementById("myBtn");
+
+    //// When the user scrolls down 20px from the top of the document, show the button
+    //window.onscroll = function () { scrollFunction() };
+
+    //function scrollFunction() {
+    //    if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+    //        mybutton.style.display = "block";
+    //    } else {
+    //        mybutton.style.display = "none";
+    //    }
+    //}
+
+    //// When the user clicks on the button, scroll to the top of the document
+    //function topFunction() {
+    //    document.body.scrollTop = 0;
+    //    document.documentElement.scrollTop = 0;
+    //}
+
 </script>

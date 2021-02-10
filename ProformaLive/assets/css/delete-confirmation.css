@@ -291,3 +291,30 @@ hr {
     padding-left: 50px;
     color: #a9a9a9;
 }
+
+
+#clearfilters {
+    display:none;
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    z-index: 999999;
+    font-size: 15px;
+    border: none;
+    font-weight: bold;
+    outline: none;
+    color: white;
+    cursor: pointer;    
+    border-radius: 4px;
+    border: solid 5px #c5daf1;
+    background: linear-gradient(to right, #1c538f, #3188e5);
+}
+
+    #clearfilters:hover {
+        border: solid 5px #9fc6f0;
+        background: linear-gradient(to right, #1b4e86, #137dee);
+    }
+
+html {
+    scroll-behavior: smooth;
+}

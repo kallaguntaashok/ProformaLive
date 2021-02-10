@@ -143,6 +143,7 @@
     <Content Include="assets\scripts\landingpage.js" />
     <Content Include="assets\scripts\login.js" />
     <Content Include="assets\scripts\RateCard.js" />
+    <Content Include="assets\scripts\scroll.js" />
     <Content Include="assets\scripts\table.js" />
     <Content Include="assets\scripts\ui-bootstrap-tpls-0.13.3.js" />
     <Content Include="bin\Aspose.Cells.dll" />
@@ -346,6 +347,9 @@
     <Compile Include="ResourceInfo.cs">
       <DependentUpon>Proforma.tt</DependentUpon>
     </Compile>
+    <Compile Include="ResourceInfoComment.cs">
+      <DependentUpon>Proforma.tt</DependentUpon>
+    </Compile>
     <Compile Include="ResourceInfoList.cs">
       <DependentUpon>Proforma.tt</DependentUpon>
     </Compile>
@@ -398,6 +402,9 @@
       <DependentUpon>Proforma.tt</DependentUpon>
     </Compile>
     <Compile Include="SP_Get_Projects_Result.cs">
+      <DependentUpon>Proforma.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SP_Get_Resource_Comments_Result.cs">
       <DependentUpon>Proforma.tt</DependentUpon>
     </Compile>
     <Compile Include="SP_Get_Skillmaster_Result.cs">

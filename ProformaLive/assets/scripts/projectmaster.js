@@ -366,61 +366,61 @@ app.controller('ProjectController', function ($scope, $http) {
             clearmessage();
         }
 
-        var deletedRow = function (instance) {
+        //var deletedRow = function (instance) {
 
-            var i;
-            for (i = s_startvalue; i <= s_endvalue; i++) {
-                console.log(s_startvalue);
+        //    var i;
+        //    for (i = s_startvalue; i <= s_endvalue; i++) {
+        //        console.log(s_startvalue);
 
-                //creates json object of jexcel
-                var jsonobj = projectmaster.getJson(false);
+        //        //creates json object of jexcel
+        //        var jsonobj = projectmaster.getJson(false);
 
-                //getting particular row from json object       
-                var rowobj = jsonobj[i]; //row id getting from event
+        //        //getting particular row from json object       
+        //        var rowobj = jsonobj[i]; //row id getting from event
 
-                if (rowobj.ProjectID != "") {
-                    deleteInfo.push(rowobj);
-                    if (updatedInfo.find(x => x.ProjectID === rowobj.ProjectID)) {
-                        index = updatedInfo.indexOf(updatedInfo.find(x => x.ProjectNumber === rowobj.ProjectNumber)); //getting index of that rec
-                        updatedInfo.splice(index, 1); //remove the existing rec from object 
-                    }
-                }
-                else {
-                    //check for existance of respective rec in global object
-                    if (updatedInfo.find(x => x.ProjectNumber === rowobj.ProjectNumber)) {
-                        index = updatedInfo.indexOf(updatedInfo.find(x => x.ProjectNumber === rowobj.ProjectNumber)); //getting index of that rec
-                        updatedInfo.splice(index, 1); //remove the existing rec from object 
-                    }
-                }
+        //        if (rowobj.ProjectID != "") {
+        //            deleteInfo.push(rowobj);
+        //            if (updatedInfo.find(x => x.ProjectID === rowobj.ProjectID)) {
+        //                index = updatedInfo.indexOf(updatedInfo.find(x => x.ProjectNumber === rowobj.ProjectNumber)); //getting index of that rec
+        //                updatedInfo.splice(index, 1); //remove the existing rec from object 
+        //            }
+        //        }
+        //        else {
+        //            //check for existance of respective rec in global object
+        //            if (updatedInfo.find(x => x.ProjectNumber === rowobj.ProjectNumber)) {
+        //                index = updatedInfo.indexOf(updatedInfo.find(x => x.ProjectNumber === rowobj.ProjectNumber)); //getting index of that rec
+        //                updatedInfo.splice(index, 1); //remove the existing rec from object 
+        //            }
+        //        }
 
-                document.getElementById('update_notificationnumber1').innerHTML = updatedInfo.length;
-                document.getElementById('delete_notificationnumber1').innerHTML = deleteInfo.length;
+        //        document.getElementById('update_notificationnumber1').innerHTML = updatedInfo.length;
+        //        document.getElementById('delete_notificationnumber1').innerHTML = deleteInfo.length;
 
-                if (parseInt(updatedInfo.length) > 0) {
-                    document.getElementById('update_notificationnumber1').style.display = 'initial';
-                    document.getElementById('update_notificationnumber2').style.display = 'initial';
-                }
-                else {
-                    document.getElementById('update_notificationnumber1').style.display = 'none';
-                    document.getElementById('update_notificationnumber2').style.display = 'none';
-                }
+        //        if (parseInt(updatedInfo.length) > 0) {
+        //            document.getElementById('update_notificationnumber1').style.display = 'initial';
+        //            document.getElementById('update_notificationnumber2').style.display = 'initial';
+        //        }
+        //        else {
+        //            document.getElementById('update_notificationnumber1').style.display = 'none';
+        //            document.getElementById('update_notificationnumber2').style.display = 'none';
+        //        }
 
-                if (parseInt(deleteInfo.length) > 0) {
-                    document.getElementById('delete_notificationnumber1').style.display = 'initial';
-                    document.getElementById('delete_notificationnumber2').style.display = 'initial';
-                }
-                else {
-                    document.getElementById('delete_notificationnumber1').style.display = 'none';
-                    document.getElementById('delete_notificationnumber2').style.display = 'none';
-                }
-            }
+        //        if (parseInt(deleteInfo.length) > 0) {
+        //            document.getElementById('delete_notificationnumber1').style.display = 'initial';
+        //            document.getElementById('delete_notificationnumber2').style.display = 'initial';
+        //        }
+        //        else {
+        //            document.getElementById('delete_notificationnumber1').style.display = 'none';
+        //            document.getElementById('delete_notificationnumber2').style.display = 'none';
+        //        }
+        //    }
 
-            setFormSubmitting();
+        //    setFormSubmitting();
 
-            var screenst = $scope.ProjectsTable_fullscreen;
-            loadfullscreencss(screenst);
+        //    var screenst = $scope.ProjectsTable_fullscreen;
+        //    loadfullscreencss(screenst);
 
-        }
+        //}
 
         //Considers only updated records from jexcel 
         var update = function (instance, cell, col, row, value) {
@@ -547,6 +547,15 @@ app.controller('ProjectController', function ($scope, $http) {
                     document.getElementById('update_notificationnumber2').style.display = 'none';
                 }
 
+                if (parseInt(deleteInfo.length) > 0) {
+                    document.getElementById('delete_notificationnumber1').style.display = 'initial';
+                    document.getElementById('delete_notificationnumber2').style.display = 'initial';
+                }
+                else {
+                    document.getElementById('delete_notificationnumber1').style.display = 'none';
+                    document.getElementById('delete_notificationnumber2').style.display = 'none';
+                }
+
                 var screenst = $scope.ProjectsTable_fullscreen;
                 loadfullscreencss(screenst);
             }
@@ -568,7 +577,7 @@ app.controller('ProjectController', function ($scope, $http) {
                 vfrom = instance.jexcel.getRowData(to);
                 vto = instance.jexcel.getRowData(parseInt(to - 1));
             }
-                        
+
             updateprogressbar(50, "Updating...");
             $http({
                 method: 'POST',
@@ -583,7 +592,7 @@ app.controller('ProjectController', function ($scope, $http) {
                 }).then(function (response) {
                     if (response.data.responseCode === 200) {
                         projectmasterdata = response.data.Message;
-                        projectmaster.setData(projectmasterdata);                        
+                        projectmaster.setData(projectmasterdata);
                         updateprogressbar(100, "Completed....");
                         document.getElementById('progressbar').style.display = 'none';
                     }
@@ -596,10 +605,54 @@ app.controller('ProjectController', function ($scope, $http) {
                     }
                 });
 
-                
+
             }, function (error) {
                 console.log(error);
             });
+        }
+
+        function updatedeletenotificationbar() {
+
+            document.getElementById('update_notificationnumber1').innerHTML = updatedInfo.length;
+            document.getElementById('delete_notificationnumber1').innerHTML = deleteInfo.length;
+
+            if (parseInt(updatedInfo.length) > 0) {
+                document.getElementById('update_notificationnumber1').style.display = 'initial';
+                document.getElementById('update_notificationnumber2').style.display = 'initial';
+            }
+            else {
+                document.getElementById('update_notificationnumber1').style.display = 'none';
+                document.getElementById('update_notificationnumber2').style.display = 'none';
+            }
+
+            if (parseInt(deleteInfo.length) > 0) {
+                document.getElementById('delete_notificationnumber1').style.display = 'initial';
+                document.getElementById('delete_notificationnumber2').style.display = 'initial';
+            }
+            else {
+                document.getElementById('delete_notificationnumber1').style.display = 'none';
+                document.getElementById('delete_notificationnumber2').style.display = 'none';
+            }
+
+            setFormSubmitting();
+            var screenst = $scope.ProjectsTable_fullscreen;
+            loadfullscreencss(screenst);
+        }
+
+        function deleteupdateinfo(rowobj) {
+            if (rowobj.ProjectID != "") {               
+                if (updatedInfo.find(x => x.ProjectID === rowobj.ProjectID)) {
+                    index = updatedInfo.indexOf(updatedInfo.find(x => x.ProjectNumber === rowobj.ProjectNumber)); //getting index of that rec
+                    updatedInfo.splice(index, 1); //remove the existing rec from object 
+                }
+            }
+            else {
+                //check for existance of respective rec in global object
+                if (updatedInfo.find(x => x.ProjectNumber === rowobj.ProjectNumber)) {
+                    index = updatedInfo.indexOf(updatedInfo.find(x => x.ProjectNumber === rowobj.ProjectNumber)); //getting index of that rec
+                    updatedInfo.splice(index, 1); //remove the existing rec from object 
+                }
+            }
         }
 
         projectmaster = jexcel(document.getElementById('spreadsheetprojectmaster'), {
@@ -611,7 +664,6 @@ app.controller('ProjectController', function ($scope, $http) {
             filters: true,
             onload: loaded,
             onchange: update,
-            onbeforedeleterow: deletedRow,
             onmoverow: moveProjectRow,
             onselection: selectionActive,
             freezeColumns: 2,
@@ -725,8 +777,31 @@ app.controller('ProjectController', function ($scope, $http) {
                         items.push({
                             title: obj.options.text.deleteSelectedRows,
                             onclick: function () {
-                                if (confirm('Are you sure do you want to delete?'))
-                                    obj.deleteRow(obj.getSelectedRows().length ? undefined : parseInt(y));
+                                //if (confirm('Are you sure do you want to delete?'))
+                                //    obj.deleteRow(obj.getSelectedRows().length ? undefined : parseInt(y));
+
+
+                                if (confirm('Are you sure do you want to delete?')) {
+
+                                    var rowsElement = obj.getSelectedRows();
+                                    console.log(rowsElement);
+
+                                    for (var indexRow = 0; indexRow < rowsElement.length; indexRow++) {
+
+                                        var displaystatus = rowsElement[indexRow].style.display;
+                                        if (displaystatus == "") {
+                                            
+                                            var y = parseInt(rowsElement[indexRow].getAttribute("data-y"));
+                                            var jsonobj = obj.getJson(false);
+                                            var rowobj = jsonobj[y];
+                                            deleteInfo.push(rowobj);
+                                            updatedeletenotificationbar();
+                                            deleteupdateinfo(rowobj);      
+                                            obj.deleteRow(y);
+                                        }
+
+                                    }
+                                }                                
                             }
                         });
                     }
@@ -753,6 +828,14 @@ app.controller('ProjectController', function ($scope, $http) {
             }
         });
 
+    }
+
+    $scope.updatetotalsum = function () {
+        setTimeout(function () {
+            $scope.$apply(function () {
+                
+            });
+        }, 1000);
     }
 
     function getmasterprojectdetails(strProjectID) {
@@ -888,7 +971,7 @@ app.controller('ProjectController', function ($scope, $http) {
 
             $http({
                 method: 'POST',
-                url: '../Projects/createnewproformat',
+                url: '../Projects/createnewproforma',
                 params: {
                     "ID": localStorage.getItem("CReferencePID"), "strProjectID": newprojectID, "strProjectName": newprojectName, "strUserID": localStorage.getItem("userID")
                 }
@@ -1152,4 +1235,5 @@ app.controller('ProjectController', function ($scope, $http) {
             return value;
         };
     }
+
 })

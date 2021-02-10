@@ -108,7 +108,7 @@ namespace MECC_ReportPortal.Controllers
         }
 
         [HttpPost]
-        public JsonResult createnewproformat(int ID, string strProjectID, string strProjectName,string strUserID)
+        public JsonResult createnewproforma(int ID, string strProjectID, string strProjectName,string strUserID)
         {
             if (ID != null)
             {
@@ -287,9 +287,10 @@ namespace MECC_ReportPortal.Controllers
             {
                 foreach (var item in obj.delete)
                 {
-                    Configure_Project row = db.Configure_Project.Single(x => x.ProjectID == item.ProjectID);
-                    db.Configure_Project.Remove(row);
-                    db.SaveChanges();
+                    db.SP_DeleteProjectData(item.ProjectID);
+                    //Configure_Project row = db.Configure_Project.Single(x => x.ProjectID == item.ProjectID);
+                    //db.Configure_Project.Remove(row);
+                    //db.SaveChanges();
                 }
             }
 

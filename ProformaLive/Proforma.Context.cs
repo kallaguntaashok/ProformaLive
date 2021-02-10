@@ -53,6 +53,7 @@ namespace ProformaLive
         public virtual DbSet<Temp_ProjectMaster> Temp_ProjectMaster { get; set; }
         public virtual DbSet<ResourceInfo_old> ResourceInfo_old { get; set; }
         public virtual DbSet<ResourceInfoList_old> ResourceInfoList_old { get; set; }
+        public virtual DbSet<ResourceInfoComment> ResourceInfoComments { get; set; }
     
         public virtual int SP_Clone_Proforma(Nullable<int> projectID, string clonedProjectID, string clonedProjectName, string createdBy)
         {
@@ -160,6 +161,15 @@ namespace ProformaLive
                 new ObjectParameter("ID", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SP_Delete_ResourceData", iDParameter);
+        }
+    
+        public virtual int SP_DeleteProjectData(Nullable<int> projectID)
+        {
+            var projectIDParameter = projectID.HasValue ?
+                new ObjectParameter("ProjectID", projectID) :
+                new ObjectParameter("ProjectID", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SP_DeleteProjectData", projectIDParameter);
         }
     
         public virtual int SP_Duplicate_CapitallaborRows(Nullable<int> iD, string userID)
@@ -551,6 +561,11 @@ namespace ProformaLive
                 new ObjectParameter("ProjectNumber", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<string>("SP_Validate_ProjectCode", projectNumberParameter);
+        }
+    
+        public virtual ObjectResult<SP_Get_Resource_Comments_Result> SP_Get_Resource_Comments()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_Get_Resource_Comments_Result>("SP_Get_Resource_Comments");
         }
     }
 }
