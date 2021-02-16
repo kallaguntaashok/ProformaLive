@@ -3,14 +3,14 @@
 <link href="~/assets/css/delete-confirmation.css?ID=4600" rel="stylesheet" />
 <script src="~/assets/Jexcel/jexcel.js?ID=4600"></script>
 <script src="~/assets/Jexcel/jsuites.js?ID=4600"></script>*@
-<link href="~/assets/Jexcel/jexcel_44.css?ID=4800" rel="stylesheet" />
-<link href="~/assets/Jexcel/jsuites38.css?ID=4800" rel="stylesheet" />
-<link href="~/assets/css/delete-confirmation.css?ID=4800" rel="stylesheet" />
-<script src="~/assets/Jexcel/jexcelv44.js?ID=4800"></script>
-<script src="~/assets/Jexcel/jsuites38.js?ID=4800"></script>
-<script src="~/assets/scripts/projectmaster.js?ID=4800"></script>
-<script src="~/assets/scripts/exportexcel/alasql.min.js?ID=4800"></script>
-<script src="~/assets/scripts/exportexcel/xlsx.core.min.js?ID=4800"></script>
+<link href="~/assets/Jexcel/jexcel_44.css?ID=5100" rel="stylesheet" />
+<link href="~/assets/Jexcel/jsuites38.css?ID=5100" rel="stylesheet" />
+<link href="~/assets/css/delete-confirmation.css?ID=5100" rel="stylesheet" />
+<script src="~/assets/Jexcel/jexcelv44.js?ID=5100"></script>
+<script src="~/assets/Jexcel/jsuites38.js?ID=5100"></script>
+<script src="~/assets/scripts/projectmaster.js?ID=5100"></script>
+<script src="~/assets/scripts/exportexcel/alasql.min.js?ID=5100"></script>
+<script src="~/assets/scripts/exportexcel/xlsx.core.min.js?ID=5100"></script>
 
 <style type="text/css">
 
@@ -69,7 +69,7 @@
     }
 </style>
 
-<button onclick="topFunction()" id="myBtn" title="Go to top">Top</button>
+
 <div ng-controller="ProjectController" class="container-fluid">
 
     <div id="alertbox" style="display:none; z-index:99999" class="confirmation_modal fade-up">
@@ -80,7 +80,7 @@
         </div>
     </div>
 
-    <br />
+   
     <div id="progressbar" style="z-index:999999" class="confirmation_modal fade-up">
         <div class="confirmation_modal-content confirmation_container">
             <div class="clearfix">
@@ -222,24 +222,5 @@
 <script type="text/javascript">
     function calculatesum() {
         angular.element(document.getElementById('mainbody')).scope().updatetotalsum();
-    }
-    //Get the button
-    var mybutton = document.getElementById("myBtn");
-
-    // When the user scrolls down 20px from the top of the document, show the button
-    window.onscroll = function () { scrollFunction() };
-
-    function scrollFunction() {
-        if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
-            mybutton.style.display = "block";
-        } else {
-            mybutton.style.display = "none";
-        }
-    }
-
-    // When the user clicks on the button, scroll to the top of the document
-    function topFunction() {
-        document.body.scrollTop = 0;
-        document.documentElement.scrollTop = 0;
-    }
+    }    
 </script>

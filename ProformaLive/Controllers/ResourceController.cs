@@ -27,6 +27,150 @@ namespace MECC_ReportPortal.Controllers
             db = new ProformaLiveEntities();
         }
 
+        [HttpPost]
+        public JsonResult insert_resourcecomments(int intProjectID, int intMasterID, int intColumnID, string strComments, string userid)
+        {
+            ResourceInfoComment data = db.ResourceInfoComments.Where(x => x.MasterID == intMasterID && x.ColumnID == intColumnID).SingleOrDefault();
+            if(data != null)
+            {
+                data.Comments = strComments;
+                data.ModifiedBy = userid;
+                data.ModifiedOn = DateTime.Now;
+                db.SaveChanges();
+            }
+            else
+            {
+                ResourceInfoComment obj = new ResourceInfoComment();
+                obj.ProjectID = intProjectID;
+                obj.MasterID = intMasterID;
+                obj.ColumnID = intColumnID;
+                obj.Comments = strComments;
+                obj.CreatedOn = DateTime.Now;
+                obj.CreatedBy = userid;
+                db.ResourceInfoComments.Add(obj);
+                db.SaveChanges();                               
+            }
+
+            return Json("", JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public JsonResult insert_capitalcomments(int intProjectID, int intMasterID, int intColumnID, string strComments, string userid)
+        {
+            CapitalInfoComment data = db.CapitalInfoComments.Where(x => x.MasterID == intMasterID && x.ColumnID == intColumnID).SingleOrDefault();
+            if (data != null)
+            {
+                data.Comments = strComments;
+                data.ModifiedBy = userid;
+                data.ModifiedOn = DateTime.Now;
+                db.SaveChanges();
+            }
+            else
+            {
+                CapitalInfoComment obj = new CapitalInfoComment();
+                obj.ProjectID = intProjectID;
+                obj.MasterID = intMasterID;
+                obj.ColumnID = intColumnID;
+                obj.Comments = strComments;
+                obj.CreatedOn = DateTime.Now;
+                obj.CreatedBy = userid;
+                db.CapitalInfoComments.Add(obj);
+                db.SaveChanges();
+            }
+
+            return Json("", JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public JsonResult insert_capitallaborcomments(int intProjectID, int intMasterID, int intColumnID, string strComments, string userid)
+        {
+            CapitalLaborInfoComment data = db.CapitalLaborInfoComments.Where(x => x.MasterID == intMasterID && x.ColumnID == intColumnID).SingleOrDefault();
+            if (data != null)
+            {
+                data.Comments = strComments;
+                data.ModifiedBy = userid;
+                data.ModifiedOn = DateTime.Now;
+                db.SaveChanges();
+            }
+            else
+            {
+                CapitalLaborInfoComment obj = new CapitalLaborInfoComment();
+                obj.ProjectID = intProjectID;
+                obj.MasterID = intMasterID;
+                obj.ColumnID = intColumnID;
+                obj.Comments = strComments;
+                obj.CreatedOn = DateTime.Now;
+                obj.CreatedBy = userid;
+                db.CapitalLaborInfoComments.Add(obj);
+                db.SaveChanges();
+            }
+
+            return Json("", JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public JsonResult insert_directexpensescomments(int intProjectID, int intMasterID, int intColumnID, string strComments, string userid)
+        {
+            DirectExpensesInfoComment data = db.DirectExpensesInfoComments.Where(x => x.MasterID == intMasterID && x.ColumnID == intColumnID).SingleOrDefault();
+            if (data != null)
+            {
+                data.Comments = strComments;
+                data.ModifiedBy = userid;
+                data.ModifiedOn = DateTime.Now;
+                db.SaveChanges();
+            }
+            else
+            {
+                DirectExpensesInfoComment obj = new DirectExpensesInfoComment();
+                obj.ProjectID = intProjectID;
+                obj.MasterID = intMasterID;
+                obj.ColumnID = intColumnID;
+                obj.Comments = strComments;
+                obj.CreatedOn = DateTime.Now;
+                obj.CreatedBy = userid;
+                db.DirectExpensesInfoComments.Add(obj);
+                db.SaveChanges();
+            }
+
+            return Json("", JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public JsonResult delete_resourcecomments(int intMasterID, int intColumnID)
+        {
+            ResourceInfoComment data = db.ResourceInfoComments.Single(x => x.MasterID == intMasterID && x.ColumnID == intColumnID);
+            db.ResourceInfoComments.Remove(data);
+            db.SaveChanges();
+            return Json("", JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public JsonResult delete_capitalcomments(int intMasterID, int intColumnID)
+        {
+            CapitalInfoComment data = db.CapitalInfoComments.Single(x => x.MasterID == intMasterID && x.ColumnID == intColumnID);
+            db.CapitalInfoComments.Remove(data);
+            db.SaveChanges();
+            return Json("", JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public JsonResult delete_capitallaborcomments(int intMasterID, int intColumnID)
+        {
+            CapitalLaborInfoComment data = db.CapitalLaborInfoComments.Single(x => x.MasterID == intMasterID && x.ColumnID == intColumnID);
+            db.CapitalLaborInfoComments.Remove(data);
+            db.SaveChanges();
+            return Json("", JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public JsonResult delete_directexpensescomments(int intMasterID, int intColumnID)
+        {
+            DirectExpensesInfoComment data = db.DirectExpensesInfoComments.Single(x => x.MasterID == intMasterID && x.ColumnID == intColumnID);
+            db.DirectExpensesInfoComments.Remove(data);
+            db.SaveChanges();
+            return Json("", JsonRequestBehavior.AllowGet);
+        }
+
         [HttpGet]
         public JsonResult validateDuplicateProjectnumber(string strProjectNumber)
         {
@@ -450,9 +594,30 @@ namespace MECC_ReportPortal.Controllers
         }
 
         [HttpGet]
-        public JsonResult getResourceComments()
+        public JsonResult getResourceComments(int intProjectID)
         {
-            var obj = db.SP_Get_Resource_Comments();
+            var obj = db.SP_Get_Resource_Comments(intProjectID);
+            return Json(obj, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpGet]
+        public JsonResult getCapitalComments(int intProjectID)
+        {
+            var obj = db.SP_Get_Capital_Comments(intProjectID);
+            return Json(obj, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpGet]
+        public JsonResult getCapitalLaborComments(int intProjectID)
+        {
+            var obj = db.SP_Get_CapitalLabor_Comments(intProjectID);
+            return Json(obj, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpGet]
+        public JsonResult getDirectExpensesComments(int intProjectID)
+        {
+            var obj = db.SP_Get_DirectExpenses_Comments(intProjectID);
             return Json(obj, JsonRequestBehavior.AllowGet);
         }
 
@@ -2701,6 +2866,10 @@ namespace MECC_ReportPortal.Controllers
                     {
                         ResourceInfo master = db.ResourceInfoes.Single(x => x.MasterID == item.MasterID);
                         db.ResourceInfoes.Remove(master);
+                        db.SaveChanges();
+
+                        ResourceInfoComment data = db.ResourceInfoComments.Single(x => x.MasterID == item.MasterID);
+                        db.ResourceInfoComments.Remove(data);
                         db.SaveChanges();
                     }
                 }

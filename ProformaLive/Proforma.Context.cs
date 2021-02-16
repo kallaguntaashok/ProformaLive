@@ -28,14 +28,18 @@ namespace ProformaLive
         }
     
         public virtual DbSet<CapitalInfo> CapitalInfoes { get; set; }
+        public virtual DbSet<CapitalInfoComment> CapitalInfoComments { get; set; }
         public virtual DbSet<CapitalInfoList> CapitalInfoLists { get; set; }
         public virtual DbSet<CapitalLaborInfo> CapitalLaborInfoes { get; set; }
+        public virtual DbSet<CapitalLaborInfoComment> CapitalLaborInfoComments { get; set; }
         public virtual DbSet<CapitalLaborInfoList> CapitalLaborInfoLists { get; set; }
         public virtual DbSet<Configure_App_Master> Configure_App_Master { get; set; }
         public virtual DbSet<Configure_Project> Configure_Project { get; set; }
+        public virtual DbSet<Configure_ProjectComments> Configure_ProjectComments { get; set; }
         public virtual DbSet<Configure_RateCard> Configure_RateCard { get; set; }
         public virtual DbSet<Configure_Skill> Configure_Skill { get; set; }
         public virtual DbSet<DirectExpensesInfo> DirectExpensesInfoes { get; set; }
+        public virtual DbSet<DirectExpensesInfoComment> DirectExpensesInfoComments { get; set; }
         public virtual DbSet<DirectExpensesInfoList> DirectExpensesInfoLists { get; set; }
         public virtual DbSet<Master_AOPProject> Master_AOPProject { get; set; }
         public virtual DbSet<Master_CJI3> Master_CJI3 { get; set; }
@@ -49,11 +53,11 @@ namespace ProformaLive
         public virtual DbSet<ProjectMaster> ProjectMasters { get; set; }
         public virtual DbSet<Resource_TempData> Resource_TempData { get; set; }
         public virtual DbSet<ResourceInfo> ResourceInfoes { get; set; }
+        public virtual DbSet<ResourceInfoComment> ResourceInfoComments { get; set; }
         public virtual DbSet<ResourceInfoList> ResourceInfoLists { get; set; }
         public virtual DbSet<Temp_ProjectMaster> Temp_ProjectMaster { get; set; }
         public virtual DbSet<ResourceInfo_old> ResourceInfo_old { get; set; }
         public virtual DbSet<ResourceInfoList_old> ResourceInfoList_old { get; set; }
-        public virtual DbSet<ResourceInfoComment> ResourceInfoComments { get; set; }
     
         public virtual int SP_Clone_Proforma(Nullable<int> projectID, string clonedProjectID, string clonedProjectName, string createdBy)
         {
@@ -274,6 +278,15 @@ namespace ProformaLive
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<string>("SP_Get_BusinessUnit", businessParameter);
         }
     
+        public virtual ObjectResult<SP_Get_Capital_Comments_Result> SP_Get_Capital_Comments(Nullable<int> projectID)
+        {
+            var projectIDParameter = projectID.HasValue ?
+                new ObjectParameter("ProjectID", projectID) :
+                new ObjectParameter("ProjectID", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_Get_Capital_Comments_Result>("SP_Get_Capital_Comments", projectIDParameter);
+        }
+    
         public virtual ObjectResult<string> SP_Get_CapitalExpenditureWBS(Nullable<int> pROJECTID)
         {
             var pROJECTIDParameter = pROJECTID.HasValue ?
@@ -283,9 +296,36 @@ namespace ProformaLive
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<string>("SP_Get_CapitalExpenditureWBS", pROJECTIDParameter);
         }
     
+        public virtual ObjectResult<SP_Get_CapitalLabor_Comments_Result> SP_Get_CapitalLabor_Comments(Nullable<int> projectID)
+        {
+            var projectIDParameter = projectID.HasValue ?
+                new ObjectParameter("ProjectID", projectID) :
+                new ObjectParameter("ProjectID", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_Get_CapitalLabor_Comments_Result>("SP_Get_CapitalLabor_Comments", projectIDParameter);
+        }
+    
+        public virtual ObjectResult<SP_Get_Configure_Project_Comments_Result> SP_Get_Configure_Project_Comments(Nullable<int> projectID)
+        {
+            var projectIDParameter = projectID.HasValue ?
+                new ObjectParameter("ProjectID", projectID) :
+                new ObjectParameter("ProjectID", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_Get_Configure_Project_Comments_Result>("SP_Get_Configure_Project_Comments", projectIDParameter);
+        }
+    
         public virtual ObjectResult<SP_Get_Configure_RateCard_Result> SP_Get_Configure_RateCard()
         {
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_Get_Configure_RateCard_Result>("SP_Get_Configure_RateCard");
+        }
+    
+        public virtual ObjectResult<SP_Get_DirectExpenses_Comments_Result> SP_Get_DirectExpenses_Comments(Nullable<int> projectID)
+        {
+            var projectIDParameter = projectID.HasValue ?
+                new ObjectParameter("ProjectID", projectID) :
+                new ObjectParameter("ProjectID", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_Get_DirectExpenses_Comments_Result>("SP_Get_DirectExpenses_Comments", projectIDParameter);
         }
     
         public virtual ObjectResult<string> SP_Get_HighOrg(string business, string businessUnit)
@@ -374,6 +414,15 @@ namespace ProformaLive
                 new ObjectParameter("Team", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<string>("SP_Get_RequiredSkills", businessParameter, businessUnitParameter, highOrgParameter, midOrgParameter, teamParameter);
+        }
+    
+        public virtual ObjectResult<SP_Get_Resource_Comments_Result> SP_Get_Resource_Comments(Nullable<int> projectID)
+        {
+            var projectIDParameter = projectID.HasValue ?
+                new ObjectParameter("ProjectID", projectID) :
+                new ObjectParameter("ProjectID", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_Get_Resource_Comments_Result>("SP_Get_Resource_Comments", projectIDParameter);
         }
     
         public virtual ObjectResult<SP_Get_Skillmaster_Result> SP_Get_Skillmaster()
@@ -561,11 +610,6 @@ namespace ProformaLive
                 new ObjectParameter("ProjectNumber", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<string>("SP_Validate_ProjectCode", projectNumberParameter);
-        }
-    
-        public virtual ObjectResult<SP_Get_Resource_Comments_Result> SP_Get_Resource_Comments()
-        {
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_Get_Resource_Comments_Result>("SP_Get_Resource_Comments");
         }
     }
 }

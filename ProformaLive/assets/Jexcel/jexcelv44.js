@@ -21,8 +21,7 @@ if (!jSuites && typeof (require) === 'function') {
 
     'use strict';
 
-    // Jexcel core object
-
+    //Jexcel core object.
     var jexcel = (function (el, options) {
         // Create jexcel object
         var obj = {};
@@ -103,7 +102,7 @@ if (!jSuites && typeof (require) === 'function') {
             // Allow rename column
             allowRenameColumn: false,
             // Allow comments
-            allowComments: false,
+            allowComments: true,
             // Global wrap
             wordWrap: false,
             // Image options
@@ -1709,19 +1708,25 @@ if (!jSuites && typeof (require) === 'function') {
                 var options = [];
                 for (var j = 0; j < obj.options.data.length; j++) {
 
-                    var displaystatus = obj.rows[j].style.display;
-                    if (displaystatus != 'none') {
-                        var k = obj.options.data[j][columnId];
-                        var v = obj.records[j][columnId].innerHTML;
-                        if (k && v) {
-                            options[k] = v;
-                        }
+                    var k = obj.options.data[j][columnId];
+                    var v = obj.records[j][columnId].innerHTML;
+                    if (k && v) {
+                        options[k] = v;
                     }
+
+                    //var displaystatus = obj.rows[j].style.display;
+                    //if (displaystatus != 'none') {
+                    //    var k = obj.options.data[j][columnId];
+                    //    var v = obj.records[j][columnId].innerHTML;
+                    //    if (k && v) {
+                    //        options[k] = v;
+                    //    }
+                    //}
                 }
                 var keys = Object.keys(options);
                 var optionsFiltered = [];
                 optionsFiltered.push({ id: '', name: 'Blanks' });
-                for (var j = 0; j < keys.length; j++) {
+                for (var j = 0; j < keys.length; j++) {                    
                     optionsFiltered.push({ id: keys[j], name: options[keys[j]] });
                 }
 
@@ -1843,46 +1848,66 @@ if (!jSuites && typeof (require) === 'function') {
             //    }
             //}
 
+            //debugger
+            //var query = obj.filters[columnId];
+            //obj.results = [];
+            //for (var j = 0; j < obj.options.data.length; j++) {
+            //    if (obj.rows[j].style.display != 'none') {
+            //        if (search(query, columnId, j)) {                        
+            //            obj.results.push(j);
+            //        }
+            //    }
+            //}
+            //if (!obj.results.length) {
+            //    obj.results = null;
+            //}
 
-            var query = obj.filters[columnId];
-            obj.results = [];
-            for (var j = 0; j < obj.options.data.length; j++) {
-                if (obj.rows[j].style.display != 'none') {
-                    if (search(query, columnId, j)) {                        
-                        obj.results.push(j);
-                    }
-                }
-            }
-            if (!obj.results.length) {
-                obj.results = null;
-            }
+            //debugger
+            //var query = obj.filters[columnId];
+            //if (query == "") {
 
-            
-            var query = obj.filters[columnId];
-            if (query == "") {
+            //    obj.results = null;                
+            //    obj.updateResult();
 
-                obj.results = null;                
-                obj.updateResult();
+            //    var filters = obj.filters.map(function (arr) { if (arr == null || arr == "") { return null; } else { return arr.slice(); } });
+            //    for (var i = 0; i < filters.length; i++) {
+            //        if (filters[i] != null) {
+            //            var query = obj.filters[i];
+            //            obj.results = [];
+            //            for (var j = 0; j < obj.options.data.length; j++) {
+            //                if (obj.rows[j].style.display != 'none') {
+            //                    if (search(query, i, j)) {
+            //                        obj.results.push(j);
+            //                    }
+            //                }
+            //            }
+            //            obj.updateResult();
+            //            obj.results = [];
+            //        }                    
+            //    }
+            //}
+            //else {
+            //    obj.updateResult();
+            //}
+                        
+            obj.results = null;
+            obj.updateResult();
 
-                var filters = obj.filters.map(function (arr) { if (arr == null || arr == "") { return null; } else { return arr.slice(); } });
-                for (var i = 0; i < filters.length; i++) {
-                    if (filters[i] != null) {
-                        var query = obj.filters[i];
-                        obj.results = [];
-                        for (var j = 0; j < obj.options.data.length; j++) {
-                            if (obj.rows[j].style.display != 'none') {
-                                if (search(query, i, j)) {
-                                    obj.results.push(j);
-                                }
+            var filters = obj.filters.map(function (arr) { if (arr == null || arr == "") { return null; } else { return arr.slice(); } });
+            for (var i = 0; i < filters.length; i++) {
+                if (filters[i] != null) {
+                    var query = obj.filters[i];
+                    obj.results = [];
+                    for (var j = 0; j < obj.options.data.length; j++) {
+                        if (obj.rows[j].style.display != 'none') {
+                            if (search(query, i, j)) {
+                                obj.results.push(j);
                             }
                         }
-                        obj.updateResult();
-                        obj.results = [];
-                    }                    
+                    }
+                    obj.updateResult();
+                    obj.results = [];
                 }
-            }
-            else {
-                obj.updateResult();
             }
                         
         }
@@ -3646,6 +3671,8 @@ if (!jSuites && typeof (require) === 'function') {
          * Get cell comments, null cell for all
          */
         obj.getComments = function (cell, withAuthor) {
+
+
             if (cell) {
                 if (typeof (cell) == 'string') {
                     var cell = jexcel.getIdFromColumnName(cell, true);
@@ -6954,11 +6981,13 @@ if (!jSuites && typeof (require) === 'function') {
                             items.push({ type: 'line' });
 
                             var title = obj.records[y][x].getAttribute('title') || '';
-
+                            console.log(2);
                             items.push({
                                 title: title ? obj.options.text.editComments : obj.options.text.addComments,
-                                onclick: function () {
+                                onclick: function () {                                    
                                     var comment = prompt(obj.options.text.comments, title);
+                                    console.log(comment);
+                                    console.log(1);
                                     if (comment) {
                                         obj.setComments([x, y], comment);
                                     }

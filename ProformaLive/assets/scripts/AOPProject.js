@@ -5,7 +5,7 @@ app.controller('AOPProjectController', function ($scope, $http) {
     var AOPdata = [];
     var mainwidth = window.innerWidth;
     var columnwidth = mainwidth - 148;
-    mainwidth = (mainwidth - 82) + "px";
+    mainwidth = (mainwidth - 42) + "px";
 
     var mainheight = window.innerHeight;
     mainheight = (mainheight - 180) + "px";
@@ -207,7 +207,7 @@ app.controller('AOPProjectController', function ($scope, $http) {
         var setFormSubmitting = function () { formSubmitting = false; };
 
         var onafterchanges = function () {
-            alert('hi');
+            
         }
 
         var update = function (instance, cell, col, row, value) {

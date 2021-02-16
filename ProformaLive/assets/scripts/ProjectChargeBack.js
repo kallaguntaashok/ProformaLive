@@ -4,11 +4,11 @@ app.controller('ProjectChargeBackController', function ($scope, $http) {
     var PCBack = [];
     var ProjectChargeBack = [];
     var mainwidth = window.innerWidth;
-    var columnwidth = mainwidth - 648;
-    mainwidth = (mainwidth - 82) + "px";
+    var columnwidth = mainwidth - 628;
+    mainwidth = (mainwidth - 62) + "px";
 
     var mainheight = window.innerHeight;
-    mainheight = (mainheight - 180) + "px";
+    mainheight = (mainheight - 170) + "px";
     updateprogressbar(20, "Page is loading...");
     localStorage.setItem("CurrentPage", 3);
 

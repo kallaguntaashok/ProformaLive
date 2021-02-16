@@ -398,3 +398,9 @@ div[disabled=disabled] {
     font-size: 12px;
     font-weight: 500;
 }
+
+
+html, body {
+    max-width: 100%;
+    overflow-x: hidden;
+}

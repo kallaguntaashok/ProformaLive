@@ -12,9 +12,9 @@ app.controller('ProjectController', function ($scope, $http) {
     var pstyle = "";
     var mainwidth = window.innerWidth;
     var formSubmitting = null;
-    mainwidth = (mainwidth - 72) + "px";
+    mainwidth = (mainwidth - 32) + "px";
     var mainheight = window.innerHeight;
-    mainheight = (mainheight - 180) + "px";
+    mainheight = (mainheight - 160) + "px";
     updateprogressbar(20, "Page is loading...");
     getusername();
     Projects();

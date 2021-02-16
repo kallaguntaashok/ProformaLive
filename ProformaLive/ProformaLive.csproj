@@ -257,10 +257,16 @@
     <Compile Include="CapitalInfo.cs">
       <DependentUpon>Proforma.tt</DependentUpon>
     </Compile>
+    <Compile Include="CapitalInfoComment.cs">
+      <DependentUpon>Proforma.tt</DependentUpon>
+    </Compile>
     <Compile Include="CapitalInfoList.cs">
       <DependentUpon>Proforma.tt</DependentUpon>
     </Compile>
     <Compile Include="CapitalLaborInfo.cs">
+      <DependentUpon>Proforma.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CapitalLaborInfoComment.cs">
       <DependentUpon>Proforma.tt</DependentUpon>
     </Compile>
     <Compile Include="CapitalLaborInfoList.cs">
@@ -270,6 +276,9 @@
       <DependentUpon>Proforma.tt</DependentUpon>
     </Compile>
     <Compile Include="Configure_Project.cs">
+      <DependentUpon>Proforma.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Configure_ProjectComments.cs">
       <DependentUpon>Proforma.tt</DependentUpon>
     </Compile>
     <Compile Include="Configure_RateCard.cs">
@@ -289,7 +298,11 @@
     <Compile Include="Controllers\RateCardController.cs" />
     <Compile Include="Controllers\ResourceController.cs" />
     <Compile Include="Controllers\unAuthorizedController.cs" />
+    <Compile Include="Controllers\UnittestController.cs" />
     <Compile Include="DirectExpensesInfo.cs">
+      <DependentUpon>Proforma.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DirectExpensesInfoComment.cs">
       <DependentUpon>Proforma.tt</DependentUpon>
     </Compile>
     <Compile Include="DirectExpensesInfoList.cs">
@@ -389,7 +402,19 @@
     <Compile Include="SP_GetSummaryData_Result.cs">
       <DependentUpon>Proforma.tt</DependentUpon>
     </Compile>
+    <Compile Include="SP_Get_CapitalLabor_Comments_Result.cs">
+      <DependentUpon>Proforma.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SP_Get_Capital_Comments_Result.cs">
+      <DependentUpon>Proforma.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SP_Get_Configure_Project_Comments_Result.cs">
+      <DependentUpon>Proforma.tt</DependentUpon>
+    </Compile>
     <Compile Include="SP_Get_Configure_RateCard_Result.cs">
+      <DependentUpon>Proforma.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SP_Get_DirectExpenses_Comments_Result.cs">
       <DependentUpon>Proforma.tt</DependentUpon>
     </Compile>
     <Compile Include="SP_Get_Master_AOPProject_Result.cs">
@@ -480,6 +505,7 @@
     <Content Include="Views\ProjectChargeBack\Index.cshtml" />
     <Content Include="Templates\Summary.xlsx" />
     <Content Include="Views\unAuthorized\Index.cshtml" />
+    <Content Include="Views\Unittest\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

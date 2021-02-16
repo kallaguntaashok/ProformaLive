@@ -51,7 +51,7 @@ namespace MECC_ReportPortal.Controllers
                 return Json(Convert.ToString(Session["username"]), JsonRequestBehavior.AllowGet);
             }
         }
-
+               
         public class objclone
         {
             public List<SP_Config_Projects_Result> clone { get; set; }

@@ -8,7 +8,7 @@ app.controller('RateCardController', function ($scope, $http) {
     mainwidth = (mainwidth - 64) + "px";
 
     var mainheight = window.innerHeight;
-    mainheight = (mainheight - 220) + "px";
+    mainheight = (mainheight - 170) + "px";
     updateprogressbar(20, "Page is loading...");
     localStorage.setItem("CurrentPage", 3);
 
