@@ -1,20 +1,12 @@
-﻿@*<link href="~/assets/Jexcel/jexcel.css?ID=4200" rel="stylesheet" />
-    <link href="~/assets/Jexcel/jsuites.css?ID=4200" rel="stylesheet" />
-    <link href="~/assets/css/delete-confirmation.css?ID=4200" rel="stylesheet" />
-
-    <script src="~/assets/Jexcel/jexcel.js?ID=4200"></script>
-    <script src="~/assets/Jexcel/jsuites.js?ID=4200"></script>*@
-
-<link href="~/assets/Jexcel/jexcel_44.css?ID=4600" rel="stylesheet" />
-<link href="~/assets/Jexcel/jsuites38.css?ID=4600" rel="stylesheet" />
-<link href="~/assets/css/delete-confirmation.css?ID=4600" rel="stylesheet" />
-<script src="~/assets/Jexcel/jexcelv44.js?ID=4600"></script>
-<script src="~/assets/Jexcel/jsuites38.js?ID=4600"></script>
-
-<script src="~/assets/scripts/ProjectChargeBack.js?ID=4200"></script>
-
-<script src="~/assets/scripts/exportexcel/alasql.min.js?ID=4200"></script>
-<script src="~/assets/scripts/exportexcel/xlsx.core.min.js?ID=4200"></script>
+﻿
+<link href="~/assets/Jexcel/jexcel_44.css?ID=6200" rel="stylesheet" />
+<link href="~/assets/Jexcel/jsuites38.css?ID=6200" rel="stylesheet" />
+<link href="~/assets/css/delete-confirmation.css?ID=6200" rel="stylesheet" />
+<script src="~/assets/Jexcel/jexcelv44.js?ID=6200"></script>
+<script src="~/assets/Jexcel/jsuites38.js?ID=6200"></script>
+<script src="~/assets/scripts/ProjectChargeBack.js?ID=6200"></script>
+<script src="~/assets/scripts/exportexcel/alasql.min.js?ID=6200"></script>
+<script src="~/assets/scripts/exportexcel/xlsx.core.min.js?ID=6200"></script>
 
 <style type="text/css">
 
@@ -74,7 +66,24 @@
 </style>
 
 <div ng-controller="ProjectChargeBackController" class="container-fluid">
-   
+
+    <div id="notificationpanel" style="display:none;" class="notification_modal fade-up">
+        <div class="notification_modal-content notification_modal_container">
+            <div class="notificationclearfix">
+                <span class="pull-left">
+                    <i class="fa fa-bell" aria-hidden="true"></i>&nbsp;&nbsp;Notification Panel
+                </span>
+                <span>
+                    <label style="display:none;" id="notificationID"></label>
+                    <i class="fa fa-times pull-right" id="closeNotification" title="clear notification" style="padding-top: 5px; cursor: pointer; display:none;" ng-click="closenotification();" aria-hidden="true"></i>
+                    <i class="fa fa-times pull-right" id="clearNotification" title="clear notification" style="padding-top: 5px; cursor: pointer; display:none;" ng-click="clearnotificaiton();" aria-hidden="true"></i>
+                </span>
+            </div>
+            <div class="notificationbody" id="notificationBody">
+            </div>
+        </div>
+    </div>
+
     <div id="progressbar" class="confirmation_modal fade-up">
         <div class="confirmation_modal-content confirmation_container">
             <div class="clearfix">
@@ -107,3 +116,12 @@
     </div>
 
 </div>
+
+<script type="text/javascript">
+    function calculatesum() {
+        angular.element(document.getElementById('mainbody')).scope().updatefilters();
+    }
+    function shownotification(value) {
+        angular.element(document.getElementById('mainbody')).scope().shownotification(value);
+    }
+</script>

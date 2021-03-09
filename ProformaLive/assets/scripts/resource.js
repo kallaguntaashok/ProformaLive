@@ -1,4 +1,5 @@
-﻿var app = angular.module('MECC', ['ngAnimate']);
+﻿
+var app = angular.module('MECC', ['ngAnimate']);
 
 app.controller('MECCController', function ($scope, $sce, FileUploadService, $http) {
 
@@ -11,7 +12,7 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
     capitallabor_mainwidth = (proforma_mainwidth - 938) / 6;
     //---------------------------------------------------------    
     de_mainwidth = (proforma_mainwidth - 1230) / 2;
-        
+
     //End Dynamic width code.
     loadmastersettings();
     //Default config items.
@@ -100,6 +101,98 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
     loadProjectMaster();
     //updateskillfilter();
 
+    getcompletelist();
+    function getcompletelist() {
+        $http({
+            method: 'GET',
+            url: '../notification/get_completenotification'
+        }).then(function (response) {
+            document.getElementById('notificationtotal').innerHTML = "Notification (" + response.data.length + ")";
+            var notificationlist = "";
+            for (var i = 0; i < response.data.length; i++) {
+                notificationlist = notificationlist + " <a class='dropdown-item' onclick='shownotification(" + response.data[i].Sysid + ")'><i class='fa fa-dot-circle-o' aria-hidden='true'></i>&nbsp;&nbsp;" + response.data[i].Title + "</a>";
+            }
+            document.getElementById('notificationlistbody').innerHTML = notificationlist;
+        }, function (error) {
+            console.log(error);
+        });
+    }
+
+    $scope.shownotification = function (item) {
+        $http({
+            method: 'POST',
+            url: '../notification/get_notificationdata',
+            params: {
+                "intID": item
+            }
+        }).then(function (response) {
+            var encodenotification = atob(response.data[0].Data);
+            document.getElementById("notificationID").innerHTML = response.data[0].Sysid;
+            document.getElementById("notificationBody").innerHTML = encodenotification;
+            document.getElementById('notificationpanel').style.display = 'block';        
+            document.getElementById("closeNotification").style.display = 'block';
+            document.getElementById("clearNotification").style.display = 'none';
+        }, function (error) {
+            console.log(error);
+        });        
+    }
+
+    $scope.closenotification = function () {       
+        document.getElementById('notificationpanel').style.display = 'none';
+    }
+
+    $scope.clearnotificaiton = function () {
+        
+        $http({
+            method: 'POST',
+            url: '../notification/clear_notification',
+            params: {
+                "intID": document.getElementById("notificationID").innerHTML,
+                "strUserID": localStorage.getItem("userID"),
+                "strUserName": localStorage.getItem("userName")
+            }
+        }).then(function (response) {
+            document.getElementById('notificationpanel').style.display = 'none';
+        }, function (error) {
+            console.log(error);
+        });
+    }
+
+    validatenotification();
+    function validatenotification() {
+
+        $http({
+            method: 'POST',
+            url: '../notification/validate_notification',
+            params: {
+                "strUserID": localStorage.getItem("userID")
+            }
+        }).then(function (response) {           
+            if (response.data == "False") {
+                $http({
+                    method: 'GET',
+                    url: '../notification/get_notification'
+                }).then(function (response) {
+                    if (response.data != null) {                        
+                        var encodenotification = atob(response.data[0].Data);
+                        document.getElementById("notificationBody").innerHTML = encodenotification;
+                        document.getElementById('notificationpanel').style.display = 'block';
+                        document.getElementById("closeNotification").style.display = 'none';
+                        document.getElementById("clearNotification").style.display = 'block';
+                        document.getElementById("notificationID").innerHTML = response.data[0].Sysid;                        
+                    }
+                }, function (error) {
+                    console.log(error);
+                });
+            }
+            else {
+                document.getElementById('notificationpanel').style.display = 'none';
+            }
+        }, function (error) {
+            console.log(error);
+        });
+    }
+
     function load_defalutformsettings() {
 
         var d_resource = localStorage.getItem('displaycheckbox_resource') == null ? true : JSON.parse(localStorage.getItem('displaycheckbox_resource'));
@@ -179,7 +272,7 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
         }, 1000);
     }
 
-    function update_resource_comments() {        
+    function update_resource_comments() {
         $http({
             method: 'GET',
             url: '../Resource/getResourceComments',
@@ -188,7 +281,7 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
             resource_comments = response.data;
         }, function (error) {
             console.log(error);
-        });        
+        });
     }
 
     function update_capital_comments() {
@@ -197,7 +290,7 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
             url: '../Resource/getCapitalComments',
             params: { "intProjectID": localStorage.getItem("projectid") }
         }).then(function (response) {
-            capital_comments = response.data;            
+            capital_comments = response.data;
         }, function (error) {
             console.log(error);
         });
@@ -228,25 +321,30 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
     }
 
     function refreshtablesum() {
-
-        var activetab = document.getElementById('activetabid').innerHTML;
+      
+        var activetab = document.getElementById('activetabid').innerHTML;        
         var in_number = 0;
         var tablobj = [];
+        var filterid = "";
         if (activetab === "resource") {
             in_number = 11;
             tablobj = obj;
+            filterid = "resource_clearfilters";
         }
         else if (activetab === "capital") {
             in_number = 11;
             tablobj = objcapital;
+            filterid = "capital_clearfilters";
         }
         else if (activetab === "capitallabor") {
             in_number = 14;
             tablobj = objcapitallabour;
+            filterid = "capitallabor_clearfilters";
         }
         else if (activetab === "directexpenses") {
             in_number = 7;
             tablobj = objdirectexpenses;
+            filterid = "de_clearfilters";
         }
 
         if (activetab === "resource" || activetab === "capital" || activetab === "capitallabor" || activetab === "directexpenses") {
@@ -285,7 +383,7 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
                 };
 
                 var filters = tablobj.filters.map(function (arr) { if (arr == null || arr == "") { return null; } else { return arr.slice(); } });
-                document.getElementById("clearfilters").setAttribute("style", "display:none;");
+                document.getElementById(filterid).setAttribute("style", "display:none;");
                 var filtercheck = 0;
                 for (var i = 0; i < filters.length; i++) {
                     if (filters[i] != null) {
@@ -295,7 +393,7 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
                             "fid": i,
                             "fname": filtersinfo
                         });
-                        document.getElementById("clearfilters").setAttribute("style", "display:block;");
+                        document.getElementById(filterid).setAttribute("style", "display:block;");
                     }
                 }
 
@@ -340,6 +438,7 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
         var summaryheight = parseInt(window.innerHeight);
         summaryheight = summaryheight - 270;
         document.getElementById('summarycontainer').setAttribute('style', 'height: ' + summaryheight + 'px;');
+        document.getElementById('notificationBody').setAttribute('style', 'height: ' + (parseInt(window.innerHeight) - parseInt(110)) + 'px;');
 
         var fisyear = jSuite_dropSummaryFisYear.getText();
         var fismonth = jSuite_drop_Summary_Months.getText();
@@ -1436,10 +1535,10 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
 
                 var activeTabName = document.getElementById('activetabid').innerHTML;
                 if (activeTabName === "summary") bindsummaryfisyeardropdown();
-                else if (activeTabName === "resource") { update_resource_comments(); refresh_OperatingExpenseWBS(); } 
-                else if (activeTabName === "capital") { update_capital_comments(); refresh_CapitalExpenditureWBS(); } 
-                else if (activeTabName === "capitallabor") { update_capitallabor_comments(); refresh_CapitalLaborExpenditureWBS(); } 
-                else if (activeTabName === "directexpenses") { update_directexpenses_comments(); refresh_OperatingExpenseWBSDE(); } 
+                else if (activeTabName === "resource") { update_resource_comments(); refresh_OperatingExpenseWBS(); }
+                else if (activeTabName === "capital") { update_capital_comments(); refresh_CapitalExpenditureWBS(); }
+                else if (activeTabName === "capitallabor") { update_capitallabor_comments(); refresh_CapitalLaborExpenditureWBS(); }
+                else if (activeTabName === "directexpenses") { update_directexpenses_comments(); refresh_OperatingExpenseWBSDE(); }
 
             }, function (error) {
                 console.log(error);
@@ -1883,7 +1982,7 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
                 items.push({
                     title: "Duplicate",
                     onclick: function () {
-                       
+
                         var rowsElement = objdirectexpenses.getSelectedRows();
                         for (var indexRow = 0; indexRow < rowsElement.length; indexRow++) {
                             var displaystatus = rowsElement[indexRow].style.display;
@@ -1902,10 +2001,10 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
                     items.push({
                         title: obj.options.text.deleteSelectedRows,
                         onclick: function () {
-                            
+
                             if (confirm('Are you sure do you want to delete?')) {
 
-                                var rowsElement = obj.getSelectedRows();                               
+                                var rowsElement = obj.getSelectedRows();
 
                                 for (var indexRow = 0; indexRow < rowsElement.length; indexRow++) {
 
@@ -1983,7 +2082,7 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
                         cell.setAttribute('title', cell.innerHTML);
                     }
                 }
-                                
+
                 // Number formating
                 if (col == 5 || col == 6 || col == 7 || col == 8 || col == 9 || col == 10 || col == 11 || col == 12 || col == 13 || col == 14 || col == 15 || col == 16 || col == 17) {
                     cell.onkeypress = function isNumberKey(evt) {
@@ -2017,26 +2116,11 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
                 }
             }
         });
-
-        //reload filter information.
-        //var reloadfilterinfo = localStorage.getItem("directexpenses_filtervalue");
-        //var reloadfilterkey = localStorage.getItem("directexpenses_filterkey");
-        //if (reloadfilterinfo != null && reloadfilterkey != null) {
-        //    document.getElementById("clearfilters").setAttribute("style", "zoom:80%; display:block; margin-left:10px; color:white; background: linear-gradient(to right, #ff9966, #ff5e62);");
-        //    var res = reloadfilterinfo.split(";");
-        //    res = res.map(s => s.trim());
-        //    objdirectexpenses.filter.children[parseInt(reloadfilterkey) + 1].innerHTML = reloadfilterinfo;
-        //    objdirectexpenses.filters[reloadfilterkey] = res;
-        //    objdirectexpenses.closeFilter();
-        //}
-        //else {
-        //    document.getElementById("clearfilters").setAttribute("style", "zoom:80%; display:none; margin-left:10px; color:white; background: linear-gradient(to right, #ff9966, #ff5e62);");
-        //}
-
+                
         var filtersourcecopy = JSON.parse(localStorage.getItem("directexpenses_filtersource"));
         if (filtersourcecopy != null) {
 
-            document.getElementById("clearfilters").setAttribute("style", "display:block;");
+            document.getElementById("de_clearfilters").setAttribute("style", "display:block;");
             for (var i = 0; i < filtersourcecopy.fitems.length; i++) {
                 var fild = filtersourcecopy.fitems[i].fid;
                 var fname = filtersourcecopy.fitems[i].fname;
@@ -2048,7 +2132,7 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
             }
         }
         else {
-            document.getElementById("clearfilters").setAttribute("style", "display:none;");
+            document.getElementById("de_clearfilters").setAttribute("style", "display:none;");
         }
 
         refreshtablesum();
@@ -2068,7 +2152,7 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
         directexpenses_updatedInfo = [];
         directexpenses_deleteInfo = [];
         directexpenses_duplicateInfo = [];
-        refreshdedata();
+        refreshdedata();        
     }
 
     function savedechanges(status) {
@@ -3034,7 +3118,7 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
                 { type: 'date', readOnly: true, title: 'ModifiedOn', width: 80 },
                 { type: 'hidden', readOnly: true, title: 'RowID', width: 80 }
             ],
-            contextMenu: function (obj, x, y, e) { 
+            contextMenu: function (obj, x, y, e) {
                 var items = [];
 
                 items.push({
@@ -3058,7 +3142,7 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
                     items.push({
                         title: obj.options.text.deleteSelectedRows,
                         onclick: function () {
-                            
+
                             if (confirm('Are you sure do you want to delete?')) {
 
                                 var rowsElement = obj.getSelectedRows();
@@ -3174,26 +3258,11 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
                 }
             }
         });
-
-        //reload filter information.
-        //var reloadfilterinfo = localStorage.getItem("capitallabor_filtervalue");
-        //var reloadfilterkey = localStorage.getItem("capitallabor_filterkey");
-        //if (reloadfilterinfo != null && reloadfilterkey != null) {
-        //    document.getElementById("clearfilters").setAttribute("style", "zoom:80%; display:block; margin-left:10px; color:white; background: linear-gradient(to right, #ff9966, #ff5e62);");
-        //    var res = reloadfilterinfo.split(";");
-        //    res = res.map(s => s.trim());
-        //    objcapitallabour.filter.children[parseInt(reloadfilterkey) + 1].innerHTML = reloadfilterinfo;
-        //    objcapitallabour.filters[reloadfilterkey] = res;
-        //    objcapitallabour.closeFilter();
-        //}
-        //else {
-        //    document.getElementById("clearfilters").setAttribute("style", "zoom:80%; display:none; margin-left:10px; color:white; background: linear-gradient(to right, #ff9966, #ff5e62);");
-        //}
-
+        
         var filtersourcecopy = JSON.parse(localStorage.getItem("capitallabor_filtersource"));
         if (filtersourcecopy != null) {
 
-            document.getElementById("clearfilters").setAttribute("style", "display:block;");
+            document.getElementById("capitallabor_clearfilters").setAttribute("style", "display:block;");
             for (var i = 0; i < filtersourcecopy.fitems.length; i++) {
                 var fild = filtersourcecopy.fitems[i].fid;
                 var fname = filtersourcecopy.fitems[i].fname;
@@ -3205,7 +3274,7 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
             }
         }
         else {
-            document.getElementById("clearfilters").setAttribute("style", "display:none;");
+            document.getElementById("capitallabor_clearfilters").setAttribute("style", "display:none;");
         }
 
         refreshtablesum();
@@ -3765,7 +3834,7 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
                 { type: 'date', readOnly: true, title: 'ModifiedOn', width: 80 },
                 { type: 'hidden', readOnly: true, title: 'RowID', width: 80 }
             ],
-            contextMenu: function (obj, x, y, e) { 
+            contextMenu: function (obj, x, y, e) {
                 var items = [];
 
                 items.push({
@@ -3891,7 +3960,7 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
                         cell.setAttribute('title', cell.innerHTML);
                     }
                 }
-                
+
                 // Number formating               
                 if (col == 9 || col == 10 || col == 11 || col == 12 || col == 13 || col == 14 || col == 15 || col == 16 || col == 17 || col == 18 || col == 19 || col == 20 || col == 21) {
                     cell.onkeypress = function isNumberKey(evt) {
@@ -3900,7 +3969,7 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
                             && (charCode < 48 || charCode > 57))
                             return false;
                         return true;
-                    };                    
+                    };
 
                     if (val === "") {
                         cell.innerHTML = '0.00';
@@ -3921,11 +3990,11 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
                 }
             }
         });
-                
+
         var filtersourcecopy = JSON.parse(localStorage.getItem("capital_filtersource"));
         if (filtersourcecopy != null) {
 
-            document.getElementById("clearfilters").setAttribute("style", "display:block;");
+            document.getElementById("capital_clearfilters").setAttribute("style", "display:block;");
             for (var i = 0; i < filtersourcecopy.fitems.length; i++) {
                 var fild = filtersourcecopy.fitems[i].fid;
                 var fname = filtersourcecopy.fitems[i].fname;
@@ -3937,7 +4006,7 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
             }
         }
         else {
-            document.getElementById("clearfilters").setAttribute("style", "display:none;");
+            document.getElementById("capital_clearfilters").setAttribute("style", "display:none;");
         }
 
         refreshtablesum();
@@ -4101,6 +4170,9 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
             c_endvalue = x2;
         }
 
+        var updateaftertable = function () {
+            refreshtablesum();
+        }
 
         var update = function (instance, cell, col, row, value) {
 
@@ -4146,7 +4218,7 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
                 updatedInfo.push(rowobj); //pushing updated rec for the first time
 
             document.getElementById('update_notificationnumber1').innerHTML = updatedInfo.length;
-            updatedeletenotificationbar();
+            updatedeletenotificationbar();             
         }
 
         ddbusinessunitFilter = function (instance, cell, c, r, source) {
@@ -4380,6 +4452,7 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
             onmoverow: moveResourceRow,
             onchange: update,
             onload: load_resource,
+            onafterchanges: updateaftertable,
             allowComments: true,
             footers: [['', '', '', '', '', '', '', 'Total', '=ROUND(SUM(K1:K300),2)', '=ROUND(SUM(L1:L300),2)', '=ROUND(SUM(M1:M300),2)', '=ROUND(SUM(N1:N300),2)', '=ROUND(SUM(O1:O300),2)', '=ROUND(SUM(P1:P300),2)', '=ROUND(SUM(Q1:Q300),2)', '=ROUND(SUM(R1:R300),2)', '=ROUND(SUM(S1:S300),2)', '=ROUND(SUM(T1:T300),2)', '=ROUND(SUM(U1:U300),2)', '=ROUND(SUM(V1:V300),2)', '']],
             columns: [
@@ -4499,7 +4572,7 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
 
                             items.push({
                                 title: (obj.records[y][x].innerHTML != title && title != "") ? obj.options.text.editComments : obj.options.text.addComments,
-                                onclick: function () {                                    
+                                onclick: function () {
                                     if (title == innervalue) {
                                         title = "";
                                     }
@@ -4514,7 +4587,7 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
                             if (title != obj.records[y][x].innerHTML && title != "") {
                                 items.push({
                                     title: obj.options.text.clearComments,
-                                    onclick: function () {                                        
+                                    onclick: function () {
                                         delete_resource_comments(obj.records[y][0].innerHTML, x);
                                         obj.setComments([x, y], '');
                                         obj.records[y][x].title = obj.records[y][x].innerHTML;
@@ -4558,7 +4631,7 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
                             return true;
                         }
                     };
-
+                                        
                     if (val === "") {
                         cell.innerHTML = '0.00';
                     }
@@ -4580,25 +4653,11 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
             }
         });
 
-        //reload filter information.
-        //var reloadfilterinfo = localStorage.getItem("resource_filtervalue");
-        //var reloadfilterkey = localStorage.getItem("resource_filterkey");
-        //if (reloadfilterinfo != null && reloadfilterkey != null) {
-        //    document.getElementById("clearfilters").setAttribute("style", "zoom:80%; display:block; margin-left:10px; color:white; background: linear-gradient(to right, #ff9966, #ff5e62);");
-        //    var res = reloadfilterinfo.split(";");
-        //    res = res.map(s => s.trim());
-        //    obj.filter.children[parseInt(reloadfilterkey) + 1].innerHTML = reloadfilterinfo;
-        //    obj.filters[reloadfilterkey] = res;
-        //    obj.closeFilter();
-        //}
-        //else {
-        //    document.getElementById("clearfilters").setAttribute("style", "zoom:80%; display:none; margin-left:10px; color:white; background: linear-gradient(to right, #ff9966, #ff5e62);");
-        //}
-
+        
         var filtersourcecopy = JSON.parse(localStorage.getItem("resource_filtersource"));
         if (filtersourcecopy != null) {
 
-            document.getElementById("clearfilters").setAttribute("style", "display:block;");
+            document.getElementById("resource_clearfilters").setAttribute("style", "display:block;");
             for (var i = 0; i < filtersourcecopy.fitems.length; i++) {
                 var fild = filtersourcecopy.fitems[i].fid;
                 var fname = filtersourcecopy.fitems[i].fname;
@@ -4610,43 +4669,11 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
             }
         }
         else {
-            document.getElementById("clearfilters").setAttribute("style", "display:none;");
+            document.getElementById("resource_clearfilters").setAttribute("style", "display:none;");
         }
 
         refreshtablesum();
 
-
-        //method to load captial data table
-        //loadDE = jexcel(document.getElementById('spreadsheetDE'), {
-        //    csv: '/assets/Jexcel/DE.csv',
-        //    csvHeaders: true,
-        //    tableOverflow: true,
-        //    tableWidth: mainwidth,
-        //    search: true,
-        //    filters: true,
-        //    columns: [
-        //        { type: 'text', width: 40 },
-        //        { type: 'text', width: 280 },
-        //        { type: 'text', width: 180 },
-        //        { type: 'text', width: 80 },
-        //        { type: 'number', width: 80 },
-        //        { type: 'number', width: 80 },
-        //        { type: 'number', width: 80 },
-        //        { type: 'number', width: 80 },
-        //        { type: 'number', width: 80 },
-        //        { type: 'number', width: 80 },
-        //        { type: 'number', width: 80 },
-        //        { type: 'number', width: 80 },
-        //        { type: 'number', width: 80 },
-        //        { type: 'number', width: 80 },
-        //        { type: 'number', width: 80 },
-        //        { type: 'number', width: 80 },
-        //        { type: 'number', width: 80 }
-        //    ],
-        //    contextMenu: function () {
-        //        return false;
-        //    }
-        //});
 
         //method to load captial data table
         checkbook = jexcel(document.getElementById('spreadsheetCheckbook'), {
@@ -5358,7 +5385,7 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
         document.getElementById('notification').style.display = 'none';
         document.getElementById('update_notificationnumber1').innerHTML = 0;
         document.getElementById('delete_notificationnumber1').innerHTML = 0;
-        savechangesinfullscreenmode();
+        savechangesinfullscreenmode();        
     }
 
     function save(status) {
@@ -5561,15 +5588,19 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
         var activetablevalue = document.getElementById('activetabid').innerHTML;
         if (activetablevalue === "resource") {
             tablobj = obj;
+            document.getElementById("resource_clearfilters").setAttribute("style", "display:none;");
         }
         else if (activetablevalue === "capital") {
             tablobj = objcapital;
+            document.getElementById("capital_clearfilters").setAttribute("style", "display:none;");
         }
         else if (activetablevalue === "capitallabor") {
             tablobj = objcapitallabour;
+            document.getElementById("capitallabor_clearfilters").setAttribute("style", "display:none;");
         }
         else if (activetablevalue === "directexpenses") {
             tablobj = objdirectexpenses;
+            document.getElementById("de_clearfilters").setAttribute("style", "display:none;");
         }
 
         tablobj.resetFilters();
@@ -5581,8 +5612,7 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
                 tablobj.filter.children[i + 1].innerHTML = "";
             }
         }
-
-        document.getElementById("clearfilters").setAttribute("style", "display:none;");
+        
         localStorage.removeItem(activetablevalue + "_filtersource");
     }
 
@@ -5622,6 +5652,7 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
                     showalert('No records found!');
                 }
                 validatefilters("resource", obj);
+                refreshtablesum();
             }
 
         }, function (error) {
@@ -5664,6 +5695,7 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
                     showalert('No records found!');
                 }
                 validatefilters("capital", objcapital);
+                refreshtablesum();
             }
 
         }, function (error) {
@@ -5709,6 +5741,7 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
                     showalert('No records found!');
                 }
                 validatefilters("capitallabor", objcapitallabour);
+                refreshtablesum();
             }
 
         }, function (error) {
@@ -5754,6 +5787,7 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
                     showalert('No records found!');
                 }
                 validatefilters("directexpenses", objdirectexpenses);
+                refreshtablesum();
             }
 
         }, function (error) {
@@ -5764,7 +5798,6 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
 
     function savechangesinfullscreenmode() {
 
-        debugger
         var screenst = $scope.ProjectsTable_fullscreen;
         var width = parseInt(window.innerWidth);
         var height = parseInt(window.innerHeight);
@@ -5795,7 +5828,6 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
 
     function loadfullscreencss(fullscreenstatus) {
 
-        debugger
         var width = parseInt(window.innerWidth);
         var height = parseInt(window.innerHeight);
         var searchtablestyle = "";

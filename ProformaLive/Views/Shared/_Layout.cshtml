@@ -58,24 +58,39 @@
                         <a class="dropdown-item" href="@Url.Action("Index", "ProjectChargeBack")"><i class="fa fa-braille" aria-hidden="true"></i>&nbsp;&nbsp;Project Charge Back</a>
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="@Url.Action("Index", "ConfigureRateCard")"><i class="fa fa-usd" aria-hidden="true"></i>&nbsp;&nbsp;Configure Rate Card</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="@Url.Action("Index", "notification")"><i class="fa fa-bell" aria-hidden="true"></i>&nbsp;&nbsp;Notification Panel</a>
+                        <div class="dropdown-divider"></div>
                     </div>
                 </li>
             </ul>
         </div>
-        <div id="navbarTogglerDemo01" style="margin-right: 30px; background-color: #223b54; padding-left: 15px;">
+        <div id="navbarTogglerDemo02" class="panelnotificationbox">
+            <ul class="nav pull-right">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" style="padding-left:10px !important; padding-right:5px !important; color:white;" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span id="notificationtotal" class="notificationspan"></span>
+                    </a>
+                    <div id="notificationlistbody" style="left: -33px; width: 435px;" class="dropdown-menu fade-up" aria-labelledby="navbarDropdownMenuLink">                        
+                    </div>
+                </li>
+            </ul>
+            <span class="notificationlabel pull-right"><i class="fa fa-bell-o" aria-hidden="true"></i></span>
+        </div>
+        <div id="navbarTogglerDemo01" style="background-color: #223b54; padding-left: 15px;">
             <ul id="userprofilepanel1" style="display:none;" class="nav pull-right">
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" style="color: white; border-left: 1px solid #223b54 !important; font-weight: 500; font-size: 12px; padding-left: 10px !important" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <span id="loginusername">validating user..</span>
                     </a>
-                    <div style="left: -35px; width: 230px;" class="dropdown-menu fade-up" aria-labelledby="navbarDropdownMenuLink">
+                    <div style="left: -35px; width: 267px;" class="dropdown-menu fade-up" aria-labelledby="navbarDropdownMenuLink">
                         <a class="dropdown-item" href="#"><i class="fa fa-user-secret" aria-hidden="true"></i>&nbsp;&nbsp;Role: <span id="roles"></span></a>
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="@Url.Action("Index", "index")"><i class="fa fa-unlock" aria-hidden="true"></i>&nbsp;&nbsp;Log Out</a>
                     </div>
                 </li>
             </ul>
-            <span id="userprofilepanel2" style="display: none; color: #ffffff; display: none; padding-top: 4px; font-size: 20px; " class="pull-right"><i class="fa fa-user-circle-o"></i></span>
+            <span id="userprofilepanel2" style="display: none; color: #ffffff; padding-top: 4px; font-size: 20px; " class="pull-right"><i class="fa fa-user-circle-o"></i></span>
         </div>
     </nav>
 

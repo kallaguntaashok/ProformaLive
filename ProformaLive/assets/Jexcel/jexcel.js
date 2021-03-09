@@ -3226,11 +3226,17 @@ console.log(ret);
                             var colAlign = obj.options.columns[i].align ? obj.options.columns[i].align : 'center';
                             td.style.textAlign = colAlign;
                         }
+
                         td.innerText = obj.parseValue(i, j, obj.options.footers[j][i]);
                     }
                 }
+
+
+
             }
         }
+
+        
 
         /**
          * Get the column title

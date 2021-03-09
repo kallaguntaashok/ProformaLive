@@ -42,7 +42,7 @@
 
 #navbarTogglerDemo01 ul li div a {
     background-color: #9bbdda !important;
-    height: 30px !important;
+    height: 35px !important;
     text-align: left !important;
     vertical-align: middle !important;
     padding-top: 7px !important;
@@ -53,7 +53,7 @@
 
 #navbarTogglerDemo01 ul li.active div a {
     background-color: #9bbdda !important;
-    height: 30px !important;
+    height: 35px !important;
     text-align: left !important;
     vertical-align: middle !important;
     padding-top: 7px !important;
@@ -64,7 +64,7 @@
 
 #navbarTogglerDemo01 ul li div a:hover {
     background-color: #023f82 !important;
-    height: 30px !important;
+    height: 35px !important;
     text-align: left !important;
     vertical-align: middle !important;
     padding-top: 7px !important;
@@ -404,3 +404,35 @@ html, body {
     max-width: 100%;
     overflow-x: hidden;
 }
+
+
+#navbarTogglerDemo02 ul li div a {
+    background-color: #9bbdda !important;
+    height: 35px !important;
+    text-align: left !important;
+    vertical-align: middle !important;
+    padding-top: 7px !important;
+    border: 1px solid #89b0d0 !important;
+    border-bottom: 0px solid !important;
+    font-size: 12px !important;
+}
+
+#navbarTogglerDemo02 ul li div a:hover {
+    background-color: #023f82 !important;
+    height: 35px !important;
+    text-align: left !important;
+    vertical-align: middle !important;
+    padding-top: 7px !important;
+    border: 1px solid #89b0d0 !important;
+    border-bottom: 0px solid !important;
+    font-size: 12px !important;
+    color: white !important;
+}
+
+#navbarTogglerDemo02 ul li div {
+    margin-top: 1px !important;
+    border: 0px solid #9bbdda !important;
+    padding: 0px !important;
+    margin-bottom: 0px !important;
+}
+

@@ -31,7 +31,7 @@ namespace MECC_ReportPortal.Controllers
         public JsonResult insert_resourcecomments(int intProjectID, int intMasterID, int intColumnID, string strComments, string userid)
         {
             ResourceInfoComment data = db.ResourceInfoComments.Where(x => x.MasterID == intMasterID && x.ColumnID == intColumnID).SingleOrDefault();
-            if(data != null)
+            if (data != null)
             {
                 data.Comments = strComments;
                 data.ModifiedBy = userid;
@@ -48,7 +48,7 @@ namespace MECC_ReportPortal.Controllers
                 obj.CreatedOn = DateTime.Now;
                 obj.CreatedBy = userid;
                 db.ResourceInfoComments.Add(obj);
-                db.SaveChanges();                               
+                db.SaveChanges();
             }
 
             return Json("", JsonRequestBehavior.AllowGet);
@@ -138,36 +138,48 @@ namespace MECC_ReportPortal.Controllers
         [HttpPost]
         public JsonResult delete_resourcecomments(int intMasterID, int intColumnID)
         {
-            ResourceInfoComment data = db.ResourceInfoComments.Single(x => x.MasterID == intMasterID && x.ColumnID == intColumnID);
-            db.ResourceInfoComments.Remove(data);
-            db.SaveChanges();
+            ResourceInfoComment data = db.ResourceInfoComments.Where(x => x.MasterID == intMasterID && x.ColumnID == intColumnID).SingleOrDefault();
+            if (data != null)
+            {
+                db.ResourceInfoComments.Remove(data);
+                db.SaveChanges();
+            }
             return Json("", JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
         public JsonResult delete_capitalcomments(int intMasterID, int intColumnID)
         {
-            CapitalInfoComment data = db.CapitalInfoComments.Single(x => x.MasterID == intMasterID && x.ColumnID == intColumnID);
-            db.CapitalInfoComments.Remove(data);
-            db.SaveChanges();
+            CapitalInfoComment data = db.CapitalInfoComments.Where(x => x.MasterID == intMasterID && x.ColumnID == intColumnID).SingleOrDefault();
+            if (data != null)
+            {
+                db.CapitalInfoComments.Remove(data);
+                db.SaveChanges();
+            }
             return Json("", JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
         public JsonResult delete_capitallaborcomments(int intMasterID, int intColumnID)
         {
-            CapitalLaborInfoComment data = db.CapitalLaborInfoComments.Single(x => x.MasterID == intMasterID && x.ColumnID == intColumnID);
-            db.CapitalLaborInfoComments.Remove(data);
-            db.SaveChanges();
+            CapitalLaborInfoComment data = db.CapitalLaborInfoComments.Where(x => x.MasterID == intMasterID && x.ColumnID == intColumnID).SingleOrDefault();
+            if (data != null)
+            {
+                db.CapitalLaborInfoComments.Remove(data);
+                db.SaveChanges();
+            }
             return Json("", JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
         public JsonResult delete_directexpensescomments(int intMasterID, int intColumnID)
         {
-            DirectExpensesInfoComment data = db.DirectExpensesInfoComments.Single(x => x.MasterID == intMasterID && x.ColumnID == intColumnID);
-            db.DirectExpensesInfoComments.Remove(data);
-            db.SaveChanges();
+            DirectExpensesInfoComment data = db.DirectExpensesInfoComments.Where(x => x.MasterID == intMasterID && x.ColumnID == intColumnID).SingleOrDefault();
+            if (data != null)
+            {
+                db.DirectExpensesInfoComments.Remove(data);
+                db.SaveChanges();
+            }
             return Json("", JsonRequestBehavior.AllowGet);
         }
 
@@ -226,14 +238,10 @@ namespace MECC_ReportPortal.Controllers
             return ViewBag.UserName;
         }
 
+
         [HttpPost]
         public JsonResult SaveFiles(int ProjectID, string userid)
         {
-            //string strProjectName = Convert.ToString(Session["ProjectName"]);
-            //var projectid = db.Configure_Project
-            //    .Where(x => x.ProjectName == strProjectName)
-            //    .Select(y => y.ProjectID).ToList();
-
             string Message, fileName, actualFileName;
             Message = fileName = actualFileName = string.Empty;
             bool flag = false;
@@ -639,7 +647,7 @@ namespace MECC_ReportPortal.Controllers
                 var obj_summary = db.SP_GetProject_Summary(Convert.ToString(ProjectID), "", "", "").ToList();
 
                 string DestinationPath = @System.Configuration.ConfigurationManager.AppSettings["UploadFiles"];
-                FileName = ProjectNumber.Replace("/", "") + "-" + strProjectName.Replace("/","") + "-" + System.DateTime.Now.ToString("yyyy-MMM-dd-HHMMssfff") + ".xlsx";
+                FileName = ProjectNumber.Replace("/", "") + "-" + strProjectName.Replace("/", "") + "-" + System.DateTime.Now.ToString("yyyy-MMM-dd-HHMMssfff") + ".xlsx";
                 string Source = @System.Configuration.ConfigurationManager.AppSettings["Summarytemplate"];
                 System.IO.File.Copy(Source, DestinationPath + FileName);
                 FileInfo file = new FileInfo(DestinationPath + FileName);
@@ -1530,9 +1538,11 @@ namespace MECC_ReportPortal.Controllers
             CapitalInfo result = (from p in db.CapitalInfoes
                                   where p.MasterID == masterID
                                   select p).SingleOrDefault();
-
-            result.RowID = masterID;
-            db.SaveChanges();
+            if (result != null)
+            {
+                result.RowID = masterID;
+                db.SaveChanges();
+            }
 
             string[] months = { "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC", "JAN", "FEB", "MAR", "APR" };
 
@@ -1595,9 +1605,11 @@ namespace MECC_ReportPortal.Controllers
             CapitalLaborInfo result = (from p in db.CapitalLaborInfoes
                                        where p.MasterID == masterID
                                        select p).SingleOrDefault();
-
-            result.RowID = masterID;
-            db.SaveChanges();
+            if (result != null)
+            {
+                result.RowID = masterID;
+                db.SaveChanges();
+            }
 
             string[] months = { "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC", "JAN", "FEB", "MAR", "APR" };
 
@@ -1642,8 +1654,11 @@ namespace MECC_ReportPortal.Controllers
                                          where p.MasterID == masterID
                                          select p).SingleOrDefault();
 
-            result.RowID = masterID;
-            db.SaveChanges();
+            if (result != null)
+            {
+                result.RowID = masterID;
+                db.SaveChanges();
+            }
 
             string[] months = { "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC", "JAN", "FEB", "MAR", "APR" };
 
@@ -1700,8 +1715,11 @@ namespace MECC_ReportPortal.Controllers
                                    where p.MasterID == masterID
                                    select p).SingleOrDefault();
 
-            result.RowID = masterID;
-            db.SaveChanges();
+            if (result != null)
+            {
+                result.RowID = masterID;
+                db.SaveChanges();
+            }
 
             string[] months = { "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC", "JAN", "FEB", "MAR", "APR" };
 
@@ -1742,252 +1760,255 @@ namespace MECC_ReportPortal.Controllers
                     if (AOPProjectID.Count >= 1)
                         AOPID = AOPProjectID[0];
 
-                    CapitalLaborInfo row = db.CapitalLaborInfoes.Single(x => x.MasterID == item.MasterID);
-                    row.Type = item.Type;
-                    row.WBSnumber = item.WBSNumber;
-                    row.Priority = item.Priority;
-                    row.CapitalCategory = item.CapitalCategory;
-                    row.Business = item.Business;
-                    row.BusinessUnit = item.BusinessUnit;
-                    row.HighOrg = item.HighOrg;
-                    row.MidOrg = item.MidOrg;
-                    row.Team = item.Team;
-                    row.RequiredSkill = item.RequiredSkill;
-                    row.Comments = item.Comments;
-                    row.AOPProject = AOPID;
-                    row.ModifiedBy = obj.userid;
-                    row.ModifiedOn = DateTime.Now;
-
-                    //MAY
-                    CapitalLaborInfoList row_may = db.CapitalLaborInfoLists
-                        .SingleOrDefault(x => x.MasterID == item.MasterID && x.Month == "MAY");
-
-                    if (row_may == null)
+                    CapitalLaborInfo row = db.CapitalLaborInfoes.Where(x => x.MasterID == item.MasterID).SingleOrDefault();
+                    if (row != null)
                     {
-                        CapitalLaborInfoList insert_row_may = new CapitalLaborInfoList();
-                        insert_row_may.MasterID = item.MasterID;
-                        insert_row_may.FisYear = item.FisYear;
-                        insert_row_may.Month = "MAY";
-                        insert_row_may.value = item.MAY;
-                        db.CapitalLaborInfoLists.Add(insert_row_may);
-                    }
-                    else
-                    {
-                        row_may.FisYear = item.FisYear;
-                        row_may.value = item.MAY;
-                    }
+                        row.Type = item.Type;
+                        row.WBSnumber = item.WBSNumber;
+                        row.Priority = item.Priority;
+                        row.CapitalCategory = item.CapitalCategory;
+                        row.Business = item.Business;
+                        row.BusinessUnit = item.BusinessUnit;
+                        row.HighOrg = item.HighOrg;
+                        row.MidOrg = item.MidOrg;
+                        row.Team = item.Team;
+                        row.RequiredSkill = item.RequiredSkill;
+                        row.Comments = item.Comments;
+                        row.AOPProject = AOPID;
+                        row.ModifiedBy = obj.userid;
+                        row.ModifiedOn = DateTime.Now;
 
-                    //JUN
-                    CapitalLaborInfoList row_june = db.CapitalLaborInfoLists
-                        .SingleOrDefault(x => x.MasterID == item.MasterID && x.Month == "JUN");
+                        //MAY
+                        CapitalLaborInfoList row_may = db.CapitalLaborInfoLists
+                            .SingleOrDefault(x => x.MasterID == item.MasterID && x.Month == "MAY");
 
-                    if (row_june == null)
-                    {
-                        CapitalLaborInfoList insert_row_june = new CapitalLaborInfoList();
-                        insert_row_june.MasterID = item.MasterID;
-                        insert_row_june.FisYear = item.FisYear;
-                        insert_row_june.Month = "JUN";
-                        insert_row_june.value = item.JUN;
-                        db.CapitalLaborInfoLists.Add(insert_row_june);
+                        if (row_may == null)
+                        {
+                            CapitalLaborInfoList insert_row_may = new CapitalLaborInfoList();
+                            insert_row_may.MasterID = item.MasterID;
+                            insert_row_may.FisYear = item.FisYear;
+                            insert_row_may.Month = "MAY";
+                            insert_row_may.value = item.MAY;
+                            db.CapitalLaborInfoLists.Add(insert_row_may);
+                        }
+                        else
+                        {
+                            row_may.FisYear = item.FisYear;
+                            row_may.value = item.MAY;
+                        }
+
+                        //JUN
+                        CapitalLaborInfoList row_june = db.CapitalLaborInfoLists
+                            .SingleOrDefault(x => x.MasterID == item.MasterID && x.Month == "JUN");
+
+                        if (row_june == null)
+                        {
+                            CapitalLaborInfoList insert_row_june = new CapitalLaborInfoList();
+                            insert_row_june.MasterID = item.MasterID;
+                            insert_row_june.FisYear = item.FisYear;
+                            insert_row_june.Month = "JUN";
+                            insert_row_june.value = item.JUN;
+                            db.CapitalLaborInfoLists.Add(insert_row_june);
+                        }
+                        else
+                        {
+                            row_june.FisYear = item.FisYear;
+                            row_june.value = item.JUN;
+                        }
+
+                        //JUL
+                        CapitalLaborInfoList row_july = db.CapitalLaborInfoLists
+                            .SingleOrDefault(x => x.MasterID == item.MasterID && x.Month == "JUL");
+
+                        if (row_july == null)
+                        {
+                            CapitalLaborInfoList insert_row_july = new CapitalLaborInfoList();
+                            insert_row_july.MasterID = item.MasterID;
+                            insert_row_july.FisYear = item.FisYear;
+                            insert_row_july.Month = "JUL";
+                            insert_row_july.value = item.JUL;
+                            db.CapitalLaborInfoLists.Add(insert_row_july);
+                        }
+                        else
+                        {
+                            row_july.FisYear = item.FisYear;
+                            row_july.value = item.JUL;
+                        }
+
+                        //AUG
+                        CapitalLaborInfoList row_aug = db.CapitalLaborInfoLists
+                            .SingleOrDefault(x => x.MasterID == item.MasterID && x.Month == "AUG");
+
+                        if (row_aug == null)
+                        {
+                            CapitalLaborInfoList insert_row_aug = new CapitalLaborInfoList();
+                            insert_row_aug.MasterID = item.MasterID;
+                            insert_row_aug.FisYear = item.FisYear;
+                            insert_row_aug.Month = "AUG";
+                            insert_row_aug.value = item.AUG;
+                            db.CapitalLaborInfoLists.Add(insert_row_aug);
+                        }
+                        else
+                        {
+                            row_aug.FisYear = item.FisYear;
+                            row_aug.value = item.AUG;
+                        }
+
+                        //SEP
+                        CapitalLaborInfoList row_sep = db.CapitalLaborInfoLists
+                            .SingleOrDefault(x => x.MasterID == item.MasterID && x.Month == "SEP");
+
+                        if (row_sep == null)
+                        {
+                            CapitalLaborInfoList insert_row_sep = new CapitalLaborInfoList();
+                            insert_row_sep.MasterID = item.MasterID;
+                            insert_row_sep.FisYear = item.FisYear;
+                            insert_row_sep.Month = "SEP";
+                            insert_row_sep.value = item.SEP;
+                            db.CapitalLaborInfoLists.Add(insert_row_sep);
+                        }
+                        else
+                        {
+                            row_sep.FisYear = item.FisYear;
+                            row_sep.value = item.SEP;
+                        }
+
+
+                        //OCT
+                        CapitalLaborInfoList row_oct = db.CapitalLaborInfoLists
+                            .SingleOrDefault(x => x.MasterID == item.MasterID && x.Month == "OCT");
+
+                        if (row_oct == null)
+                        {
+                            CapitalLaborInfoList insert_row_oct = new CapitalLaborInfoList();
+                            insert_row_oct.MasterID = item.MasterID;
+                            insert_row_oct.FisYear = item.FisYear;
+                            insert_row_oct.Month = "OCT";
+                            insert_row_oct.value = item.OCT;
+                            db.CapitalLaborInfoLists.Add(insert_row_oct);
+                        }
+                        else
+                        {
+                            row_oct.FisYear = item.FisYear;
+                            row_oct.value = item.OCT;
+                        }
+
+                        //NOV
+                        CapitalLaborInfoList row_nov = db.CapitalLaborInfoLists
+                            .SingleOrDefault(x => x.MasterID == item.MasterID && x.Month == "NOV");
+
+                        if (row_nov == null)
+                        {
+                            CapitalLaborInfoList insert_row_nov = new CapitalLaborInfoList();
+                            insert_row_nov.MasterID = item.MasterID;
+                            insert_row_nov.FisYear = item.FisYear;
+                            insert_row_nov.Month = "NOV";
+                            insert_row_nov.value = item.NOV;
+                            db.CapitalLaborInfoLists.Add(insert_row_nov);
+                        }
+                        else
+                        {
+                            row_nov.FisYear = item.FisYear;
+                            row_nov.value = item.NOV;
+                        }
+
+                        //DEC
+                        CapitalLaborInfoList row_dec = db.CapitalLaborInfoLists
+                            .SingleOrDefault(x => x.MasterID == item.MasterID && x.Month == "DEC");
+
+                        if (row_dec == null)
+                        {
+                            CapitalLaborInfoList insert_row_dec = new CapitalLaborInfoList();
+                            insert_row_dec.MasterID = item.MasterID;
+                            insert_row_dec.FisYear = item.FisYear;
+                            insert_row_dec.Month = "DEC";
+                            insert_row_dec.value = item.DEC;
+                            db.CapitalLaborInfoLists.Add(insert_row_dec);
+                        }
+                        else
+                        {
+                            row_dec.FisYear = item.FisYear;
+                            row_dec.value = item.DEC;
+                        }
+
+                        //JAN
+                        CapitalLaborInfoList row_jan = db.CapitalLaborInfoLists
+                            .SingleOrDefault(x => x.MasterID == item.MasterID && x.Month == "JAN");
+
+                        if (row_jan == null)
+                        {
+                            CapitalLaborInfoList insert_row_jan = new CapitalLaborInfoList();
+                            insert_row_jan.MasterID = item.MasterID;
+                            insert_row_jan.FisYear = item.FisYear;
+                            insert_row_jan.Month = "JAN";
+                            insert_row_jan.value = item.JAN;
+                            db.CapitalLaborInfoLists.Add(insert_row_jan);
+                        }
+                        else
+                        {
+                            row_jan.FisYear = item.FisYear;
+                            row_jan.value = item.JAN;
+                        }
+
+                        //FEB
+                        CapitalLaborInfoList row_feb = db.CapitalLaborInfoLists
+                            .SingleOrDefault(x => x.MasterID == item.MasterID && x.Month == "FEB");
+
+                        if (row_feb == null)
+                        {
+                            CapitalLaborInfoList insert_row_feb = new CapitalLaborInfoList();
+                            insert_row_feb.MasterID = item.MasterID;
+                            insert_row_feb.FisYear = item.FisYear;
+                            insert_row_feb.Month = "FEB";
+                            insert_row_feb.value = item.FEB;
+                            db.CapitalLaborInfoLists.Add(insert_row_feb);
+                        }
+                        else
+                        {
+                            row_feb.FisYear = item.FisYear;
+                            row_feb.value = item.FEB;
+                        }
+
+                        //MAR
+                        CapitalLaborInfoList row_mar = db.CapitalLaborInfoLists
+                            .SingleOrDefault(x => x.MasterID == item.MasterID && x.Month == "MAR");
+
+                        if (row_mar == null)
+                        {
+                            CapitalLaborInfoList insert_row_mar = new CapitalLaborInfoList();
+                            insert_row_mar.MasterID = item.MasterID;
+                            insert_row_mar.FisYear = item.FisYear;
+                            insert_row_mar.Month = "MAR";
+                            insert_row_mar.value = item.MAR;
+                            db.CapitalLaborInfoLists.Add(insert_row_mar);
+                        }
+                        else
+                        {
+                            row_mar.FisYear = item.FisYear;
+                            row_mar.value = item.MAR;
+                        }
+
+                        //APR
+                        CapitalLaborInfoList row_apr = db.CapitalLaborInfoLists
+                            .SingleOrDefault(x => x.MasterID == item.MasterID && x.Month == "APR");
+
+                        if (row_apr == null)
+                        {
+                            CapitalLaborInfoList insert_row_apr = new CapitalLaborInfoList();
+                            insert_row_apr.MasterID = item.MasterID;
+                            insert_row_apr.FisYear = item.FisYear;
+                            insert_row_apr.Month = "APR";
+                            insert_row_apr.value = item.APR;
+                            db.CapitalLaborInfoLists.Add(insert_row_apr);
+                        }
+                        else
+                        {
+                            row_apr.FisYear = item.FisYear;
+                            row_apr.value = item.APR;
+                        }
+
+                        db.SaveChanges();
                     }
-                    else
-                    {
-                        row_june.FisYear = item.FisYear;
-                        row_june.value = item.JUN;
-                    }
-
-                    //JUL
-                    CapitalLaborInfoList row_july = db.CapitalLaborInfoLists
-                        .SingleOrDefault(x => x.MasterID == item.MasterID && x.Month == "JUL");
-
-                    if (row_july == null)
-                    {
-                        CapitalLaborInfoList insert_row_july = new CapitalLaborInfoList();
-                        insert_row_july.MasterID = item.MasterID;
-                        insert_row_july.FisYear = item.FisYear;
-                        insert_row_july.Month = "JUL";
-                        insert_row_july.value = item.JUL;
-                        db.CapitalLaborInfoLists.Add(insert_row_july);
-                    }
-                    else
-                    {
-                        row_july.FisYear = item.FisYear;
-                        row_july.value = item.JUL;
-                    }
-
-                    //AUG
-                    CapitalLaborInfoList row_aug = db.CapitalLaborInfoLists
-                        .SingleOrDefault(x => x.MasterID == item.MasterID && x.Month == "AUG");
-
-                    if (row_aug == null)
-                    {
-                        CapitalLaborInfoList insert_row_aug = new CapitalLaborInfoList();
-                        insert_row_aug.MasterID = item.MasterID;
-                        insert_row_aug.FisYear = item.FisYear;
-                        insert_row_aug.Month = "AUG";
-                        insert_row_aug.value = item.AUG;
-                        db.CapitalLaborInfoLists.Add(insert_row_aug);
-                    }
-                    else
-                    {
-                        row_aug.FisYear = item.FisYear;
-                        row_aug.value = item.AUG;
-                    }
-
-                    //SEP
-                    CapitalLaborInfoList row_sep = db.CapitalLaborInfoLists
-                        .SingleOrDefault(x => x.MasterID == item.MasterID && x.Month == "SEP");
-
-                    if (row_sep == null)
-                    {
-                        CapitalLaborInfoList insert_row_sep = new CapitalLaborInfoList();
-                        insert_row_sep.MasterID = item.MasterID;
-                        insert_row_sep.FisYear = item.FisYear;
-                        insert_row_sep.Month = "SEP";
-                        insert_row_sep.value = item.SEP;
-                        db.CapitalLaborInfoLists.Add(insert_row_sep);
-                    }
-                    else
-                    {
-                        row_sep.FisYear = item.FisYear;
-                        row_sep.value = item.SEP;
-                    }
-
-
-                    //OCT
-                    CapitalLaborInfoList row_oct = db.CapitalLaborInfoLists
-                        .SingleOrDefault(x => x.MasterID == item.MasterID && x.Month == "OCT");
-
-                    if (row_oct == null)
-                    {
-                        CapitalLaborInfoList insert_row_oct = new CapitalLaborInfoList();
-                        insert_row_oct.MasterID = item.MasterID;
-                        insert_row_oct.FisYear = item.FisYear;
-                        insert_row_oct.Month = "OCT";
-                        insert_row_oct.value = item.OCT;
-                        db.CapitalLaborInfoLists.Add(insert_row_oct);
-                    }
-                    else
-                    {
-                        row_oct.FisYear = item.FisYear;
-                        row_oct.value = item.OCT;
-                    }
-
-                    //NOV
-                    CapitalLaborInfoList row_nov = db.CapitalLaborInfoLists
-                        .SingleOrDefault(x => x.MasterID == item.MasterID && x.Month == "NOV");
-
-                    if (row_nov == null)
-                    {
-                        CapitalLaborInfoList insert_row_nov = new CapitalLaborInfoList();
-                        insert_row_nov.MasterID = item.MasterID;
-                        insert_row_nov.FisYear = item.FisYear;
-                        insert_row_nov.Month = "NOV";
-                        insert_row_nov.value = item.NOV;
-                        db.CapitalLaborInfoLists.Add(insert_row_nov);
-                    }
-                    else
-                    {
-                        row_nov.FisYear = item.FisYear;
-                        row_nov.value = item.NOV;
-                    }
-
-                    //DEC
-                    CapitalLaborInfoList row_dec = db.CapitalLaborInfoLists
-                        .SingleOrDefault(x => x.MasterID == item.MasterID && x.Month == "DEC");
-
-                    if (row_dec == null)
-                    {
-                        CapitalLaborInfoList insert_row_dec = new CapitalLaborInfoList();
-                        insert_row_dec.MasterID = item.MasterID;
-                        insert_row_dec.FisYear = item.FisYear;
-                        insert_row_dec.Month = "DEC";
-                        insert_row_dec.value = item.DEC;
-                        db.CapitalLaborInfoLists.Add(insert_row_dec);
-                    }
-                    else
-                    {
-                        row_dec.FisYear = item.FisYear;
-                        row_dec.value = item.DEC;
-                    }
-
-                    //JAN
-                    CapitalLaborInfoList row_jan = db.CapitalLaborInfoLists
-                        .SingleOrDefault(x => x.MasterID == item.MasterID && x.Month == "JAN");
-
-                    if (row_jan == null)
-                    {
-                        CapitalLaborInfoList insert_row_jan = new CapitalLaborInfoList();
-                        insert_row_jan.MasterID = item.MasterID;
-                        insert_row_jan.FisYear = item.FisYear;
-                        insert_row_jan.Month = "JAN";
-                        insert_row_jan.value = item.JAN;
-                        db.CapitalLaborInfoLists.Add(insert_row_jan);
-                    }
-                    else
-                    {
-                        row_jan.FisYear = item.FisYear;
-                        row_jan.value = item.JAN;
-                    }
-
-                    //FEB
-                    CapitalLaborInfoList row_feb = db.CapitalLaborInfoLists
-                        .SingleOrDefault(x => x.MasterID == item.MasterID && x.Month == "FEB");
-
-                    if (row_feb == null)
-                    {
-                        CapitalLaborInfoList insert_row_feb = new CapitalLaborInfoList();
-                        insert_row_feb.MasterID = item.MasterID;
-                        insert_row_feb.FisYear = item.FisYear;
-                        insert_row_feb.Month = "FEB";
-                        insert_row_feb.value = item.FEB;
-                        db.CapitalLaborInfoLists.Add(insert_row_feb);
-                    }
-                    else
-                    {
-                        row_feb.FisYear = item.FisYear;
-                        row_feb.value = item.FEB;
-                    }
-
-                    //MAR
-                    CapitalLaborInfoList row_mar = db.CapitalLaborInfoLists
-                        .SingleOrDefault(x => x.MasterID == item.MasterID && x.Month == "MAR");
-
-                    if (row_mar == null)
-                    {
-                        CapitalLaborInfoList insert_row_mar = new CapitalLaborInfoList();
-                        insert_row_mar.MasterID = item.MasterID;
-                        insert_row_mar.FisYear = item.FisYear;
-                        insert_row_mar.Month = "MAR";
-                        insert_row_mar.value = item.MAR;
-                        db.CapitalLaborInfoLists.Add(insert_row_mar);
-                    }
-                    else
-                    {
-                        row_mar.FisYear = item.FisYear;
-                        row_mar.value = item.MAR;
-                    }
-
-                    //APR
-                    CapitalLaborInfoList row_apr = db.CapitalLaborInfoLists
-                        .SingleOrDefault(x => x.MasterID == item.MasterID && x.Month == "APR");
-
-                    if (row_apr == null)
-                    {
-                        CapitalLaborInfoList insert_row_apr = new CapitalLaborInfoList();
-                        insert_row_apr.MasterID = item.MasterID;
-                        insert_row_apr.FisYear = item.FisYear;
-                        insert_row_apr.Month = "APR";
-                        insert_row_apr.value = item.APR;
-                        db.CapitalLaborInfoLists.Add(insert_row_apr);
-                    }
-                    else
-                    {
-                        row_apr.FisYear = item.FisYear;
-                        row_apr.value = item.APR;
-                    }
-
-                    db.SaveChanges();
                 }
             }
 
@@ -2005,9 +2026,12 @@ namespace MECC_ReportPortal.Controllers
                     int getchildcount = db.CapitalLaborInfoLists.Where(x => x.MasterID == item.MasterID).ToList().Count();
                     if (getchildcount == 0)
                     {
-                        CapitalLaborInfo master = db.CapitalLaborInfoes.Single(x => x.MasterID == item.MasterID);
-                        db.CapitalLaborInfoes.Remove(master);
-                        db.SaveChanges();
+                        CapitalLaborInfo master = db.CapitalLaborInfoes.Where(x => x.MasterID == item.MasterID).SingleOrDefault();
+                        if (master != null)
+                        {
+                            db.CapitalLaborInfoes.Remove(master);
+                            db.SaveChanges();
+                        }
                     }
                 }
             }
@@ -2037,248 +2061,250 @@ namespace MECC_ReportPortal.Controllers
                     if (AOPProjectID.Count >= 1)
                         AOPID = AOPProjectID[0];
 
-                    CapitalInfo row = db.CapitalInfoes.Single(x => x.MasterID == item.MasterID);
-                    row.Type = item.Type;
-                    row.WBSNumber = item.WBSNumber;
-                    row.Priority = item.Priority;
-                    row.Impactofnotinvesting = item.Impactofnotinvesting;
-                    row.CapitalCategory = item.CapitalCategory;
-                    row.CapitalType = item.CapitalType;
-                    row.AOPProject = AOPID;
-                    row.Description = item.Description;
-                    row.ModifiedBy = obj.userid;
-                    row.ModifiedOn = DateTime.Now;
-
-                    //MAY
-                    CapitalInfoList row_may = db.CapitalInfoLists
-                        .SingleOrDefault(x => x.MasterID == item.MasterID && x.Month == "MAY");
-
-                    if (row_may == null)
+                    CapitalInfo row = db.CapitalInfoes.Where(x => x.MasterID == item.MasterID).SingleOrDefault();
+                    if (row != null)
                     {
-                        CapitalInfoList insert_row_may = new CapitalInfoList();
-                        insert_row_may.MasterID = item.MasterID;
-                        insert_row_may.FinYear = item.FinYear;
-                        insert_row_may.Month = "MAY";
-                        insert_row_may.value = item.MAY;
-                        db.CapitalInfoLists.Add(insert_row_may);
-                    }
-                    else
-                    {
-                        row_may.FinYear = item.FinYear;
-                        row_may.value = item.MAY;
-                    }
+                        row.Type = item.Type;
+                        row.WBSNumber = item.WBSNumber;
+                        row.Priority = item.Priority;
+                        row.Impactofnotinvesting = item.Impactofnotinvesting;
+                        row.CapitalCategory = item.CapitalCategory;
+                        row.CapitalType = item.CapitalType;
+                        row.AOPProject = AOPID;
+                        row.Description = item.Description;
+                        row.ModifiedBy = obj.userid;
+                        row.ModifiedOn = DateTime.Now;
 
-                    //JUN
-                    CapitalInfoList row_june = db.CapitalInfoLists
-                        .SingleOrDefault(x => x.MasterID == item.MasterID && x.Month == "JUN");
+                        //MAY
+                        CapitalInfoList row_may = db.CapitalInfoLists
+                            .SingleOrDefault(x => x.MasterID == item.MasterID && x.Month == "MAY");
 
-                    if (row_june == null)
-                    {
-                        CapitalInfoList insert_row_june = new CapitalInfoList();
-                        insert_row_june.MasterID = item.MasterID;
-                        insert_row_june.FinYear = item.FinYear;
-                        insert_row_june.Month = "JUN";
-                        insert_row_june.value = item.JUN;
-                        db.CapitalInfoLists.Add(insert_row_june);
+                        if (row_may == null)
+                        {
+                            CapitalInfoList insert_row_may = new CapitalInfoList();
+                            insert_row_may.MasterID = item.MasterID;
+                            insert_row_may.FinYear = item.FinYear;
+                            insert_row_may.Month = "MAY";
+                            insert_row_may.value = item.MAY;
+                            db.CapitalInfoLists.Add(insert_row_may);
+                        }
+                        else
+                        {
+                            row_may.FinYear = item.FinYear;
+                            row_may.value = item.MAY;
+                        }
+
+                        //JUN
+                        CapitalInfoList row_june = db.CapitalInfoLists
+                            .SingleOrDefault(x => x.MasterID == item.MasterID && x.Month == "JUN");
+
+                        if (row_june == null)
+                        {
+                            CapitalInfoList insert_row_june = new CapitalInfoList();
+                            insert_row_june.MasterID = item.MasterID;
+                            insert_row_june.FinYear = item.FinYear;
+                            insert_row_june.Month = "JUN";
+                            insert_row_june.value = item.JUN;
+                            db.CapitalInfoLists.Add(insert_row_june);
+                        }
+                        else
+                        {
+                            row_june.FinYear = item.FinYear;
+                            row_june.value = item.JUN;
+                        }
+
+                        //JUL
+                        CapitalInfoList row_july = db.CapitalInfoLists
+                            .SingleOrDefault(x => x.MasterID == item.MasterID && x.Month == "JUL");
+
+                        if (row_july == null)
+                        {
+                            CapitalInfoList insert_row_july = new CapitalInfoList();
+                            insert_row_july.MasterID = item.MasterID;
+                            insert_row_july.FinYear = item.FinYear;
+                            insert_row_july.Month = "JUL";
+                            insert_row_july.value = item.JUL;
+                            db.CapitalInfoLists.Add(insert_row_july);
+                        }
+                        else
+                        {
+                            row_july.FinYear = item.FinYear;
+                            row_july.value = item.JUL;
+                        }
+
+                        //AUG
+                        CapitalInfoList row_aug = db.CapitalInfoLists
+                            .SingleOrDefault(x => x.MasterID == item.MasterID && x.Month == "AUG");
+
+                        if (row_aug == null)
+                        {
+                            CapitalInfoList insert_row_aug = new CapitalInfoList();
+                            insert_row_aug.MasterID = item.MasterID;
+                            insert_row_aug.FinYear = item.FinYear;
+                            insert_row_aug.Month = "AUG";
+                            insert_row_aug.value = item.AUG;
+                            db.CapitalInfoLists.Add(insert_row_aug);
+                        }
+                        else
+                        {
+                            row_aug.FinYear = item.FinYear;
+                            row_aug.value = item.AUG;
+                        }
+
+                        //SEP
+                        CapitalInfoList row_sep = db.CapitalInfoLists
+                            .SingleOrDefault(x => x.MasterID == item.MasterID && x.Month == "SEP");
+
+                        if (row_sep == null)
+                        {
+                            CapitalInfoList insert_row_sep = new CapitalInfoList();
+                            insert_row_sep.MasterID = item.MasterID;
+                            insert_row_sep.FinYear = item.FinYear;
+                            insert_row_sep.Month = "SEP";
+                            insert_row_sep.value = item.SEP;
+                            db.CapitalInfoLists.Add(insert_row_sep);
+                        }
+                        else
+                        {
+                            row_sep.FinYear = item.FinYear;
+                            row_sep.value = item.SEP;
+                        }
+
+                        //OCT
+                        CapitalInfoList row_oct = db.CapitalInfoLists
+                            .SingleOrDefault(x => x.MasterID == item.MasterID && x.Month == "OCT");
+
+                        if (row_oct == null)
+                        {
+                            CapitalInfoList insert_row_oct = new CapitalInfoList();
+                            insert_row_oct.MasterID = item.MasterID;
+                            insert_row_oct.FinYear = item.FinYear;
+                            insert_row_oct.Month = "OCT";
+                            insert_row_oct.value = item.OCT;
+                            db.CapitalInfoLists.Add(insert_row_oct);
+                        }
+                        else
+                        {
+                            row_oct.FinYear = item.FinYear;
+                            row_oct.value = item.OCT;
+                        }
+
+                        //NOV
+                        CapitalInfoList row_nov = db.CapitalInfoLists
+                            .SingleOrDefault(x => x.MasterID == item.MasterID && x.Month == "NOV");
+
+                        if (row_nov == null)
+                        {
+                            CapitalInfoList insert_row_nov = new CapitalInfoList();
+                            insert_row_nov.MasterID = item.MasterID;
+                            insert_row_nov.FinYear = item.FinYear;
+                            insert_row_nov.Month = "NOV";
+                            insert_row_nov.value = item.NOV;
+                            db.CapitalInfoLists.Add(insert_row_nov);
+                        }
+                        else
+                        {
+                            row_nov.FinYear = item.FinYear;
+                            row_nov.value = item.NOV;
+                        }
+
+                        //DEC
+                        CapitalInfoList row_dec = db.CapitalInfoLists
+                            .SingleOrDefault(x => x.MasterID == item.MasterID && x.Month == "DEC");
+
+                        if (row_dec == null)
+                        {
+                            CapitalInfoList insert_row_dec = new CapitalInfoList();
+                            insert_row_dec.MasterID = item.MasterID;
+                            insert_row_dec.FinYear = item.FinYear;
+                            insert_row_dec.Month = "DEC";
+                            insert_row_dec.value = item.DEC;
+                            db.CapitalInfoLists.Add(insert_row_dec);
+                        }
+                        else
+                        {
+                            row_dec.FinYear = item.FinYear;
+                            row_dec.value = item.DEC;
+                        }
+
+                        //JAN
+                        CapitalInfoList row_jan = db.CapitalInfoLists
+                            .SingleOrDefault(x => x.MasterID == item.MasterID && x.Month == "JAN");
+
+                        if (row_jan == null)
+                        {
+                            CapitalInfoList insert_row_jan = new CapitalInfoList();
+                            insert_row_jan.MasterID = item.MasterID;
+                            insert_row_jan.FinYear = item.FinYear;
+                            insert_row_jan.Month = "JAN";
+                            insert_row_jan.value = item.JAN;
+                            db.CapitalInfoLists.Add(insert_row_jan);
+                        }
+                        else
+                        {
+                            row_jan.FinYear = item.FinYear;
+                            row_jan.value = item.JAN;
+                        }
+
+                        //FEB
+                        CapitalInfoList row_feb = db.CapitalInfoLists
+                            .SingleOrDefault(x => x.MasterID == item.MasterID && x.Month == "FEB");
+
+                        if (row_feb == null)
+                        {
+                            CapitalInfoList insert_row_feb = new CapitalInfoList();
+                            insert_row_feb.MasterID = item.MasterID;
+                            insert_row_feb.FinYear = item.FinYear;
+                            insert_row_feb.Month = "FEB";
+                            insert_row_feb.value = item.FEB;
+                            db.CapitalInfoLists.Add(insert_row_feb);
+                        }
+                        else
+                        {
+                            row_feb.FinYear = item.FinYear;
+                            row_feb.value = item.FEB;
+                        }
+
+                        //MAR
+                        CapitalInfoList row_mar = db.CapitalInfoLists
+                            .SingleOrDefault(x => x.MasterID == item.MasterID && x.Month == "MAR");
+
+                        if (row_mar == null)
+                        {
+                            CapitalInfoList insert_row_mar = new CapitalInfoList();
+                            insert_row_mar.MasterID = item.MasterID;
+                            insert_row_mar.FinYear = item.FinYear;
+                            insert_row_mar.Month = "MAR";
+                            insert_row_mar.value = item.MAR;
+                            db.CapitalInfoLists.Add(insert_row_mar);
+                        }
+                        else
+                        {
+                            row_mar.FinYear = item.FinYear;
+                            row_mar.value = item.MAR;
+                        }
+
+                        //APR
+                        CapitalInfoList row_apr = db.CapitalInfoLists
+                            .SingleOrDefault(x => x.MasterID == item.MasterID && x.Month == "APR");
+
+                        if (row_apr == null)
+                        {
+                            CapitalInfoList insert_row_apr = new CapitalInfoList();
+                            insert_row_apr.MasterID = item.MasterID;
+                            insert_row_apr.FinYear = item.FinYear;
+                            insert_row_apr.Month = "APR";
+                            insert_row_apr.value = item.APR;
+                            db.CapitalInfoLists.Add(insert_row_apr);
+                        }
+                        else
+                        {
+                            row_apr.FinYear = item.FinYear;
+                            row_apr.value = item.APR;
+                        }
+
+                        db.SaveChanges();
                     }
-                    else
-                    {
-                        row_june.FinYear = item.FinYear;
-                        row_june.value = item.JUN;
-                    }
-
-                    //JUL
-                    CapitalInfoList row_july = db.CapitalInfoLists
-                        .SingleOrDefault(x => x.MasterID == item.MasterID && x.Month == "JUL");
-
-                    if (row_july == null)
-                    {
-                        CapitalInfoList insert_row_july = new CapitalInfoList();
-                        insert_row_july.MasterID = item.MasterID;
-                        insert_row_july.FinYear = item.FinYear;
-                        insert_row_july.Month = "JUL";
-                        insert_row_july.value = item.JUL;
-                        db.CapitalInfoLists.Add(insert_row_july);
-                    }
-                    else
-                    {
-                        row_july.FinYear = item.FinYear;
-                        row_july.value = item.JUL;
-                    }
-
-                    //AUG
-                    CapitalInfoList row_aug = db.CapitalInfoLists
-                        .SingleOrDefault(x => x.MasterID == item.MasterID && x.Month == "AUG");
-
-                    if (row_aug == null)
-                    {
-                        CapitalInfoList insert_row_aug = new CapitalInfoList();
-                        insert_row_aug.MasterID = item.MasterID;
-                        insert_row_aug.FinYear = item.FinYear;
-                        insert_row_aug.Month = "AUG";
-                        insert_row_aug.value = item.AUG;
-                        db.CapitalInfoLists.Add(insert_row_aug);
-                    }
-                    else
-                    {
-                        row_aug.FinYear = item.FinYear;
-                        row_aug.value = item.AUG;
-                    }
-
-                    //SEP
-                    CapitalInfoList row_sep = db.CapitalInfoLists
-                        .SingleOrDefault(x => x.MasterID == item.MasterID && x.Month == "SEP");
-
-                    if (row_sep == null)
-                    {
-                        CapitalInfoList insert_row_sep = new CapitalInfoList();
-                        insert_row_sep.MasterID = item.MasterID;
-                        insert_row_sep.FinYear = item.FinYear;
-                        insert_row_sep.Month = "SEP";
-                        insert_row_sep.value = item.SEP;
-                        db.CapitalInfoLists.Add(insert_row_sep);
-                    }
-                    else
-                    {
-                        row_sep.FinYear = item.FinYear;
-                        row_sep.value = item.SEP;
-                    }
-
-                    //OCT
-                    CapitalInfoList row_oct = db.CapitalInfoLists
-                        .SingleOrDefault(x => x.MasterID == item.MasterID && x.Month == "OCT");
-
-                    if (row_oct == null)
-                    {
-                        CapitalInfoList insert_row_oct = new CapitalInfoList();
-                        insert_row_oct.MasterID = item.MasterID;
-                        insert_row_oct.FinYear = item.FinYear;
-                        insert_row_oct.Month = "OCT";
-                        insert_row_oct.value = item.OCT;
-                        db.CapitalInfoLists.Add(insert_row_oct);
-                    }
-                    else
-                    {
-                        row_oct.FinYear = item.FinYear;
-                        row_oct.value = item.OCT;
-                    }
-
-                    //NOV
-                    CapitalInfoList row_nov = db.CapitalInfoLists
-                        .SingleOrDefault(x => x.MasterID == item.MasterID && x.Month == "NOV");
-
-                    if (row_nov == null)
-                    {
-                        CapitalInfoList insert_row_nov = new CapitalInfoList();
-                        insert_row_nov.MasterID = item.MasterID;
-                        insert_row_nov.FinYear = item.FinYear;
-                        insert_row_nov.Month = "NOV";
-                        insert_row_nov.value = item.NOV;
-                        db.CapitalInfoLists.Add(insert_row_nov);
-                    }
-                    else
-                    {
-                        row_nov.FinYear = item.FinYear;
-                        row_nov.value = item.NOV;
-                    }
-
-                    //DEC
-                    CapitalInfoList row_dec = db.CapitalInfoLists
-                        .SingleOrDefault(x => x.MasterID == item.MasterID && x.Month == "DEC");
-
-                    if (row_dec == null)
-                    {
-                        CapitalInfoList insert_row_dec = new CapitalInfoList();
-                        insert_row_dec.MasterID = item.MasterID;
-                        insert_row_dec.FinYear = item.FinYear;
-                        insert_row_dec.Month = "DEC";
-                        insert_row_dec.value = item.DEC;
-                        db.CapitalInfoLists.Add(insert_row_dec);
-                    }
-                    else
-                    {
-                        row_dec.FinYear = item.FinYear;
-                        row_dec.value = item.DEC;
-                    }
-
-                    //JAN
-                    CapitalInfoList row_jan = db.CapitalInfoLists
-                        .SingleOrDefault(x => x.MasterID == item.MasterID && x.Month == "JAN");
-
-                    if (row_jan == null)
-                    {
-                        CapitalInfoList insert_row_jan = new CapitalInfoList();
-                        insert_row_jan.MasterID = item.MasterID;
-                        insert_row_jan.FinYear = item.FinYear;
-                        insert_row_jan.Month = "JAN";
-                        insert_row_jan.value = item.JAN;
-                        db.CapitalInfoLists.Add(insert_row_jan);
-                    }
-                    else
-                    {
-                        row_jan.FinYear = item.FinYear;
-                        row_jan.value = item.JAN;
-                    }
-
-                    //FEB
-                    CapitalInfoList row_feb = db.CapitalInfoLists
-                        .SingleOrDefault(x => x.MasterID == item.MasterID && x.Month == "FEB");
-
-                    if (row_feb == null)
-                    {
-                        CapitalInfoList insert_row_feb = new CapitalInfoList();
-                        insert_row_feb.MasterID = item.MasterID;
-                        insert_row_feb.FinYear = item.FinYear;
-                        insert_row_feb.Month = "FEB";
-                        insert_row_feb.value = item.FEB;
-                        db.CapitalInfoLists.Add(insert_row_feb);
-                    }
-                    else
-                    {
-                        row_feb.FinYear = item.FinYear;
-                        row_feb.value = item.FEB;
-                    }
-
-                    //MAR
-                    CapitalInfoList row_mar = db.CapitalInfoLists
-                        .SingleOrDefault(x => x.MasterID == item.MasterID && x.Month == "MAR");
-
-                    if (row_mar == null)
-                    {
-                        CapitalInfoList insert_row_mar = new CapitalInfoList();
-                        insert_row_mar.MasterID = item.MasterID;
-                        insert_row_mar.FinYear = item.FinYear;
-                        insert_row_mar.Month = "MAR";
-                        insert_row_mar.value = item.MAR;
-                        db.CapitalInfoLists.Add(insert_row_mar);
-                    }
-                    else
-                    {
-                        row_mar.FinYear = item.FinYear;
-                        row_mar.value = item.MAR;
-                    }
-
-                    //APR
-                    CapitalInfoList row_apr = db.CapitalInfoLists
-                        .SingleOrDefault(x => x.MasterID == item.MasterID && x.Month == "APR");
-
-                    if (row_apr == null)
-                    {
-                        CapitalInfoList insert_row_apr = new CapitalInfoList();
-                        insert_row_apr.MasterID = item.MasterID;
-                        insert_row_apr.FinYear = item.FinYear;
-                        insert_row_apr.Month = "APR";
-                        insert_row_apr.value = item.APR;
-                        db.CapitalInfoLists.Add(insert_row_apr);
-                    }
-                    else
-                    {
-                        row_apr.FinYear = item.FinYear;
-                        row_apr.value = item.APR;
-                    }
-
-                    db.SaveChanges();
-
                 }
             }
 
@@ -2296,9 +2322,12 @@ namespace MECC_ReportPortal.Controllers
                     int getchildcount = db.CapitalInfoLists.Where(x => x.MasterID == item.MasterID).ToList().Count();
                     if (getchildcount == 0)
                     {
-                        CapitalInfo master = db.CapitalInfoes.Single(x => x.MasterID == item.MasterID);
-                        db.CapitalInfoes.Remove(master);
-                        db.SaveChanges();
+                        CapitalInfo master = db.CapitalInfoes.Where(x => x.MasterID == item.MasterID).SingleOrDefault();
+                        if (master != null)
+                        {
+                            db.CapitalInfoes.Remove(master);
+                            db.SaveChanges();
+                        }
                     }
                 }
             }
@@ -2322,243 +2351,246 @@ namespace MECC_ReportPortal.Controllers
             {
                 foreach (var item in obj.update)
                 {
-                    DirectExpensesInfo row = db.DirectExpensesInfoes.Single(x => x.MasterID == item.MasterID);
-                    row.WBSNumber = item.WBSNumber;
-                    row.Type = item.Type;
-                    row.ExpenseCategory = item.ExpenseCategory;
-                    row.Description = item.Description;
-                    row.ModifiedBy = obj.userid;
-                    row.ModifiedOn = DateTime.Now;
-
-                    //MAY
-                    DirectExpensesInfoList row_may = db.DirectExpensesInfoLists
-                        .SingleOrDefault(x => x.MasterID == item.MasterID && x.Month == "MAY");
-
-                    if (row_may == null)
+                    DirectExpensesInfo row = db.DirectExpensesInfoes.Where(x => x.MasterID == item.MasterID).SingleOrDefault();
+                    if (row != null)
                     {
-                        DirectExpensesInfoList insert_row_may = new DirectExpensesInfoList();
-                        insert_row_may.MasterID = item.MasterID;
-                        insert_row_may.FisYear = item.FisYear;
-                        insert_row_may.Month = "MAY";
-                        insert_row_may.value = item.MAY;
-                        db.DirectExpensesInfoLists.Add(insert_row_may);
-                    }
-                    else
-                    {
-                        row_may.FisYear = item.FisYear;
-                        row_may.value = item.MAY;
-                    }
+                        row.WBSNumber = item.WBSNumber;
+                        row.Type = item.Type;
+                        row.ExpenseCategory = item.ExpenseCategory;
+                        row.Description = item.Description;
+                        row.ModifiedBy = obj.userid;
+                        row.ModifiedOn = DateTime.Now;
 
-                    //JUN
-                    DirectExpensesInfoList row_june = db.DirectExpensesInfoLists
-                        .SingleOrDefault(x => x.MasterID == item.MasterID && x.Month == "JUN");
+                        //MAY
+                        DirectExpensesInfoList row_may = db.DirectExpensesInfoLists
+                            .SingleOrDefault(x => x.MasterID == item.MasterID && x.Month == "MAY");
 
-                    if (row_june == null)
-                    {
-                        DirectExpensesInfoList insert_row_june = new DirectExpensesInfoList();
-                        insert_row_june.MasterID = item.MasterID;
-                        insert_row_june.FisYear = item.FisYear;
-                        insert_row_june.Month = "JUN";
-                        insert_row_june.value = item.JUN;
-                        db.DirectExpensesInfoLists.Add(insert_row_june);
-                    }
-                    else
-                    {
-                        row_june.FisYear = item.FisYear;
-                        row_june.value = item.JUN;
-                    }
+                        if (row_may == null)
+                        {
+                            DirectExpensesInfoList insert_row_may = new DirectExpensesInfoList();
+                            insert_row_may.MasterID = item.MasterID;
+                            insert_row_may.FisYear = item.FisYear;
+                            insert_row_may.Month = "MAY";
+                            insert_row_may.value = item.MAY;
+                            db.DirectExpensesInfoLists.Add(insert_row_may);
+                        }
+                        else
+                        {
+                            row_may.FisYear = item.FisYear;
+                            row_may.value = item.MAY;
+                        }
 
-                    //JUL
-                    DirectExpensesInfoList row_july = db.DirectExpensesInfoLists
-                        .SingleOrDefault(x => x.MasterID == item.MasterID && x.Month == "JUL");
+                        //JUN
+                        DirectExpensesInfoList row_june = db.DirectExpensesInfoLists
+                            .SingleOrDefault(x => x.MasterID == item.MasterID && x.Month == "JUN");
 
-                    if (row_july == null)
-                    {
-                        DirectExpensesInfoList insert_row_july = new DirectExpensesInfoList();
-                        insert_row_july.MasterID = item.MasterID;
-                        insert_row_july.FisYear = item.FisYear;
-                        insert_row_july.Month = "JUL";
-                        insert_row_july.value = item.JUL;
-                        db.DirectExpensesInfoLists.Add(insert_row_july);
-                    }
-                    else
-                    {
-                        row_july.FisYear = item.FisYear;
-                        row_july.value = item.JUL;
-                    }
+                        if (row_june == null)
+                        {
+                            DirectExpensesInfoList insert_row_june = new DirectExpensesInfoList();
+                            insert_row_june.MasterID = item.MasterID;
+                            insert_row_june.FisYear = item.FisYear;
+                            insert_row_june.Month = "JUN";
+                            insert_row_june.value = item.JUN;
+                            db.DirectExpensesInfoLists.Add(insert_row_june);
+                        }
+                        else
+                        {
+                            row_june.FisYear = item.FisYear;
+                            row_june.value = item.JUN;
+                        }
 
-                    //AUG
-                    DirectExpensesInfoList row_aug = db.DirectExpensesInfoLists
-                        .SingleOrDefault(x => x.MasterID == item.MasterID && x.Month == "AUG");
+                        //JUL
+                        DirectExpensesInfoList row_july = db.DirectExpensesInfoLists
+                            .SingleOrDefault(x => x.MasterID == item.MasterID && x.Month == "JUL");
 
-                    if (row_aug == null)
-                    {
-                        DirectExpensesInfoList insert_row_aug = new DirectExpensesInfoList();
-                        insert_row_aug.MasterID = item.MasterID;
-                        insert_row_aug.FisYear = item.FisYear;
-                        insert_row_aug.Month = "AUG";
-                        insert_row_aug.value = item.AUG;
-                        db.DirectExpensesInfoLists.Add(insert_row_aug);
-                    }
-                    else
-                    {
-                        row_aug.FisYear = item.FisYear;
-                        row_aug.value = item.AUG;
-                    }
+                        if (row_july == null)
+                        {
+                            DirectExpensesInfoList insert_row_july = new DirectExpensesInfoList();
+                            insert_row_july.MasterID = item.MasterID;
+                            insert_row_july.FisYear = item.FisYear;
+                            insert_row_july.Month = "JUL";
+                            insert_row_july.value = item.JUL;
+                            db.DirectExpensesInfoLists.Add(insert_row_july);
+                        }
+                        else
+                        {
+                            row_july.FisYear = item.FisYear;
+                            row_july.value = item.JUL;
+                        }
 
-                    //SEP
-                    DirectExpensesInfoList row_sep = db.DirectExpensesInfoLists
-                        .SingleOrDefault(x => x.MasterID == item.MasterID && x.Month == "SEP");
+                        //AUG
+                        DirectExpensesInfoList row_aug = db.DirectExpensesInfoLists
+                            .SingleOrDefault(x => x.MasterID == item.MasterID && x.Month == "AUG");
 
-                    if (row_sep == null)
-                    {
-                        DirectExpensesInfoList insert_row_sep = new DirectExpensesInfoList();
-                        insert_row_sep.MasterID = item.MasterID;
-                        insert_row_sep.FisYear = item.FisYear;
-                        insert_row_sep.Month = "SEP";
-                        insert_row_sep.value = item.SEP;
-                        db.DirectExpensesInfoLists.Add(insert_row_sep);
-                    }
-                    else
-                    {
-                        row_sep.FisYear = item.FisYear;
-                        row_sep.value = item.SEP;
-                    }
+                        if (row_aug == null)
+                        {
+                            DirectExpensesInfoList insert_row_aug = new DirectExpensesInfoList();
+                            insert_row_aug.MasterID = item.MasterID;
+                            insert_row_aug.FisYear = item.FisYear;
+                            insert_row_aug.Month = "AUG";
+                            insert_row_aug.value = item.AUG;
+                            db.DirectExpensesInfoLists.Add(insert_row_aug);
+                        }
+                        else
+                        {
+                            row_aug.FisYear = item.FisYear;
+                            row_aug.value = item.AUG;
+                        }
 
-                    //OCT
-                    DirectExpensesInfoList row_oct = db.DirectExpensesInfoLists
-                        .SingleOrDefault(x => x.MasterID == item.MasterID && x.Month == "OCT");
+                        //SEP
+                        DirectExpensesInfoList row_sep = db.DirectExpensesInfoLists
+                            .SingleOrDefault(x => x.MasterID == item.MasterID && x.Month == "SEP");
 
-                    if (row_oct == null)
-                    {
-                        DirectExpensesInfoList insert_row_oct = new DirectExpensesInfoList();
-                        insert_row_oct.MasterID = item.MasterID;
-                        insert_row_oct.FisYear = item.FisYear;
-                        insert_row_oct.Month = "OCT";
-                        insert_row_oct.value = item.OCT;
-                        db.DirectExpensesInfoLists.Add(insert_row_oct);
-                    }
-                    else
-                    {
-                        row_oct.FisYear = item.FisYear;
-                        row_oct.value = item.OCT;
-                    }
+                        if (row_sep == null)
+                        {
+                            DirectExpensesInfoList insert_row_sep = new DirectExpensesInfoList();
+                            insert_row_sep.MasterID = item.MasterID;
+                            insert_row_sep.FisYear = item.FisYear;
+                            insert_row_sep.Month = "SEP";
+                            insert_row_sep.value = item.SEP;
+                            db.DirectExpensesInfoLists.Add(insert_row_sep);
+                        }
+                        else
+                        {
+                            row_sep.FisYear = item.FisYear;
+                            row_sep.value = item.SEP;
+                        }
 
-                    //NOV
-                    DirectExpensesInfoList row_nov = db.DirectExpensesInfoLists
-                        .SingleOrDefault(x => x.MasterID == item.MasterID && x.Month == "NOV");
+                        //OCT
+                        DirectExpensesInfoList row_oct = db.DirectExpensesInfoLists
+                            .SingleOrDefault(x => x.MasterID == item.MasterID && x.Month == "OCT");
 
-                    if (row_nov == null)
-                    {
-                        DirectExpensesInfoList insert_row_nov = new DirectExpensesInfoList();
-                        insert_row_nov.MasterID = item.MasterID;
-                        insert_row_nov.FisYear = item.FisYear;
-                        insert_row_nov.Month = "NOV";
-                        insert_row_nov.value = item.NOV;
-                        db.DirectExpensesInfoLists.Add(insert_row_nov);
-                    }
-                    else
-                    {
-                        row_nov.FisYear = item.FisYear;
-                        row_nov.value = item.NOV;
-                    }
+                        if (row_oct == null)
+                        {
+                            DirectExpensesInfoList insert_row_oct = new DirectExpensesInfoList();
+                            insert_row_oct.MasterID = item.MasterID;
+                            insert_row_oct.FisYear = item.FisYear;
+                            insert_row_oct.Month = "OCT";
+                            insert_row_oct.value = item.OCT;
+                            db.DirectExpensesInfoLists.Add(insert_row_oct);
+                        }
+                        else
+                        {
+                            row_oct.FisYear = item.FisYear;
+                            row_oct.value = item.OCT;
+                        }
 
-                    //DEC
-                    DirectExpensesInfoList row_dec = db.DirectExpensesInfoLists
-                        .SingleOrDefault(x => x.MasterID == item.MasterID && x.Month == "DEC");
+                        //NOV
+                        DirectExpensesInfoList row_nov = db.DirectExpensesInfoLists
+                            .SingleOrDefault(x => x.MasterID == item.MasterID && x.Month == "NOV");
 
-                    if (row_dec == null)
-                    {
-                        DirectExpensesInfoList insert_row_dec = new DirectExpensesInfoList();
-                        insert_row_dec.MasterID = item.MasterID;
-                        insert_row_dec.FisYear = item.FisYear;
-                        insert_row_dec.Month = "DEC";
-                        insert_row_dec.value = item.DEC;
-                        db.DirectExpensesInfoLists.Add(insert_row_dec);
-                    }
-                    else
-                    {
-                        row_dec.FisYear = item.FisYear;
-                        row_dec.value = item.DEC;
-                    }
+                        if (row_nov == null)
+                        {
+                            DirectExpensesInfoList insert_row_nov = new DirectExpensesInfoList();
+                            insert_row_nov.MasterID = item.MasterID;
+                            insert_row_nov.FisYear = item.FisYear;
+                            insert_row_nov.Month = "NOV";
+                            insert_row_nov.value = item.NOV;
+                            db.DirectExpensesInfoLists.Add(insert_row_nov);
+                        }
+                        else
+                        {
+                            row_nov.FisYear = item.FisYear;
+                            row_nov.value = item.NOV;
+                        }
 
-                    //JAN
-                    DirectExpensesInfoList row_jan = db.DirectExpensesInfoLists
-                        .SingleOrDefault(x => x.MasterID == item.MasterID && x.Month == "JAN");
+                        //DEC
+                        DirectExpensesInfoList row_dec = db.DirectExpensesInfoLists
+                            .SingleOrDefault(x => x.MasterID == item.MasterID && x.Month == "DEC");
 
-                    if (row_jan == null)
-                    {
-                        DirectExpensesInfoList insert_row_jan = new DirectExpensesInfoList();
-                        insert_row_jan.MasterID = item.MasterID;
-                        insert_row_jan.FisYear = item.FisYear;
-                        insert_row_jan.Month = "JAN";
-                        insert_row_jan.value = item.JAN;
-                        db.DirectExpensesInfoLists.Add(insert_row_jan);
-                    }
-                    else
-                    {
-                        row_jan.FisYear = item.FisYear;
-                        row_jan.value = item.JAN;
-                    }
+                        if (row_dec == null)
+                        {
+                            DirectExpensesInfoList insert_row_dec = new DirectExpensesInfoList();
+                            insert_row_dec.MasterID = item.MasterID;
+                            insert_row_dec.FisYear = item.FisYear;
+                            insert_row_dec.Month = "DEC";
+                            insert_row_dec.value = item.DEC;
+                            db.DirectExpensesInfoLists.Add(insert_row_dec);
+                        }
+                        else
+                        {
+                            row_dec.FisYear = item.FisYear;
+                            row_dec.value = item.DEC;
+                        }
 
-                    //FEB
-                    DirectExpensesInfoList row_feb = db.DirectExpensesInfoLists
-                        .SingleOrDefault(x => x.MasterID == item.MasterID && x.Month == "FEB");
+                        //JAN
+                        DirectExpensesInfoList row_jan = db.DirectExpensesInfoLists
+                            .SingleOrDefault(x => x.MasterID == item.MasterID && x.Month == "JAN");
 
-                    if (row_feb == null)
-                    {
-                        DirectExpensesInfoList insert_row_feb = new DirectExpensesInfoList();
-                        insert_row_feb.MasterID = item.MasterID;
-                        insert_row_feb.FisYear = item.FisYear;
-                        insert_row_feb.Month = "FEB";
-                        insert_row_feb.value = item.FEB;
-                        db.DirectExpensesInfoLists.Add(insert_row_feb);
-                    }
-                    else
-                    {
-                        row_feb.FisYear = item.FisYear;
-                        row_feb.value = item.FEB;
-                    }
+                        if (row_jan == null)
+                        {
+                            DirectExpensesInfoList insert_row_jan = new DirectExpensesInfoList();
+                            insert_row_jan.MasterID = item.MasterID;
+                            insert_row_jan.FisYear = item.FisYear;
+                            insert_row_jan.Month = "JAN";
+                            insert_row_jan.value = item.JAN;
+                            db.DirectExpensesInfoLists.Add(insert_row_jan);
+                        }
+                        else
+                        {
+                            row_jan.FisYear = item.FisYear;
+                            row_jan.value = item.JAN;
+                        }
 
-                    //MAR
-                    DirectExpensesInfoList row_mar = db.DirectExpensesInfoLists
-                        .SingleOrDefault(x => x.MasterID == item.MasterID && x.Month == "MAR");
+                        //FEB
+                        DirectExpensesInfoList row_feb = db.DirectExpensesInfoLists
+                            .SingleOrDefault(x => x.MasterID == item.MasterID && x.Month == "FEB");
 
-                    if (row_mar == null)
-                    {
-                        DirectExpensesInfoList insert_row_mar = new DirectExpensesInfoList();
-                        insert_row_mar.MasterID = item.MasterID;
-                        insert_row_mar.FisYear = item.FisYear;
-                        insert_row_mar.Month = "MAR";
-                        insert_row_mar.value = item.MAR;
-                        db.DirectExpensesInfoLists.Add(insert_row_mar);
-                    }
-                    else
-                    {
-                        row_mar.FisYear = item.FisYear;
-                        row_mar.value = item.MAR;
-                    }
+                        if (row_feb == null)
+                        {
+                            DirectExpensesInfoList insert_row_feb = new DirectExpensesInfoList();
+                            insert_row_feb.MasterID = item.MasterID;
+                            insert_row_feb.FisYear = item.FisYear;
+                            insert_row_feb.Month = "FEB";
+                            insert_row_feb.value = item.FEB;
+                            db.DirectExpensesInfoLists.Add(insert_row_feb);
+                        }
+                        else
+                        {
+                            row_feb.FisYear = item.FisYear;
+                            row_feb.value = item.FEB;
+                        }
 
-                    //APR
-                    DirectExpensesInfoList row_apr = db.DirectExpensesInfoLists
-                        .SingleOrDefault(x => x.MasterID == item.MasterID && x.Month == "APR");
+                        //MAR
+                        DirectExpensesInfoList row_mar = db.DirectExpensesInfoLists
+                            .SingleOrDefault(x => x.MasterID == item.MasterID && x.Month == "MAR");
 
-                    if (row_apr == null)
-                    {
-                        DirectExpensesInfoList insert_row_apr = new DirectExpensesInfoList();
-                        insert_row_apr.MasterID = item.MasterID;
-                        insert_row_apr.FisYear = item.FisYear;
-                        insert_row_apr.Month = "APR";
-                        insert_row_apr.value = item.APR;
-                        db.DirectExpensesInfoLists.Add(insert_row_apr);
-                    }
-                    else
-                    {
-                        row_apr.FisYear = item.FisYear;
-                        row_apr.value = item.APR;
-                    }
+                        if (row_mar == null)
+                        {
+                            DirectExpensesInfoList insert_row_mar = new DirectExpensesInfoList();
+                            insert_row_mar.MasterID = item.MasterID;
+                            insert_row_mar.FisYear = item.FisYear;
+                            insert_row_mar.Month = "MAR";
+                            insert_row_mar.value = item.MAR;
+                            db.DirectExpensesInfoLists.Add(insert_row_mar);
+                        }
+                        else
+                        {
+                            row_mar.FisYear = item.FisYear;
+                            row_mar.value = item.MAR;
+                        }
 
-                    db.SaveChanges();
+                        //APR
+                        DirectExpensesInfoList row_apr = db.DirectExpensesInfoLists
+                            .SingleOrDefault(x => x.MasterID == item.MasterID && x.Month == "APR");
+
+                        if (row_apr == null)
+                        {
+                            DirectExpensesInfoList insert_row_apr = new DirectExpensesInfoList();
+                            insert_row_apr.MasterID = item.MasterID;
+                            insert_row_apr.FisYear = item.FisYear;
+                            insert_row_apr.Month = "APR";
+                            insert_row_apr.value = item.APR;
+                            db.DirectExpensesInfoLists.Add(insert_row_apr);
+                        }
+                        else
+                        {
+                            row_apr.FisYear = item.FisYear;
+                            row_apr.value = item.APR;
+                        }
+
+                        db.SaveChanges();
+                    }
 
                 }
             }
@@ -2577,9 +2609,12 @@ namespace MECC_ReportPortal.Controllers
                     int getchildcount = db.DirectExpensesInfoLists.Where(x => x.MasterID == item.MasterID).ToList().Count();
                     if (getchildcount == 0)
                     {
-                        DirectExpensesInfo master = db.DirectExpensesInfoes.Single(x => x.MasterID == item.MasterID);
-                        db.DirectExpensesInfoes.Remove(master);
-                        db.SaveChanges();
+                        DirectExpensesInfo master = db.DirectExpensesInfoes.Where(x => x.MasterID == item.MasterID).SingleOrDefault();
+                        if (master != null)
+                        {
+                            db.DirectExpensesInfoes.Remove(master);
+                            db.SaveChanges();
+                        }
                     }
                 }
             }
@@ -2603,249 +2638,252 @@ namespace MECC_ReportPortal.Controllers
                 foreach (var item in obj.update)
                 {
 
-                    ResourceInfo row = db.ResourceInfoes.Single(x => x.MasterID == item.MasterID);
-                    row.Type = item.Type;
-                    row.WBSNumber = item.WBSNumber;
-                    row.Business = item.Business;
-                    row.BusinessUnit = item.BusinessUnit;
-                    row.HighOrg = item.HighOrg;
-                    row.MidOrg = item.MidOrg;
-                    row.Team = item.Team;
-                    row.RequiredSkill = item.RequiredSkill;
-                    row.Comments = item.Comments;
-                    row.ModifiedBy = obj.userid;
-                    row.ModifiedOn = DateTime.Now;
-
-                    //MAY
-                    ResourceInfoList row_may = db.ResourceInfoLists
-                        .SingleOrDefault(x => x.MasterID == item.MasterID && x.Month == "MAY");
-
-                    if (row_may == null)
+                    ResourceInfo row = db.ResourceInfoes.Where(x => x.MasterID == item.MasterID).SingleOrDefault();
+                    if (row != null)
                     {
-                        ResourceInfoList insert_row_may = new ResourceInfoList();
-                        insert_row_may.MasterID = item.MasterID;
-                        insert_row_may.FinYear = item.FinYear;
-                        insert_row_may.Month = "MAY";
-                        insert_row_may.TimeSpentInProject = item.MAY;
-                        db.ResourceInfoLists.Add(insert_row_may);
-                    }
-                    else
-                    {
-                        row_may.FinYear = item.FinYear;
-                        row_may.TimeSpentInProject = item.MAY;
-                    }
+                        row.Type = item.Type;
+                        row.WBSNumber = item.WBSNumber;
+                        row.Business = item.Business;
+                        row.BusinessUnit = item.BusinessUnit;
+                        row.HighOrg = item.HighOrg;
+                        row.MidOrg = item.MidOrg;
+                        row.Team = item.Team;
+                        row.RequiredSkill = item.RequiredSkill;
+                        row.Comments = item.Comments;
+                        row.ModifiedBy = obj.userid;
+                        row.ModifiedOn = DateTime.Now;
 
-                    //JUN
-                    ResourceInfoList row_june = db.ResourceInfoLists
-                        .SingleOrDefault(x => x.MasterID == item.MasterID && x.Month == "JUN");
+                        //MAY
+                        ResourceInfoList row_may = db.ResourceInfoLists
+                            .SingleOrDefault(x => x.MasterID == item.MasterID && x.Month == "MAY");
 
-                    if (row_june == null)
-                    {
-                        ResourceInfoList insert_row_june = new ResourceInfoList();
-                        insert_row_june.MasterID = item.MasterID;
-                        insert_row_june.FinYear = item.FinYear;
-                        insert_row_june.Month = "JUN";
-                        insert_row_june.TimeSpentInProject = item.JUN;
-                        db.ResourceInfoLists.Add(insert_row_june);
+                        if (row_may == null)
+                        {
+                            ResourceInfoList insert_row_may = new ResourceInfoList();
+                            insert_row_may.MasterID = item.MasterID;
+                            insert_row_may.FinYear = item.FinYear;
+                            insert_row_may.Month = "MAY";
+                            insert_row_may.TimeSpentInProject = item.MAY;
+                            db.ResourceInfoLists.Add(insert_row_may);
+                        }
+                        else
+                        {
+                            row_may.FinYear = item.FinYear;
+                            row_may.TimeSpentInProject = item.MAY;
+                        }
+
+                        //JUN
+                        ResourceInfoList row_june = db.ResourceInfoLists
+                            .SingleOrDefault(x => x.MasterID == item.MasterID && x.Month == "JUN");
+
+                        if (row_june == null)
+                        {
+                            ResourceInfoList insert_row_june = new ResourceInfoList();
+                            insert_row_june.MasterID = item.MasterID;
+                            insert_row_june.FinYear = item.FinYear;
+                            insert_row_june.Month = "JUN";
+                            insert_row_june.TimeSpentInProject = item.JUN;
+                            db.ResourceInfoLists.Add(insert_row_june);
+                        }
+                        else
+                        {
+                            row_june.FinYear = item.FinYear;
+                            row_june.TimeSpentInProject = item.JUN;
+                        }
+
+                        //JUL
+                        ResourceInfoList row_july = db.ResourceInfoLists
+                            .SingleOrDefault(x => x.MasterID == item.MasterID && x.Month == "JUL");
+
+                        if (row_july == null)
+                        {
+                            ResourceInfoList insert_row_july = new ResourceInfoList();
+                            insert_row_july.MasterID = item.MasterID;
+                            insert_row_july.FinYear = item.FinYear;
+                            insert_row_july.Month = "JUL";
+                            insert_row_july.TimeSpentInProject = item.JUL;
+                            db.ResourceInfoLists.Add(insert_row_july);
+                        }
+                        else
+                        {
+                            row_july.FinYear = item.FinYear;
+                            row_july.TimeSpentInProject = item.JUL;
+                        }
+
+                        //AUG
+                        ResourceInfoList row_aug = db.ResourceInfoLists
+                            .SingleOrDefault(x => x.MasterID == item.MasterID && x.Month == "AUG");
+
+                        if (row_aug == null)
+                        {
+                            ResourceInfoList insert_row_aug = new ResourceInfoList();
+                            insert_row_aug.MasterID = item.MasterID;
+                            insert_row_aug.FinYear = item.FinYear;
+                            insert_row_aug.Month = "AUG";
+                            insert_row_aug.TimeSpentInProject = item.AUG;
+                            db.ResourceInfoLists.Add(insert_row_aug);
+                        }
+                        else
+                        {
+                            row_aug.FinYear = item.FinYear;
+                            row_aug.TimeSpentInProject = item.AUG;
+                        }
+
+                        //SEP
+                        ResourceInfoList row_sep = db.ResourceInfoLists
+                            .SingleOrDefault(x => x.MasterID == item.MasterID && x.Month == "SEP");
+
+                        if (row_sep == null)
+                        {
+                            ResourceInfoList insert_row_sep = new ResourceInfoList();
+                            insert_row_sep.MasterID = item.MasterID;
+                            insert_row_sep.FinYear = item.FinYear;
+                            insert_row_sep.Month = "SEP";
+                            insert_row_sep.TimeSpentInProject = item.SEP;
+                            db.ResourceInfoLists.Add(insert_row_sep);
+                        }
+                        else
+                        {
+                            row_sep.FinYear = item.FinYear;
+                            row_sep.TimeSpentInProject = item.SEP;
+                        }
+
+                        //OCT
+                        ResourceInfoList row_oct = db.ResourceInfoLists
+                            .SingleOrDefault(x => x.MasterID == item.MasterID && x.Month == "OCT");
+
+                        if (row_oct == null)
+                        {
+                            ResourceInfoList insert_row_oct = new ResourceInfoList();
+                            insert_row_oct.MasterID = item.MasterID;
+                            insert_row_oct.FinYear = item.FinYear;
+                            insert_row_oct.Month = "OCT";
+                            insert_row_oct.TimeSpentInProject = item.OCT;
+                            db.ResourceInfoLists.Add(insert_row_oct);
+                        }
+                        else
+                        {
+                            row_oct.FinYear = item.FinYear;
+                            row_oct.TimeSpentInProject = item.OCT;
+                        }
+
+                        //NOV
+                        ResourceInfoList row_nov = db.ResourceInfoLists
+                            .SingleOrDefault(x => x.MasterID == item.MasterID && x.Month == "NOV");
+
+                        if (row_nov == null)
+                        {
+                            ResourceInfoList insert_row_nov = new ResourceInfoList();
+                            insert_row_nov.MasterID = item.MasterID;
+                            insert_row_nov.FinYear = item.FinYear;
+                            insert_row_nov.Month = "NOV";
+                            insert_row_nov.TimeSpentInProject = item.NOV;
+                            db.ResourceInfoLists.Add(insert_row_nov);
+                        }
+                        else
+                        {
+                            row_nov.FinYear = item.FinYear;
+                            row_nov.TimeSpentInProject = item.NOV;
+                        }
+
+                        //DEC
+                        ResourceInfoList row_dec = db.ResourceInfoLists
+                            .SingleOrDefault(x => x.MasterID == item.MasterID && x.Month == "DEC");
+
+                        if (row_dec == null)
+                        {
+                            ResourceInfoList insert_row_dec = new ResourceInfoList();
+                            insert_row_dec.MasterID = item.MasterID;
+                            insert_row_dec.FinYear = item.FinYear;
+                            insert_row_dec.Month = "DEC";
+                            insert_row_dec.TimeSpentInProject = item.DEC;
+                            db.ResourceInfoLists.Add(insert_row_dec);
+                        }
+                        else
+                        {
+                            row_dec.FinYear = item.FinYear;
+                            row_dec.TimeSpentInProject = item.DEC;
+                        }
+
+                        //JAN
+                        ResourceInfoList row_jan = db.ResourceInfoLists
+                            .SingleOrDefault(x => x.MasterID == item.MasterID && x.Month == "JAN");
+
+                        if (row_jan == null)
+                        {
+                            ResourceInfoList insert_row_jan = new ResourceInfoList();
+                            insert_row_jan.MasterID = item.MasterID;
+                            insert_row_jan.FinYear = item.FinYear;
+                            insert_row_jan.Month = "JAN";
+                            insert_row_jan.TimeSpentInProject = item.JAN;
+                            db.ResourceInfoLists.Add(insert_row_jan);
+                        }
+                        else
+                        {
+                            row_jan.FinYear = item.FinYear;
+                            row_jan.TimeSpentInProject = item.JAN;
+                        }
+
+                        //FEB
+                        ResourceInfoList row_feb = db.ResourceInfoLists
+                            .SingleOrDefault(x => x.MasterID == item.MasterID && x.Month == "FEB");
+
+
+                        if (row_feb == null)
+                        {
+                            ResourceInfoList insert_row_feb = new ResourceInfoList();
+                            insert_row_feb.MasterID = item.MasterID;
+                            insert_row_feb.FinYear = item.FinYear;
+                            insert_row_feb.Month = "FEB";
+                            insert_row_feb.TimeSpentInProject = item.FEB;
+                            db.ResourceInfoLists.Add(insert_row_feb);
+                        }
+                        else
+                        {
+                            row_feb.FinYear = item.FinYear;
+                            row_feb.TimeSpentInProject = item.FEB;
+                        }
+
+                        //MAR
+                        ResourceInfoList row_mar = db.ResourceInfoLists
+                            .SingleOrDefault(x => x.MasterID == item.MasterID && x.Month == "MAR");
+
+                        if (row_mar == null)
+                        {
+                            ResourceInfoList insert_row_mar = new ResourceInfoList();
+                            insert_row_mar.MasterID = item.MasterID;
+                            insert_row_mar.FinYear = item.FinYear;
+                            insert_row_mar.Month = "MAR";
+                            insert_row_mar.TimeSpentInProject = item.MAR;
+                            db.ResourceInfoLists.Add(insert_row_mar);
+                        }
+                        else
+                        {
+                            row_mar.FinYear = item.FinYear;
+                            row_mar.TimeSpentInProject = item.MAR;
+                        }
+
+                        //APR
+                        ResourceInfoList row_apr = db.ResourceInfoLists
+                            .SingleOrDefault(x => x.MasterID == item.MasterID && x.Month == "APR");
+
+                        if (row_apr == null)
+                        {
+                            ResourceInfoList insert_row_apr = new ResourceInfoList();
+                            insert_row_apr.MasterID = item.MasterID;
+                            insert_row_apr.FinYear = item.FinYear;
+                            insert_row_apr.Month = "APR";
+                            insert_row_apr.TimeSpentInProject = item.APR;
+                            db.ResourceInfoLists.Add(insert_row_apr);
+                        }
+                        else
+                        {
+                            row_apr.FinYear = item.FinYear;
+                            row_apr.TimeSpentInProject = item.APR;
+                        }
+
+                        db.SaveChanges();
                     }
-                    else
-                    {
-                        row_june.FinYear = item.FinYear;
-                        row_june.TimeSpentInProject = item.JUN;
-                    }
-
-                    //JUL
-                    ResourceInfoList row_july = db.ResourceInfoLists
-                        .SingleOrDefault(x => x.MasterID == item.MasterID && x.Month == "JUL");
-
-                    if (row_july == null)
-                    {
-                        ResourceInfoList insert_row_july = new ResourceInfoList();
-                        insert_row_july.MasterID = item.MasterID;
-                        insert_row_july.FinYear = item.FinYear;
-                        insert_row_july.Month = "JUL";
-                        insert_row_july.TimeSpentInProject = item.JUL;
-                        db.ResourceInfoLists.Add(insert_row_july);
-                    }
-                    else
-                    {
-                        row_july.FinYear = item.FinYear;
-                        row_july.TimeSpentInProject = item.JUL;
-                    }
-
-                    //AUG
-                    ResourceInfoList row_aug = db.ResourceInfoLists
-                        .SingleOrDefault(x => x.MasterID == item.MasterID && x.Month == "AUG");
-
-                    if (row_aug == null)
-                    {
-                        ResourceInfoList insert_row_aug = new ResourceInfoList();
-                        insert_row_aug.MasterID = item.MasterID;
-                        insert_row_aug.FinYear = item.FinYear;
-                        insert_row_aug.Month = "AUG";
-                        insert_row_aug.TimeSpentInProject = item.AUG;
-                        db.ResourceInfoLists.Add(insert_row_aug);
-                    }
-                    else
-                    {
-                        row_aug.FinYear = item.FinYear;
-                        row_aug.TimeSpentInProject = item.AUG;
-                    }
-
-                    //SEP
-                    ResourceInfoList row_sep = db.ResourceInfoLists
-                        .SingleOrDefault(x => x.MasterID == item.MasterID && x.Month == "SEP");
-
-                    if (row_sep == null)
-                    {
-                        ResourceInfoList insert_row_sep = new ResourceInfoList();
-                        insert_row_sep.MasterID = item.MasterID;
-                        insert_row_sep.FinYear = item.FinYear;
-                        insert_row_sep.Month = "SEP";
-                        insert_row_sep.TimeSpentInProject = item.SEP;
-                        db.ResourceInfoLists.Add(insert_row_sep);
-                    }
-                    else
-                    {
-                        row_sep.FinYear = item.FinYear;
-                        row_sep.TimeSpentInProject = item.SEP;
-                    }
-
-                    //OCT
-                    ResourceInfoList row_oct = db.ResourceInfoLists
-                        .SingleOrDefault(x => x.MasterID == item.MasterID && x.Month == "OCT");
-
-                    if (row_oct == null)
-                    {
-                        ResourceInfoList insert_row_oct = new ResourceInfoList();
-                        insert_row_oct.MasterID = item.MasterID;
-                        insert_row_oct.FinYear = item.FinYear;
-                        insert_row_oct.Month = "OCT";
-                        insert_row_oct.TimeSpentInProject = item.OCT;
-                        db.ResourceInfoLists.Add(insert_row_oct);
-                    }
-                    else
-                    {
-                        row_oct.FinYear = item.FinYear;
-                        row_oct.TimeSpentInProject = item.OCT;
-                    }
-
-                    //NOV
-                    ResourceInfoList row_nov = db.ResourceInfoLists
-                        .SingleOrDefault(x => x.MasterID == item.MasterID && x.Month == "NOV");
-
-                    if (row_nov == null)
-                    {
-                        ResourceInfoList insert_row_nov = new ResourceInfoList();
-                        insert_row_nov.MasterID = item.MasterID;
-                        insert_row_nov.FinYear = item.FinYear;
-                        insert_row_nov.Month = "NOV";
-                        insert_row_nov.TimeSpentInProject = item.NOV;
-                        db.ResourceInfoLists.Add(insert_row_nov);
-                    }
-                    else
-                    {
-                        row_nov.FinYear = item.FinYear;
-                        row_nov.TimeSpentInProject = item.NOV;
-                    }
-
-                    //DEC
-                    ResourceInfoList row_dec = db.ResourceInfoLists
-                        .SingleOrDefault(x => x.MasterID == item.MasterID && x.Month == "DEC");
-
-                    if (row_dec == null)
-                    {
-                        ResourceInfoList insert_row_dec = new ResourceInfoList();
-                        insert_row_dec.MasterID = item.MasterID;
-                        insert_row_dec.FinYear = item.FinYear;
-                        insert_row_dec.Month = "DEC";
-                        insert_row_dec.TimeSpentInProject = item.DEC;
-                        db.ResourceInfoLists.Add(insert_row_dec);
-                    }
-                    else
-                    {
-                        row_dec.FinYear = item.FinYear;
-                        row_dec.TimeSpentInProject = item.DEC;
-                    }
-
-                    //JAN
-                    ResourceInfoList row_jan = db.ResourceInfoLists
-                        .SingleOrDefault(x => x.MasterID == item.MasterID && x.Month == "JAN");
-
-                    if (row_jan == null)
-                    {
-                        ResourceInfoList insert_row_jan = new ResourceInfoList();
-                        insert_row_jan.MasterID = item.MasterID;
-                        insert_row_jan.FinYear = item.FinYear;
-                        insert_row_jan.Month = "JAN";
-                        insert_row_jan.TimeSpentInProject = item.JAN;
-                        db.ResourceInfoLists.Add(insert_row_jan);
-                    }
-                    else
-                    {
-                        row_jan.FinYear = item.FinYear;
-                        row_jan.TimeSpentInProject = item.JAN;
-                    }
-
-                    //FEB
-                    ResourceInfoList row_feb = db.ResourceInfoLists
-                        .SingleOrDefault(x => x.MasterID == item.MasterID && x.Month == "FEB");
-
-
-                    if (row_feb == null)
-                    {
-                        ResourceInfoList insert_row_feb = new ResourceInfoList();
-                        insert_row_feb.MasterID = item.MasterID;
-                        insert_row_feb.FinYear = item.FinYear;
-                        insert_row_feb.Month = "FEB";
-                        insert_row_feb.TimeSpentInProject = item.FEB;
-                        db.ResourceInfoLists.Add(insert_row_feb);
-                    }
-                    else
-                    {
-                        row_feb.FinYear = item.FinYear;
-                        row_feb.TimeSpentInProject = item.FEB;
-                    }
-
-                    //MAR
-                    ResourceInfoList row_mar = db.ResourceInfoLists
-                        .SingleOrDefault(x => x.MasterID == item.MasterID && x.Month == "MAR");
-
-                    if (row_mar == null)
-                    {
-                        ResourceInfoList insert_row_mar = new ResourceInfoList();
-                        insert_row_mar.MasterID = item.MasterID;
-                        insert_row_mar.FinYear = item.FinYear;
-                        insert_row_mar.Month = "MAR";
-                        insert_row_mar.TimeSpentInProject = item.MAR;
-                        db.ResourceInfoLists.Add(insert_row_mar);
-                    }
-                    else
-                    {
-                        row_mar.FinYear = item.FinYear;
-                        row_mar.TimeSpentInProject = item.MAR;
-                    }
-
-                    //APR
-                    ResourceInfoList row_apr = db.ResourceInfoLists
-                        .SingleOrDefault(x => x.MasterID == item.MasterID && x.Month == "APR");
-
-                    if (row_apr == null)
-                    {
-                        ResourceInfoList insert_row_apr = new ResourceInfoList();
-                        insert_row_apr.MasterID = item.MasterID;
-                        insert_row_apr.FinYear = item.FinYear;
-                        insert_row_apr.Month = "APR";
-                        insert_row_apr.TimeSpentInProject = item.APR;
-                        db.ResourceInfoLists.Add(insert_row_apr);
-                    }
-                    else
-                    {
-                        row_apr.FinYear = item.FinYear;
-                        row_apr.TimeSpentInProject = item.APR;
-                    }
-
-                    db.SaveChanges();
 
                 }
             }
@@ -2864,13 +2902,19 @@ namespace MECC_ReportPortal.Controllers
                     int getchildcount = db.ResourceInfoLists.Where(x => x.MasterID == item.MasterID).ToList().Count();
                     if (getchildcount == 0)
                     {
-                        ResourceInfo master = db.ResourceInfoes.Single(x => x.MasterID == item.MasterID);
-                        db.ResourceInfoes.Remove(master);
-                        db.SaveChanges();
+                        ResourceInfo master = db.ResourceInfoes.Where(x => x.MasterID == item.MasterID).SingleOrDefault();
+                        if (master != null)
+                        {
+                            db.ResourceInfoes.Remove(master);
+                            db.SaveChanges();
+                        }
 
-                        ResourceInfoComment data = db.ResourceInfoComments.Single(x => x.MasterID == item.MasterID);
-                        db.ResourceInfoComments.Remove(data);
-                        db.SaveChanges();
+                        ResourceInfoComment data = db.ResourceInfoComments.Where(x => x.MasterID == item.MasterID).SingleOrDefault();
+                        if (data != null)
+                        {
+                            db.ResourceInfoComments.Remove(data);
+                            db.SaveChanges();
+                        }
                     }
                 }
             }
@@ -2916,5 +2960,137 @@ namespace MECC_ReportPortal.Controllers
             public List<SP_GetDirectExpensesData_Result> duplicate { get; set; }
             public string userid { get; set; }
         }
+
+
+        [HttpGet]
+        public JsonResult getResourceCheckBookData()
+        {
+            List<ResourceCheckBook_MainList> objM = new List<ResourceCheckBook_MainList>();
+
+            var objMainCheckBook = db.SP_Get_ResourceCheckBook_MainList(120, 2020);
+            foreach (var item in objMainCheckBook)
+            {
+                var objCBData = db.SP_Get_ResourceCheckBook(120, item.WBSNumber, item.BusinessUnit, item.HighOrg, item.MidOrg, item.Team, item.RequiredSkill, Convert.ToInt32(item.FinYear)).ToList();
+                List<ResourceCheckBook> objCB = new List<ResourceCheckBook>();
+                foreach (var Res_CB in objCBData)
+                {
+                    objCB.Add(new ResourceCheckBook()
+                    {
+                        Type = Res_CB.Type,
+                        WBSNumber = Res_CB.WBSNumber,
+                        BusinessUnit = Res_CB.BusinessUnit,
+                        HighOrg = Res_CB.HighOrg,
+                        MidOrg = Res_CB.MidOrg,
+                        Team = Res_CB.Team,
+                        RequiredSkill = Res_CB.RequiredSkill,
+                        FinYear = Convert.ToInt32(Res_CB.FinYear),
+                        MAY = Convert.ToDecimal(Res_CB.MAY),
+                        JUN = Convert.ToDecimal(Res_CB.JUN),
+                        JUL = Convert.ToDecimal(Res_CB.JUL),
+                        AUG = Convert.ToDecimal(Res_CB.AUG),
+                        SEP = Convert.ToDecimal(Res_CB.SEP),
+                        OCT = Convert.ToDecimal(Res_CB.OCT),
+                        NOV = Convert.ToDecimal(Res_CB.NOV),
+                        DEC = Convert.ToDecimal(Res_CB.DEC),
+                        JAN = Convert.ToDecimal(Res_CB.JAN),
+                        FEB = Convert.ToDecimal(Res_CB.FEB),
+                        MAR = Convert.ToDecimal(Res_CB.MAR),
+                        APR = Convert.ToDecimal(Res_CB.APR),
+                        ResourceCheckBookData = Res_CB.Type == "F" ? null : db.SP_Get_ResourceCheckBookData(Res_CB.WBSNumber, Res_CB.BusinessUnit, Res_CB.HighOrg, Res_CB.MidOrg, Res_CB.Team, Res_CB.RequiredSkill, Convert.ToInt32(Res_CB.FinYear)).ToList()
+                    });
+                }
+
+                objM.Add(new ResourceCheckBook_MainList()
+                {
+                    WBSNumber = item.WBSNumber,
+                    BusinessUnit = item.BusinessUnit,
+                    HighOrg = item.HighOrg,
+                    MidOrg = item.MidOrg,
+                    Team = item.Team,
+                    RequiredSkill = item.RequiredSkill,
+                    FinYear = Convert.ToInt32(item.FinYear),
+                    MAY = Convert.ToDecimal(item.MAY),
+                    JUN = Convert.ToDecimal(item.JUN),
+                    JUL = Convert.ToDecimal(item.JUL),
+                    AUG = Convert.ToDecimal(item.AUG),
+                    SEP = Convert.ToDecimal(item.SEP),
+                    OCT = Convert.ToDecimal(item.OCT),
+                    NOV = Convert.ToDecimal(item.NOV),
+                    DEC = Convert.ToDecimal(item.DEC),
+                    JAN = Convert.ToDecimal(item.JAN),
+                    FEB = Convert.ToDecimal(item.FEB),
+                    MAR = Convert.ToDecimal(item.MAR),
+                    APR = Convert.ToDecimal(item.APR),
+                    ResourceCheckBook = objCB.ToList()
+                });
+            }
+
+            return Json(objM, JsonRequestBehavior.AllowGet);
+        }
+
+        public class ResourceCheckBook_MainList
+        {
+            public string WBSNumber { get; set; }
+            public string BusinessUnit { get; set; }
+            public string HighOrg { get; set; }
+            public string MidOrg { get; set; }
+            public string Team { get; set; }
+            public string RequiredSkill { get; set; }
+            public int FinYear { get; set; }
+
+            public Decimal MAY { get; set; }
+
+            public Decimal JUN { get; set; }
+
+            public Decimal JUL { get; set; }
+
+            public Decimal AUG { get; set; }
+
+            public Decimal SEP { get; set; }
+
+            public Decimal OCT { get; set; }
+
+            public Decimal NOV { get; set; }
+
+            public Decimal DEC { get; set; }
+
+            public Decimal JAN { get; set; }
+
+            public Decimal FEB { get; set; }
+
+            public Decimal MAR { get; set; }
+
+            public Decimal APR { get; set; }
+
+            public List<ResourceCheckBook> ResourceCheckBook { get; set; }
+        }
+
+        public class ResourceCheckBook
+        {
+            public string Type { get; set; }
+            public int ProjectID { get; set; }
+            public string WBSNumber { get; set; }
+            public string BusinessUnit { get; set; }
+            public string HighOrg { get; set; }
+            public string MidOrg { get; set; }
+            public string Team { get; set; }
+            public string RequiredSkill { get; set; }
+            public int FinYear { get; set; }
+            public Nullable<decimal> MAY { get; set; }
+            public Nullable<decimal> JUN { get; set; }
+            public Nullable<decimal> JUL { get; set; }
+            public Nullable<decimal> AUG { get; set; }
+            public Nullable<decimal> SEP { get; set; }
+            public Nullable<decimal> OCT { get; set; }
+            public Nullable<decimal> NOV { get; set; }
+            public Nullable<decimal> DEC { get; set; }
+            public Nullable<decimal> JAN { get; set; }
+            public Nullable<decimal> FEB { get; set; }
+            public Nullable<decimal> MAR { get; set; }
+            public Nullable<decimal> APR { get; set; }
+            public List<SP_Get_ResourceCheckBookData_Result> ResourceCheckBookData { get; set; }
+        }
+
+
     }
 }

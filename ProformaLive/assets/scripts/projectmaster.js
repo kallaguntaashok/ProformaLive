@@ -1236,4 +1236,45 @@ app.controller('ProjectController', function ($scope, $http) {
         };
     }
 
+
+    getcompletelistofnotification();
+    function getcompletelistofnotification() {
+        $http({
+            method: 'GET',
+            url: '../notification/get_completenotification'
+        }).then(function (response) {
+            document.getElementById('notificationtotal').innerHTML = "Notification (" + response.data.length + ")";
+            var notificationlist = "";
+            for (var i = 0; i < response.data.length; i++) {
+                notificationlist = notificationlist + " <a class='dropdown-item' onclick='shownotification(" + response.data[i].Sysid + ")'><i class='fa fa-dot-circle-o' aria-hidden='true'></i>&nbsp;&nbsp;" + response.data[i].Title + "</a>";
+            }
+            document.getElementById('notificationlistbody').innerHTML = notificationlist;
+        }, function (error) {
+            console.log(error);
+        });
+    }
+    $scope.shownotification = function (item) {
+        $http({
+            method: 'POST',
+            url: '../notification/get_notificationdata',
+            params: {
+                "intID": item
+            }
+        }).then(function (response) {
+            var encodenotification = atob(response.data[0].Data);
+            document.getElementById("notificationID").innerHTML = response.data[0].Sysid;
+            document.getElementById("notificationBody").innerHTML = encodenotification;
+            document.getElementById('notificationpanel').style.display = 'block';
+            document.getElementById("closeNotification").style.display = 'block';
+            var summaryheight = parseInt(window.innerHeight);
+            summaryheight = summaryheight - 270;
+            document.getElementById('notificationBody').setAttribute('style', 'height: ' + (parseInt(window.innerHeight) - parseInt(110)) + 'px;');
+        }, function (error) {
+            console.log(error);
+        });
+    }
+    $scope.closenotification = function () {
+        document.getElementById('notificationpanel').style.display = 'none';
+    }
+
 })

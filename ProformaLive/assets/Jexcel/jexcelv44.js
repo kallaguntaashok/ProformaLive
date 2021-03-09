@@ -3382,10 +3382,10 @@ if (!jSuites && typeof (require) === 'function') {
 
                         td.innerText = obj.parseValue(i, j, obj.options.footers[j][i]);
                     }
-                }
+                }                
             }
         }
-
+               
         /**
          * Get the column title
          * 

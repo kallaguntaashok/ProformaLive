@@ -26,6 +26,7 @@ namespace ProformaLive
         public string CostElement { get; set; }
         public string CostElementName { get; set; }
         public string Name { get; set; }
+        public string FullName { get; set; }
         public string DocumentHeaderText { get; set; }
         public string PurchasingDocument { get; set; }
         public string PurchaseOrderText { get; set; }
@@ -40,8 +41,5 @@ namespace ProformaLive
         public string DocumentType { get; set; }
         public string DocumentNumber { get; set; }
         public Nullable<System.DateTime> Record_CreatedOn { get; set; }
-        public string Record_CreatedBy { get; set; }
-        public Nullable<System.DateTime> Record_ModifiedOn { get; set; }
-        public string Record_ModifiedBy { get; set; }
     }
 }
