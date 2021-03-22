@@ -640,7 +640,7 @@ app.controller('ProjectController', function ($scope, $http) {
         }
 
         function deleteupdateinfo(rowobj) {
-            if (rowobj.ProjectID != "") {               
+            if (rowobj.ProjectID != "") {
                 if (updatedInfo.find(x => x.ProjectID === rowobj.ProjectID)) {
                     index = updatedInfo.indexOf(updatedInfo.find(x => x.ProjectNumber === rowobj.ProjectNumber)); //getting index of that rec
                     updatedInfo.splice(index, 1); //remove the existing rec from object 
@@ -743,7 +743,8 @@ app.controller('ProjectController', function ($scope, $http) {
                                     document.getElementById('cloneproject').style.display = 'block';
                                     //$scope.clonealert = false;                   
                                     //document.getElementById("newprojectid").value = rowobj.ProjectNumber;
-                                    //document.getElementById("newprojectname").value = rowobj.ProjectName;       
+                                    //document.getElementById("newprojectname").value = rowobj.ProjectName;  
+
                                     cloneproformafun(rowobj.ProjectNumber);
                                 }
                             }
@@ -790,18 +791,18 @@ app.controller('ProjectController', function ($scope, $http) {
 
                                         var displaystatus = rowsElement[indexRow].style.display;
                                         if (displaystatus == "") {
-                                            
+
                                             var y = parseInt(rowsElement[indexRow].getAttribute("data-y"));
                                             var jsonobj = obj.getJson(false);
                                             var rowobj = jsonobj[y];
                                             deleteInfo.push(rowobj);
                                             updatedeletenotificationbar();
-                                            deleteupdateinfo(rowobj);      
+                                            deleteupdateinfo(rowobj);
                                             obj.deleteRow(y);
                                         }
 
                                     }
-                                }                                
+                                }
                             }
                         });
                     }
@@ -833,7 +834,7 @@ app.controller('ProjectController', function ($scope, $http) {
     $scope.updatetotalsum = function () {
         setTimeout(function () {
             $scope.$apply(function () {
-                
+
             });
         }, 1000);
     }
@@ -905,11 +906,9 @@ app.controller('ProjectController', function ($scope, $http) {
 
             document.getElementById('cloneproject').style.display = 'block';
             $scope.clonealert = false;
-
-            //document.getElementById("newprojectid").value = response.data[0].ProjectNumber + '_V' + response.data[0].VersionNumber;
-            //document.getElementById("newprojectname").value = response.data[0].ProjectName + '_V' + response.data[0].VersionNumber;
             $scope.model_newProjectID = response.data[0].ProjectNumber + '_V' + response.data[0].VersionNumber;
             $scope.model_newProjectName = response.data[0].ProjectName + '_V' + response.data[0].VersionNumber;
+            localStorage.setItem("cloneProjectID", strProjectID);
 
         }, function (error) {
             console.log(error);

@@ -2981,14 +2981,7 @@ namespace MECC_ReportPortal.Controllers
             var obj = db.SP_Get_ResourceCheckBook_Summary(intProjectID, intFisYear).ToList();
             return Json(obj, JsonRequestBehavior.AllowGet);
         }
-
-        //[HttpPost]
-        //public JsonResult getResourceCheckBook2ndlayerdata(int intProjectID,string strWBSNumber, string strBusinessUnit, string strHighOrg, string strMidOrg, string strTeam, string strRequiredSkills, int intFisYear)
-        //{
-        //    var objCBData = db.SP_Get_ResourceCheckBook(intProjectID, item.WBSNumber, item.BusinessUnit, item.HighOrg, item.MidOrg, item.Team, item.RequiredSkill, Convert.ToInt32(item.FinYear)).ToList();
-        //    return Json(objCBData, JsonRequestBehavior.AllowGet);
-        //}
-
+                
         [HttpPost]
         public JsonResult getResourceCheckBookData(int intProjectID, int intFisYear)
         {
