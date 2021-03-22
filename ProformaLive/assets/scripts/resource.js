@@ -1,7 +1,7 @@
 ﻿
-var app = angular.module('MECC', ['ngAnimate']);
+var app = angular.module('MECC', []);
 
-app.controller('MECCController', function ($scope, $sce, FileUploadService, $http) {
+app.controller('MECCController', function ($scope, $sce, FileUploadService, $http, $rootScope) {
 
     //Dynamic table width: based on screen size system will configure the table cells width. (Start)
     var proforma_mainwidth = document.getElementById("mainbody").offsetWidth;
@@ -12,6 +12,7 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
     capitallabor_mainwidth = (proforma_mainwidth - 938) / 6;
     //---------------------------------------------------------    
     de_mainwidth = (proforma_mainwidth - 1230) / 2;
+
 
     //End Dynamic width code.
     loadmastersettings();
@@ -30,16 +31,19 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
     var rowTeam = [];
     var dsResource = [];
     var dsCapital = [];
+    var dsResource_PC = [];
     var jSuite_dropSummaryFisYear = [];
     var jSuite_drop_Summary_Months = [];
     var jSuite_drop_Summary_Quarter = [];
     var dsCapitalLabour = [];
     var dsDirectExpense = [];
     var obj = [];
+    var obj_PC = [];
     var objdirectexpenses = [];
     var projectname = [];
     var rowRequiredSkills = [];
     var updatedInfo = [];
+    var updatedInfo_resource_checkbook = [];
     var deleteInfo = [];
     var duplicateInfo = [];
     var capital_duplicateInfo = [];
@@ -56,6 +60,7 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
     var directexpenses_deleteInfo = [];
     var directexpenses_duplicateInfo = [];
     var jSuite_dropOperatingExpenseWBSDE = [];
+    var jSuite_dropResourceCheckboo_FisYear = [];
     var jSuite_dropProjects = [];
     var jSuite_drop_Capital_AOPProject_CapitalLabor = [];
     var s_startvalue = 0;
@@ -79,11 +84,6 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
     var capital_comments = [];
     var capitallabor_comments = [];
     var directexpenses_comments = [];
-    var resource_comments = [];
-    //var dataexpenseCategory = [];
-    //var sm = this;
-    //var dsProjectList = [];
-    //var returndata = [];
 
     document.getElementById('resourcetotal').innerHTML = "0";
     document.getElementById('capitaltotal').innerHTML = "0";
@@ -93,6 +93,7 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
     document.getElementById('activetabid').innerHTML = "summary";
     document.getElementsByClassName("jexcel_search").placeholder = "Search..";
     var mainwidth = document.getElementById("mainbody").offsetWidth
+    var mainwidth_PC = (mainwidth - 110) + "px";
     mainwidth = (mainwidth - 76) + "px";
 
     //1)Method will load project master dropdown.
@@ -100,6 +101,53 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
     //3)If project name is not selected, it will move to landing page.
     loadProjectMaster();
     //updateskillfilter();
+
+    //$scope.validatedisplay = function (WBSNumber, MidOrg, Teams, RequiredSkills, value) {
+    //    console.log(WBSNumber);
+    //    console.log(MidOrg);
+    //    console.log(Teams);
+    //    console.log(RequiredSkills);
+    //    if (WBSNumber + "-" + MidOrg + "-" + Teams + "-" + RequiredSkills == localStorage.getItem("ex_wbs")) {
+    //        localStorage.setItem("ex_wbs", "");
+    //        return true;
+    //    }
+    //    else {
+    //        return value;
+    //    }        
+    //}
+
+    $scope.viewresourceinfo = function (PID, WBSNumber, BU, HighOrg, MidOrg, Teams, RequiredSkills, FisYear) {
+
+        //var expandvalue = WBSNumber + "-" + MidOrg + "-" + Teams + "-" + RequiredSkills;
+        //localStorage.setItem("ex_wbs", expandvalue);
+
+        updateprogressbar(20, "Resource is loading...");
+        $http({
+            method: 'GET',
+            url: '../Resource/getresourcedata_forCheckBook',
+            params: {
+                "intProjectID": PID,
+                "strWBSNumber": WBSNumber,
+                "strBU": BU,
+                "strHighOrg": HighOrg,
+                "strMidOrg": MidOrg,
+                "strTeams": Teams,
+                "strRequestedSkills": RequiredSkills,
+                "intFisYear": FisYear
+            }
+        }).then(function (response) {
+            dsResource_PC = response.data;
+            dropdown_update_BU_PC();
+            document.getElementById('notification_resource_checkbook').style.display = 'none';
+            document.getElementById('update_resource_checkbook1').innerHTML = 0;
+        }, function (error) {
+            console.log(error);
+        });
+    }
+
+    $scope.closeviewresourceinfo = function () {
+        document.getElementById('resourcecheckbookpanel').style.display = 'none';
+    }
 
     getcompletelist();
     function getcompletelist() {
@@ -129,20 +177,20 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
             var encodenotification = atob(response.data[0].Data);
             document.getElementById("notificationID").innerHTML = response.data[0].Sysid;
             document.getElementById("notificationBody").innerHTML = encodenotification;
-            document.getElementById('notificationpanel').style.display = 'block';        
+            document.getElementById('notificationpanel').style.display = 'block';
             document.getElementById("closeNotification").style.display = 'block';
             document.getElementById("clearNotification").style.display = 'none';
         }, function (error) {
             console.log(error);
-        });        
+        });
     }
 
-    $scope.closenotification = function () {       
+    $scope.closenotification = function () {
         document.getElementById('notificationpanel').style.display = 'none';
     }
 
     $scope.clearnotificaiton = function () {
-        
+
         $http({
             method: 'POST',
             url: '../notification/clear_notification',
@@ -167,19 +215,19 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
             params: {
                 "strUserID": localStorage.getItem("userID")
             }
-        }).then(function (response) {           
+        }).then(function (response) {
             if (response.data == "False") {
                 $http({
                     method: 'GET',
                     url: '../notification/get_notification'
                 }).then(function (response) {
-                    if (response.data != null) {                        
+                    if (response.data != null) {
                         var encodenotification = atob(response.data[0].Data);
                         document.getElementById("notificationBody").innerHTML = encodenotification;
                         document.getElementById('notificationpanel').style.display = 'block';
                         document.getElementById("closeNotification").style.display = 'none';
                         document.getElementById("clearNotification").style.display = 'block';
-                        document.getElementById("notificationID").innerHTML = response.data[0].Sysid;                        
+                        document.getElementById("notificationID").innerHTML = response.data[0].Sysid;
                     }
                 }, function (error) {
                     console.log(error);
@@ -259,6 +307,8 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
     }
 
     function loaddefaultsummary() {
+        $scope.Drop_ProjectClass = "col-md-6";
+        document.getElementById('Display_FisYearFilter').style.display = "none";
         default_tabsetting("summary");
         document.getElementById('drop_Summary_Months').setAttribute('disabled', 'disabled');
         document.getElementById('drop_Summary_Quarter').setAttribute('disabled', 'disabled');
@@ -321,8 +371,8 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
     }
 
     function refreshtablesum() {
-      
-        var activetab = document.getElementById('activetabid').innerHTML;        
+
+        var activetab = document.getElementById('activetabid').innerHTML;
         var in_number = 0;
         var tablobj = [];
         var filterid = "";
@@ -1141,7 +1191,7 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
         document.getElementById('capital').className = "tab-pane fade";
         document.getElementById('capitallabour').className = "tab-pane fade";
         document.getElementById('directexpenses').className = "tab-pane fade";
-        document.getElementById('checkbook').className = "tab-pane fade";
+        document.getElementById('resourcecheckbook').className = "tab-pane fade";
 
         if (value === "summary") {
             $scope.tabsummaryclass = "nav-link active";
@@ -1168,10 +1218,10 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
             document.getElementById('directexpenses').className = "tab-pane active";
 
         }
-        else if (value === "checkbook") {
+        else if (value === "resourcecheckbook") {
 
             $scope.tabcheckbookclass = "nav-link active";
-            document.getElementById('checkbook').className = "tab-pane active";
+            document.getElementById('resourcecheckbook').className = "tab-pane active";
 
         }
 
@@ -1190,6 +1240,8 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
                 default_tabsetting("summary");
                 document.getElementById('drop_Summary_Months').setAttribute('disabled', 'disabled');
                 document.getElementById('drop_Summary_Quarter').setAttribute('disabled', 'disabled');
+                $scope.Drop_ProjectClass = "col-md-6";
+                document.getElementById('Display_FisYearFilter').style.display = "none";
             }
         }
         else if (value === "resource") {
@@ -1200,9 +1252,10 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
                 update_resource_comments();
                 updateprogressbar(20, "Resource is loading...");
                 updateskillfilter();
-                //refreshresourcedata();
                 dropdown_update_BU();
                 default_tabsetting("resource");
+                $scope.Drop_ProjectClass = "col-md-6";
+                document.getElementById('Display_FisYearFilter').style.display = "none";
             }
         }
         else if (value === "capital") {
@@ -1214,6 +1267,8 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
                 updateprogressbar(20, "Capital is loading...");
                 getcapital();
                 default_tabsetting("capital");
+                $scope.Drop_ProjectClass = "col-md-6";
+                document.getElementById('Display_FisYearFilter').style.display = "none";
             }
         }
         else if (value === "capitallabor") {
@@ -1231,6 +1286,8 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
                 document.getElementById('dropRequiredSkills_CL').setAttribute('disabled', 'disabled');
                 getcapitallabour();
                 default_tabsetting("capitallabor");
+                $scope.Drop_ProjectClass = "col-md-6";
+                document.getElementById('Display_FisYearFilter').style.display = "none";
             }
         }
         else if (value === "directexpenses") {
@@ -1243,14 +1300,187 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
                 updateprogressbar(20, "Direct Expenses is loading...");
                 getDirectExpenses();
                 default_tabsetting("directexpenses");
+                $scope.Drop_ProjectClass = "col-md-6";
+                document.getElementById('Display_FisYearFilter').style.display = "none";
             }
         }
-        else if (value === "checkbook") {
-            default_tabsetting("checkbook");
+        else if (value === "resourcecheckbook") {
+            updateprogressbar(25, "Resource checkbook is loading....");
+            default_tabsetting("resourcecheckbook");
+            refresh_resourcecheckbook();
         }
 
         load_defalutformsettings();
         getlastmodifieddata();
+    }
+
+    function refresh_resourcecheckbook() {
+
+        updateprogressbar(20, "Loading Resource CheckBook...");
+        var summaryheight = parseInt(window.innerHeight);
+        summaryheight = summaryheight - 270;
+        document.getElementById('resourcecheckbookcontainer').setAttribute('style', 'height: ' + summaryheight + 'px; overflow: scroll;');
+        $scope.Drop_ProjectClass = "col-md-5";
+        document.getElementById('Display_FisYearFilter').style.display = "block";
+        updateskillfilter();
+
+        $http({
+            method: 'POST',
+            url: '../Resource/get_resourcecheckbook_fisyear',
+            params: { "intProjectID": localStorage.getItem("projectid") }
+        }).then(function (response) {
+            var resourcecheckbookyear = response.data;
+            var defaultvalue = 0;
+            if (resourcecheckbookyear.length > 0) {
+                defaultvalue = resourcecheckbookyear[0];
+            }
+            document.getElementById('dropResourceCheckboo_FisYear').innerHTML = "";
+            jSuite_dropResourceCheckboo_FisYear = jSuites.dropdown(document.getElementById('dropResourceCheckboo_FisYear'), {
+                data: resourcecheckbookyear,
+                autocomplete: true,
+                lazyLoading: false,
+                multiple: false,
+                value: defaultvalue,
+                width: '100%',
+                onchange: changeCheckBookFisYear
+            });
+
+            update_resource_comments();
+            loadresourcecheckbooksummary(defaultvalue);
+            loadresourcecheckbook(defaultvalue);
+
+        }, function (error) {
+            console.log(error);
+        });
+    }
+
+    function changeCheckBookFisYear() {
+
+        updateprogressbar(20, "Loading Resource Checkbook...");
+        var Fisyear = jSuite_dropResourceCheckboo_FisYear.getValue();
+        loadresourcecheckbooksummary(Fisyear);
+        loadresourcecheckbook(Fisyear);
+    }
+
+    function loadresourcecheckbook(Fisyear) {
+        $http({
+            method: 'POST',
+            url: '../Resource/getResourceCheckBookData',
+            params: { "intProjectID": localStorage.getItem("projectid"), "intFisYear": Fisyear }
+        }).then(function (response) {
+            $scope.modelRresourceCheckBook = response.data;
+            if (response.data.length === 0)
+                showalert('No records found!');
+            document.getElementById('progressbar').style.display = 'none';
+
+            var tablewidth = document.getElementById('resourcecheckbook').offsetWidth;
+            tablewidth = tablewidth - 52;            
+            $scope.subResourcetablewidth = tablewidth + 'px';
+            document.getElementById("tblresourcecheckbook").setAttribute("style", "width:" + tablewidth + "px;");            
+
+            tablewidth = parseInt(tablewidth) - 1208;            
+            document.getElementById("checkbook_MidOrg").setAttribute("style", "width:" + tablewidth + "px;"); 
+            $scope.subresourcewidth = tablewidth + 'px';
+            
+        }, function (error) {
+            console.log(error);
+        });
+    }
+
+    function loadresourcecheckbooksummary(FisYear) {
+        $http({
+            method: 'POST',
+            url: '../Resource/getResourceCheckBook_Summary',
+            params: { "intProjectID": localStorage.getItem("projectid"), "intFisYear": FisYear }
+        }).then(function (response) {
+            $scope.modelRresourceCheckBookSummary = response.data;
+        }, function (error) {
+            console.log(error);
+        });
+    }
+
+    $scope.set_width = function () {
+        var proforma_mainwidth = document.getElementById("mainbody").offsetWidth;
+        return { "width": ((parseInt(proforma_mainwidth) - 787.5) / 4) + "px" }
+    }
+
+    $scope.set_width_child = function () {
+        var proforma_mainwidth = document.getElementById("mainbody").offsetWidth;
+        return { "width": ((parseInt(proforma_mainwidth) - 796.002) / 4) + "px" }
+    }
+
+    $scope.setAFColor = function (value) {
+        if (value == "A") {
+            return {
+                "background-color": "#e5f6ff"
+            }
+        }
+        else if (value == "F") {
+            return {
+                "background-color": "#e8ffdc"
+            }
+        }
+    }
+
+    $scope.setsummarycolor = function (value) {
+
+        if (Math.sign(value) == -1) {
+            return {
+                "background-color": "rgb(255 242 178)",
+                "font-weight": "bold",
+                "text-align": "right"
+            }
+        }
+        else if (Math.sign(value) == 1) {
+            return {
+                "background-color": "rgb(251 203 208)",
+                "font-weight": "bold",
+                "text-align": "right"
+            }
+        }
+        else if (Math.sign(value) == 0) {
+            return {
+                "background-color": "rgb(195 255 208)",
+                "font-weight": "500",
+                "text-align": "right"
+            }
+        }
+    }
+
+    $scope.expandAll = function (expanded) {
+        $scope.$broadcast('onExpandAll', { expanded: expanded });
+    };
+
+    $scope.celldefalutstyle = function () {
+        return {
+            "font-weight": "500",
+            "text-align": "right"
+        }
+    }
+   
+    $scope.setcolor = function (value) {
+
+        if (Math.sign(value) == -1) {
+            return {
+                "background-color": "rgb(255 242 178)",
+                "font-weight": "bold",
+                "text-align": "center",
+                "text-align": "right"
+            }
+        }
+        else if (Math.sign(value) == 1) {
+            return {
+                "background-color": "rgb(251 203 208)",
+                "font-weight": "bold",
+                "text-align": "right"
+            }
+        }
+        else if (Math.sign(value) == 0) {
+            return {
+                "font-weight": "500",
+                "text-align": "right"
+            }
+        }
     }
 
     function getcapital() {
@@ -1350,6 +1580,7 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
         }
 
         function getskillsdata_CL() {
+
             $http({
                 method: 'GET',
                 url: '../Resource/SkillData'
@@ -1539,6 +1770,7 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
                 else if (activeTabName === "capital") { update_capital_comments(); refresh_CapitalExpenditureWBS(); }
                 else if (activeTabName === "capitallabor") { update_capitallabor_comments(); refresh_CapitalLaborExpenditureWBS(); }
                 else if (activeTabName === "directexpenses") { update_directexpenses_comments(); refresh_OperatingExpenseWBSDE(); }
+                else if (activeTabName === "resourcecheckbook") { update_resource_comments(); refresh_resourcecheckbook(); }
 
             }, function (error) {
                 console.log(error);
@@ -2116,7 +2348,7 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
                 }
             }
         });
-                
+
         var filtersourcecopy = JSON.parse(localStorage.getItem("directexpenses_filtersource"));
         if (filtersourcecopy != null) {
 
@@ -2152,7 +2384,7 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
         directexpenses_updatedInfo = [];
         directexpenses_deleteInfo = [];
         directexpenses_duplicateInfo = [];
-        refreshdedata();        
+        refreshdedata();
     }
 
     function savedechanges(status) {
@@ -3258,7 +3490,7 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
                 }
             }
         });
-        
+
         var filtersourcecopy = JSON.parse(localStorage.getItem("capitallabor_filtersource"));
         if (filtersourcecopy != null) {
 
@@ -4120,6 +4352,35 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
         return true;
     }
 
+    function insert_resource_comments(MasterID, ColumnID, Comments) {
+        updateprogressbar(50, "Updating comments...");
+        $http({
+            method: 'POST',
+            url: '../Resource/insert_resourcecomments',
+            params: { "intProjectID": localStorage.getItem("projectid"), "intMasterID": MasterID, "intColumnID": ColumnID, "strComments": Comments, "userid": localStorage.getItem("userID") }
+        }).then(function (response) {
+            update_resource_comments();
+            updateprogressbar(100, "Comments are updated...");
+            document.getElementById('progressbar').style.display = 'none';
+        }, function (error) {
+            console.log(error);
+        });
+    }
+
+    function delete_resource_comments(MasterID, ColumnID) {
+        updateprogressbar(50, "Updating comments...");
+        $http({
+            method: 'POST',
+            url: '../Resource/delete_resourcecomments',
+            params: { "intMasterID": MasterID, "intColumnID": ColumnID, "intColumnID": ColumnID }
+        }).then(function (response) {
+            update_resource_comments();
+            updateprogressbar(100, "Comments are updated...");
+            document.getElementById('progressbar').style.display = 'none';
+        }, function (error) {
+            console.log(error);
+        });
+    }
 
     function loadresourcetable() {
 
@@ -4218,7 +4479,7 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
                 updatedInfo.push(rowobj); //pushing updated rec for the first time
 
             document.getElementById('update_notificationnumber1').innerHTML = updatedInfo.length;
-            updatedeletenotificationbar();             
+            updatedeletenotificationbar();
         }
 
         ddbusinessunitFilter = function (instance, cell, c, r, source) {
@@ -4408,36 +4669,6 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
             setFormSubmitting();
             var screenst = $scope.ProjectsTable_fullscreen;
             loadfullscreencss(screenst);
-        }
-
-        function insert_resource_comments(MasterID, ColumnID, Comments) {
-            updateprogressbar(50, "Updating comments...");
-            $http({
-                method: 'POST',
-                url: '../Resource/insert_resourcecomments',
-                params: { "intProjectID": localStorage.getItem("projectid"), "intMasterID": MasterID, "intColumnID": ColumnID, "strComments": Comments, "userid": localStorage.getItem("userID") }
-            }).then(function (response) {
-                update_resource_comments();
-                updateprogressbar(100, "Comments are updated...");
-                document.getElementById('progressbar').style.display = 'none';
-            }, function (error) {
-                console.log(error);
-            });
-        }
-
-        function delete_resource_comments(MasterID, ColumnID) {
-            updateprogressbar(50, "Updating comments...");
-            $http({
-                method: 'POST',
-                url: '../Resource/delete_resourcecomments',
-                params: { "intMasterID": MasterID, "intColumnID": ColumnID, "intColumnID": ColumnID }
-            }).then(function (response) {
-                update_resource_comments();
-                updateprogressbar(100, "Comments are updated...");
-                document.getElementById('progressbar').style.display = 'none';
-            }, function (error) {
-                console.log(error);
-            });
         }
 
         //editor: new InputMaxLenght(4)
@@ -4631,7 +4862,7 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
                             return true;
                         }
                     };
-                                        
+
                     if (val === "") {
                         cell.innerHTML = '0.00';
                     }
@@ -4653,7 +4884,7 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
             }
         });
 
-        
+
         var filtersourcecopy = JSON.parse(localStorage.getItem("resource_filtersource"));
         if (filtersourcecopy != null) {
 
@@ -4673,66 +4904,6 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
         }
 
         refreshtablesum();
-
-
-        //method to load captial data table
-        checkbook = jexcel(document.getElementById('spreadsheetCheckbook'), {
-            csv: '/assets/Jexcel/Checkbook.csv',
-            csvHeaders: true,
-            tableOverflow: true,
-            tableWidth: mainwidth,
-            search: true,
-            filters: true,
-            pagination: 10,
-            columns: [
-                { type: 'text', width: 155 },
-                { type: 'text', width: 155 },
-                { type: 'text', width: 155 },
-                { type: 'text', width: 155 },
-                { type: 'text', width: 155 },
-                { type: 'text', width: 155 },
-                { type: 'text', width: 155 },
-                { type: 'text', width: 160 },
-                { type: 'text', width: 160 },
-                { type: 'number', width: 70, readOnly: true, mask: '$ #,##,00', decimal: ',' },
-                { type: 'number', width: 70, readOnly: true, mask: '$ #,##,00', decimal: ',' },
-                { type: 'number', width: 70, mask: '$ #,##,00', decimal: ',' },
-                { type: 'number', width: 70, mask: '$ #,##,00', decimal: ',' },
-                { type: 'number', width: 70, mask: '$ #,##,00', decimal: ',' },
-                { type: 'number', width: 70, mask: '$ #,##,00', decimal: ',' },
-                { type: 'number', width: 70, mask: '$ #,##,00', decimal: ',' },
-                { type: 'number', width: 70, mask: '$ #,##,00', decimal: ',' },
-                { type: 'number', width: 70, mask: '$ #,##,00', decimal: ',' },
-                { type: 'number', width: 70, mask: '$ #,##,00', decimal: ',' },
-                { type: 'number', width: 70, mask: '$ #,##,00', decimal: ',' },
-                { type: 'number', width: 70, mask: '$ #,##,00', decimal: ',' },
-            ],
-            contextMenu: function () {
-                return false;
-            },
-            style: {
-                J1: 'background-color: gray; color: white;',
-                J2: 'background-color: gray; color: white;',
-                J3: 'background-color: gray; color: white;',
-                J4: 'background-color: gray; color: white;',
-                J5: 'background-color: gray; color: white;',
-                J6: 'background-color: gray; color: white;',
-                J7: 'background-color: gray; color: white;',
-                J8: 'background-color: gray; color: white;',
-                J9: 'background-color: gray; color: white;',
-                K1: 'background-color: gray; color: white;',
-                K2: 'background-color: gray; color: white;',
-                K3: 'background-color: gray; color: white;',
-                K4: 'background-color: gray; color: white;',
-                K5: 'background-color: gray; color: white;',
-                K6: 'background-color: gray; color: white;',
-                K7: 'background-color: gray; color: white;',
-                K8: 'background-color: gray; color: white;',
-                K9: 'background-color: gray; color: white;',
-            },
-        });
-
-        checkbook.setStyle('C3', 'background-color', 'yellow');
 
         //method to load captial data table
         //summary = jexcel(document.getElementById('excelsummary'), {
@@ -5385,7 +5556,47 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
         document.getElementById('notification').style.display = 'none';
         document.getElementById('update_notificationnumber1').innerHTML = 0;
         document.getElementById('delete_notificationnumber1').innerHTML = 0;
-        savechangesinfullscreenmode();        
+        savechangesinfullscreenmode();
+    }
+
+    $scope.save_resource_checkbookchanges = function () {
+        save_resourcecheckbook();
+    }
+
+    function save_resourcecheckbook() {
+
+        updateprogressbar(45, "Saving changes....");
+        var data = {
+            update: updatedInfo_resource_checkbook,
+            delete: null,
+            duplicate: null,
+            userid: localStorage.getItem("userID")
+        };
+
+        $http({
+            method: 'POST',
+            url: '../Resource/submitchanges',
+            data: data,
+            headers: {
+                "Content-Type": "application/json"
+            }
+        }).then(function (response) {
+
+            var Fisyear = jSuite_dropResourceCheckboo_FisYear.getValue();
+            update_resource_comments();
+            loadresourcecheckbooksummary(Fisyear);
+            loadresourcecheckbook(Fisyear);
+
+            updatedInfo_resource_checkbook = [];
+            updateprogressbar(100, "Saving changes....");
+            document.getElementById('progressbar').style.display = 'none';
+            document.getElementById('notification_resource_checkbook').style.display = 'none';
+            document.getElementById('update_resource_checkbook1').innerHTML = 0;
+
+        }, function (error) {
+            console.log(error);
+        });
+
     }
 
     function save(status) {
@@ -5612,7 +5823,7 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
                 tablobj.filter.children[i + 1].innerHTML = "";
             }
         }
-        
+
         localStorage.removeItem(activetablevalue + "_filtersource");
     }
 
@@ -6073,6 +6284,421 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
 
     }
 
+    function dropdown_update_BU_PC() {
+        $http({
+            method: 'POST',
+            url: '../Resource/getBU'
+        }).then(function (response) {
+            rowbu = response.data;
+            dropdown_update_OperatingExpenseWBS_PC();
+        }, function (error) {
+            console.log(error);
+        });
+    }
+
+
+    function dropdown_update_OperatingExpenseWBS_PC() {
+        $http({
+            method: 'GET',
+            url: '../Resource/getOperatingExpenseWBS',
+            params: { "ProjectID": localStorage.getItem("projectid") }
+        }).then(function (response) {
+            rowOperatingExpenseWBS = response.data;
+            dropdown_update_Business_PC();
+        }, function (error) {
+            console.log(error);
+        });
+    }
+
+    function dropdown_update_Business_PC() {
+        $http({
+            method: 'GET',
+            url: '../Resource/getBusiness'
+        }).then(function (response) {
+            rowbusiness = response.data;
+            dropdown_update_HighOrg_PC();
+        }, function (error) {
+            console.log(error);
+        });
+    }
+
+    function dropdown_update_HighOrg_PC() {
+        $http({
+            method: 'POST',
+            url: '../Resource/getHighOrg'
+        }).then(function (response) {
+            rowhighorg = response.data;
+            dropdown_update_MidOrgData_PC();
+        }, function (error) {
+            console.log(error);
+        });
+    }
+
+    function dropdown_update_MidOrgData_PC() {
+        $http({
+            method: 'POST',
+            url: '../Resource/getMidOrgData'
+        }).then(function (response) {
+            rowMidOrg = response.data;
+            dropdown_update_TeamData_PC();
+        }, function (error) {
+            console.log(error);
+        });
+    }
+    function dropdown_update_TeamData_PC() {
+        $http({
+            method: 'POST',
+            url: '../Resource/getTeamData'
+        }).then(function (response) {
+            rowTeam = response.data;
+            getskillsdata_PC();
+        }, function (error) {
+            console.log(error);
+        });
+    }
+
+    function getskillsdata_PC() {
+        $http({
+            method: 'GET',
+            url: '../Resource/SkillData'
+        }).then(function (response) {
+            rowRequiredSkills = response.data;
+            loadresourcetable_PC();
+        }, function (error) {
+            console.log(error);
+        });
+    }
+
+    function loadresourcetable_PC() {
+
+        document.getElementById('tbl_resource_checkbook').innerHTML = "";
+
+        var load_resource = function (instance) {
+            var datavalues = document.getElementById("tbl_resource_checkbook").getElementsByTagName("thead");
+            var subchilditem = datavalues[0].lastChild.getElementsByTagName("td");
+            subchilditem[1].style = "display:none";
+            subchilditem[2].style = "display:none";
+
+            var height = parseInt(window.innerHeight) - 280;
+            var subelms = document.getElementById("tbl_resource_checkbook").getElementsByTagName("*");
+            var vartable = subelms[5].getAttribute("style");
+            var newstyle = vartable + "; max-height: " + height + "px;"
+            subelms[5].setAttribute("style", newstyle);
+
+            document.getElementById('resource').setAttribute("style", "padding-left:20px; padding-right:20px; padding-bottom:10px; opacity:1;")
+            updateprogressbar(100, "Completed....");
+            document.getElementById('progressbar').style.display = 'none';
+            document.getElementById('resourcecheckbookpanel').style.display = 'block';
+        }
+
+        var update = function (instance, cell, col, row, value) {
+
+            if (col == 3) {
+                var columnName = jexcel.getColumnNameFromId([4, row]);
+                instance.jexcel.setValue(columnName, '');
+            }
+
+            if (col == 4) {
+                var columnName = jexcel.getColumnNameFromId([5, row]);
+                instance.jexcel.setValue(columnName, '');
+            }
+
+            if (col == 5) {
+                var columnName = jexcel.getColumnNameFromId([6, row]);
+                instance.jexcel.setValue(columnName, '');
+            }
+
+            if (col == 6) {
+                var columnName = jexcel.getColumnNameFromId([7, row]);
+                instance.jexcel.setValue(columnName, '');
+            }
+
+            if (col == 7) {
+                var columnName = jexcel.getColumnNameFromId([8, row]);
+                instance.jexcel.setValue(columnName, '');
+            }
+
+            //creates json object of jexcel
+            var jsonobj = obj_PC.getJson(false);
+
+            //getting particular row from json object       
+            var rowobj = jsonobj[row]; //row id getting from event
+
+            //check for existance of respective rec in global object
+            if (updatedInfo_resource_checkbook.find(x => x.MasterID === rowobj.MasterID)) {
+                index = updatedInfo_resource_checkbook.indexOf(updatedInfo_resource_checkbook.find(x => x.MasterID === rowobj.MasterID)); //getting index of that rec
+                updatedInfo_resource_checkbook.splice(index, 1); //remove the existing rec from object 
+                updatedInfo_resource_checkbook.push(rowobj); //pushing newly updated rec
+            }
+            else
+                updatedInfo_resource_checkbook.push(rowobj); //pushing updated rec for the first time
+
+            document.getElementById('update_resource_checkbook1').innerHTML = updatedInfo_resource_checkbook.length;
+
+            if (parseInt(updatedInfo_resource_checkbook.length) > 0) {
+                document.getElementById('notification_resource_checkbook').style.display = 'block';
+                document.getElementById('update_resource_checkbook1').style.display = 'initial';
+                document.getElementById('update_resource_checkbook2').style.display = 'initial';
+            }
+            else {
+                document.getElementById('notification_resource_checkbook').style.display = 'none';
+                document.getElementById('update_resource_checkbook1').style.display = 'none';
+                document.getElementById('update_resource_checkbook2').style.display = 'none';
+            }
+        }
+
+        ddbusinessunitFilter = function (instance, cell, c, r, source) {
+
+            var business = instance.jexcel.getValueFromCoords(c - 1, r);
+            var filtereddata = skillmaster.filter(obj => obj.Business == business);
+
+            var lookup = {};
+            var items = filtereddata;
+            var result = [];
+
+            for (var item, i = 0; item = items[i++];) {
+                var BusinessUnit = item.BusinessUnit;
+
+                if (!(BusinessUnit in lookup)) {
+                    lookup[BusinessUnit] = 1;
+                    result.push(BusinessUnit);
+                }
+            }
+            return result;
+        }
+        ddHighOrgFilter = function (instance, cell, c, r, source) {
+
+            var business = instance.jexcel.getValueFromCoords(c - 2, r);
+            var bu = instance.jexcel.getValueFromCoords(c - 1, r);
+
+            var filtereddata = skillmaster.filter(obj => obj.Business == business && obj.BusinessUnit == bu);
+
+            var lookup = {};
+            var items = filtereddata;
+            var result = [];
+
+            for (var item, i = 0; item = items[i++];) {
+                var HighOrg = item.HighOrg;
+
+                if (!(HighOrg in lookup)) {
+                    lookup[HighOrg] = 1;
+                    result.push(HighOrg);
+                }
+            }
+            return result;
+        }
+        ddMidOrgFilter = function (instance, cell, c, r, source) {
+
+            var business = instance.jexcel.getValueFromCoords(c - 3, r);
+            var bu = instance.jexcel.getValueFromCoords(c - 2, r);
+            var HighOrg = instance.jexcel.getValueFromCoords(c - 1, r);
+
+            var filtereddata = skillmaster.filter(obj => obj.Business == business && obj.BusinessUnit == bu && obj.HighOrg == HighOrg);
+
+            var lookup = {};
+            var items = filtereddata;
+            var result = [];
+
+            for (var item, i = 0; item = items[i++];) {
+                var Midorg = item.MidOrg;
+
+                if (!(Midorg in lookup)) {
+                    lookup[Midorg] = 1;
+                    result.push(Midorg);
+                }
+            }
+
+            return result;
+        }
+        ddTeamFilter = function (instance, cell, c, r, source) {
+
+            var business = instance.jexcel.getValueFromCoords(c - 4, r);
+            var bu = instance.jexcel.getValueFromCoords(c - 3, r);
+            var HighOrg = instance.jexcel.getValueFromCoords(c - 2, r);
+            var Midorg = instance.jexcel.getValueFromCoords(c - 1, r);
+
+            var filtereddata = skillmaster.filter(obj => obj.Business == business && obj.BusinessUnit == bu && obj.HighOrg == HighOrg && obj.MidOrg == Midorg);
+
+            var lookup = {};
+            var items = filtereddata;
+            var result = [];
+
+            for (var item, i = 0; item = items[i++];) {
+                var Team = item.Team;
+
+                if (!(Team in lookup)) {
+                    lookup[Team] = 1;
+                    result.push(Team);
+                }
+            }
+
+            return result;
+        }
+        ddRequiredSkillsFilter = function (instance, cell, c, r, source) {
+
+            var business = instance.jexcel.getValueFromCoords(c - 5, r);
+            var bu = instance.jexcel.getValueFromCoords(c - 4, r);
+            var HighOrg = instance.jexcel.getValueFromCoords(c - 3, r);
+            var Midorg = instance.jexcel.getValueFromCoords(c - 2, r);
+            var Teams = instance.jexcel.getValueFromCoords(c - 1, r);
+
+            var filtereddata = skillmaster.filter(obj => obj.Business == business && obj.BusinessUnit == bu && obj.HighOrg == HighOrg && obj.MidOrg == Midorg && obj.Team == Teams);
+
+            var lookup = {};
+            var items = filtereddata;
+            var result = [];
+
+            for (var item, i = 0; item = items[i++];) {
+                var RequiredSkills = item.RequiredSkills;
+
+                if (!(RequiredSkills in lookup)) {
+                    lookup[RequiredSkills] = 1;
+                    result.push(RequiredSkills);
+                }
+            }
+
+            return result;
+
+        }
+
+        //editor: new InputMaxLenght(4)
+        obj_PC = jexcel(document.getElementById('tbl_resource_checkbook'), {
+            data: dsResource_PC,
+            search: false,
+            tableOverflow: true,
+            filters: false,
+            tableWidth: mainwidth_PC,
+            allowManualInsertRow: false,
+            onchange: update,
+            contextMenu: false,
+            onload: load_resource,
+            columns: [
+                { type: 'hidden', title: 'ID', width: 30 },
+                { type: 'hidden', title: 'Type', width: 100 },
+                { type: 'dropdown', title: 'WBSNumber', width: 120, source: rowOperatingExpenseWBS, autocomplete: true },
+                { type: 'dropdown', title: 'Business', width: 60, source: rowbusiness, autocomplete: true },
+                { type: 'dropdown', title: 'BU', width: 60, source: rowbu, autocomplete: true, filter: ddbusinessunitFilter },
+                { type: 'dropdown', title: 'High Org', width: resource_mainwidth - 20, source: rowhighorg, autocomplete: true, filter: ddHighOrgFilter },
+                { type: 'dropdown', title: 'Mid Org', width: resource_mainwidth - 20, source: rowMidOrg, autocomplete: true, filter: ddMidOrgFilter },
+                { type: 'dropdown', title: 'Team', width: resource_mainwidth - 20, source: rowTeam, autocomplete: true, filter: ddTeamFilter },
+                { type: 'dropdown', title: 'Required Skill', width: resource_mainwidth, source: rowRequiredSkills, autocomplete: true, filter: ddRequiredSkillsFilter },
+                { type: 'number', title: 'FYear', width: 50, maxlength: 4 },
+                { type: 'number', title: 'MAY', width: 45 },
+                { type: 'number', title: 'JUN', width: 45 },
+                { type: 'number', title: 'JULY', width: 45 },
+                { type: 'number', title: 'AUG', width: 45 },
+                { type: 'number', title: 'SEP', width: 45 },
+                { type: 'number', title: 'OCT', width: 45 },
+                { type: 'number', title: 'NOV', width: 45 },
+                { type: 'number', title: 'DEC', width: 45 },
+                { type: 'number', title: 'JAN', width: 45 },
+                { type: 'number', title: 'FEB', width: 45 },
+                { type: 'number', title: 'MAR', width: 45 },
+                { type: 'number', title: 'APR', width: 45 },
+                { type: 'text', title: 'Comments', width: 150 },
+                { type: 'text', readOnly: true, title: 'CreatedBy', width: 80 },
+                { type: 'date', readOnly: true, title: 'CreatedOn', width: 80 },
+                { type: 'text', readOnly: true, title: 'ModifiedBy', width: 80 },
+                { type: 'date', readOnly: true, title: 'ModifiedOn', width: 80 },
+                { type: 'hidden', readOnly: true, title: 'RowID', width: 80 }
+            ],
+            contextMenu: function (obj, x, y, e) {
+
+                var items = [];
+
+                if (x) {
+                    if (obj.options.allowComments == true) {
+                        items.push({ type: 'line' });
+
+                        var title = obj.records[y][x].getAttribute('title') || '';
+                        var innervalue = obj.records[y][x].innerHTML;
+
+                        items.push({
+                            title: (obj.records[y][x].innerHTML != title && title != "") ? obj.options.text.editComments : obj.options.text.addComments,
+                            onclick: function () {
+                                if (title == innervalue) {
+                                    title = "";
+                                }
+                                var comment = prompt(obj.options.text.comments, title);
+                                if (comment) {
+                                    insert_resource_comments(obj.records[y][0].innerHTML, x, comment)
+                                    obj.setComments([x, y], comment);
+                                }
+                            }
+                        });
+
+                        if (title != obj.records[y][x].innerHTML && title != "") {
+                            items.push({
+                                title: obj.options.text.clearComments,
+                                onclick: function () {
+                                    delete_resource_comments(obj.records[y][0].innerHTML, x);
+                                    obj.setComments([x, y], '');
+                                    obj.records[y][x].title = obj.records[y][x].innerHTML;
+                                }
+                            });
+                        }
+                    }
+                }
+
+                return items;
+            },
+            updateTable: function (instance, cell, col, row, val, label, cellName) {
+
+                if (col == 0) {
+                    var filtered = resource_comments.filter(a => a.MasterID == val);
+                    if (filtered.length > 0) {
+                        for (var k = 0; k < filtered.length; k++) {
+                            instance.jexcel.setComments([parseInt(filtered[k].ColumnID), row], filtered[k].Comments);
+                        }
+                    }
+                    else {
+                        cell.setAttribute('title', cell.innerHTML);
+                    }
+                }
+                else {
+                    if (cell.getAttribute('title') == null) {
+                        cell.setAttribute('title', cell.innerHTML);
+                    }
+                }
+
+                // Number formating 
+                if (col == 9 || col == 10 || col == 11 || col == 12 || col == 13 || col == 14 || col == 15 || col == 16 || col == 17 || col == 18 || col == 19 || col == 20 || col == 21) {
+
+                    cell.onkeypress = function isNumberKey(evt) {
+                        var charCode = (evt.which) ? evt.which : evt.keyCode;
+                        if (charCode != 46 && charCode != 45 && charCode > 31 && (charCode < 48 || charCode > 57)) {
+                            return false;
+                        }
+                        else {
+                            return true;
+                        }
+                    };
+
+                    if (val === "") {
+                        cell.innerHTML = '0.00';
+                    }
+
+                    if (val < 0) {
+                        cell.style.color = 'red';
+                    }
+                    else {
+                        cell.style.color = 'black';
+                    }
+                }
+
+            },
+            oncreateeditor: function (el, cell, x, y) {
+                if (x == 9) {
+                    var config = el.jexcel.options.columns[x].maxlength;
+                    cell.children[0].setAttribute('maxlength', config);
+                }
+            }
+        });
+
+        obj_PC.hideIndex();
+
+    }
+
 });
 app.factory('FileUploadService', function ($http, $q) {
 
@@ -6105,4 +6731,30 @@ app.factory('FileUploadService', function ($http, $q) {
 });
 
 
+app.filter('dotsFilter', [
+    '$filter',
+    function ($filter) {
+        /**
+         * Shorten the input and add dots if it's needed
+         * @param {string} input 
+         * @param {number} limit
+         */
+        function dotsFilter(input, limit) {
+            var newContent = $filter('limitTo')(input, limit);
+            if (newContent.length < input.length) { newContent += '...'; }
+            return newContent;
+        }
+        return dotsFilter;
+    }
+]);
 
+app.directive('expand', function () {
+    function link(scope, element, attrs) {
+        scope.$on('onExpandAll', function (event, args) {
+            scope.expanded = args.expanded;
+        });
+    }
+    return {
+        link: link
+    };
+});

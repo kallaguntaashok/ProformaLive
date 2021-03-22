@@ -1,12 +1,11 @@
-﻿<link href="~/assets/Jexcel/jexcel_44.css?ID=6400" rel="stylesheet" />
-<script src="~/assets/Jexcel/jexcelv44.js?ID=6400"></script>
-<script src="~/assets/Jexcel/jsuites38.js?ID=6400"></script>
-<link href="~/assets/Jexcel/jsuites38.css?ID=6400" rel="stylesheet" />
-<link href="~/assets/css/delete-confirmation.css?ID=6400" rel="stylesheet" />
-<script src="~/assets/scripts/resource.js?ID=6400"></script>
-<script src="~/assets/scripts/exportexcel/alasql.min.js?ID=6400"></script>
-<script src="~/assets/scripts/exportexcel/xlsx.core.min.js?ID=6400"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-animate.js"></script>
+﻿<link href="~/assets/Jexcel/jexcel_44.css?ID=6800" rel="stylesheet" />
+<script src="~/assets/Jexcel/jexcelv44.js?ID=6800"></script>
+<script src="~/assets/Jexcel/jsuites38.js?ID=6800"></script>
+<link href="~/assets/Jexcel/jsuites38.css?ID=6800" rel="stylesheet" />
+<link href="~/assets/css/delete-confirmation.css?ID=6800" rel="stylesheet" />
+<script src="~/assets/scripts/resource.js?ID=6800"></script>
+<script src="~/assets/scripts/exportexcel/alasql.min.js?ID=6800"></script>
+<script src="~/assets/scripts/exportexcel/xlsx.core.min.js?ID=6800"></script>
 
 <div id="alertbox" style="display:none; z-index:99999" class="confirmation_modal fade-up">
     <div style="opacity:0.7; background: linear-gradient(to right, #ff4767, #790032); border: 1px solid #afafaf;" class="confirmation_modal-content confirmation_container">
@@ -34,15 +33,40 @@
             <div class="notificationclearfix">
                 <span class="pull-left">
                     <i class="fa fa-bell" aria-hidden="true"></i>&nbsp;&nbsp;Notification Panel
-                </span>   
+                </span>
                 <span>
                     <label style="display:none;" id="notificationID"></label>
                     <i class="fa fa-times pull-right" id="closeNotification" title="clear notification" style="padding-top: 5px; cursor: pointer; display:none;" ng-click="closenotification();" aria-hidden="true"></i>
                     <i class="fa fa-times pull-right" id="clearNotification" title="clear notification" style="padding-top: 5px; cursor: pointer; display:none;" ng-click="clearnotificaiton();" aria-hidden="true"></i>
-                </span> 
+                </span>
             </div>
-            <div class="notificationbody" id="notificationBody">                
-            </div>            
+            <div class="notificationbody" id="notificationBody">
+            </div>
+        </div>
+    </div>
+
+    <div id="resourcecheckbookpanel" style="display:none;" class="viewProforma_modal fade-up">
+        <div class="viewProforma-content viewProforma_container">
+            <div id="resourcecheckbookpanelheader" class="viewProformaclearfix">
+                <span class="pull-left">
+                    <i class="fa fa-user" aria-hidden="true"></i>&nbsp;&nbsp;Resource
+                </span>
+                <span>
+                    <label style="display:none;" id="notificationID"></label>
+                    <i class="fa fa-times pull-right" title="clear notification" style="padding-top: 5px; cursor: pointer;" ng-click="closeviewresourceinfo();" aria-hidden="true"></i>
+                </span>
+            </div>
+            <div class="viewProformabody" id="resourcecheckbookpanelBody">
+                <div style="display:none; width: 99.8% !important;" id="notification_resource_checkbook" class="notification">
+                    <span class="badge badge-light"><i class="fa fa-bell" aria-hidden="true"></i> Found</span>
+                    <span style="display:none;" id="update_resource_checkbook1" class="badge badge-info">0</span>
+                    <span style="display:none;" id="update_resource_checkbook2" class="badge badge-info">update</span>
+                    <span class="badge badge-light">action in the table, please save the changes.</span>
+                    <span style="cursor: pointer;" ng-click="save_resource_checkbookchanges()" class="badge badge-success">Save Changes</span>
+                </div>
+                <div id="tbl_resource_checkbook">
+                </div>
+            </div>
         </div>
     </div>
 
@@ -78,8 +102,11 @@
             <div style="padding-top: 4px;" class="col-md-3">
                 <i class="fa fa-th" style="color:#043a7c;" aria-hidden="true"></i>&nbsp;&nbsp;<span style="font-size:14px; font-weight:500;">Proforma</span>
             </div>
-            <div class="col-md-6">
-                <div id="dropProjects"></div>
+            <div ng-class="Drop_ProjectClass">
+                <div class="pull-left" id="dropProjects"></div>
+            </div>
+            <div id="Display_FisYearFilter" style="display:none;" class="col-md-1">
+                <div class="pull-left" id="dropResourceCheckboo_FisYear"></div>
             </div>
             <div style="padding-top: 4px;" class="col-md-3">
                 <button type="button" ng-click="startcloning();" style="zoom:80%; margin-left:10px; background: linear-gradient(to right, #38527f, #3a72d4);" class="btn btn-primary btn-sm float-right"><i class="fa fa-clone" aria-hidden="true"></i>&nbsp;&nbsp;Clone Proforma</button>
@@ -111,8 +138,8 @@
                 <li ng-click="updatetabeinfo('directexpenses')" class="nav-item">
                     <a ng-class="tabdirectexpensesclass" style="color: #05509f; border: 1px solid #00000008; margin-right: 5px; padding-left: 20px !important; padding-right: 20px !important; padding-top: 7px !important; padding-bottom: 7px !important; font-size: 14px;" href="#directexpenses"><i class="fa fa-usd" style="font-size:12px;" aria-hidden="true"></i>&nbsp;&nbsp;Direct Expenses</a>
                 </li>
-                <li ng-click="updatetabeinfo('checkbook')" class="nav-item">
-                    <a ng-class="tabcheckbookclass" style="color: #05509f; border: 1px solid #00000008; margin-right: 5px; padding-left: 20px !important; padding-right: 20px !important; padding-top: 7px !important; padding-bottom: 7px !important; font-size: 14px;" href="#checkbook"><i class="fa fa-book" aria-hidden="true"></i>&nbsp;&nbsp;Checkbook</a>
+                <li ng-click="updatetabeinfo('resourcecheckbook')" class="nav-item">
+                    <a ng-class="tabcheckbookclass" style="color: #05509f; border: 1px solid #00000008; margin-right: 5px; padding-left: 20px !important; padding-right: 20px !important; padding-top: 7px !important; padding-bottom: 7px !important; font-size: 14px;" href="#checkbook"><i class="fa fa-book" aria-hidden="true"></i>&nbsp;&nbsp;Resource-Checkbook</a>
                 </li>
             </ul>
 
@@ -123,7 +150,7 @@
                         <br />
                         <div class="form-row">
                             <div class="col-md-2 mb-3">
-                                <div style="zoom:90%" id="drop_Summary_Finyear"></div>
+                                <div style="zoom: 90%" id="drop_Summary_Finyear"></div>
                             </div>
                             <div class="col-md-2 mb-3">
                                 <div style="zoom: 90%" id="drop_Summary_Months"></div>
@@ -138,6 +165,8 @@
                             <div class="col-md-4 mb-3">
                             </div>
                         </div>
+
+                        @*<span ng-bind-html="showYMItemDetails('Total Project (Operating & Capital)','2020-MAY')"></span>*@
                         <div id="summarycontainer" class="mycontainer">
                             <table id="ST">
                                 <thead>
@@ -148,14 +177,6 @@
                                         </th>
                                         <th style="width:80px;"><b>Total</b></th>
                                     </tr>
-                                    @*
-                                        <tr>
-                                            <th style="width:320px;">Name</th>
-                                            <th style="width:80px;" ng-repeat="Cols in YMNames">
-                                                {{Cols.FinYear_Month}}
-                                            </th>
-                                            <th style="width:80px;"><b>Total</b></th>
-                                        </tr>*@
                                 </thead>
                                 <tbody>
                                     <tr ng-repeat="itm in itemName">
@@ -168,14 +189,6 @@
                                         <td style="width:100px;">
                                             <span ng-bind-html="showYMColumnGrandTotal(itm.Name,YMNew.FinYear_Month)"></span>
                                         </td>
-                                        @*
-                                            <th ng-bind-html="updateitemname(itm.Name)" style="width:400px;">
-
-                                            </th>
-                                            <td style="width:100px;" ng-bind-html="showYMItemDetails(itm.Name,YMNew.FinYear_Month)" ng-repeat="YMNew in YMNames">
-                                            </td>
-                                            <td ng-bind-html="showYMColumnGrandTotal(itm.Name,YMNew.FinYear_Month)" style="width:100px;">
-                                            </td>*@
                                     </tr>
                                 </tbody>
                             </table>
@@ -227,7 +240,7 @@
                         <label title="Hide Form" class="switch">
                             <input type="checkbox" ng-model="displaycheckbox_resource" ng-change="validatecheckbox();" checked>
                             <span class="slider round"></span>
-                        </label>                        
+                        </label>
                         <button id="resource_clearfilters" title="clear filters" ng-click="resetfilter();" type="button" class="btn btn-primary btn-sm clearfilter float-right">&nbsp;<img style="width:18px;" src="~/assets/images/iconclearwhite.png" />&nbsp;</button>
                         <button type="button" style="zoom:80%; margin-left:10px; margin-right: 10px; color:white; background: linear-gradient(to right, #fe8c00, #f83600);" class="btn btn-warning btn-sm float-right disabled">&nbsp;<i class="fa fa-object-group" aria-hidden="true"></i>&nbsp;&nbsp;<span style="font-weight:500;" id="resourcetotal">0</span>&nbsp;</button>
                     </p>
@@ -240,7 +253,7 @@
                         <span class="badge badge-light">action in the table, please save the changes.</span>
                         <span style="cursor: pointer;" ng-click="save_resource_changes()" class="badge badge-success">Save Changes</span>
                         <span style="cursor: pointer;" ng-click="discard_resource_changes()" class="badge badge-danger">Discard Changes</span>
-                    </div>                   
+                    </div>
                     <div id="tbl_resource">
                     </div>
                 </div>
@@ -421,51 +434,179 @@
                     </div>
 
                 </div>
-                <div id="checkbook" style="padding-left:20px; background: linear-gradient(to right, #141e30, #243b55); height:350px; padding-right:20px;">
-                    <div style="width:100%; font-weight:bold; color:white; font-size:20px; text-align:center;">
-                        <br /> <br /> <br /> <br /> <br /> <span><i class="fa fa-pie-chart" aria-hidden="true"></i> &nbsp; coming soon.....</span>
+                <div id="resourcecheckbook" style="padding-left:20px; padding-right:20px;">
+                    <br />
+                    <div style="overflow: scroll;" id="resourcecheckbookcontainer">
+                        <table id="tblresourcecheckbook">
+                            <thead>
+                                <tr>
+                                    <th style="background-color: white; border: 0px !important;" colspan="6"></th>
+                                    <th colspan="2" style="text-align:left">
+                                        &nbsp;
+                                        <i style="color:#fbff09" ng-click="expandedsummary = !expandedsummary"
+                                           ng-class="expandedsummary ? 'fa fa-minus-square resourcecheckbookfontminus' : 'fa fa-plus-square resourcecheckbookfontplus'"
+                                           class="fa fa-plus-square" aria-hidden="true">
+                                        </i>&nbsp;&nbsp;Checkbook-Summary
+                                    </th>
+                                    <th colspan="3">Q1</th>
+                                    <th colspan="3">Q2</th>
+                                    <th colspan="3">Q3</th>
+                                    <th colspan="3">Q4</th>
+                                </tr>
+                                <tr ng-show="expandedsummary">
+                                    <th style="background-color:white; border: 0px !important;" colspan="6"></th>
+                                    <th colspan="2" style="text-align:left">Name</th>
+                                    <th>MAY</th>
+                                    <th>JUN</th>
+                                    <th>JUL</th>
+                                    <th>AUG</th>
+                                    <th>SEP</th>
+                                    <th>OCT</th>
+                                    <th>NOV</th>
+                                    <th>DEC</th>
+                                    <th>JAN</th>
+                                    <th>FEB</th>
+                                    <th>MAR</th>
+                                    <th>APR</th>
+                                </tr>
+                                <tr ng-show="expandedsummary" ng-repeat="summary in modelRresourceCheckBookSummary">
+                                    <th style="background-color: white; border: 0px !important;" colspan="6"></th>
+                                    <td colspan="2" ng-show="summary.Name == 'Over/Under Spent'" style="background-color: #e5f1ff; text-align:left; font-weight:500;"><i class="fa fa-square" style="color:rgb(255, 69, 89);" aria-hidden="true"></i>&nbsp;Over Spent &nbsp; <i class="fa fa-square" style="color:rgb(226, 192, 24);" aria-hidden="true"></i>&nbsp;Under Spent</td>
+                                    <td colspan="2" ng-show="summary.Name != 'Over/Under Spent'" style="background-color: #e5f1ff; text-align:left; font-weight:500;">{{summary.Name}}</td>
+                                    <td ng-show="summary.Name == 'Over/Under Spent'" ng-style="setsummarycolor(summary.MAY)">{{summary.MAY}}</td>
+                                    <td ng-show="summary.Name == 'Over/Under Spent'" ng-style="setsummarycolor(summary.JUN)">{{summary.JUN}}</td>
+                                    <td ng-show="summary.Name == 'Over/Under Spent'" ng-style="setsummarycolor(summary.JUL)">{{summary.JUL}}</td>
+                                    <td ng-show="summary.Name == 'Over/Under Spent'" ng-style="setsummarycolor(summary.AUG)">{{summary.AUG}}</td>
+                                    <td ng-show="summary.Name == 'Over/Under Spent'" ng-style="setsummarycolor(summary.SEP)">{{summary.SEP}}</td>
+                                    <td ng-show="summary.Name == 'Over/Under Spent'" ng-style="setsummarycolor(summary.OCT)">{{summary.OCT}}</td>
+                                    <td ng-show="summary.Name == 'Over/Under Spent'" ng-style="setsummarycolor(summary.NOV)">{{summary.NOV}}</td>
+                                    <td ng-show="summary.Name == 'Over/Under Spent'" ng-style="setsummarycolor(summary.DEC)">{{summary.DEC}}</td>
+                                    <td ng-show="summary.Name == 'Over/Under Spent'" ng-style="setsummarycolor(summary.JAN)">{{summary.JAN}}</td>
+                                    <td ng-show="summary.Name == 'Over/Under Spent'" ng-style="setsummarycolor(summary.FEB)">{{summary.FEB}}</td>
+                                    <td ng-show="summary.Name == 'Over/Under Spent'" ng-style="setsummarycolor(summary.MAR)">{{summary.MAR}}</td>
+                                    <td ng-show="summary.Name == 'Over/Under Spent'" ng-style="setsummarycolor(summary.APR)">{{summary.APR}}</td>
+                                    <td ng-show="summary.Name != 'Over/Under Spent'" ng-style="celldefalutstyle()">{{summary.MAY}}</td>
+                                    <td ng-show="summary.Name != 'Over/Under Spent'" ng-style="celldefalutstyle()">{{summary.JUN}}</td>
+                                    <td ng-show="summary.Name != 'Over/Under Spent'" ng-style="celldefalutstyle()">{{summary.JUL}}</td>
+                                    <td ng-show="summary.Name != 'Over/Under Spent'" ng-style="celldefalutstyle()">{{summary.AUG}}</td>
+                                    <td ng-show="summary.Name != 'Over/Under Spent'" ng-style="celldefalutstyle()">{{summary.SEP}}</td>
+                                    <td ng-show="summary.Name != 'Over/Under Spent'" ng-style="celldefalutstyle()">{{summary.OCT}}</td>
+                                    <td ng-show="summary.Name != 'Over/Under Spent'" ng-style="celldefalutstyle()">{{summary.NOV}}</td>
+                                    <td ng-show="summary.Name != 'Over/Under Spent'" ng-style="celldefalutstyle()">{{summary.DEC}}</td>
+                                    <td ng-show="summary.Name != 'Over/Under Spent'" ng-style="celldefalutstyle()">{{summary.JAN}}</td>
+                                    <td ng-show="summary.Name != 'Over/Under Spent'" ng-style="celldefalutstyle()">{{summary.FEB}}</td>
+                                    <td ng-show="summary.Name != 'Over/Under Spent'" ng-style="celldefalutstyle()">{{summary.MAR}}</td>
+                                    <td ng-show="summary.Name != 'Over/Under Spent'" ng-style="celldefalutstyle()">{{summary.APR}}</td>
+                                </tr>
+                                <tr>
+                                    <th style="width: 30px;"><i style="color:#c1ffc3;" title="Expand All" ng-click="expandAll(allExpanded = !allExpanded)" expand ng-class="allExpanded ? 'fa fa-minus-square resourcecheckbookfontminus' : 'fa fa-plus-square resourcecheckbookfontplus'" class="fa fa-plus-square" aria-hidden="true"></i></th>
+                                    <th style="width:120px;">WBSNumber</th>
+                                    <th style="width:43px;">BU</th>
+                                    <th style="width:140px;">HighOrg</th>
+                                    <th id="checkbook_MidOrg">MidOrg</th>
+                                    <th style="width:150px;">Team</th>
+                                    <th style="width:150px;">RequiredSkill</th>
+                                    <th style="width:59px;">FinYear</th>
+                                    <th style="width:43px;">MAY</th>
+                                    <th style="width:43px;">JUN</th>
+                                    <th style="width:43px;">JUL</th>
+                                    <th style="width:43px;">AUG</th>
+                                    <th style="width:43px;">SEP</th>
+                                    <th style="width:43px;">OCT</th>
+                                    <th style="width:43px;">NOV</th>
+                                    <th style="width:43px;">DEC</th>
+                                    <th style="width:43px;">JAN</th>
+                                    <th style="width:43px;">FEB</th>
+                                    <th style="width:43px;">MAR</th>
+                                    <th style="width:43px;">APR</th>
+                                </tr>
+                            </thead>
+                            <tbody ng-repeat="master in modelRresourceCheckBook">
+                                <tr>
+                                    <td>
+                                        <i title="Expand" ng-click="expanded = !expanded" expand ng-class="expanded ? 'fa fa-minus-square resourcecheckbookfontminus' : 'fa fa-plus-square resourcecheckbookfontplus'" class="fa fa-plus-square" aria-hidden="true"></i>
+                                    </td>
+                                    <td>{{master.WBSNumber}}</td>
+                                    <td>{{master.BusinessUnit}}</td>
+                                    <td title={{master.HighOrg}}>{{master.HighOrg | dotsFilter:20}}</td>
+                                    <td title={{master.MidOrg}}>{{master.MidOrg}}</td>
+                                    <td title={{master.Team}}>{{master.Team | dotsFilter:20}}</td>
+                                    <td title={{master.RequiredSkill}}>{{master.RequiredSkill | dotsFilter:20}}</td>
+                                    <td>{{master.FinYear}}</td>
+                                    <td ng-style="setcolor(master.MAY)">{{master.MAY}}</td>
+                                    <td ng-style="setcolor(master.JUN)">{{master.JUN}}</td>
+                                    <td ng-style="setcolor(master.JUL)">{{master.JUL}}</td>
+                                    <td ng-style="setcolor(master.AUG)">{{master.AUG}}</td>
+                                    <td ng-style="setcolor(master.SEP)">{{master.SEP}}</td>
+                                    <td ng-style="setcolor(master.OCT)">{{master.OCT}}</td>
+                                    <td ng-style="setcolor(master.NOV)">{{master.NOV}}</td>
+                                    <td ng-style="setcolor(master.DEC)">{{master.DEC}}</td>
+                                    <td ng-style="setcolor(master.JAN)">{{master.JAN}}</td>
+                                    <td ng-style="setcolor(master.FEB)">{{master.FEB}}</td>
+                                    <td ng-style="setcolor(master.MAR)">{{master.MAR}}</td>
+                                    <td ng-style="setcolor(master.APR)">{{master.APR}}</td>
+                                </tr>
+                                <tr ng-show="expanded" ng-repeat="checkbook in master.ResourceCheckBook">
+                                    <td id="subResourcetable" colspan="20">                                        
+                                        <table ng-style="{ 'width' : subResourcetablewidth }">
+                                            <tbody>
+                                                <tr ng-style="setAFColor(checkbook.Type)">
+                                                    <td style="width:30px; background-color: white !important; border: 0px !important;">
+                                                        &nbsp;&nbsp;
+                                                    </td>
+                                                    <td style="width:26px; text-align:center;">
+                                                        <i ng-show="checkbook.Type == 'A'" ng-click="expandedCJI = !expandedCJI" ng-class="expandedCJI ? 'fa fa-minus-square resourcecheckbookfontminus' : 'fa fa-plus-square resourcecheckbookfontplus'" class="fa fa-plus-square" aria-hidden="true"></i>
+                                                        <i ng-show="checkbook.Type == 'F'" ng-click="viewresourceinfo(checkbook.ProjectID,checkbook.WBSNumber,checkbook.BusinessUnit, master.HighOrg, master.MidOrg,checkbook.Team, checkbook.RequiredSkill, checkbook.FinYear)" class="fa fa-pencil-square resourcecheckbookfontedit" aria-hidden="true"></i>
+                                                    </td>
+                                                    <td style="width:95px;">{{checkbook.WBSNumber}}</td>
+                                                    <td style="width:43px;">{{checkbook.BusinessUnit}}</td>
+                                                    <td style="width:140px;" title={{master.HighOrg}}>{{checkbook.HighOrg | dotsFilter:20}}</td>
+                                                    <td ng-style="{ 'width' : subresourcewidth }" title={{master.MidOrg}}>{{checkbook.MidOrg}}-{{subresourcewidth}}</td>
+                                                    <td style="width:150px;" title={{master.Team}}>{{checkbook.Team | dotsFilter:20}}</td>
+                                                    <td style="width:150px;" title={{master.RequiredSkill}}>{{checkbook.RequiredSkill | dotsFilter:20}}</td>
+                                                    <td style="width:59px;">{{checkbook.FinYear}}</td>
+                                                    <td style="width:43px; text-align:right;">{{checkbook.MAY}}</td>
+                                                    <td style="width:43px; text-align:right;">{{checkbook.JUN}}</td>
+                                                    <td style="width:43px; text-align:right;">{{checkbook.JUL}}</td>
+                                                    <td style="width:43px; text-align:right;">{{checkbook.AUG}}</td>
+                                                    <td style="width:43px; text-align:right;">{{checkbook.SEP}}</td>
+                                                    <td style="width:43px; text-align:right;">{{checkbook.OCT}}</td>
+                                                    <td style="width:43px; text-align:right;">{{checkbook.NOV}}</td>
+                                                    <td style="width:43px; text-align:right;">{{checkbook.DEC}}</td>
+                                                    <td style="width:43px; text-align:right;">{{checkbook.JAN}}</td>
+                                                    <td style="width:43px; text-align:right;">{{checkbook.FEB}}</td>
+                                                    <td style="width:43px; text-align:right;">{{checkbook.MAR}}</td>
+                                                    <td style="width:43px; text-align:right;">{{checkbook.APR}}</td>
+                                                </tr>
+                                                <tr ng-show="expandedCJI" ng-repeat="CJI3Data in checkbook.ResourceCheckBookData">
+                                                    <td style="width:30px; background-color: white !important; border: 0px !important;">
+                                                    </td>
+                                                    <td style="width:26px; background-color: white !important; border: 0px !important;">
+                                                    </td>
+                                                    <td>{{CJI3Data.CJI3_WBSNumber}}</td>
+                                                    <td colspan="5" id="O_CJI3_ResourceName">{{CJI3Data.CJI3_ResourceName}}</td>
+                                                    <td style="width:59px;">{{CJI3Data.CJI3_FinYear}}</td>
+                                                    <td style="width:43px; text-align:right;">{{CJI3Data.MAY}}</td>
+                                                    <td style="width:43px; text-align:right;">{{CJI3Data.JUN}}</td>
+                                                    <td style="width:43px; text-align:right;">{{CJI3Data.JUL}}</td>
+                                                    <td style="width:43px; text-align:right;">{{CJI3Data.AUG}}</td>
+                                                    <td style="width:43px; text-align:right;">{{CJI3Data.SEP}}</td>
+                                                    <td style="width:43px; text-align:right;">{{CJI3Data.OCT}}</td>
+                                                    <td style="width:43px; text-align:right;">{{CJI3Data.NOV}}</td>
+                                                    <td style="width:43px; text-align:right;">{{CJI3Data.DEC}}</td>
+                                                    <td style="width:43px; text-align:right;">{{CJI3Data.JAN}}</td>
+                                                    <td style="width:43px; text-align:right;">{{CJI3Data.FEB}}</td>
+                                                    <td style="width:43px; text-align:right;">{{CJI3Data.MAR}}</td>
+                                                    <td style="width:43px; text-align:right;">{{CJI3Data.APR}}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
-                    <div style="display:none;">
-                        <br />
-                        <div class="form-row">
-                            <div class="col-md-3 mb-3">
-                                <input type="text" class="form-control form-control-sm" placeholder="Program (WBS)">
-                            </div>
-                            <div class="col-md-3 mb-3">
-                                <input type="text" class="form-control form-control-sm" placeholder="Enter PO Number">
-                            </div>
-                            <div class="col-md-3 mb-3">
-                                <input type="text" class="form-control form-control-sm" placeholder="Enter SAP Supplier Name">
-                            </div>
-                            <div class="col-md-3 mb-3">
-                                <input type="text" class="form-control form-control-sm" placeholder="Enter Owner Info">
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="col-md-3 mb-3">
-                                <input type="text" class="form-control form-control-sm" placeholder="Enter System">
-                            </div>
-                            <div class="col-md-3 mb-3">
-                                <input type="text" class="form-control form-control-sm" placeholder="Enter Description">
-                            </div>
-                            <div class="col-md-3 mb-3">
-                                <input type="date" class="form-control form-control-sm" data-toggle="tooltip" data-placement="top" title="Ordered Date">
-                            </div>
-                            <div class="col-md-3 mb-3">
-
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            &nbsp;<button type="button" style="zoom:80%" class="btn btn-success btn-sm float-left">Add Checkbook Info</button> &nbsp; <button type="button" style="zoom:80%" class="btn btn-info btn-sm float-left">Clear</button> &nbsp; &nbsp;
-                        </div>
-                        <br />
-                        <p style="font-size:13px; font-weight:500;">
-                            &nbsp;<i class="fa fa-list" aria-hidden="true"></i>&nbsp;&nbsp;Checkbook List
-                        </p>
-
-                        <div id="spreadsheetCheckbook">
-                        </div>
-                    </div>
+                    <br />
                 </div>
             </div>
         </div>
@@ -475,9 +616,55 @@
 
 <script type="text/javascript">
     function calculatesum() {
-        angular.element(document.getElementById('mainbody')).scope().updatetotalsum();        
+        angular.element(document.getElementById('mainbody')).scope().updatetotalsum();
     }
     function shownotification(value) {
         angular.element(document.getElementById('mainbody')).scope().shownotification(value);
     }
+
+
+    // Make the DIV element draggable:
+    dragElement(document.getElementById("resourcecheckbookpanel"));
+
+    function dragElement(elmnt) {
+        var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+        if (document.getElementById(elmnt.id + "header")) {
+            // if present, the header is where you move the DIV from:
+            document.getElementById(elmnt.id + "header").onmousedown = dragMouseDown;
+        } else {
+            // otherwise, move the DIV from anywhere inside the DIV:
+            elmnt.onmousedown = dragMouseDown;
+        }
+
+        function dragMouseDown(e) {
+            e = e || window.event;
+            e.preventDefault();
+            // get the mouse cursor position at startup:
+            pos3 = e.clientX;
+            pos4 = e.clientY;
+            document.onmouseup = closeDragElement;
+            // call a function whenever the cursor moves:
+            document.onmousemove = elementDrag;
+        }
+
+        function elementDrag(e) {
+            e = e || window.event;
+            e.preventDefault();
+            // calculate the new cursor position:
+            pos1 = pos3 - e.clientX;
+            pos2 = pos4 - e.clientY;
+            pos3 = e.clientX;
+            pos4 = e.clientY;
+            // set the element's new position:
+            elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
+            elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
+        }
+
+        function closeDragElement() {
+            // stop moving when mouse button is released:
+            document.onmouseup = null;
+            document.onmousemove = null;
+        }
+    }
+
 </script>

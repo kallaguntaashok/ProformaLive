@@ -18,7 +18,7 @@ using OfficeOpenXml.Table;
 
 namespace MECC_ReportPortal.Controllers
 {
-    [Authorize]
+
     public class ResourceController : Controller
     {
         private ProformaLiveEntities db;
@@ -181,6 +181,13 @@ namespace MECC_ReportPortal.Controllers
                 db.SaveChanges();
             }
             return Json("", JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public JsonResult get_resourcecheckbook_fisyear(int intProjectID)
+        {
+            var obj = db.SP_Get_FiscalYear(intProjectID).ToList();
+            return Json(obj, JsonRequestBehavior.AllowGet);
         }
 
         [HttpGet]
@@ -604,7 +611,7 @@ namespace MECC_ReportPortal.Controllers
         [HttpGet]
         public JsonResult getResourceComments(int intProjectID)
         {
-            var obj = db.SP_Get_Resource_Comments(intProjectID);
+            var obj = db.SP_Get_Resource_Comments(intProjectID).ToList();
             return Json(obj, JsonRequestBehavior.AllowGet);
         }
 
@@ -1200,6 +1207,13 @@ namespace MECC_ReportPortal.Controllers
         public JsonResult getresourcedata(int ProjectID)
         {
             var obj = db.SP_GetResourceData(ProjectID).ToList();
+            return Json(obj, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpGet]
+        public JsonResult getresourcedata_forCheckBook(int intProjectID, string strWBSNumber, string strBU, string strHighOrg, string strMidOrg, string strTeams, string strRequestedSkills, int intFisYear)
+        {
+            var obj = db.SP_GetResourceData_forCheckBook(intProjectID, strWBSNumber, strBU, strHighOrg, strMidOrg, strTeams, strRequestedSkills, intFisYear).ToList();
             return Json(obj, JsonRequestBehavior.AllowGet);
         }
 
@@ -2961,21 +2975,36 @@ namespace MECC_ReportPortal.Controllers
             public string userid { get; set; }
         }
 
+        [HttpPost]
+        public JsonResult getResourceCheckBook_Summary(int intProjectID, int intFisYear)
+        {
+            var obj = db.SP_Get_ResourceCheckBook_Summary(intProjectID, intFisYear).ToList();
+            return Json(obj, JsonRequestBehavior.AllowGet);
+        }
 
-        [HttpGet]
-        public JsonResult getResourceCheckBookData()
+        //[HttpPost]
+        //public JsonResult getResourceCheckBook2ndlayerdata(int intProjectID,string strWBSNumber, string strBusinessUnit, string strHighOrg, string strMidOrg, string strTeam, string strRequiredSkills, int intFisYear)
+        //{
+        //    var objCBData = db.SP_Get_ResourceCheckBook(intProjectID, item.WBSNumber, item.BusinessUnit, item.HighOrg, item.MidOrg, item.Team, item.RequiredSkill, Convert.ToInt32(item.FinYear)).ToList();
+        //    return Json(objCBData, JsonRequestBehavior.AllowGet);
+        //}
+
+        [HttpPost]
+        public JsonResult getResourceCheckBookData(int intProjectID, int intFisYear)
         {
             List<ResourceCheckBook_MainList> objM = new List<ResourceCheckBook_MainList>();
 
-            var objMainCheckBook = db.SP_Get_ResourceCheckBook_MainList(120, 2020);
+
+            var objMainCheckBook = db.SP_Get_ResourceCheckBook_MainList(intProjectID, intFisYear);
             foreach (var item in objMainCheckBook)
             {
-                var objCBData = db.SP_Get_ResourceCheckBook(120, item.WBSNumber, item.BusinessUnit, item.HighOrg, item.MidOrg, item.Team, item.RequiredSkill, Convert.ToInt32(item.FinYear)).ToList();
+                var objCBData = db.SP_Get_ResourceCheckBook(intProjectID, item.WBSNumber, item.BusinessUnit, item.HighOrg, item.MidOrg, item.Team, item.RequiredSkill, Convert.ToInt32(item.FinYear)).ToList();
                 List<ResourceCheckBook> objCB = new List<ResourceCheckBook>();
                 foreach (var Res_CB in objCBData)
                 {
                     objCB.Add(new ResourceCheckBook()
                     {
+                        ProjectID = Convert.ToInt32(Res_CB.ProjectID),
                         Type = Res_CB.Type,
                         WBSNumber = Res_CB.WBSNumber,
                         BusinessUnit = Res_CB.BusinessUnit,

@@ -641,6 +641,9 @@ warning 6013: The table/view 'ProformaLive.dbo.Sheet1$' does not have a primary 
         <Function Name="SP_Get_DirectExpenses_Comments" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="ProjectID" Type="int" Mode="In" />
         </Function>
+        <Function Name="SP_Get_FiscalYear" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="ProjectID" Type="int" Mode="In" />
+        </Function>
         <Function Name="SP_Get_HighOrg" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="Business" Type="varchar" Mode="In" />
           <Parameter Name="BusinessUnit" Type="varchar" Mode="In" />
@@ -684,6 +687,10 @@ warning 6013: The table/view 'ProformaLive.dbo.Sheet1$' does not have a primary 
           <Parameter Name="FisYear" Type="int" Mode="In" />
         </Function>
         <Function Name="SP_Get_ResourceCheckBook_MainList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="ProjectID" Type="int" Mode="In" />
+          <Parameter Name="Fisyear" Type="int" Mode="In" />
+        </Function>
+        <Function Name="SP_Get_ResourceCheckBook_Summary" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="ProjectID" Type="int" Mode="In" />
           <Parameter Name="Fisyear" Type="int" Mode="In" />
         </Function>
@@ -733,6 +740,16 @@ warning 6013: The table/view 'ProformaLive.dbo.Sheet1$' does not have a primary 
         </Function>
         <Function Name="SP_GetResourceData" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="projectid" Type="int" Mode="In" />
+        </Function>
+        <Function Name="SP_GetResourceData_forCheckBook" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="projectid" Type="int" Mode="In" />
+          <Parameter Name="WBSNumber" Type="varchar" Mode="In" />
+          <Parameter Name="BU" Type="varchar" Mode="In" />
+          <Parameter Name="HighOrg" Type="varchar" Mode="In" />
+          <Parameter Name="MidOrg" Type="varchar" Mode="In" />
+          <Parameter Name="Teams" Type="varchar" Mode="In" />
+          <Parameter Name="RequiredSkills" Type="varchar" Mode="In" />
+          <Parameter Name="FisYear" Type="int" Mode="In" />
         </Function>
         <Function Name="SP_GetSummary" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="ProjectID" Type="varchar" Mode="In" />
@@ -1455,6 +1472,9 @@ warning 6013: The table/view 'ProformaLive.dbo.Sheet1$' does not have a primary 
           <FunctionImport Name="SP_Get_DirectExpenses_Comments" ReturnType="Collection(ProformaLiveModel.SP_Get_DirectExpenses_Comments_Result)">
             <Parameter Name="ProjectID" Mode="In" Type="Int32" />
           </FunctionImport>
+          <FunctionImport Name="SP_Get_FiscalYear" ReturnType="Collection(String)">
+            <Parameter Name="ProjectID" Mode="In" Type="Int32" />
+          </FunctionImport>
           <FunctionImport Name="SP_Get_HighOrg" ReturnType="Collection(String)">
             <Parameter Name="Business" Mode="In" Type="String" />
             <Parameter Name="BusinessUnit" Mode="In" Type="String" />
@@ -1498,6 +1518,10 @@ warning 6013: The table/view 'ProformaLive.dbo.Sheet1$' does not have a primary 
             <Parameter Name="FisYear" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="SP_Get_ResourceCheckBook_MainList" ReturnType="Collection(ProformaLiveModel.SP_Get_ResourceCheckBook_MainList_Result)">
+            <Parameter Name="ProjectID" Mode="In" Type="Int32" />
+            <Parameter Name="Fisyear" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="SP_Get_ResourceCheckBook_Summary" ReturnType="Collection(ProformaLiveModel.SP_Get_ResourceCheckBook_Summary_Result)">
             <Parameter Name="ProjectID" Mode="In" Type="Int32" />
             <Parameter Name="Fisyear" Mode="In" Type="Int32" />
           </FunctionImport>
@@ -1547,6 +1571,16 @@ warning 6013: The table/view 'ProformaLive.dbo.Sheet1$' does not have a primary 
           </FunctionImport>
           <FunctionImport Name="SP_GetResourceData" ReturnType="Collection(ProformaLiveModel.SP_GetResourceData_Result)">
             <Parameter Name="projectid" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="SP_GetResourceData_forCheckBook" ReturnType="Collection(ProformaLiveModel.SP_GetResourceData_forCheckBook_Result)">
+            <Parameter Name="projectid" Mode="In" Type="Int32" />
+            <Parameter Name="WBSNumber" Mode="In" Type="String" />
+            <Parameter Name="BU" Mode="In" Type="String" />
+            <Parameter Name="HighOrg" Mode="In" Type="String" />
+            <Parameter Name="MidOrg" Mode="In" Type="String" />
+            <Parameter Name="Teams" Mode="In" Type="String" />
+            <Parameter Name="RequiredSkills" Mode="In" Type="String" />
+            <Parameter Name="FisYear" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="SP_GetSummary">
             <Parameter Name="ProjectID" Mode="In" Type="String" />
@@ -1763,6 +1797,22 @@ warning 6013: The table/view 'ProformaLive.dbo.Sheet1$' does not have a primary 
           <Property Type="Decimal" Name="MAR" Nullable="true" Precision="38" Scale="6" />
           <Property Type="Decimal" Name="APR" Nullable="true" Precision="38" Scale="6" />
         </ComplexType>
+        <ComplexType Name="SP_Get_ResourceCheckBook_Summary_Result">
+          <Property Type="Int32" Name="ID" Nullable="false" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="18" />
+          <Property Type="Decimal" Name="MAY" Nullable="true" Precision="38" Scale="6" />
+          <Property Type="Decimal" Name="JUN" Nullable="true" Precision="38" Scale="6" />
+          <Property Type="Decimal" Name="JUL" Nullable="true" Precision="38" Scale="6" />
+          <Property Type="Decimal" Name="AUG" Nullable="true" Precision="38" Scale="6" />
+          <Property Type="Decimal" Name="SEP" Nullable="true" Precision="38" Scale="6" />
+          <Property Type="Decimal" Name="OCT" Nullable="true" Precision="38" Scale="6" />
+          <Property Type="Decimal" Name="NOV" Nullable="true" Precision="38" Scale="6" />
+          <Property Type="Decimal" Name="DEC" Nullable="true" Precision="38" Scale="6" />
+          <Property Type="Decimal" Name="JAN" Nullable="true" Precision="38" Scale="6" />
+          <Property Type="Decimal" Name="FEB" Nullable="true" Precision="38" Scale="6" />
+          <Property Type="Decimal" Name="MAR" Nullable="true" Precision="38" Scale="6" />
+          <Property Type="Decimal" Name="APR" Nullable="true" Precision="38" Scale="6" />
+        </ComplexType>
         <ComplexType Name="SP_Get_ResourceCheckBookData_Result">
           <Property Type="String" Name="CJI3_WBSNumber" Nullable="true" MaxLength="500" />
           <Property Type="String" Name="CJI3_ResourceName" Nullable="true" MaxLength="500" />
@@ -1898,6 +1948,36 @@ warning 6013: The table/view 'ProformaLive.dbo.Sheet1$' does not have a primary 
           <Property Type="Decimal" Name="value" Nullable="false" Precision="2" Scale="2" />
         </ComplexType>
         <ComplexType Name="SP_GetResourceData_Result">
+          <Property Type="Int32" Name="MasterID" Nullable="false" />
+          <Property Type="String" Name="Type" Nullable="true" MaxLength="500" />
+          <Property Type="String" Name="WBSNumber" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="Business" Nullable="true" MaxLength="10" />
+          <Property Type="String" Name="BusinessUnit" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="HighOrg" Nullable="true" MaxLength="500" />
+          <Property Type="String" Name="MidOrg" Nullable="true" MaxLength="500" />
+          <Property Type="String" Name="Team" Nullable="true" MaxLength="8000" />
+          <Property Type="String" Name="RequiredSkill" Nullable="true" MaxLength="500" />
+          <Property Type="String" Name="FinYear" Nullable="true" MaxLength="50" />
+          <Property Type="Decimal" Name="MAY" Nullable="true" Precision="38" Scale="6" />
+          <Property Type="Decimal" Name="JUN" Nullable="true" Precision="38" Scale="6" />
+          <Property Type="Decimal" Name="JUL" Nullable="true" Precision="38" Scale="6" />
+          <Property Type="Decimal" Name="AUG" Nullable="true" Precision="38" Scale="6" />
+          <Property Type="Decimal" Name="SEP" Nullable="true" Precision="38" Scale="6" />
+          <Property Type="Decimal" Name="OCT" Nullable="true" Precision="38" Scale="6" />
+          <Property Type="Decimal" Name="NOV" Nullable="true" Precision="38" Scale="6" />
+          <Property Type="Decimal" Name="DEC" Nullable="true" Precision="38" Scale="6" />
+          <Property Type="Decimal" Name="JAN" Nullable="true" Precision="38" Scale="6" />
+          <Property Type="Decimal" Name="FEB" Nullable="true" Precision="38" Scale="6" />
+          <Property Type="Decimal" Name="MAR" Nullable="true" Precision="38" Scale="6" />
+          <Property Type="Decimal" Name="APR" Nullable="true" Precision="38" Scale="6" />
+          <Property Type="String" Name="Comments" Nullable="true" />
+          <Property Type="String" Name="CreatedBy" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="CreatedOn" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="ModifiedBy" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="ModifiedOn" Nullable="true" MaxLength="20" />
+          <Property Type="Int32" Name="RowID" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="SP_GetResourceData_forCheckBook_Result">
           <Property Type="Int32" Name="MasterID" Nullable="false" />
           <Property Type="String" Name="Type" Nullable="true" MaxLength="500" />
           <Property Type="String" Name="WBSNumber" Nullable="true" MaxLength="100" />
@@ -2640,6 +2720,7 @@ warning 6013: The table/view 'ProformaLive.dbo.Sheet1$' does not have a primary 
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="SP_Get_FiscalYear" FunctionName="ProformaLiveModel.Store.SP_Get_FiscalYear" />
           <FunctionImportMapping FunctionImportName="SP_Get_HighOrg" FunctionName="ProformaLiveModel.Store.SP_Get_HighOrg" />
           <FunctionImportMapping FunctionImportName="SP_Get_Master_AOPProject" FunctionName="ProformaLiveModel.Store.SP_Get_Master_AOPProject">
             <ResultMapping>
@@ -2751,6 +2832,26 @@ warning 6013: The table/view 'ProformaLive.dbo.Sheet1$' does not have a primary 
                 <ScalarProperty Name="Team" ColumnName="Team" />
                 <ScalarProperty Name="RequiredSkill" ColumnName="RequiredSkill" />
                 <ScalarProperty Name="FinYear" ColumnName="FinYear" />
+                <ScalarProperty Name="MAY" ColumnName="MAY" />
+                <ScalarProperty Name="JUN" ColumnName="JUN" />
+                <ScalarProperty Name="JUL" ColumnName="JUL" />
+                <ScalarProperty Name="AUG" ColumnName="AUG" />
+                <ScalarProperty Name="SEP" ColumnName="SEP" />
+                <ScalarProperty Name="OCT" ColumnName="OCT" />
+                <ScalarProperty Name="NOV" ColumnName="NOV" />
+                <ScalarProperty Name="DEC" ColumnName="DEC" />
+                <ScalarProperty Name="JAN" ColumnName="JAN" />
+                <ScalarProperty Name="FEB" ColumnName="FEB" />
+                <ScalarProperty Name="MAR" ColumnName="MAR" />
+                <ScalarProperty Name="APR" ColumnName="APR" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="SP_Get_ResourceCheckBook_Summary" FunctionName="ProformaLiveModel.Store.SP_Get_ResourceCheckBook_Summary">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="ProformaLiveModel.SP_Get_ResourceCheckBook_Summary_Result">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="MAY" ColumnName="MAY" />
                 <ScalarProperty Name="JUN" ColumnName="JUN" />
                 <ScalarProperty Name="JUL" ColumnName="JUL" />
@@ -2934,6 +3035,40 @@ warning 6013: The table/view 'ProformaLive.dbo.Sheet1$' does not have a primary 
           <FunctionImportMapping FunctionImportName="SP_GetResourceData" FunctionName="ProformaLiveModel.Store.SP_GetResourceData">
             <ResultMapping>
               <ComplexTypeMapping TypeName="ProformaLiveModel.SP_GetResourceData_Result">
+                <ScalarProperty Name="MasterID" ColumnName="MasterID" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="WBSNumber" ColumnName="WBSNumber" />
+                <ScalarProperty Name="Business" ColumnName="Business" />
+                <ScalarProperty Name="BusinessUnit" ColumnName="BusinessUnit" />
+                <ScalarProperty Name="HighOrg" ColumnName="HighOrg" />
+                <ScalarProperty Name="MidOrg" ColumnName="MidOrg" />
+                <ScalarProperty Name="Team" ColumnName="Team" />
+                <ScalarProperty Name="RequiredSkill" ColumnName="RequiredSkill" />
+                <ScalarProperty Name="FinYear" ColumnName="FinYear" />
+                <ScalarProperty Name="MAY" ColumnName="MAY" />
+                <ScalarProperty Name="JUN" ColumnName="JUN" />
+                <ScalarProperty Name="JUL" ColumnName="JUL" />
+                <ScalarProperty Name="AUG" ColumnName="AUG" />
+                <ScalarProperty Name="SEP" ColumnName="SEP" />
+                <ScalarProperty Name="OCT" ColumnName="OCT" />
+                <ScalarProperty Name="NOV" ColumnName="NOV" />
+                <ScalarProperty Name="DEC" ColumnName="DEC" />
+                <ScalarProperty Name="JAN" ColumnName="JAN" />
+                <ScalarProperty Name="FEB" ColumnName="FEB" />
+                <ScalarProperty Name="MAR" ColumnName="MAR" />
+                <ScalarProperty Name="APR" ColumnName="APR" />
+                <ScalarProperty Name="Comments" ColumnName="Comments" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="ModifiedOn" ColumnName="ModifiedOn" />
+                <ScalarProperty Name="RowID" ColumnName="RowID" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="SP_GetResourceData_forCheckBook" FunctionName="ProformaLiveModel.Store.SP_GetResourceData_forCheckBook">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="ProformaLiveModel.SP_GetResourceData_forCheckBook_Result">
                 <ScalarProperty Name="MasterID" ColumnName="MasterID" />
                 <ScalarProperty Name="Type" ColumnName="Type" />
                 <ScalarProperty Name="WBSNumber" ColumnName="WBSNumber" />

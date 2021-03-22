@@ -327,6 +327,15 @@ namespace ProformaLive
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_Get_DirectExpenses_Comments_Result>("SP_Get_DirectExpenses_Comments", projectIDParameter);
         }
     
+        public virtual ObjectResult<string> SP_Get_FiscalYear(Nullable<int> projectID)
+        {
+            var projectIDParameter = projectID.HasValue ?
+                new ObjectParameter("ProjectID", projectID) :
+                new ObjectParameter("ProjectID", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<string>("SP_Get_FiscalYear", projectIDParameter);
+        }
+    
         public virtual ObjectResult<string> SP_Get_HighOrg(string business, string businessUnit)
         {
             var businessParameter = business != null ?
@@ -488,6 +497,19 @@ namespace ProformaLive
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_Get_ResourceCheckBook_MainList_Result>("SP_Get_ResourceCheckBook_MainList", projectIDParameter, fisyearParameter);
         }
     
+        public virtual ObjectResult<SP_Get_ResourceCheckBook_Summary_Result> SP_Get_ResourceCheckBook_Summary(Nullable<int> projectID, Nullable<int> fisyear)
+        {
+            var projectIDParameter = projectID.HasValue ?
+                new ObjectParameter("ProjectID", projectID) :
+                new ObjectParameter("ProjectID", typeof(int));
+    
+            var fisyearParameter = fisyear.HasValue ?
+                new ObjectParameter("Fisyear", fisyear) :
+                new ObjectParameter("Fisyear", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_Get_ResourceCheckBook_Summary_Result>("SP_Get_ResourceCheckBook_Summary", projectIDParameter, fisyearParameter);
+        }
+    
         public virtual ObjectResult<SP_Get_ResourceCheckBookData_Result> SP_Get_ResourceCheckBookData(string wBSNumber, string bU, string highOrg, string midOrg, string team, string requiredSkills, Nullable<int> fisYear)
         {
             var wBSNumberParameter = wBSNumber != null ?
@@ -645,6 +667,43 @@ namespace ProformaLive
                 new ObjectParameter("projectid", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_GetResourceData_Result>("SP_GetResourceData", projectidParameter);
+        }
+    
+        public virtual ObjectResult<SP_GetResourceData_forCheckBook_Result> SP_GetResourceData_forCheckBook(Nullable<int> projectid, string wBSNumber, string bU, string highOrg, string midOrg, string teams, string requiredSkills, Nullable<int> fisYear)
+        {
+            var projectidParameter = projectid.HasValue ?
+                new ObjectParameter("projectid", projectid) :
+                new ObjectParameter("projectid", typeof(int));
+    
+            var wBSNumberParameter = wBSNumber != null ?
+                new ObjectParameter("WBSNumber", wBSNumber) :
+                new ObjectParameter("WBSNumber", typeof(string));
+    
+            var bUParameter = bU != null ?
+                new ObjectParameter("BU", bU) :
+                new ObjectParameter("BU", typeof(string));
+    
+            var highOrgParameter = highOrg != null ?
+                new ObjectParameter("HighOrg", highOrg) :
+                new ObjectParameter("HighOrg", typeof(string));
+    
+            var midOrgParameter = midOrg != null ?
+                new ObjectParameter("MidOrg", midOrg) :
+                new ObjectParameter("MidOrg", typeof(string));
+    
+            var teamsParameter = teams != null ?
+                new ObjectParameter("Teams", teams) :
+                new ObjectParameter("Teams", typeof(string));
+    
+            var requiredSkillsParameter = requiredSkills != null ?
+                new ObjectParameter("RequiredSkills", requiredSkills) :
+                new ObjectParameter("RequiredSkills", typeof(string));
+    
+            var fisYearParameter = fisYear.HasValue ?
+                new ObjectParameter("FisYear", fisYear) :
+                new ObjectParameter("FisYear", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_GetResourceData_forCheckBook_Result>("SP_GetResourceData_forCheckBook", projectidParameter, wBSNumberParameter, bUParameter, highOrgParameter, midOrgParameter, teamsParameter, requiredSkillsParameter, fisYearParameter);
         }
     
         public virtual int SP_GetSummary(string projectID, string fisYear, string month, string qtr)
