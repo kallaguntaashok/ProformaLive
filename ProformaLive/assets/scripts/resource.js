@@ -149,6 +149,135 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
         document.getElementById('resourcecheckbookpanel').style.display = 'none';
     }
 
+    $scope.closeviewresourcesummaryinfo = function () {
+        document.getElementById('resourcecheckbooksummarypanel').style.display = 'none';
+    }
+
+    $scope.showResourceCheckbookSummaryChart = function () {
+
+        var summarydata = $scope.modelsummaryChart;       
+        var options = {
+            series: summarydata,
+            chart: {
+                height: 500,
+                type: 'line',
+                dropShadow: {
+                    enabled: true,
+                    color: '#000',
+                    top: 18,
+                    left: 7,
+                    blur: 10,
+                    opacity: 0.2
+                },
+                toolbar: {
+                    show: false
+                }
+            },
+            colors: ['#002d5d', '#FF5133', '#0FC14D'],
+            dataLabels: {
+                enabled: true,
+            },
+            stroke: {
+                show: true,
+                curve: 'smooth',
+                lineCap: 'butt',
+                colors: undefined,
+                width: 2,
+                dashArray: 0,
+            },
+            title: {
+                text: 'AOP vs Current FY Spend (FTE)',
+                align: 'left'
+            },
+            grid: {
+                borderColor: '#e7e7e7',
+                row: {
+                    colors: ['#f3f3f3', 'transparent'], // takes an array which will be repeated on columns
+                    opacity: 0.5
+                },
+            },
+            annotations: {
+                yaxis: [
+                    {
+                        y: 0,
+                        borderColor: '#051801'
+                    }
+                ]
+            },
+            markers: {
+                size: 1
+            },
+            xaxis: {
+                categories: ['MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC', 'JAN', 'FEB', 'MAR', 'APR'],
+                title: {
+                    text: 'Month'
+                }
+            },
+            yaxis: {
+                title: {
+                    text: 'FTE'
+                },
+                min: -42,
+                max: 8,
+                tickAmount: 15
+            },
+            legend: {
+                position: 'top',
+                horizontalAlign: 'right',
+                floating: true,
+                offsetY: -25,
+                offsetX: 1
+            }
+        };
+
+        var chart = new ApexCharts(document.querySelector("#chart"), options);
+        chart.render();
+
+        document.getElementById('resourcecheckbooksummarypanel').style.display = 'block';
+        dragElement(document.getElementById("resourcecheckbooksummarypanel"));
+    }
+
+    function dragElement(elmnt) {
+        var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+        if (document.getElementById(elmnt.id + "header")) {
+            // if present, the header is where you move the DIV from:
+            document.getElementById(elmnt.id + "header").onmousedown = dragMouseDown;
+        } else {
+            // otherwise, move the DIV from anywhere inside the DIV:
+            elmnt.onmousedown = dragMouseDown;
+        }
+
+        function dragMouseDown(e) {
+            e = e || window.event;
+            e.preventDefault();
+            // get the mouse cursor position at startup:
+            pos3 = e.clientX;
+            pos4 = e.clientY;
+            document.onmouseup = closeDragElement;
+            // call a function whenever the cursor moves:
+            document.onmousemove = elementDrag;
+        }
+
+        function elementDrag(e) {
+            e = e || window.event;
+            e.preventDefault();
+            // calculate the new cursor position:
+            pos1 = pos3 - e.clientX;
+            pos2 = pos4 - e.clientY;
+            pos3 = e.clientX;
+            pos4 = e.clientY;
+            // set the element's new position:
+            elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
+            elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
+        }
+
+        function closeDragElement() {
+            // stop moving when mouse button is released:
+            document.onmouseup = null;
+            document.onmousemove = null;
+        }
+    }
+
     getcompletelist();
     function getcompletelist() {
         $http({
@@ -1374,14 +1503,14 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
             document.getElementById('progressbar').style.display = 'none';
 
             var tablewidth = document.getElementById('resourcecheckbook').offsetWidth;
-            tablewidth = tablewidth - 52;            
+            tablewidth = tablewidth - 52;
             $scope.subResourcetablewidth = tablewidth + 'px';
-            document.getElementById("tblresourcecheckbook").setAttribute("style", "width:" + tablewidth + "px;");            
+            document.getElementById("tblresourcecheckbook").setAttribute("style", "width:" + tablewidth + "px;");
 
-            tablewidth = parseInt(tablewidth) - 1208;            
-            document.getElementById("checkbook_MidOrg").setAttribute("style", "width:" + tablewidth + "px;"); 
+            tablewidth = parseInt(tablewidth) - 1208;
+            document.getElementById("checkbook_MidOrg").setAttribute("style", "width:" + tablewidth + "px;");
             $scope.subresourcewidth = tablewidth + 'px';
-            
+
         }, function (error) {
             console.log(error);
         });
@@ -1393,10 +1522,25 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
             url: '../Resource/getResourceCheckBook_Summary',
             params: { "intProjectID": localStorage.getItem("projectid"), "intFisYear": FisYear }
         }).then(function (response) {
-            $scope.modelRresourceCheckBookSummary = response.data;
+            $scope.modelRresourceCheckBookSummary = response.data.summarydata;
+            $scope.modelsummaryChart = response.data.summaryChart;
         }, function (error) {
             console.log(error);
         });
+    }
+
+    $scope.clickexpandedsummary = function (es) {
+        $scope.expandedsummary = !es;
+
+        if (es == undefined || es == false) {
+            document.getElementById("blankrow").rowSpan = "9";
+            document.getElementById('chart').style.display = "block";
+        }
+        else {
+            document.getElementById("blankrow").removeAttribute("rowSpan");
+            document.getElementById('chart').style.display = "none";
+        }
+
     }
 
     $scope.set_width = function () {
@@ -1426,23 +1570,23 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
 
         if (Math.sign(value) == -1) {
             return {
-                "background-color": "rgb(255 242 178)",
-                "font-weight": "bold",
-                "text-align": "right"
+                "background-color": "rgb(255 242 178)",                
+                "text-align": "right",
+                "width": "43px"
             }
         }
         else if (Math.sign(value) == 1) {
             return {
-                "background-color": "rgb(251 203 208)",
-                "font-weight": "bold",
-                "text-align": "right"
+                "background-color": "rgb(251 203 208)",               
+                "text-align": "right",
+                "width": "43px"
             }
         }
         else if (Math.sign(value) == 0) {
             return {
-                "background-color": "rgb(195 255 208)",
-                "font-weight": "500",
-                "text-align": "right"
+                "background-color": "rgb(195 255 208)",                
+                "text-align": "right",
+                "width": "43px"
             }
         }
     }
@@ -1454,10 +1598,11 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
     $scope.celldefalutstyle = function () {
         return {
             "font-weight": "500",
-            "text-align": "right"
+            "text-align": "right",
+            "width": "43px"
         }
     }
-   
+
     $scope.setcolor = function (value) {
 
         if (Math.sign(value) == -1) {

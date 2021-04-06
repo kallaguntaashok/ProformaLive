@@ -2978,16 +2978,60 @@ namespace MECC_ReportPortal.Controllers
         [HttpPost]
         public JsonResult getResourceCheckBook_Summary(int intProjectID, int intFisYear)
         {
+            List<ResourceCheckbookChar> objCC = new List<ResourceCheckbookChar>();
+            List<ResourceCheckBookSummary> objCS = new List<ResourceCheckBookSummary>();
             var obj = db.SP_Get_ResourceCheckBook_Summary(intProjectID, intFisYear).ToList();
-            return Json(obj, JsonRequestBehavior.AllowGet);
+            foreach (var item in obj)
+            {
+                objCS.Add(new ResourceCheckBookSummary()
+                {
+                    ID = item.ID,
+                    Name = item.Name,
+                    MAY = Convert.ToDecimal(item.MAY),
+                    JUN = Convert.ToDecimal(item.JUN),
+                    JUL = Convert.ToDecimal(item.JUL),
+                    AUG = Convert.ToDecimal(item.AUG),
+                    SEP = Convert.ToDecimal(item.SEP),
+                    OCT = Convert.ToDecimal(item.OCT),
+                    NOV = Convert.ToDecimal(item.NOV),
+                    DEC = Convert.ToDecimal(item.DEC),
+                    JAN = Convert.ToDecimal(item.JAN),
+                    FEB = Convert.ToDecimal(item.FEB),
+                    MAR = Convert.ToDecimal(item.MAR),
+                    APR = Convert.ToDecimal(item.APR),
+                    ResourceCheckBookSummaryResult = db.SP_Get_DeltaSummary(intProjectID, intFisYear, item.Name).ToList()
+                });
+
+                if (item.Name == "AOP Forecast" || item.Name == "Running Total" || item.Name == "Current FY Total")
+                {
+                    List<decimal> objmonths = new List<decimal>();
+                    objmonths.Add(Convert.ToDecimal(item.MAY));
+                    objmonths.Add(Convert.ToDecimal(item.JUN));
+                    objmonths.Add(Convert.ToDecimal(item.JUL));
+                    objmonths.Add(Convert.ToDecimal(item.AUG));
+                    objmonths.Add(Convert.ToDecimal(item.SEP));
+                    objmonths.Add(Convert.ToDecimal(item.OCT));
+                    objmonths.Add(Convert.ToDecimal(item.NOV));
+                    objmonths.Add(Convert.ToDecimal(item.DEC));
+                    objmonths.Add(Convert.ToDecimal(item.JAN));
+                    objmonths.Add(Convert.ToDecimal(item.FEB));
+                    objmonths.Add(Convert.ToDecimal(item.MAR));
+                    objmonths.Add(Convert.ToDecimal(item.APR));
+                    objCC.Add(new ResourceCheckbookChar()
+                    {
+                        name = item.Name,
+                        data = objmonths
+                    });
+                }
+            }
+
+            return new JsonResult { Data = new { summarydata = objCS, summaryChart = objCC } };            
         }
-                
+
         [HttpPost]
         public JsonResult getResourceCheckBookData(int intProjectID, int intFisYear)
         {
             List<ResourceCheckBook_MainList> objM = new List<ResourceCheckBook_MainList>();
-
-
             var objMainCheckBook = db.SP_Get_ResourceCheckBook_MainList(intProjectID, intFisYear);
             foreach (var item in objMainCheckBook)
             {
@@ -3050,6 +3094,37 @@ namespace MECC_ReportPortal.Controllers
             return Json(objM, JsonRequestBehavior.AllowGet);
         }
 
+        public class ResourceCheckBookSummary
+        {
+            public int ID { get; set; }
+            public string Name { get; set; }
+            public Decimal MAY { get; set; }
+
+            public Decimal JUN { get; set; }
+
+            public Decimal JUL { get; set; }
+
+            public Decimal AUG { get; set; }
+
+            public Decimal SEP { get; set; }
+
+            public Decimal OCT { get; set; }
+
+            public Decimal NOV { get; set; }
+
+            public Decimal DEC { get; set; }
+
+            public Decimal JAN { get; set; }
+
+            public Decimal FEB { get; set; }
+
+            public Decimal MAR { get; set; }
+
+            public Decimal APR { get; set; }
+
+            public List<SP_Get_DeltaSummary_Result> ResourceCheckBookSummaryResult { get; set; }
+        }
+
         public class ResourceCheckBook_MainList
         {
             public string WBSNumber { get; set; }
@@ -3086,6 +3161,12 @@ namespace MECC_ReportPortal.Controllers
 
             public List<ResourceCheckBook> ResourceCheckBook { get; set; }
         }
+
+        public class ResourceCheckbookChar
+        {
+            public string name { get; set; }
+            public List<decimal> data { get; set; }
+        }        
 
         public class ResourceCheckBook
         {

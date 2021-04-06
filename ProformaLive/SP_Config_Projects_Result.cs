@@ -19,7 +19,7 @@ namespace ProformaLive
         public string PMNetworkID { get; set; }
         public string PMName { get; set; }
         public string ProjectCategory { get; set; }
-        public string ParentChild { get; set; }
+        public string Status { get; set; }
         public string WBSElement { get; set; }
         public string CapitalExpenditureWBS { get; set; }
         public string GPSProjectNumber { get; set; }

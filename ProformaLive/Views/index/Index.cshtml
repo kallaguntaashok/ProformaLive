@@ -91,10 +91,46 @@
                         <div style="text-align:center; padding-top:20px; opacity:0.5" class="row">
                             <div style="padding:0px;" class="col-12">
                                 <a href="@Url.Action("Index", "Dashboard")" style="padding-top: 6px; width:120px; padding-bottom:6px; padding-left: 10px; padding-right: 10px; border-radius: 0px;" class="badge badge-secondary">Dashboard</a>&nbsp;&nbsp;
-                                <a href="@Url.Action("Index", "Projects")" style="padding-top: 6px; width:120px; padding-bottom:6px; padding-left: 10px; padding-right: 10px; border-radius: 0px;" class="badge badge-secondary">Project Master</a>
+                                <a href="@Url.Action("Index", "Projects")" style="padding-top: 6px; width:120px; padding-bottom:6px; padding-left: 10px; padding-right: 10px; border-radius: 0px;" class="badge badge-secondary">Project Master</a>&nbsp;&nbsp;
+                                <a href="#" ng-click="btncreatenewproject()" style="padding-top: 6px; width:150px; padding-bottom:6px; padding-left: 10px; padding-right: 10px; border-radius: 0px;" class="badge badge-secondary">Create New Project</a>
                             </div>
                         </div>
                     </div>
+
+                    <div id="CreateNewProject" style="display: none; z-index: 99999" class="confirmation_modal fade-up">
+                        <div style="background: linear-gradient(to right, #606c88, #3f4c6b); border: 1px solid #afafaf;" class="confirmation_modal-content confirmation_container">
+                            <div class="clearfix mb-3">
+                                <p style="font-size: 14px; margin-bottom:0px; font-weight: 500;"><i class="fa fa-file-text-o" aria-hidden="true"></i>&nbsp;&nbsp;<span>Create New Project</span> </p>
+                            </div>
+                            <div ng-show="createnewprojectalert" class="clearfix  mb-3">
+                                <p style="font-size: 12px; color:#ffc0c0; margin-bottom:0px; font-weight: 500;"><i class="fa fa-remove" aria-hidden="true"></i>&nbsp;&nbsp;<span>{{createnewprojectmessage}}</span> </p>
+                            </div>
+                            <div class="form-row">
+                                <div class="col-md-12 mb-2">
+                                    <input type="text" id="newCreateProject" style="zoom:80%; border-radius: 0px; background-clip:unset;" class="form-control form-control-sm" placeholder="Enter new project number">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="col-md-12 mb-3">
+                                    <input type="text" id="newCreateProjectName" style="zoom:80%; border-radius: 0px; background-clip:unset;" class="form-control form-control-sm" placeholder="Enter new project name">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="col-md-12">
+                                    <button id="createnewprojectbutton" type="button" style="zoom:70%; margin-right:10px;" ng-click="createnewproject()" class="btn btn-success btn-sm float-left"><i class="fa fa-file-text-o" aria-hidden="true"></i>&nbsp;&nbsp;Create New Project</button>
+                                    <button type="button" style="zoom:70%;" ng-click="closecreatenew();" class="btn btn-danger btn-sm float-left"><i class="fa fa-remove" aria-hidden="true"></i>&nbsp;&nbsp;Close</button>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <ul style="padding-top:10px; padding-left: 25px;">                                    
+                                    <li style="text-align: justify; font-size: small;">
+                                        Enter Project Number & Project Name then click on the 'Create New Project' button to create the new project.
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
                 </form>
             </div>
         </div>
@@ -103,7 +139,7 @@
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-    <script src="~/assets/scripts/browser.js"></script>   
+    <script src="~/assets/scripts/browser.js"></script>
 
 </body>
 </html>

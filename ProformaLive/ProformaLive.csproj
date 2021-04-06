@@ -59,6 +59,10 @@
       <HintPath>..\packages\EPPlus.5.4.0\lib\net45\EPPlus.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Oracle.ManagedDataAccess, Version=4.121.1.0, Culture=neutral, PublicKeyToken=89b483f429c47342, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Oracle.ManagedDataAccess.dll</HintPath>
+    </Reference>
     <Reference Include="System.DirectoryServices" />
     <Reference Include="System.DirectoryServices.AccountManagement" />
     <Reference Include="System.Runtime.Serialization" />
@@ -138,6 +142,7 @@
     <Content Include="assets\scripts\masterlandingpage.js" />
     <Content Include="assets\scripts\Layout.js" />
     <Content Include="assets\scripts\notification.js" />
+    <Content Include="assets\scripts\Master_Snapshot.js" />
     <Content Include="assets\scripts\ProjectChargeBack.js" />
     <Content Include="assets\scripts\AOPProject.js" />
     <Content Include="assets\scripts\app.module.js" />
@@ -152,6 +157,7 @@
     <Content Include="assets\scripts\table.js" />
     <Content Include="assets\scripts\ui-bootstrap-tpls-0.13.3.js" />
     <Content Include="bin\Aspose.Cells.dll" />
+    <Content Include="bin\Oracle.ManagedDataAccess.dll" />
     <Content Include="ckeditor\adapters\jquery.js" />
     <Content Include="ckeditor\build-config.js" />
     <Content Include="ckeditor\ckeditor.js" />
@@ -755,6 +761,9 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="APP_PFL_RESOURCES_SS_V.cs">
+      <DependentUpon>ProformaLive.tt</DependentUpon>
+    </Compile>
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Authorization\AuthorizeADAttribute.cs" />
     <Compile Include="CapitalInfo.cs">
@@ -792,6 +801,7 @@
     </Compile>
     <Compile Include="Controllers\AOPProjectController.cs" />
     <Compile Include="Controllers\ConfigureRateCardController.cs" />
+    <Compile Include="Controllers\Config_SnapshotController.cs" />
     <Compile Include="Controllers\DashboardController.cs" />
     <Compile Include="Controllers\DefaultController.cs" />
     <Compile Include="Controllers\indexController.cs" />
@@ -831,6 +841,9 @@
       <DependentUpon>ProformaLive.tt</DependentUpon>
     </Compile>
     <Compile Include="Master_SAP_PO_Data.cs">
+      <DependentUpon>ProformaLive.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Master_Snapshot_Config.cs">
       <DependentUpon>ProformaLive.tt</DependentUpon>
     </Compile>
     <Compile Include="Master_Summary.cs">
@@ -915,6 +928,9 @@
     <Compile Include="SP_GetResourceData_Result.cs">
       <DependentUpon>ProformaLive.tt</DependentUpon>
     </Compile>
+    <Compile Include="SP_Get_APP_PFL_RESOURCES_SS_V_Result.cs">
+      <DependentUpon>ProformaLive.tt</DependentUpon>
+    </Compile>
     <Compile Include="SP_Get_CapitalLabor_Comments_Result.cs">
       <DependentUpon>ProformaLive.tt</DependentUpon>
     </Compile>
@@ -927,6 +943,9 @@
     <Compile Include="SP_Get_Configure_RateCard_Result.cs">
       <DependentUpon>ProformaLive.tt</DependentUpon>
     </Compile>
+    <Compile Include="SP_Get_DeltaSummary_Result.cs">
+      <DependentUpon>ProformaLive.tt</DependentUpon>
+    </Compile>
     <Compile Include="SP_Get_DirectExpenses_Comments_Result.cs">
       <DependentUpon>ProformaLive.tt</DependentUpon>
     </Compile>
@@ -934,6 +953,9 @@
       <DependentUpon>ProformaLive.tt</DependentUpon>
     </Compile>
     <Compile Include="SP_Get_Master_ProjectChargeBack_Result.cs">
+      <DependentUpon>ProformaLive.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SP_Get_Master_Snapshot_Config_Result.cs">
       <DependentUpon>ProformaLive.tt</DependentUpon>
     </Compile>
     <Compile Include="SP_GET_NotificationData_Result.cs">
@@ -1071,6 +1093,7 @@
     <Content Include="Views\notification\Index.cshtml" />
     <Content Include="Scripts\angular.min.js.map" />
     <Content Include="Scripts\angular-resource.min.js.map" />
+    <Content Include="Views\Config_Snapshot\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -1079,6 +1102,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="obj\" />
     <Folder Include="upload\" />
   </ItemGroup>
   <ItemGroup>

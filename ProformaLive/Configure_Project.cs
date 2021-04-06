@@ -21,7 +21,7 @@ namespace ProformaLive
         public string PMName { get; set; }
         public string ProjectCategory { get; set; }
         public string CategoryGroup { get; set; }
-        public string ParentChild { get; set; }
+        public string Status { get; set; }
         public string WBSElement { get; set; }
         public string CapitalExpenditureWBS { get; set; }
         public string GPSProjectNumber { get; set; }

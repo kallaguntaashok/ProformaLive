@@ -77,6 +77,8 @@ namespace MECC_ReportPortal.Controllers
             return Json("cloning has been done successfully!", JsonRequestBehavior.AllowGet);
         }
 
+
+
         [HttpPost]
         public JsonResult getmasterproforma(string strProjectID)
         {
@@ -95,26 +97,50 @@ namespace MECC_ReportPortal.Controllers
         public JsonResult cloneproformaproject(objclone obj)
         {
             string userid = Convert.ToString(Session["userid"]);
-
+            string status = "";
             if (obj.clone != null)
             {
                 foreach (var item in obj.clone)
                 {
-                    db.SP_Clone_Proforma(item.ProjectID, obj.ID, obj.Name, userid);
+                    var objstatus = db.SP_validate_CloneProject(obj.ID).ToList();
+                    if(objstatus != null && objstatus[0] == "False")
+                    {
+                        db.SP_Clone_Proforma(item.ProjectID, obj.ID, obj.Name, userid);
+                        status = "cloning has been done successfully!";
+                    }
+                    else
+                    {
+                        status = "Invalid ProjectID";
+                    }                    
                 }
             }
 
-            return Json("cloning has been done successfully!", JsonRequestBehavior.AllowGet);
+            return Json(status, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
         public JsonResult createnewproforma(int ID, string strProjectID, string strProjectName,string strUserID)
         {
-            if (ID != null)
+            string strMessage = "";
+            var satus = db.Configure_Project
+                    .Where(x => x.ProjectNumber == strProjectID)
+                    .Select(y => y.ProjectID).ToList();
+
+            if(satus.Count == 0)
             {
-                var obj = db.SP_CreateNew_Proforma(ID, strProjectID, strProjectName, strUserID);
+                var obj = db.SP_CreateNew_Proforma(ID, strProjectID, strProjectName, strUserID);                
+                strMessage = "Success";
             }
-            return Json("New proforma has been created successfully!", JsonRequestBehavior.AllowGet);
+            else
+            {
+                strMessage = "Project ID already exists!";
+            }
+
+            var projectid = db.Configure_Project
+                        .Where(x => x.ProjectNumber == strProjectID)
+                        .Select(y => y.ProjectID).ToList();
+
+            return new JsonResult { Data = new { Message = strMessage, Status = projectid } };            
         }
 
         [HttpPost]
@@ -123,7 +149,7 @@ namespace MECC_ReportPortal.Controllers
             string username = GetUserFromLdap(strUserID);
             return Json(username, JsonRequestBehavior.AllowGet);
         }
-
+                
         [HttpGet]
         [AuthorizeAD(Groups = Constants.PAdmin)]
         public JsonResult getProjects()
@@ -222,7 +248,7 @@ namespace MECC_ReportPortal.Controllers
                             row.PMNetworkID = item.PMNetworkID;
                             row.PMName = GetUserFromLdap(item.PMNetworkID);
                             row.ProjectCategory = item.ProjectCategory;
-                            row.ParentChild = item.ParentChild;
+                            row.Status = item.Status;                            
                             row.WBSElement = item.WBSElement;
                             row.CapitalExpenditureWBS = item.CapitalExpenditureWBS;
                             row.GPSProjectNumber = item.GPSProjectNumber;
@@ -254,7 +280,7 @@ namespace MECC_ReportPortal.Controllers
                             row.PMNetworkID = item.PMNetworkID;
                             row.PMName = GetUserFromLdap(item.PMNetworkID);
                             row.ProjectCategory = item.ProjectCategory;
-                            row.ParentChild = item.ParentChild;
+                            row.Status = item.Status;                           
                             row.WBSElement = item.WBSElement;
                             row.CapitalExpenditureWBS = item.CapitalExpenditureWBS;
                             row.GPSProjectNumber = item.GPSProjectNumber;
@@ -287,10 +313,7 @@ namespace MECC_ReportPortal.Controllers
             {
                 foreach (var item in obj.delete)
                 {
-                    db.SP_DeleteProjectData(item.ProjectID);
-                    //Configure_Project row = db.Configure_Project.Single(x => x.ProjectID == item.ProjectID);
-                    //db.Configure_Project.Remove(row);
-                    //db.SaveChanges();
+                    db.SP_DeleteProjectData(item.ProjectID);                    
                 }
             }
 

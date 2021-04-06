@@ -27,6 +27,7 @@ namespace ProformaLive
             throw new UnintentionalCodeFirstException();
         }
     
+        public virtual DbSet<APP_PFL_RESOURCES_SS_V> APP_PFL_RESOURCES_SS_V { get; set; }
         public virtual DbSet<CapitalInfo> CapitalInfoes { get; set; }
         public virtual DbSet<CapitalInfoComment> CapitalInfoComments { get; set; }
         public virtual DbSet<CapitalInfoList> CapitalInfoLists { get; set; }
@@ -47,6 +48,7 @@ namespace ProformaLive
         public virtual DbSet<Master_ProjectChargeBack> Master_ProjectChargeBack { get; set; }
         public virtual DbSet<Master_Qtr> Master_Qtr { get; set; }
         public virtual DbSet<Master_SAP_PO_Data> Master_SAP_PO_Data { get; set; }
+        public virtual DbSet<Master_Snapshot_Config> Master_Snapshot_Config { get; set; }
         public virtual DbSet<Master_Summary> Master_Summary { get; set; }
         public virtual DbSet<Master_VendorList> Master_VendorList { get; set; }
         public virtual DbSet<Notification_Log> Notification_Log { get; set; }
@@ -61,6 +63,15 @@ namespace ProformaLive
         public virtual DbSet<ResourceInfoList> ResourceInfoLists { get; set; }
         public virtual DbSet<Service_log> Service_log { get; set; }
         public virtual DbSet<Temp_ProjectMaster> Temp_ProjectMaster { get; set; }
+    
+        public virtual int SP_APP_PFL_RESOURCES_SS_V_BulkInsert(Nullable<System.DateTime> date)
+        {
+            var dateParameter = date.HasValue ?
+                new ObjectParameter("date", date) :
+                new ObjectParameter("date", typeof(System.DateTime));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SP_APP_PFL_RESOURCES_SS_V_BulkInsert", dateParameter);
+        }
     
         public virtual int SP_Clone_Proforma(Nullable<int> projectID, string clonedProjectID, string clonedProjectName, string createdBy)
         {
@@ -267,6 +278,11 @@ namespace ProformaLive
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<string>("SP_Filter_GetQuarter", monthParameter);
         }
     
+        public virtual ObjectResult<SP_Get_APP_PFL_RESOURCES_SS_V_Result> SP_Get_APP_PFL_RESOURCES_SS_V()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_Get_APP_PFL_RESOURCES_SS_V_Result>("SP_Get_APP_PFL_RESOURCES_SS_V");
+        }
+    
         public virtual ObjectResult<string> SP_Get_Business()
         {
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<string>("SP_Get_Business");
@@ -357,6 +373,11 @@ namespace ProformaLive
         public virtual ObjectResult<SP_Get_Master_ProjectChargeBack_Result> SP_Get_Master_ProjectChargeBack()
         {
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_Get_Master_ProjectChargeBack_Result>("SP_Get_Master_ProjectChargeBack");
+        }
+    
+        public virtual ObjectResult<SP_Get_Master_Snapshot_Config_Result> SP_Get_Master_Snapshot_Config()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_Get_Master_Snapshot_Config_Result>("SP_Get_Master_Snapshot_Config");
         }
     
         public virtual ObjectResult<string> SP_Get_MidOrg(string business, string businessUnit, string highOrg)
@@ -548,6 +569,11 @@ namespace ProformaLive
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_Get_Skillmaster_Result>("SP_Get_Skillmaster");
         }
     
+        public virtual ObjectResult<string> SP_GET_SnapshotTitle()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<string>("SP_GET_SnapshotTitle");
+        }
+    
         public virtual int SP_Get_SwapProjects(Nullable<int> primaryProject, Nullable<int> secondaryProject)
         {
             var primaryProjectParameter = primaryProject.HasValue ?
@@ -706,27 +732,6 @@ namespace ProformaLive
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_GetResourceData_forCheckBook_Result>("SP_GetResourceData_forCheckBook", projectidParameter, wBSNumberParameter, bUParameter, highOrgParameter, midOrgParameter, teamsParameter, requiredSkillsParameter, fisYearParameter);
         }
     
-        public virtual int SP_GetSummary(string projectID, string fisYear, string month, string qtr)
-        {
-            var projectIDParameter = projectID != null ?
-                new ObjectParameter("ProjectID", projectID) :
-                new ObjectParameter("ProjectID", typeof(string));
-    
-            var fisYearParameter = fisYear != null ?
-                new ObjectParameter("FisYear", fisYear) :
-                new ObjectParameter("FisYear", typeof(string));
-    
-            var monthParameter = month != null ?
-                new ObjectParameter("Month", month) :
-                new ObjectParameter("Month", typeof(string));
-    
-            var qtrParameter = qtr != null ?
-                new ObjectParameter("Qtr", qtr) :
-                new ObjectParameter("Qtr", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SP_GetSummary", projectIDParameter, fisYearParameter, monthParameter, qtrParameter);
-        }
-    
         public virtual int SP_GetSummaryData()
         {
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SP_GetSummaryData");
@@ -811,6 +816,15 @@ namespace ProformaLive
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SP_Resource_Moverows", fROMParameter, tOParameter, masterIDParameter, tabNameParameter);
         }
     
+        public virtual ObjectResult<string> SP_validate_CloneProject(string cloneprojectID)
+        {
+            var cloneprojectIDParameter = cloneprojectID != null ?
+                new ObjectParameter("CloneprojectID", cloneprojectID) :
+                new ObjectParameter("CloneprojectID", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<string>("SP_validate_CloneProject", cloneprojectIDParameter);
+        }
+    
         public virtual ObjectResult<string> SP_Validate_Notification(string userID)
         {
             var userIDParameter = userID != null ?
@@ -827,6 +841,23 @@ namespace ProformaLive
                 new ObjectParameter("ProjectNumber", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<string>("SP_Validate_ProjectCode", projectNumberParameter);
+        }
+    
+        public virtual ObjectResult<SP_Get_DeltaSummary_Result> SP_Get_DeltaSummary(Nullable<int> projectID, Nullable<int> fisyear, string title)
+        {
+            var projectIDParameter = projectID.HasValue ?
+                new ObjectParameter("ProjectID", projectID) :
+                new ObjectParameter("ProjectID", typeof(int));
+    
+            var fisyearParameter = fisyear.HasValue ?
+                new ObjectParameter("Fisyear", fisyear) :
+                new ObjectParameter("Fisyear", typeof(int));
+    
+            var titleParameter = title != null ?
+                new ObjectParameter("Title", title) :
+                new ObjectParameter("Title", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_Get_DeltaSummary_Result>("SP_Get_DeltaSummary", projectIDParameter, fisyearParameter, titleParameter);
         }
     }
 }

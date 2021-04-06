@@ -9,10 +9,11 @@
 var app = angular.module('PLLandingPage', []);
 app.controller('contorllerlanding', function ($scope, $http) {
 
+    var jSuite_dropProjects = [];
     updateprogressbar(20, "Page is loading...");
-    createuserprofile();    
+    createuserprofile();
 
-    var jSuite_dropProjects = jSuites.dropdown(document.getElementById('dropProjects'), {
+    jSuite_dropProjects = jSuites.dropdown(document.getElementById('dropProjects'), {
         url: '../index/getprojectlist',
         autocomplete: true,
         placeholder: "Select Project",
@@ -53,6 +54,71 @@ app.controller('contorllerlanding', function ($scope, $http) {
             }, 1000);
         }
     }
+
+    $scope.btncreatenewproject = function () {
+        document.getElementById('CreateNewProject').style.display = 'block';
+        localStorage.setItem("CReferencePID", 262);
+        document.getElementById("newCreateProject").value = "";
+        document.getElementById("newCreateProjectName").value = "";
+    }
+
+    $scope.closecreatenew = function () {
+        document.getElementById('CreateNewProject').style.display = 'none';
+    }
+
+    $scope.createnewproject = function () {
+
+        var newprojectID = document.getElementById("newCreateProject").value;
+        var newprojectName = document.getElementById("newCreateProjectName").value;
+
+        if (newprojectID == "" || newprojectID == undefined) {
+            $scope.createnewprojectalert = true;
+            $scope.createnewprojectmessage = "Please enter new project id";
+        }
+        else if (newprojectName == "" || newprojectName == undefined) {
+            $scope.createnewprojectalert = true;
+            $scope.createnewprojectmessage = "Please enter new project name";
+        }
+        else {
+
+            updateprogressbar(50, "Creating New Proforma....");
+
+            $http({
+                method: 'POST',
+                url: '../Projects/createnewproforma',
+                params: {
+                    "ID": localStorage.getItem("CReferencePID"), "strProjectID": newprojectID, "strProjectName": newprojectName, "strUserID": localStorage.getItem("userID")
+                }
+            }).then(function (response) {
+
+                console.log(response.data.Message);
+                if (response.data.Message == 'Success') {
+                    document.getElementById('dropProjects').innerHTML = "";
+                    jSuite_dropProjects = jSuites.dropdown(document.getElementById('dropProjects'), {
+                        url: '../index/getprojectlist',
+                        autocomplete: true,
+                        placeholder: "Select Project",
+                        lazyLoading: true,
+                        multiple: false,
+                        value: response.data.Status,
+                        width: '100%',
+                    });
+
+                    document.getElementById('CreateNewProject').style.display = 'none';
+                    updateprogressbar(100, "Completed....");
+                    document.getElementById('progressbar').style.display = 'none';
+                }
+                else {
+                    $scope.createnewprojectalert = true;
+                    $scope.createnewprojectmessage = "Project ID already exists!";
+                }
+
+            }, function (error) {
+                console.log(error);
+            });
+        }
+    }
+
     function updateprogressbar(value, item) {
         document.getElementById('progressBarText').innerHTML = item;
         document.getElementById('progressbar').style.display = 'block'
