@@ -40,6 +40,7 @@ namespace ProformaLive
         public virtual DbSet<Configure_RateCard> Configure_RateCard { get; set; }
         public virtual DbSet<Configure_Skill> Configure_Skill { get; set; }
         public virtual DbSet<DirectExpensesInfo> DirectExpensesInfoes { get; set; }
+        public virtual DbSet<DirectExpensesInfo_CJI3_Selection> DirectExpensesInfo_CJI3_Selection { get; set; }
         public virtual DbSet<DirectExpensesInfoComment> DirectExpensesInfoComments { get; set; }
         public virtual DbSet<DirectExpensesInfoList> DirectExpensesInfoLists { get; set; }
         public virtual DbSet<Master_AOPProject> Master_AOPProject { get; set; }
@@ -63,6 +64,67 @@ namespace ProformaLive
         public virtual DbSet<ResourceInfoList> ResourceInfoLists { get; set; }
         public virtual DbSet<Service_log> Service_log { get; set; }
         public virtual DbSet<Temp_ProjectMaster> Temp_ProjectMaster { get; set; }
+    
+        public virtual int Insert_DirectExpensesInfo_CJI3_Selection(string fiscalYear, string month, string postingDate, string @object, string cO_Object_Name, string costElementName, string purchasingDocument, string purchaseOrderText, string nameOfOffsettingaccount, Nullable<decimal> totalQuantity, Nullable<decimal> val_COAreaCrcy, string userName, string dE_ExpenseCategory, string description)
+        {
+            var fiscalYearParameter = fiscalYear != null ?
+                new ObjectParameter("FiscalYear", fiscalYear) :
+                new ObjectParameter("FiscalYear", typeof(string));
+    
+            var monthParameter = month != null ?
+                new ObjectParameter("Month", month) :
+                new ObjectParameter("Month", typeof(string));
+    
+            var postingDateParameter = postingDate != null ?
+                new ObjectParameter("PostingDate", postingDate) :
+                new ObjectParameter("PostingDate", typeof(string));
+    
+            var objectParameter = @object != null ?
+                new ObjectParameter("Object", @object) :
+                new ObjectParameter("Object", typeof(string));
+    
+            var cO_Object_NameParameter = cO_Object_Name != null ?
+                new ObjectParameter("CO_Object_Name", cO_Object_Name) :
+                new ObjectParameter("CO_Object_Name", typeof(string));
+    
+            var costElementNameParameter = costElementName != null ?
+                new ObjectParameter("CostElementName", costElementName) :
+                new ObjectParameter("CostElementName", typeof(string));
+    
+            var purchasingDocumentParameter = purchasingDocument != null ?
+                new ObjectParameter("PurchasingDocument", purchasingDocument) :
+                new ObjectParameter("PurchasingDocument", typeof(string));
+    
+            var purchaseOrderTextParameter = purchaseOrderText != null ?
+                new ObjectParameter("PurchaseOrderText", purchaseOrderText) :
+                new ObjectParameter("PurchaseOrderText", typeof(string));
+    
+            var nameOfOffsettingaccountParameter = nameOfOffsettingaccount != null ?
+                new ObjectParameter("NameOfOffsettingaccount", nameOfOffsettingaccount) :
+                new ObjectParameter("NameOfOffsettingaccount", typeof(string));
+    
+            var totalQuantityParameter = totalQuantity.HasValue ?
+                new ObjectParameter("TotalQuantity", totalQuantity) :
+                new ObjectParameter("TotalQuantity", typeof(decimal));
+    
+            var val_COAreaCrcyParameter = val_COAreaCrcy.HasValue ?
+                new ObjectParameter("Val_COAreaCrcy", val_COAreaCrcy) :
+                new ObjectParameter("Val_COAreaCrcy", typeof(decimal));
+    
+            var userNameParameter = userName != null ?
+                new ObjectParameter("UserName", userName) :
+                new ObjectParameter("UserName", typeof(string));
+    
+            var dE_ExpenseCategoryParameter = dE_ExpenseCategory != null ?
+                new ObjectParameter("DE_ExpenseCategory", dE_ExpenseCategory) :
+                new ObjectParameter("DE_ExpenseCategory", typeof(string));
+    
+            var descriptionParameter = description != null ?
+                new ObjectParameter("Description", description) :
+                new ObjectParameter("Description", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("Insert_DirectExpensesInfo_CJI3_Selection", fiscalYearParameter, monthParameter, postingDateParameter, objectParameter, cO_Object_NameParameter, costElementNameParameter, purchasingDocumentParameter, purchaseOrderTextParameter, nameOfOffsettingaccountParameter, totalQuantityParameter, val_COAreaCrcyParameter, userNameParameter, dE_ExpenseCategoryParameter, descriptionParameter);
+        }
     
         public virtual int SP_APP_PFL_RESOURCES_SS_V_BulkInsert(Nullable<System.DateTime> date)
         {
@@ -332,6 +394,70 @@ namespace ProformaLive
         public virtual ObjectResult<SP_Get_Configure_RateCard_Result> SP_Get_Configure_RateCard()
         {
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_Get_Configure_RateCard_Result>("SP_Get_Configure_RateCard");
+        }
+    
+        public virtual ObjectResult<SP_Get_DE_CJI3_Data_Result> SP_Get_DE_CJI3_Data(string wBSnumber, string fisYear, string month, string expensecategory, string description)
+        {
+            var wBSnumberParameter = wBSnumber != null ?
+                new ObjectParameter("WBSnumber", wBSnumber) :
+                new ObjectParameter("WBSnumber", typeof(string));
+    
+            var fisYearParameter = fisYear != null ?
+                new ObjectParameter("FisYear", fisYear) :
+                new ObjectParameter("FisYear", typeof(string));
+    
+            var monthParameter = month != null ?
+                new ObjectParameter("Month", month) :
+                new ObjectParameter("Month", typeof(string));
+    
+            var expensecategoryParameter = expensecategory != null ?
+                new ObjectParameter("Expensecategory", expensecategory) :
+                new ObjectParameter("Expensecategory", typeof(string));
+    
+            var descriptionParameter = description != null ?
+                new ObjectParameter("Description", description) :
+                new ObjectParameter("Description", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_Get_DE_CJI3_Data_Result>("SP_Get_DE_CJI3_Data", wBSnumberParameter, fisYearParameter, monthParameter, expensecategoryParameter, descriptionParameter);
+        }
+    
+        public virtual ObjectResult<string> SP_Get_DE_FiscalYear(Nullable<int> projectID)
+        {
+            var projectIDParameter = projectID.HasValue ?
+                new ObjectParameter("ProjectID", projectID) :
+                new ObjectParameter("ProjectID", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<string>("SP_Get_DE_FiscalYear", projectIDParameter);
+        }
+    
+        public virtual ObjectResult<SP_Get_DeltaSummary_Result> SP_Get_DeltaSummary(Nullable<int> projectID, Nullable<int> fisyear, string title)
+        {
+            var projectIDParameter = projectID.HasValue ?
+                new ObjectParameter("ProjectID", projectID) :
+                new ObjectParameter("ProjectID", typeof(int));
+    
+            var fisyearParameter = fisyear.HasValue ?
+                new ObjectParameter("Fisyear", fisyear) :
+                new ObjectParameter("Fisyear", typeof(int));
+    
+            var titleParameter = title != null ?
+                new ObjectParameter("Title", title) :
+                new ObjectParameter("Title", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_Get_DeltaSummary_Result>("SP_Get_DeltaSummary", projectIDParameter, fisyearParameter, titleParameter);
+        }
+    
+        public virtual ObjectResult<SP_Get_DirectExpenses_CheckBook_Result> SP_Get_DirectExpenses_CheckBook(Nullable<int> projectid, Nullable<int> fisyear)
+        {
+            var projectidParameter = projectid.HasValue ?
+                new ObjectParameter("projectid", projectid) :
+                new ObjectParameter("projectid", typeof(int));
+    
+            var fisyearParameter = fisyear.HasValue ?
+                new ObjectParameter("fisyear", fisyear) :
+                new ObjectParameter("fisyear", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_Get_DirectExpenses_CheckBook_Result>("SP_Get_DirectExpenses_CheckBook", projectidParameter, fisyearParameter);
         }
     
         public virtual ObjectResult<SP_Get_DirectExpenses_Comments_Result> SP_Get_DirectExpenses_Comments(Nullable<int> projectID)
@@ -841,23 +967,6 @@ namespace ProformaLive
                 new ObjectParameter("ProjectNumber", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<string>("SP_Validate_ProjectCode", projectNumberParameter);
-        }
-    
-        public virtual ObjectResult<SP_Get_DeltaSummary_Result> SP_Get_DeltaSummary(Nullable<int> projectID, Nullable<int> fisyear, string title)
-        {
-            var projectIDParameter = projectID.HasValue ?
-                new ObjectParameter("ProjectID", projectID) :
-                new ObjectParameter("ProjectID", typeof(int));
-    
-            var fisyearParameter = fisyear.HasValue ?
-                new ObjectParameter("Fisyear", fisyear) :
-                new ObjectParameter("Fisyear", typeof(int));
-    
-            var titleParameter = title != null ?
-                new ObjectParameter("Title", title) :
-                new ObjectParameter("Title", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_Get_DeltaSummary_Result>("SP_Get_DeltaSummary", projectIDParameter, fisyearParameter, titleParameter);
         }
     }
 }

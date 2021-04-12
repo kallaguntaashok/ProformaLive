@@ -118,9 +118,6 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
 
     $scope.viewresourceinfo = function (PID, WBSNumber, BU, HighOrg, MidOrg, Teams, RequiredSkills, FisYear) {
 
-        //var expandvalue = WBSNumber + "-" + MidOrg + "-" + Teams + "-" + RequiredSkills;
-        //localStorage.setItem("ex_wbs", expandvalue);
-
         updateprogressbar(20, "Resource is loading...");
         $http({
             method: 'GET',
@@ -140,22 +137,19 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
             dropdown_update_BU_PC();
             document.getElementById('notification_resource_checkbook').style.display = 'none';
             document.getElementById('update_resource_checkbook1').innerHTML = 0;
+            dragElement(document.getElementById("resourcecheckbookpanel"));
         }, function (error) {
             console.log(error);
         });
     }
 
-    $scope.closeviewresourceinfo = function () {
-        document.getElementById('resourcecheckbookpanel').style.display = 'none';
-    }
-
-    $scope.closeviewresourcesummaryinfo = function () {
-        document.getElementById('resourcecheckbooksummarypanel').style.display = 'none';
+    $scope.closepopup = function (value) {
+        document.getElementById(value).style.display = 'none';
     }
 
     $scope.showResourceCheckbookSummaryChart = function () {
 
-        var summarydata = $scope.modelsummaryChart;       
+        var summarydata = $scope.modelsummaryChart;
         var options = {
             series: summarydata,
             chart: {
@@ -237,6 +231,8 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
         dragElement(document.getElementById("resourcecheckbooksummarypanel"));
     }
 
+    //Method will add drag option to popup panels.
+    //Parameter: pass control ID as a parameter (Example: dragElement(document.getElementById("ID")))
     function dragElement(elmnt) {
         var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
         if (document.getElementById(elmnt.id + "header")) {
@@ -661,7 +657,7 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
                 updateprogressbar(100, "Completed...");
                 document.getElementById('progressbar').style.display = 'none';
                 document.getElementById('maincard').style.display = 'block';
-                document.getElementById('Summary').setAttribute("style", "padding-left:20px; padding-right:20px; opacity:1;")
+                document.getElementById('summary').setAttribute("style", "padding-left:20px; padding-right:20px; opacity:1;")
             }
 
         }, function (error) {
@@ -1311,50 +1307,102 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
         $scope.tabresourceclass = "nav-link";
         $scope.tabcapitallaborclass = "nav-link";
         $scope.tabdirectexpensesclass = "nav-link";
-        $scope.tabcheckbookclass = "nav-link";
+        $scope.tabresourcecheckbookclass = "nav-link";
         $scope.tabcapitalclass = "nav-link";
+        $scope.tabdecheckbookclass = "nav-link";
 
         //tab-pane active
-        document.getElementById('Summary').className = "tab-pane fade";
+        document.getElementById('summary').className = "tab-pane fade";
         document.getElementById('resource').className = "tab-pane fade";
         document.getElementById('capital').className = "tab-pane fade";
         document.getElementById('capitallabour').className = "tab-pane fade";
         document.getElementById('directexpenses').className = "tab-pane fade";
         document.getElementById('resourcecheckbook').className = "tab-pane fade";
+        document.getElementById('decheckbook').className = "tab-pane fade";
+
+        var tabclass = "nav-link active";
 
         if (value === "summary") {
-            $scope.tabsummaryclass = "nav-link active";
-            document.getElementById('Summary').className = "tab-pane active";
+            $scope.tabsummaryclass = tabclass;
         }
         else if (value === "resource") {
-            $scope.tabresourceclass = "nav-link active";
-            document.getElementById('resource').className = "tab-pane active";
-
+            $scope.tabresourceclass = tabclass;
         }
         else if (value === "capital") {
-            $scope.tabcapitalclass = "nav-link active";
-            document.getElementById('capital').className = "tab-pane active";
+            $scope.tabcapitalclass = tabclass;
         }
         else if (value === "capitallabor") {
-
-            $scope.tabcapitallaborclass = "nav-link active";
-            document.getElementById('capitallabour').className = "tab-pane active";
-
+            $scope.tabcapitallaborclass = tabclass;
         }
         else if (value === "directexpenses") {
-
-            $scope.tabdirectexpensesclass = "nav-link active";
-            document.getElementById('directexpenses').className = "tab-pane active";
-
+            $scope.tabdirectexpensesclass = tabclass;
         }
         else if (value === "resourcecheckbook") {
-
-            $scope.tabcheckbookclass = "nav-link active";
-            document.getElementById('resourcecheckbook').className = "tab-pane active";
-
+            $scope.tabresourcecheckbookclass = tabclass;
+        }
+        else if (value === "decheckbook") {
+            $scope.tabdecheckbookclass = tabclass;
         }
 
-        //document.getElementById("exporttoexcel").focus();
+        document.getElementById(value).className = "tab-pane active";
+    }
+
+    $scope.show_de_cji3data = function (wbsnumber, fisyear, month, expensecategory, description) {
+
+        updateprogressbar(20, "loading...");
+        $http({
+            method: 'POST',
+            url: '../Resource/get_de_cji3_data',
+            params: { "strWBSNumber": wbsnumber, "strFisYear": fisyear, "strMonth": month, "strExpensecategory": expensecategory, "strDescription": description }
+        }).then(function (response) {
+            console.log(response.data);
+            $scope.modelDECJI3 = response.data;
+            if (response.data.length === 0)
+                showalert('No records found!');
+            document.getElementById('progressbar').style.display = 'none';
+            $scope.IsAllChecked = false;
+            $scope.selected_de_cb_Total = 0;
+            $scope.selected_de_cb_value = 0;
+            $scope.CheckUncheckHeader(response.data);
+            calculatetotal_de_checkbook();
+            calculatevalue_de_checkbook();
+        }, function (error) {
+            console.log(error);
+        });
+
+        dragElement(document.getElementById("decheckbookcji3panel"));
+        document.getElementById('decheckbookcji3panel').style.display = 'block';
+    }
+
+    $scope.insert_de_cji3data = function () {
+
+        updateprogressbar(20, "Saving Changes...");
+
+        var directexpenses_cji3data = [];
+        for (var i = 0; i < $scope.modelDECJI3.length; i++) {            
+            if ($scope.modelDECJI3[i].Selected == true) {
+                var rowcji3 = $scope.modelDECJI3[i];
+                directexpenses_cji3data.push(rowcji3);
+            }
+        };
+
+        var data = {
+            insert: directexpenses_cji3data           
+        };
+
+        $http({
+            method: 'POST',
+            url: '../Resource/insert_de_cji3_selection',
+            data: data,
+            headers: {
+                "Content-Type": "application/json"
+            }
+        }).then(function (response) {
+            document.getElementById('progressbar').style.display = 'none';
+            console.log(response.data);
+        }, function (error) {
+            console.log(error);
+        });
     }
 
     $scope.updatetabeinfo = function (value) {
@@ -1384,6 +1432,8 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
                 dropdown_update_BU();
                 default_tabsetting("resource");
                 $scope.Drop_ProjectClass = "col-md-6";
+                load_defalutformsettings();
+                getlastmodifieddata();
                 document.getElementById('Display_FisYearFilter').style.display = "none";
             }
         }
@@ -1397,6 +1447,8 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
                 getcapital();
                 default_tabsetting("capital");
                 $scope.Drop_ProjectClass = "col-md-6";
+                load_defalutformsettings();
+                getlastmodifieddata();
                 document.getElementById('Display_FisYearFilter').style.display = "none";
             }
         }
@@ -1416,6 +1468,8 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
                 getcapitallabour();
                 default_tabsetting("capitallabor");
                 $scope.Drop_ProjectClass = "col-md-6";
+                load_defalutformsettings();
+                getlastmodifieddata();
                 document.getElementById('Display_FisYearFilter').style.display = "none";
             }
         }
@@ -1430,6 +1484,8 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
                 getDirectExpenses();
                 default_tabsetting("directexpenses");
                 $scope.Drop_ProjectClass = "col-md-6";
+                load_defalutformsettings();
+                getlastmodifieddata();
                 document.getElementById('Display_FisYearFilter').style.display = "none";
             }
         }
@@ -1438,10 +1494,127 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
             default_tabsetting("resourcecheckbook");
             refresh_resourcecheckbook();
         }
-
-        load_defalutformsettings();
-        getlastmodifieddata();
+        else if (value === "decheckbook") {
+            updateprogressbar(25, "DE checkbook is loading....");
+            default_tabsetting("decheckbook");
+            refresh_decheckbook();
+        }
     }
+
+    //it will load DE checkbook data
+    function refresh_decheckbook() {
+        updateprogressbar(20, "Loading DE CheckBook...");
+        var summaryheight = parseInt(window.innerHeight);
+        summaryheight = summaryheight - 270;
+        document.getElementById('decheckbookcontainer').setAttribute('style', 'height: ' + summaryheight + 'px; overflow: scroll;');
+        $scope.Drop_ProjectClass = "col-md-5";
+        document.getElementById('Display_FisYearFilter').style.display = "block";
+
+        $http({
+            method: 'POST',
+            url: '../Resource/get_dececheckbook_fisyear',
+            params: { "intProjectID": localStorage.getItem("projectid") }
+        }).then(function (response) {
+            var resourcecheckbookyear = response.data;
+            var defaultvalue = 0;
+            if (resourcecheckbookyear.length > 0) {
+                defaultvalue = resourcecheckbookyear[0];
+            }
+            document.getElementById('dropResourceCheckboo_FisYear').innerHTML = "";
+            jSuite_dropResourceCheckboo_FisYear = jSuites.dropdown(document.getElementById('dropResourceCheckboo_FisYear'), {
+                data: resourcecheckbookyear,
+                autocomplete: true,
+                lazyLoading: false,
+                multiple: false,
+                value: defaultvalue,
+                width: '100%',
+                onchange: changeCheckBookFisYear
+            });
+
+            var Fisyear = jSuite_dropResourceCheckboo_FisYear.getValue();
+            console.log(Fisyear);
+            load_de_checkbook(Fisyear);
+
+        }, function (error) {
+            console.log(error);
+        });
+
+
+    }
+
+    function load_de_checkbook(Fisyear) {
+        $http({
+            method: 'POST',
+            url: '../Resource/get_decheckbook',
+            params: { "intProjectID": localStorage.getItem("projectid"), "intFisYear": Fisyear }
+        }).then(function (response) {
+            $scope.modelDECheckBook = response.data;
+            if (response.data.length === 0)
+                showalert('No records found!');
+            document.getElementById('progressbar').style.display = 'none';
+
+            var tablewidth = document.getElementById('decheckbook').offsetWidth;
+            tablewidth = tablewidth - 52;
+            $scope.subResourcetablewidth = tablewidth + 'px';
+            document.getElementById('tbldecheckbook').setAttribute("style", "width:" + tablewidth + "px;");
+
+        }, function (error) {
+            console.log(error);
+        });
+    }
+
+    $scope.CheckUncheckHeader = function (masterDECJI3) {
+       
+        $scope.modelDECJI3 = masterDECJI3;
+        var count = 0;
+        var select_de_cb_total = 0;
+        var select_de_cb_value = 0;       
+        for (var i = 0; i < $scope.modelDECJI3.length; i++) {
+
+            if (!$scope.modelDECJI3[i].Selected) {
+                $scope.IsAllChecked = false;                
+            }
+            if ($scope.modelDECJI3[i].Selected == true) {
+                count++;
+                select_de_cb_total = select_de_cb_total + $scope.modelDECJI3[i].TotalQuantity;
+                select_de_cb_value = select_de_cb_value + $scope.modelDECJI3[i].Val_COAreaCrcy;
+            }
+        };
+        if ($scope.modelDECJI3.length == count) {            
+            $scope.IsAllChecked = true;
+        }
+        $scope.selected_de_cb_Total = select_de_cb_total;
+        $scope.selected_de_cb_value = select_de_cb_value;
+    };
+
+    function calculatetotal_de_checkbook() {
+        var total = 0.00;
+        for (var i = 0; i < $scope.modelDECJI3.length; i++) {
+            total = total + $scope.modelDECJI3[i].TotalQuantity;
+        }
+        $scope.de_cb_total = total;        
+    }
+    function calculatevalue_de_checkbook() {
+        var total = 0.00;
+        for (var i = 0; i < $scope.modelDECJI3.length; i++) {
+            total = total + $scope.modelDECJI3[i].Val_COAreaCrcy;
+        }
+        $scope.de_cb_value = total;
+    }
+        
+    $scope.CheckUncheckAll = function () { 
+        var select_de_cb_total = 0;
+        var select_de_cb_value = 0;        
+        for (var i = 0; i < $scope.modelDECJI3.length; i++) {
+            $scope.modelDECJI3[i].Selected = $scope.IsAllChecked;
+            if ($scope.IsAllChecked == true) {
+                select_de_cb_total = select_de_cb_total + $scope.modelDECJI3[i].TotalQuantity;
+                select_de_cb_value = select_de_cb_value + $scope.modelDECJI3[i].Val_COAreaCrcy;
+            }            
+        }
+        $scope.selected_de_cb_Total = select_de_cb_total;
+        $scope.selected_de_cb_value = select_de_cb_value;       
+    };
 
     function refresh_resourcecheckbook() {
 
@@ -1484,11 +1657,16 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
     }
 
     function changeCheckBookFisYear() {
-
         updateprogressbar(20, "Loading Resource Checkbook...");
         var Fisyear = jSuite_dropResourceCheckboo_FisYear.getValue();
-        loadresourcecheckbooksummary(Fisyear);
-        loadresourcecheckbook(Fisyear);
+        var activeTabName = document.getElementById('activetabid').innerHTML;
+        if (activeTabName === "resourcecheckbook") {
+            loadresourcecheckbooksummary(Fisyear);
+            loadresourcecheckbook(Fisyear);
+        }
+        else if (activeTabName === "decheckbook") {
+            load_de_checkbook(Fisyear);
+        }
     }
 
     function loadresourcecheckbook(Fisyear) {
@@ -1570,21 +1748,21 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
 
         if (Math.sign(value) == -1) {
             return {
-                "background-color": "rgb(255 242 178)",                
+                "background-color": "rgb(255 242 178)",
                 "text-align": "right",
                 "width": "43px"
             }
         }
         else if (Math.sign(value) == 1) {
             return {
-                "background-color": "rgb(251 203 208)",               
+                "background-color": "rgb(251 203 208)",
                 "text-align": "right",
                 "width": "43px"
             }
         }
         else if (Math.sign(value) == 0) {
             return {
-                "background-color": "rgb(195 255 208)",                
+                "background-color": "rgb(195 255 208)",
                 "text-align": "right",
                 "width": "43px"
             }
@@ -1916,6 +2094,7 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
                 else if (activeTabName === "capitallabor") { update_capitallabor_comments(); refresh_CapitalLaborExpenditureWBS(); }
                 else if (activeTabName === "directexpenses") { update_directexpenses_comments(); refresh_OperatingExpenseWBSDE(); }
                 else if (activeTabName === "resourcecheckbook") { update_resource_comments(); refresh_resourcecheckbook(); }
+                else if (activeTabName === "decheckbook") { refresh_decheckbook(); }
 
             }, function (error) {
                 console.log(error);
@@ -6875,6 +7054,16 @@ app.factory('FileUploadService', function ($http, $q) {
 
 });
 
+app.filter('boolean', function () {
+    return function (input) {
+        if (input == 'true') {
+            return true;
+        }
+        else {
+            return false;
+        }        
+    }
+});
 
 app.filter('dotsFilter', [
     '$filter',

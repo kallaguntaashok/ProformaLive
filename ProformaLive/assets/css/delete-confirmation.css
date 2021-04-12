@@ -566,7 +566,7 @@ input:checked + .slider:before {
 
 
 /* The Modal (background) */
-.viewProforma_modal {
+.viewpopup_modal {
     display: block; /* Hidden by default */
     position: absolute; /* Stay in place */
     z-index: 9999; /* Sit on top */
@@ -578,7 +578,7 @@ input:checked + .slider:before {
 }
 
 /* Modal Content/Box */
-.viewProforma-content {
+.viewpopup-content {
     background: white; /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
     margin: 5% 1% 1% 1%;
     /*border: 2px solid #91b6de;*/
@@ -587,13 +587,13 @@ input:checked + .slider:before {
 }
 
 /* Add padding and center-align text to the container */
-.viewProforma_container {
+.viewpopup_container {
     /*text-align: center; */
 }
 
 
 /* Clear floats */
-.viewProformaclearfix {
+.viewpopupclearfix {
     text-align: center;
     padding-left: 20px;
     padding-right: 20px;
@@ -608,10 +608,10 @@ input:checked + .slider:before {
 }
 
 
-.viewProformabody {
+.view_popup_body {
     padding-left: 1rem;
     padding-right: 1rem;
     padding-top: 1rem;
     padding-bottom: 0.6rem;
-    border-radius: 0rem !important;    
+    border-radius: 0rem !important;
 }

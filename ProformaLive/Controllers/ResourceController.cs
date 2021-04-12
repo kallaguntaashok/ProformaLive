@@ -190,6 +190,61 @@ namespace MECC_ReportPortal.Controllers
             return Json(obj, JsonRequestBehavior.AllowGet);
         }
 
+        [HttpPost]
+        public JsonResult get_dececheckbook_fisyear(int intProjectID)
+        {
+            var obj = db.SP_Get_DE_FiscalYear(intProjectID).ToList();
+            return Json(obj, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public JsonResult get_decheckbook(int intProjectID, int intFisYear)
+        {
+            var obj = db.SP_Get_DirectExpenses_CheckBook(intProjectID, intFisYear).ToList();
+            return Json(obj, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public JsonResult get_de_cji3_data(string strWBSNumber, string strFisYear, string strMonth, string strExpensecategory, string strDescription)
+        {
+            var obj = db.SP_Get_DE_CJI3_Data(strWBSNumber, strFisYear, strMonth, strExpensecategory, strDescription).ToList();
+            return Json(obj, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public JsonResult insert_de_cji3_selection(objdecji3data data)
+        {
+            if (data.insert != null)
+            {
+                foreach (var item in data.insert)
+                {
+                    List<DirectExpensesInfo_CJI3_Selection> row = db.DirectExpensesInfo_CJI3_Selection.Where(
+                        x => x.Object == item.Object &&
+                        x.FiscalYear == item.FiscalYear &&
+                        x.Month == item.Month && x.DE_ExpenseCategory == item.Expensecategory
+                        && x.Description == item.Description).ToList();
+
+                    foreach (var item_2 in row)
+                    {
+                        db.DirectExpensesInfo_CJI3_Selection.Remove(item_2);
+                        db.SaveChanges();
+                    }
+                }
+                foreach (var item in data.insert)
+                {
+                    if (item.FiscalYear != null)
+                    {
+                        db.Insert_DirectExpensesInfo_CJI3_Selection(item.FiscalYear, item.Month,
+                        item.PostingDate, item.Object, item.CO_Object_Name,
+                        item.CostElementName, item.PurchasingDocument,
+                        item.PurchaseOrderText, item.NameOfOffsettingaccount,
+                        item.TotalQuantity, item.Val_COAreaCrcy, item.UserName, item.Expensecategory, item.Description);
+                    }
+                }
+            }
+            return Json("", JsonRequestBehavior.AllowGet);
+        }
+
         [HttpGet]
         public JsonResult validateDuplicateProjectnumber(string strProjectNumber)
         {
@@ -2959,6 +3014,11 @@ namespace MECC_ReportPortal.Controllers
             public string userid { get; set; }
         }
 
+        public class objdecji3data
+        {
+            public List<SP_Get_DE_CJI3_Data_Result> insert { get; set; }
+        }
+
         public class objcapitallabor
         {
             public List<SP_GetCapitalLaborData_Result> update { get; set; }
@@ -3025,7 +3085,7 @@ namespace MECC_ReportPortal.Controllers
                 }
             }
 
-            return new JsonResult { Data = new { summarydata = objCS, summaryChart = objCC } };            
+            return new JsonResult { Data = new { summarydata = objCS, summaryChart = objCC } };
         }
 
         [HttpPost]
@@ -3166,7 +3226,7 @@ namespace MECC_ReportPortal.Controllers
         {
             public string name { get; set; }
             public List<decimal> data { get; set; }
-        }        
+        }
 
         public class ResourceCheckBook
         {

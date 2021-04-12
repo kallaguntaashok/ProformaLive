@@ -822,6 +822,9 @@
     <Compile Include="DirectExpensesInfoList.cs">
       <DependentUpon>ProformaLive.tt</DependentUpon>
     </Compile>
+    <Compile Include="DirectExpensesInfo_CJI3_Selection.cs">
+      <DependentUpon>ProformaLive.tt</DependentUpon>
+    </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -944,6 +947,12 @@
       <DependentUpon>ProformaLive.tt</DependentUpon>
     </Compile>
     <Compile Include="SP_Get_DeltaSummary_Result.cs">
+      <DependentUpon>ProformaLive.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SP_Get_DE_CJI3_Data_Result.cs">
+      <DependentUpon>ProformaLive.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SP_Get_DirectExpenses_CheckBook_Result.cs">
       <DependentUpon>ProformaLive.tt</DependentUpon>
     </Compile>
     <Compile Include="SP_Get_DirectExpenses_Comments_Result.cs">

@@ -1,13 +1,13 @@
 ﻿
 <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
-<link href="~/assets/Jexcel/jexcel_44.css?ID=7000" rel="stylesheet" />
-<script src="~/assets/Jexcel/jexcelv44.js?ID=7000"></script>
-<script src="~/assets/Jexcel/jsuites38.js?ID=7000"></script>
-<link href="~/assets/Jexcel/jsuites38.css?ID=7000" rel="stylesheet" />
-<link href="~/assets/css/delete-confirmation.css?ID=7000" rel="stylesheet" />
-<script src="~/assets/scripts/resource.js?ID=7000"></script>
-<script src="~/assets/scripts/exportexcel/alasql.min.js?ID=7000"></script>
-<script src="~/assets/scripts/exportexcel/xlsx.core.min.js?ID=7000"></script>
+<link href="~/assets/Jexcel/jexcel_44.css?ID=7200" rel="stylesheet" />
+<script src="~/assets/Jexcel/jexcelv44.js?ID=7200"></script>
+<script src="~/assets/Jexcel/jsuites38.js?ID=7200"></script>
+<link href="~/assets/Jexcel/jsuites38.css?ID=7200" rel="stylesheet" />
+<link href="~/assets/css/delete-confirmation.css?ID=7200" rel="stylesheet" />
+<script src="~/assets/scripts/resource.js?ID=7200"></script>
+<script src="~/assets/scripts/exportexcel/alasql.min.js?ID=7200"></script>
+<script src="~/assets/scripts/exportexcel/xlsx.core.min.js?ID=7200"></script>
 
 <div id="alertbox" style="display:none; z-index:99999" class="confirmation_modal fade-up">
     <div style="opacity:0.7; background: linear-gradient(to right, #ff4767, #790032); border: 1px solid #afafaf;" class="confirmation_modal-content confirmation_container">
@@ -47,18 +47,18 @@
         </div>
     </div>
 
-    <div id="resourcecheckbookpanel" style="display:none;" class="viewProforma_modal fade-up">
-        <div class="viewProforma-content viewProforma_container">
-            <div id="resourcecheckbookpanelheader" class="viewProformaclearfix">
+    <div id="resourcecheckbookpanel" style="display:none;" class="viewpopup_modal fade-up">
+        <div class="viewpopup-content viewProforma_container">
+            <div id="resourcecheckbookpanelheader" class="viewpopupclearfix">
                 <span class="pull-left">
                     <i class="fa fa-user" aria-hidden="true"></i>&nbsp;&nbsp;Resource
                 </span>
                 <span>
                     <label style="display:none;" id="notificationID"></label>
-                    <i class="fa fa-times pull-right" title="clear notification" style="padding-top: 5px; cursor: pointer;" ng-click="closeviewresourceinfo();" aria-hidden="true"></i>
+                    <i class="fa fa-times pull-right" title="clear notification" style="padding-top: 5px; cursor: pointer;" ng-click="closepopup('resourcecheckbookpanel');" aria-hidden="true"></i>
                 </span>
             </div>
-            <div class="viewProformabody" id="resourcecheckbookpanelBody">
+            <div class="view_popup_body" id="resourcecheckbookpanelBody">
                 <div style="display:none; width: 99.8% !important;" id="notification_resource_checkbook" class="notification">
                     <span class="badge badge-light"><i class="fa fa-bell" aria-hidden="true"></i> Found</span>
                     <span style="display:none;" id="update_resource_checkbook1" class="badge badge-info">0</span>
@@ -72,20 +72,81 @@
         </div>
     </div>
 
-    <div id="resourcecheckbooksummarypanel" style="display:none; width: 800px;" class="viewProforma_modal fade-up">
-        <div class="viewProforma-content viewProforma_container">
-            <div id="resourcecheckbooksummarypanelheader" class="viewProformaclearfix">
+    <div id="resourcecheckbooksummarypanel" style="display:none; width: 800px;" class="viewpopup_modal fade-up">
+        <div class="viewpopup-content viewpopup_container">
+            <div id="resourcecheckbooksummarypanelheader" class="viewpopupclearfix">
                 <span class="pull-left">
                     <i class="fa fa-user" aria-hidden="true"></i>&nbsp;&nbsp; Resource-Checkbook Summary Chart
                 </span>
                 <span>
                     <label style="display:none;" id="notificationID"></label>
-                    <i class="fa fa-times pull-right" title="clear notification" style="padding-top: 5px; cursor: pointer;" ng-click="closeviewresourcesummaryinfo();" aria-hidden="true"></i>
+                    <i class="fa fa-times pull-right" title="clear notification" style="padding-top: 5px; cursor: pointer;" ng-click="closepopup('resourcecheckbooksummarypanel');" aria-hidden="true"></i>
                 </span>
             </div>
-            <div class="viewProformabody" id="resourcecheckbooksummarypanelBody">
+            <div class="view_popup_body" id="resourcecheckbooksummarypanelBody">
                 <div id="chart">
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="decheckbookcji3panel" style="display:none;" class="viewpopup_modal fade-up">
+        <div class="viewpopup-content viewProforma_container">
+            <div id="decheckbookcji3panelheader" class="viewpopupclearfix">
+                <span class="pull-left">
+                    <i class="fa fa-user" aria-hidden="true"></i>&nbsp;&nbsp; CJI3 Purchase Orders
+                </span>
+                <span>
+                    <label style="display:none;" id="notificationID"></label>
+                    <i class="fa fa-times pull-right" title="clear notification" style="padding-top: 5px; cursor: pointer;" ng-click="closepopup('decheckbookcji3panel');" aria-hidden="true"></i>
+                </span>
+            </div>
+            <div class="view_popup_body" id="de_checkbooksummarypanelBody">
+                <table style="width:100%" id="tbldecji3">
+                    <thead>
+                        <tr>
+                            <th title="Select All"><input type="checkbox" ng-model="IsAllChecked" ng-change="CheckUncheckAll()" /></th>
+                            <th>PostingDate</th>
+                            <th>WBSNumber</th>
+                            <th>Cost Element Name</th>
+                            <th>Purchasing Document</th>
+                            <th>Purchase Order Text</th>
+                            <th>Name Of Offsetting account</th>
+                            <th>Quantity</th>
+                            <th>Value</th>
+                            <th>User Name</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="master in modelDECJI3">
+                            <td title="Select"><input type="checkbox" ng-checked="master.Selected" ng-model="master.Selected" ng-change="CheckUncheckHeader(modelDECJI3)" /></td>
+                            <td>{{master.PostingDate}}</td>
+                            <td>{{master.Object}}</td>
+                            <td>{{master.CostElementName}}</td>
+                            <td>{{master.PurchasingDocument}}</td>
+                            <td>{{master.PurchaseOrderText}}</td>
+                            <td>{{master.NameOfOffsettingaccount}}</td>
+                            <td>{{master.TotalQuantity}}</td>
+                            <td>{{master.Val_COAreaCrcy| number}}</td>
+                            <td>{{master.UserName}}</td>
+                        </tr>
+                        <tr style="background-color:#e4e4e4;">
+                            <td style="background-color:#e4e4e4;" colspan="7"></td>
+                            <td style="text-align:right; background-color: #c1ecf9;">{{de_cb_total}}</td>
+                            <td style="text-align:right; background-color: #c1ecf9;">{{de_cb_value| number}}</td>
+                            <td></td>
+                        </tr>
+                        <tr ng-show="selected_de_cb_Total > 0 || selected_de_cb_value > 0" style="background-color:#c6fde4;">
+                            <td style="background-color:#c6fde4; text-align:right;" colspan="7">Selectd &nbsp;<i class="fa fa-check-square-o de_selectedcheckbox" aria-hidden="true"></i></td>
+                            <td style="text-align:right; background-color: #c6fde4;">{{selected_de_cb_Total}}</td>
+                            <td style="text-align:right; background-color: #c6fde4;">{{selected_de_cb_value| number}}</td>
+                            <td style="background-color:#c6fde4; padding:0px;">
+                                <button type="button" id="exporttoexcel" ng-click="insert_de_cji3data();" class="btn btn-success btn-sm de_cji3save float-right"><i class="fa fa-floppy-o" aria-hidden="true"></i>&nbsp;&nbsp;Save</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>                               
+
             </div>
         </div>
     </div>
@@ -159,13 +220,16 @@
                     <a ng-class="tabdirectexpensesclass" style="color: #05509f; border: 1px solid #00000008; margin-right: 5px; padding-left: 20px !important; padding-right: 20px !important; padding-top: 7px !important; padding-bottom: 7px !important; font-size: 14px;" href="#directexpenses"><i class="fa fa-usd" style="font-size:12px;" aria-hidden="true"></i>&nbsp;&nbsp;Direct Expenses</a>
                 </li>
                 <li ng-click="updatetabeinfo('resourcecheckbook')" class="nav-item">
-                    <a ng-class="tabcheckbookclass" style="color: #05509f; border: 1px solid #00000008; margin-right: 5px; padding-left: 20px !important; padding-right: 20px !important; padding-top: 7px !important; padding-bottom: 7px !important; font-size: 14px;" href="#checkbook"><i class="fa fa-book" aria-hidden="true"></i>&nbsp;&nbsp;Resource-Checkbook</a>
+                    <a ng-class="tabresourcecheckbookclass" style="color: #05509f; border: 1px solid #00000008; margin-right: 5px; padding-left: 20px !important; padding-right: 20px !important; padding-top: 7px !important; padding-bottom: 7px !important; font-size: 14px;" href="#checkbook"><i class="fa fa-book" aria-hidden="true"></i>&nbsp;&nbsp;Resource-Checkbook</a>
+                </li>
+                <li ng-click="updatetabeinfo('decheckbook')" class="nav-item">
+                    <a ng-class="tabdecheckbookclass" style="color: #05509f; border: 1px solid #00000008; margin-right: 5px; padding-left: 20px !important; padding-right: 20px !important; padding-top: 7px !important; padding-bottom: 7px !important; font-size: 14px;" href="#checkbook"><i class="fa fa-book" aria-hidden="true"></i>&nbsp;&nbsp;DE-Checkbook</a>
                 </li>
             </ul>
 
             <!-- Tab panes -->
             <div style="border-left: 1px solid #e9e8e8;  border-right: 1px solid #e9e8e8; border-bottom: 1px solid #e9e8e8;" class="tab-content">
-                <div id="Summary" style="padding-left:20px; padding-right:20px; opacity:0;">
+                <div id="summary" style="padding-left:20px; padding-right:20px; opacity:0;">
                     <div id="summarymaindiv">
                         <br />
                         <div class="form-row">
@@ -467,7 +531,7 @@
                                         <i style="color:#fbff09" ng-click="clickexpandedsummary(expandedsummary)"
                                            ng-class="expandedsummary ? 'fa fa-minus-square resourcecheckbookfontminus' : 'fa fa-plus-square resourcecheckbookfontplus'"
                                            class="fa fa-plus-square" aria-hidden="true">
-                                        </i>&nbsp;&nbsp;Checkbook-Summary                                        
+                                        </i>&nbsp;&nbsp;Checkbook-Summary
                                     </th>
                                     <th colspan="3">Q1</th>
                                     <th colspan="3">Q2</th>
@@ -525,18 +589,18 @@
                                             </tr>
                                             <tr ng-show="allES" style="background-color:rgb(229, 246, 255);" ng-repeat="summarydata in summary.ResourceCheckBookSummaryResult">
                                                 <td colspan="2" style="width:209px; padding-left: 30px; background-color: #8bb3e2; text-align: left; font-weight: 500;">{{summarydata.Name}}</td>
-                                                <td  ng-style="celldefalutstyle()">{{summarydata.MAY}}</td>
-                                                <td  ng-style="celldefalutstyle()">{{summarydata.JUN}}</td>
-                                                <td  ng-style="celldefalutstyle()">{{summarydata.JUL}}</td>
-                                                <td  ng-style="celldefalutstyle()">{{summarydata.AUG}}</td>
-                                                <td  ng-style="celldefalutstyle()">{{summarydata.SEP}}</td>
-                                                <td  ng-style="celldefalutstyle()">{{summarydata.OCT}}</td>
-                                                <td  ng-style="celldefalutstyle()">{{summarydata.NOV}}</td>
-                                                <td  ng-style="celldefalutstyle()">{{summarydata.DEC}}</td>
-                                                <td  ng-style="celldefalutstyle()">{{summarydata.JAN}}</td>
-                                                <td  ng-style="celldefalutstyle()">{{summarydata.FEB}}</td>
-                                                <td  ng-style="celldefalutstyle()">{{summarydata.MAR}}</td>
-                                                <td  ng-style="celldefalutstyle()">{{summarydata.APR}}</td>
+                                                <td ng-style="celldefalutstyle()">{{summarydata.MAY}}</td>
+                                                <td ng-style="celldefalutstyle()">{{summarydata.JUN}}</td>
+                                                <td ng-style="celldefalutstyle()">{{summarydata.JUL}}</td>
+                                                <td ng-style="celldefalutstyle()">{{summarydata.AUG}}</td>
+                                                <td ng-style="celldefalutstyle()">{{summarydata.SEP}}</td>
+                                                <td ng-style="celldefalutstyle()">{{summarydata.OCT}}</td>
+                                                <td ng-style="celldefalutstyle()">{{summarydata.NOV}}</td>
+                                                <td ng-style="celldefalutstyle()">{{summarydata.DEC}}</td>
+                                                <td ng-style="celldefalutstyle()">{{summarydata.JAN}}</td>
+                                                <td ng-style="celldefalutstyle()">{{summarydata.FEB}}</td>
+                                                <td ng-style="celldefalutstyle()">{{summarydata.MAR}}</td>
+                                                <td ng-style="celldefalutstyle()">{{summarydata.APR}}</td>
                                             </tr>
                                         </table>
                                     </td>
@@ -645,6 +709,54 @@
                                             </tbody>
                                         </table>
                                     </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <br />
+                </div>
+                <div id="decheckbook" style="padding-left:20px; padding-right:20px;">
+                    <br />
+                    <div style="overflow: scroll;" id="decheckbookcontainer">
+                        <table id="tbldecheckbook">
+                            <thead>
+                                <tr>
+                                    <th>WBSNumber</th>
+                                    <th>ExpenseCategory</th>
+                                    <th>Description</th>
+                                    <th>FisYear</th>
+                                    <th>MAY</th>
+                                    <th>JUN</th>
+                                    <th>JUL</th>
+                                    <th>AUG</th>
+                                    <th>SEP</th>
+                                    <th>OCT</th>
+                                    <th>NOV</th>
+                                    <th>DEC</th>
+                                    <th>JAN</th>
+                                    <th>FEB</th>
+                                    <th>MAR</th>
+                                    <th>APR</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="master in modelDECheckBook">
+                                    <td>{{master.WBSNumber}}</td>
+                                    <td>{{master.ExpenseCategory}}</td>
+                                    <td>{{master.Description}}</td>
+                                    <td>{{master.FisYear}}</td>
+                                    <td ng-click="show_de_cji3data(master.WBSNumber, master.FisYear, 'MAY',master.ExpenseCategory, master.Description)">{{master.MAY}}</td>
+                                    <td ng-click="show_de_cji3data(master.WBSNumber, master.FisYear, 'JUN',master.ExpenseCategory, master.Description)"><a>{{master.JUN}}</a></td>
+                                    <td ng-click="show_de_cji3data(master.WBSNumber, master.FisYear, 'JUL',master.ExpenseCategory, master.Description)"><a>{{master.JUL}}</a></td>
+                                    <td ng-click="show_de_cji3data(master.WBSNumber, master.FisYear, 'AUG',master.ExpenseCategory, master.Description)"><a>{{master.AUG}}</a></td>
+                                    <td ng-click="show_de_cji3data(master.WBSNumber, master.FisYear, 'SEP',master.ExpenseCategory, master.Description)"><a>{{master.SEP}}</a></td>
+                                    <td ng-click="show_de_cji3data(master.WBSNumber, master.FisYear, 'OCT',master.ExpenseCategory, master.Description)"><a>{{master.OCT}}</a></td>
+                                    <td ng-click="show_de_cji3data(master.WBSNumber, master.FisYear, 'NOV',master.ExpenseCategory, master.Description)"><a>{{master.NOV}}</a></td>
+                                    <td ng-click="show_de_cji3data(master.WBSNumber, master.FisYear, 'DEC',master.ExpenseCategory, master.Description)"><a>{{master.DEC}}</a></td>
+                                    <td ng-click="show_de_cji3data(master.WBSNumber, master.FisYear, 'JAN',master.ExpenseCategory, master.Description)"><a>{{master.JAN}}</a></td>
+                                    <td ng-click="show_de_cji3data(master.WBSNumber, master.FisYear, 'FEB',master.ExpenseCategory, master.Description)"><a>{{master.FEB}}</a></td>
+                                    <td ng-click="show_de_cji3data(master.WBSNumber, master.FisYear, 'MAR',master.ExpenseCategory, master.Description)"><a>{{master.MAR}}</a></td>
+                                    <td ng-click="show_de_cji3data(master.WBSNumber, master.FisYear, 'APR',master.ExpenseCategory, master.Description)"><a>{{master.APR}}</a></td>
                                 </tr>
                             </tbody>
                         </table>
