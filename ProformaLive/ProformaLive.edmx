@@ -236,6 +236,7 @@
             <PropertyRef Name="Sysid" />
           </Key>
           <Property Name="Sysid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ProjectID" Type="int" />
           <Property Name="FiscalYear" Type="varchar" MaxLength="4" />
           <Property Name="Month" Type="varchar" MaxLength="10" />
           <Property Name="PostingDate" Type="varchar" MaxLength="100" />
@@ -610,7 +611,11 @@ warning 6013: The table/view 'ProformaLive.dbo.Tbl_PDW_CJI3' does not have a pri
           <Property Name="Type" Type="nchar" MaxLength="50" />
           <Property Name="Value" Type="varchar" MaxLength="500" />
         </EntityType>
+        <Function Name="Get_DirectExpensesInfo_CJI3_Selection_Validation" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="ProjectID" Type="int" Mode="In" />
+        </Function>
         <Function Name="Insert_DirectExpensesInfo_CJI3_Selection" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="ProjectID" Type="int" Mode="In" />
           <Parameter Name="FiscalYear" Type="varchar" Mode="In" />
           <Parameter Name="Month" Type="varchar" Mode="In" />
           <Parameter Name="PostingDate" Type="varchar" Mode="In" />
@@ -713,6 +718,18 @@ warning 6013: The table/view 'ProformaLive.dbo.Tbl_PDW_CJI3' does not have a pri
           <Parameter Name="Expensecategory" Type="varchar" Mode="In" />
           <Parameter Name="Description" Type="varchar" Mode="In" />
         </Function>
+        <Function Name="SP_Get_DE_CJI3_Data_SelectedList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="ProjectID" Type="int" Mode="In" />
+          <Parameter Name="WBSnumber" Type="varchar" Mode="In" />
+          <Parameter Name="FisYear" Type="varchar" Mode="In" />
+          <Parameter Name="Month" Type="varchar" Mode="In" />
+          <Parameter Name="Expensecategory" Type="varchar" Mode="In" />
+          <Parameter Name="Description" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="SP_Get_DE_CJI3_Total_Reconciliation_Remaining" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="ProjectID" Type="int" Mode="In" />
+          <Parameter Name="FisYear" Type="int" Mode="In" />
+        </Function>
         <Function Name="SP_Get_DE_FiscalYear" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="ProjectID" Type="int" Mode="In" />
         </Function>
@@ -727,6 +744,13 @@ warning 6013: The table/view 'ProformaLive.dbo.Tbl_PDW_CJI3' does not have a pri
         </Function>
         <Function Name="SP_Get_DirectExpenses_Comments" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="ProjectID" Type="int" Mode="In" />
+        </Function>
+        <Function Name="SP_Get_DirectExpensesInfo_CJI3_Selection" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="ProjectID" Type="int" Mode="In" />
+          <Parameter Name="FisYear" Type="varchar" Mode="In" />
+          <Parameter Name="WBSNumber" Type="varchar" Mode="In" />
+          <Parameter Name="ExpanceCategory" Type="varchar" Mode="In" />
+          <Parameter Name="Description" Type="varchar" Mode="In" />
         </Function>
         <Function Name="SP_Get_FiscalYear" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="ProjectID" Type="int" Mode="In" />
@@ -812,14 +836,15 @@ warning 6013: The table/view 'ProformaLive.dbo.Tbl_PDW_CJI3' does not have a pri
         <Function Name="SP_GetDirectExpensesData" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="projectid" Type="int" Mode="In" />
         </Function>
+        <Function Name="SP_GetDirectExpensesData_forcheckbookedit" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="ProjectID" Type="int" Mode="In" />
+          <Parameter Name="WBSnumber" Type="varchar" Mode="In" />
+          <Parameter Name="Fisyear" Type="int" Mode="In" />
+          <Parameter Name="Expensecategory" Type="varchar" Mode="In" />
+          <Parameter Name="Description" Type="varchar" Mode="In" />
+        </Function>
         <Function Name="SP_Getlastmodifiedinfo" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="ProjectID" Type="int" Mode="In" />
-        </Function>
-        <Function Name="SP_GetNewSummary" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="ProjectID" Type="varchar" Mode="In" />
-          <Parameter Name="FisYear" Type="varchar" Mode="In" />
-          <Parameter Name="Month" Type="varchar" Mode="In" />
-          <Parameter Name="Qtr" Type="varchar" Mode="In" />
         </Function>
         <Function Name="SP_GetProject_Summary" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="ProjectID" Type="varchar" Mode="In" />
@@ -1149,6 +1174,7 @@ warning 6013: The table/view 'ProformaLive.dbo.Tbl_PDW_CJI3' does not have a pri
             <PropertyRef Name="Sysid" />
           </Key>
           <Property Name="Sysid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ProjectID" Type="Int32" />
           <Property Name="FiscalYear" Type="String" MaxLength="4" FixedLength="false" Unicode="false" />
           <Property Name="Month" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
           <Property Name="PostingDate" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
@@ -1547,7 +1573,11 @@ warning 6013: The table/view 'ProformaLive.dbo.Tbl_PDW_CJI3' does not have a pri
           <EntitySet Name="ResourceInfoLists" EntityType="Self.ResourceInfoList" />
           <EntitySet Name="Service_log" EntityType="Self.Service_log" />
           <EntitySet Name="Temp_ProjectMaster" EntityType="Self.Temp_ProjectMaster" />
+          <FunctionImport Name="Get_DirectExpensesInfo_CJI3_Selection_Validation" ReturnType="Collection(ProformaLiveModel.Get_DirectExpensesInfo_CJI3_Selection_Validation_Result)">
+            <Parameter Name="ProjectID" Mode="In" Type="Int32" />
+          </FunctionImport>
           <FunctionImport Name="Insert_DirectExpensesInfo_CJI3_Selection">
+            <Parameter Name="ProjectID" Mode="In" Type="Int32" />
             <Parameter Name="FiscalYear" Mode="In" Type="String" />
             <Parameter Name="Month" Mode="In" Type="String" />
             <Parameter Name="PostingDate" Mode="In" Type="String" />
@@ -1650,6 +1680,18 @@ warning 6013: The table/view 'ProformaLive.dbo.Tbl_PDW_CJI3' does not have a pri
             <Parameter Name="Expensecategory" Mode="In" Type="String" />
             <Parameter Name="Description" Mode="In" Type="String" />
           </FunctionImport>
+          <FunctionImport Name="SP_Get_DE_CJI3_Data_SelectedList" ReturnType="Collection(ProformaLiveModel.SP_Get_DE_CJI3_Data_SelectedList_Result)">
+            <Parameter Name="ProjectID" Mode="In" Type="Int32" />
+            <Parameter Name="WBSnumber" Mode="In" Type="String" />
+            <Parameter Name="FisYear" Mode="In" Type="String" />
+            <Parameter Name="Month" Mode="In" Type="String" />
+            <Parameter Name="Expensecategory" Mode="In" Type="String" />
+            <Parameter Name="Description" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="SP_Get_DE_CJI3_Total_Reconciliation_Remaining" ReturnType="Collection(ProformaLiveModel.SP_Get_DE_CJI3_Total_Reconciliation_Remaining_Result)">
+            <Parameter Name="ProjectID" Mode="In" Type="Int32" />
+            <Parameter Name="FisYear" Mode="In" Type="Int32" />
+          </FunctionImport>
           <FunctionImport Name="SP_Get_DE_FiscalYear" ReturnType="Collection(String)">
             <Parameter Name="ProjectID" Mode="In" Type="Int32" />
           </FunctionImport>
@@ -1664,6 +1706,13 @@ warning 6013: The table/view 'ProformaLive.dbo.Tbl_PDW_CJI3' does not have a pri
           </FunctionImport>
           <FunctionImport Name="SP_Get_DirectExpenses_Comments" ReturnType="Collection(ProformaLiveModel.SP_Get_DirectExpenses_Comments_Result)">
             <Parameter Name="ProjectID" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="SP_Get_DirectExpensesInfo_CJI3_Selection" ReturnType="Collection(ProformaLiveModel.SP_Get_DirectExpensesInfo_CJI3_Selection_Result)">
+            <Parameter Name="ProjectID" Mode="In" Type="Int32" />
+            <Parameter Name="FisYear" Mode="In" Type="String" />
+            <Parameter Name="WBSNumber" Mode="In" Type="String" />
+            <Parameter Name="ExpanceCategory" Mode="In" Type="String" />
+            <Parameter Name="Description" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="SP_Get_FiscalYear" ReturnType="Collection(String)">
             <Parameter Name="ProjectID" Mode="In" Type="Int32" />
@@ -1749,14 +1798,15 @@ warning 6013: The table/view 'ProformaLive.dbo.Tbl_PDW_CJI3' does not have a pri
           <FunctionImport Name="SP_GetDirectExpensesData" ReturnType="Collection(ProformaLiveModel.SP_GetDirectExpensesData_Result)">
             <Parameter Name="projectid" Mode="In" Type="Int32" />
           </FunctionImport>
+          <FunctionImport Name="SP_GetDirectExpensesData_forcheckbookedit" ReturnType="Collection(ProformaLiveModel.SP_GetDirectExpensesData_forcheckbookedit_Result)">
+            <Parameter Name="ProjectID" Mode="In" Type="Int32" />
+            <Parameter Name="WBSnumber" Mode="In" Type="String" />
+            <Parameter Name="Fisyear" Mode="In" Type="Int32" />
+            <Parameter Name="Expensecategory" Mode="In" Type="String" />
+            <Parameter Name="Description" Mode="In" Type="String" />
+          </FunctionImport>
           <FunctionImport Name="SP_Getlastmodifiedinfo" ReturnType="Collection(ProformaLiveModel.SP_Getlastmodifiedinfo_Result)">
             <Parameter Name="ProjectID" Mode="In" Type="Int32" />
-          </FunctionImport>
-          <FunctionImport Name="SP_GetNewSummary">
-            <Parameter Name="ProjectID" Mode="In" Type="String" />
-            <Parameter Name="FisYear" Mode="In" Type="String" />
-            <Parameter Name="Month" Mode="In" Type="String" />
-            <Parameter Name="Qtr" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="SP_GetProject_Summary" ReturnType="Collection(ProformaLiveModel.SP_GetProject_Summary_Result)">
             <Parameter Name="ProjectID" Mode="In" Type="String" />
@@ -1809,6 +1859,12 @@ warning 6013: The table/view 'ProformaLive.dbo.Tbl_PDW_CJI3' does not have a pri
             <Parameter Name="ProjectNumber" Mode="In" Type="String" />
           </FunctionImport>
         </EntityContainer>
+        <ComplexType Name="Get_DirectExpensesInfo_CJI3_Selection_Validation_Result">
+          <Property Type="String" Name="Object" Nullable="true" MaxLength="500" />
+          <Property Type="String" Name="FiscalYear" Nullable="true" MaxLength="4" />
+          <Property Type="String" Name="DE_ExpenseCategory" Nullable="true" MaxLength="2000" />
+          <Property Type="String" Name="Description" Nullable="true" MaxLength="2000" />
+        </ComplexType>
         <ComplexType Name="SP_Config_Projects_Result">
           <Property Type="String" Name="ProjectName" Nullable="true" />
           <Property Type="String" Name="ProjectNumber" Nullable="true" MaxLength="50" />
@@ -1939,6 +1995,37 @@ warning 6013: The table/view 'ProformaLive.dbo.Tbl_PDW_CJI3' does not have a pri
           <Property Type="Decimal" Name="Val_COAreaCrcy" Nullable="true" Precision="38" Scale="2" />
           <Property Type="String" Name="UserName" Nullable="true" MaxLength="500" />
         </ComplexType>
+        <ComplexType Name="SP_Get_DE_CJI3_Data_SelectedList_Result">
+          <Property Type="String" Name="Expensecategory" Nullable="true" MaxLength="2000" />
+          <Property Type="String" Name="Description" Nullable="true" MaxLength="2000" />
+          <Property Type="String" Name="Selected" Nullable="false" MaxLength="4" />
+          <Property Type="String" Name="FiscalYear" Nullable="true" MaxLength="4" />
+          <Property Type="String" Name="Month" Nullable="true" MaxLength="10" />
+          <Property Type="String" Name="PostingDate" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="Object" Nullable="true" MaxLength="500" />
+          <Property Type="String" Name="CO_Object_Name" Nullable="true" MaxLength="500" />
+          <Property Type="String" Name="CostElementName" Nullable="true" MaxLength="500" />
+          <Property Type="String" Name="PurchasingDocument" Nullable="true" MaxLength="500" />
+          <Property Type="String" Name="PurchaseOrderText" Nullable="true" MaxLength="1000" />
+          <Property Type="String" Name="NameOfOffsettingaccount" Nullable="true" MaxLength="1000" />
+          <Property Type="Decimal" Name="TotalQuantity" Nullable="true" Precision="18" Scale="2" />
+          <Property Type="Decimal" Name="Val_COAreaCrcy" Nullable="true" Precision="18" Scale="2" />
+          <Property Type="String" Name="UserName" Nullable="true" MaxLength="500" />
+        </ComplexType>
+        <ComplexType Name="SP_Get_DE_CJI3_Total_Reconciliation_Remaining_Result">
+          <Property Type="Decimal" Name="MAY" Nullable="true" Precision="38" Scale="6" />
+          <Property Type="Decimal" Name="JUN" Nullable="true" Precision="38" Scale="6" />
+          <Property Type="Decimal" Name="JUL" Nullable="true" Precision="38" Scale="6" />
+          <Property Type="Decimal" Name="AUG" Nullable="true" Precision="38" Scale="6" />
+          <Property Type="Decimal" Name="SEP" Nullable="true" Precision="38" Scale="6" />
+          <Property Type="Decimal" Name="OCT" Nullable="true" Precision="38" Scale="6" />
+          <Property Type="Decimal" Name="NOV" Nullable="true" Precision="38" Scale="6" />
+          <Property Type="Decimal" Name="DEC" Nullable="true" Precision="38" Scale="6" />
+          <Property Type="Decimal" Name="JAN" Nullable="true" Precision="38" Scale="6" />
+          <Property Type="Decimal" Name="FEB" Nullable="true" Precision="38" Scale="6" />
+          <Property Type="Decimal" Name="MAR" Nullable="true" Precision="38" Scale="6" />
+          <Property Type="Decimal" Name="APR" Nullable="true" Precision="38" Scale="6" />
+        </ComplexType>
         <ComplexType Name="SP_Get_DeltaSummary_Result">
           <Property Type="Int32" Name="ID" Nullable="false" />
           <Property Type="String" Name="Name" Nullable="false" MaxLength="18" />
@@ -1979,6 +2066,25 @@ warning 6013: The table/view 'ProformaLive.dbo.Tbl_PDW_CJI3' does not have a pri
           <Property Type="Int32" Name="MasterID" Nullable="true" />
           <Property Type="Int32" Name="ColumnID" Nullable="true" />
           <Property Type="String" Name="Comments" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="SP_Get_DirectExpensesInfo_CJI3_Selection_Result">
+          <Property Type="String" Name="ID" Nullable="false" MaxLength="1" />
+          <Property Type="String" Name="WBSNumber" Nullable="true" MaxLength="500" />
+          <Property Type="String" Name="DE_ExpenseCategory" Nullable="true" MaxLength="2000" />
+          <Property Type="String" Name="Description" Nullable="true" />
+          <Property Type="String" Name="FiscalYear" Nullable="true" MaxLength="50" />
+          <Property Type="Decimal" Name="MAY" Nullable="false" Precision="38" Scale="6" />
+          <Property Type="Decimal" Name="JUN" Nullable="false" Precision="38" Scale="6" />
+          <Property Type="Decimal" Name="JUL" Nullable="false" Precision="38" Scale="6" />
+          <Property Type="Decimal" Name="AUG" Nullable="false" Precision="38" Scale="6" />
+          <Property Type="Decimal" Name="SEP" Nullable="false" Precision="38" Scale="6" />
+          <Property Type="Decimal" Name="OCT" Nullable="false" Precision="38" Scale="6" />
+          <Property Type="Decimal" Name="NOV" Nullable="false" Precision="38" Scale="6" />
+          <Property Type="Decimal" Name="DEC" Nullable="false" Precision="38" Scale="6" />
+          <Property Type="Decimal" Name="JAN" Nullable="false" Precision="38" Scale="6" />
+          <Property Type="Decimal" Name="FEB" Nullable="false" Precision="38" Scale="6" />
+          <Property Type="Decimal" Name="MAR" Nullable="false" Precision="38" Scale="6" />
+          <Property Type="Decimal" Name="APR" Nullable="false" Precision="38" Scale="6" />
         </ComplexType>
         <ComplexType Name="SP_Get_Master_AOPProject_Result">
           <Property Type="Int32" Name="Sysid" Nullable="false" />
@@ -2183,6 +2289,32 @@ warning 6013: The table/view 'ProformaLive.dbo.Tbl_PDW_CJI3' does not have a pri
           <Property Type="Int32" Name="RowID" Nullable="true" />
         </ComplexType>
         <ComplexType Name="SP_GetDirectExpensesData_Result">
+          <Property Type="Int32" Name="MasterID" Nullable="false" />
+          <Property Type="String" Name="Type" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="WBSNumber" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="ExpenseCategory" Nullable="true" MaxLength="2000" />
+          <Property Type="String" Name="Description" Nullable="true" />
+          <Property Type="String" Name="FisYear" Nullable="true" MaxLength="50" />
+          <Property Type="Decimal" Name="MAY" Nullable="true" Precision="38" Scale="6" />
+          <Property Type="Decimal" Name="JUN" Nullable="true" Precision="38" Scale="6" />
+          <Property Type="Decimal" Name="JUL" Nullable="true" Precision="38" Scale="6" />
+          <Property Type="Decimal" Name="AUG" Nullable="true" Precision="38" Scale="6" />
+          <Property Type="Decimal" Name="SEP" Nullable="true" Precision="38" Scale="6" />
+          <Property Type="Decimal" Name="OCT" Nullable="true" Precision="38" Scale="6" />
+          <Property Type="Decimal" Name="NOV" Nullable="true" Precision="38" Scale="6" />
+          <Property Type="Decimal" Name="DEC" Nullable="true" Precision="38" Scale="6" />
+          <Property Type="Decimal" Name="JAN" Nullable="true" Precision="38" Scale="6" />
+          <Property Type="Decimal" Name="FEB" Nullable="true" Precision="38" Scale="6" />
+          <Property Type="Decimal" Name="MAR" Nullable="true" Precision="38" Scale="6" />
+          <Property Type="Decimal" Name="APR" Nullable="true" Precision="38" Scale="6" />
+          <Property Type="String" Name="CreatedBy" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="CreatedOn" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="ModifiedBy" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="ModifiedOn" Nullable="true" MaxLength="20" />
+          <Property Type="Int32" Name="RowID" Nullable="true" />
+          <Property Type="Boolean" Name="SelectListStatus" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="SP_GetDirectExpensesData_forcheckbookedit_Result">
           <Property Type="Int32" Name="MasterID" Nullable="false" />
           <Property Type="String" Name="Type" Nullable="true" MaxLength="50" />
           <Property Type="String" Name="WBSNumber" Nullable="true" MaxLength="100" />
@@ -2534,6 +2666,7 @@ warning 6013: The table/view 'ProformaLive.dbo.Tbl_PDW_CJI3' does not have a pri
             <EntityTypeMapping TypeName="ProformaLiveModel.DirectExpensesInfo_CJI3_Selection">
               <MappingFragment StoreEntitySet="DirectExpensesInfo_CJI3_Selection">
                 <ScalarProperty Name="Sysid" ColumnName="Sysid" />
+                <ScalarProperty Name="ProjectID" ColumnName="ProjectID" />
                 <ScalarProperty Name="FiscalYear" ColumnName="FiscalYear" />
                 <ScalarProperty Name="Month" ColumnName="Month" />
                 <ScalarProperty Name="PostingDate" ColumnName="PostingDate" />
@@ -2919,6 +3052,16 @@ warning 6013: The table/view 'ProformaLive.dbo.Tbl_PDW_CJI3' does not have a pri
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="Get_DirectExpensesInfo_CJI3_Selection_Validation" FunctionName="ProformaLiveModel.Store.Get_DirectExpensesInfo_CJI3_Selection_Validation">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="ProformaLiveModel.Get_DirectExpensesInfo_CJI3_Selection_Validation_Result">
+                <ScalarProperty Name="Object" ColumnName="Object" />
+                <ScalarProperty Name="FiscalYear" ColumnName="FiscalYear" />
+                <ScalarProperty Name="DE_ExpenseCategory" ColumnName="DE_ExpenseCategory" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="Insert_DirectExpensesInfo_CJI3_Selection" FunctionName="ProformaLiveModel.Store.Insert_DirectExpensesInfo_CJI3_Selection" />
           <FunctionImportMapping FunctionImportName="SP_APP_PFL_RESOURCES_SS_V_BulkInsert" FunctionName="ProformaLiveModel.Store.SP_APP_PFL_RESOURCES_SS_V_BulkInsert" />
           <FunctionImportMapping FunctionImportName="SP_Clone_Proforma" FunctionName="ProformaLiveModel.Store.SP_Clone_Proforma" />
@@ -3105,6 +3248,45 @@ warning 6013: The table/view 'ProformaLive.dbo.Tbl_PDW_CJI3' does not have a pri
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="SP_Get_DE_CJI3_Data_SelectedList" FunctionName="ProformaLiveModel.Store.SP_Get_DE_CJI3_Data_SelectedList">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="ProformaLiveModel.SP_Get_DE_CJI3_Data_SelectedList_Result">
+                <ScalarProperty Name="Expensecategory" ColumnName="Expensecategory" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Selected" ColumnName="Selected" />
+                <ScalarProperty Name="FiscalYear" ColumnName="FiscalYear" />
+                <ScalarProperty Name="Month" ColumnName="Month" />
+                <ScalarProperty Name="PostingDate" ColumnName="PostingDate" />
+                <ScalarProperty Name="Object" ColumnName="Object" />
+                <ScalarProperty Name="CO_Object_Name" ColumnName="CO_Object_Name" />
+                <ScalarProperty Name="CostElementName" ColumnName="CostElementName" />
+                <ScalarProperty Name="PurchasingDocument" ColumnName="PurchasingDocument" />
+                <ScalarProperty Name="PurchaseOrderText" ColumnName="PurchaseOrderText" />
+                <ScalarProperty Name="NameOfOffsettingaccount" ColumnName="NameOfOffsettingaccount" />
+                <ScalarProperty Name="TotalQuantity" ColumnName="TotalQuantity" />
+                <ScalarProperty Name="Val_COAreaCrcy" ColumnName="Val_COAreaCrcy" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="SP_Get_DE_CJI3_Total_Reconciliation_Remaining" FunctionName="ProformaLiveModel.Store.SP_Get_DE_CJI3_Total_Reconciliation_Remaining">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="ProformaLiveModel.SP_Get_DE_CJI3_Total_Reconciliation_Remaining_Result">
+                <ScalarProperty Name="MAY" ColumnName="MAY" />
+                <ScalarProperty Name="JUN" ColumnName="JUN" />
+                <ScalarProperty Name="JUL" ColumnName="JUL" />
+                <ScalarProperty Name="AUG" ColumnName="AUG" />
+                <ScalarProperty Name="SEP" ColumnName="SEP" />
+                <ScalarProperty Name="OCT" ColumnName="OCT" />
+                <ScalarProperty Name="NOV" ColumnName="NOV" />
+                <ScalarProperty Name="DEC" ColumnName="DEC" />
+                <ScalarProperty Name="JAN" ColumnName="JAN" />
+                <ScalarProperty Name="FEB" ColumnName="FEB" />
+                <ScalarProperty Name="MAR" ColumnName="MAR" />
+                <ScalarProperty Name="APR" ColumnName="APR" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="SP_Get_DE_FiscalYear" FunctionName="ProformaLiveModel.Store.SP_Get_DE_FiscalYear" />
           <FunctionImportMapping FunctionImportName="SP_Get_DeltaSummary" FunctionName="ProformaLiveModel.Store.SP_Get_DeltaSummary">
             <ResultMapping>
@@ -3156,6 +3338,29 @@ warning 6013: The table/view 'ProformaLive.dbo.Tbl_PDW_CJI3' does not have a pri
                 <ScalarProperty Name="MasterID" ColumnName="MasterID" />
                 <ScalarProperty Name="ColumnID" ColumnName="ColumnID" />
                 <ScalarProperty Name="Comments" ColumnName="Comments" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="SP_Get_DirectExpensesInfo_CJI3_Selection" FunctionName="ProformaLiveModel.Store.SP_Get_DirectExpensesInfo_CJI3_Selection">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="ProformaLiveModel.SP_Get_DirectExpensesInfo_CJI3_Selection_Result">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="WBSNumber" ColumnName="WBSNumber" />
+                <ScalarProperty Name="DE_ExpenseCategory" ColumnName="DE_ExpenseCategory" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="FiscalYear" ColumnName="FiscalYear" />
+                <ScalarProperty Name="MAY" ColumnName="MAY" />
+                <ScalarProperty Name="JUN" ColumnName="JUN" />
+                <ScalarProperty Name="JUL" ColumnName="JUL" />
+                <ScalarProperty Name="AUG" ColumnName="AUG" />
+                <ScalarProperty Name="SEP" ColumnName="SEP" />
+                <ScalarProperty Name="OCT" ColumnName="OCT" />
+                <ScalarProperty Name="NOV" ColumnName="NOV" />
+                <ScalarProperty Name="DEC" ColumnName="DEC" />
+                <ScalarProperty Name="JAN" ColumnName="JAN" />
+                <ScalarProperty Name="FEB" ColumnName="FEB" />
+                <ScalarProperty Name="MAR" ColumnName="MAR" />
+                <ScalarProperty Name="APR" ColumnName="APR" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
@@ -3455,6 +3660,36 @@ warning 6013: The table/view 'ProformaLive.dbo.Tbl_PDW_CJI3' does not have a pri
                 <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
                 <ScalarProperty Name="ModifiedOn" ColumnName="ModifiedOn" />
                 <ScalarProperty Name="RowID" ColumnName="RowID" />
+                <ScalarProperty Name="SelectListStatus" ColumnName="SelectListStatus" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="SP_GetDirectExpensesData_forcheckbookedit" FunctionName="ProformaLiveModel.Store.SP_GetDirectExpensesData_forcheckbookedit">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="ProformaLiveModel.SP_GetDirectExpensesData_forcheckbookedit_Result">
+                <ScalarProperty Name="MasterID" ColumnName="MasterID" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="WBSNumber" ColumnName="WBSNumber" />
+                <ScalarProperty Name="ExpenseCategory" ColumnName="ExpenseCategory" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="FisYear" ColumnName="FisYear" />
+                <ScalarProperty Name="MAY" ColumnName="MAY" />
+                <ScalarProperty Name="JUN" ColumnName="JUN" />
+                <ScalarProperty Name="JUL" ColumnName="JUL" />
+                <ScalarProperty Name="AUG" ColumnName="AUG" />
+                <ScalarProperty Name="SEP" ColumnName="SEP" />
+                <ScalarProperty Name="OCT" ColumnName="OCT" />
+                <ScalarProperty Name="NOV" ColumnName="NOV" />
+                <ScalarProperty Name="DEC" ColumnName="DEC" />
+                <ScalarProperty Name="JAN" ColumnName="JAN" />
+                <ScalarProperty Name="FEB" ColumnName="FEB" />
+                <ScalarProperty Name="MAR" ColumnName="MAR" />
+                <ScalarProperty Name="APR" ColumnName="APR" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="ModifiedOn" ColumnName="ModifiedOn" />
+                <ScalarProperty Name="RowID" ColumnName="RowID" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
@@ -3467,7 +3702,6 @@ warning 6013: The table/view 'ProformaLive.dbo.Tbl_PDW_CJI3' does not have a pri
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="SP_GetNewSummary" FunctionName="ProformaLiveModel.Store.SP_GetNewSummary" />
           <FunctionImportMapping FunctionImportName="SP_GetProject_Summary" FunctionName="ProformaLiveModel.Store.SP_GetProject_Summary">
             <ResultMapping>
               <ComplexTypeMapping TypeName="ProformaLiveModel.SP_GetProject_Summary_Result">

@@ -11,14 +11,8 @@ namespace ProformaLive
 {
     using System;
     
-    public partial class SP_GetDirectExpensesData_Result
+    public partial class SP_Get_DE_CJI3_Total_Reconciliation_Remaining_Result
     {
-        public int MasterID { get; set; }
-        public string Type { get; set; }
-        public string WBSNumber { get; set; }
-        public string ExpenseCategory { get; set; }
-        public string Description { get; set; }
-        public string FisYear { get; set; }
         public Nullable<decimal> MAY { get; set; }
         public Nullable<decimal> JUN { get; set; }
         public Nullable<decimal> JUL { get; set; }
@@ -31,11 +25,5 @@ namespace ProformaLive
         public Nullable<decimal> FEB { get; set; }
         public Nullable<decimal> MAR { get; set; }
         public Nullable<decimal> APR { get; set; }
-        public string CreatedBy { get; set; }
-        public string CreatedOn { get; set; }
-        public string ModifiedBy { get; set; }
-        public string ModifiedOn { get; set; }
-        public Nullable<int> RowID { get; set; }
-        public bool SelectListStatus { get; set; }
     }
 }

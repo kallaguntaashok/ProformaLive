@@ -200,49 +200,144 @@ namespace MECC_ReportPortal.Controllers
         [HttpPost]
         public JsonResult get_decheckbook(int intProjectID, int intFisYear)
         {
+            List<de_checkbook> dc = new List<de_checkbook>();
             var obj = db.SP_Get_DirectExpenses_CheckBook(intProjectID, intFisYear).ToList();
+            foreach (var item in obj)
+            {
+                dc.Add(new de_checkbook()
+                {
+                    WBSNumber = item.WBSNumber,
+                    ExpenseCategory = item.ExpenseCategory,
+                    Description = item.Description,
+                    FisYear = item.FisYear,
+                    MAY = Convert.ToDecimal(item.MAY),
+                    JUN = Convert.ToDecimal(item.JUN),
+                    JUL = Convert.ToDecimal(item.JUL),
+                    AUG = Convert.ToDecimal(item.AUG),
+                    SEP = Convert.ToDecimal(item.SEP),
+                    OCT = Convert.ToDecimal(item.OCT),
+                    NOV = Convert.ToDecimal(item.NOV),
+                    DEC = Convert.ToDecimal(item.DEC),
+                    JAN = Convert.ToDecimal(item.JAN),
+                    FEB = Convert.ToDecimal(item.FEB),
+                    MAR = Convert.ToDecimal(item.MAR),
+                    APR = Convert.ToDecimal(item.APR),
+                    decheckbooksubmenu = db.SP_Get_DirectExpensesInfo_CJI3_Selection(intProjectID, item.FisYear, item.WBSNumber, item.ExpenseCategory, item.Description).ToList()
+                });
+            }
+
+            return Json(dc, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public JsonResult get_de_cji3_data(int intProjectID, string strWBSNumber, string strFisYear, string strMonth, string strExpensecategory, string strDescription, bool boolstatus)
+        {
+            if(boolstatus == false)
+            {
+                var obj = db.SP_Get_DE_CJI3_Data(strWBSNumber, strFisYear, strMonth, strExpensecategory, strDescription).ToList();
+                return Json(obj, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                var obj = db.SP_Get_DE_CJI3_Data_SelectedList(intProjectID, strWBSNumber, strFisYear, strMonth, strExpensecategory, strDescription).ToList();
+                return Json(obj, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        [HttpGet]
+        public JsonResult get_directExpensesinfo_cji3_selection_validation(int intProjectID)
+        {
+            var obj = db.Get_DirectExpensesInfo_CJI3_Selection_Validation(intProjectID).ToList();
             return Json(obj, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
-        public JsonResult get_de_cji3_data(string strWBSNumber, string strFisYear, string strMonth, string strExpensecategory, string strDescription)
+        public JsonResult remove_decheckbook_cji3(DEcheckbookSelectedList data)
         {
-            var obj = db.SP_Get_DE_CJI3_Data(strWBSNumber, strFisYear, strMonth, strExpensecategory, strDescription).ToList();
+            DirectExpensesInfo_CJI3_Selection ds = db.DirectExpensesInfo_CJI3_Selection
+                .Where(x => x.FiscalYear == data.item.FiscalYear
+                && x.Month == data.item.Month
+                && x.PostingDate == data.item.PostingDate
+                && x.Object == data.item.Object
+                && x.CO_Object_Name == data.item.CO_Object_Name
+                && x.CostElementName == data.item.CostElementName
+                && x.PurchasingDocument == data.item.PurchasingDocument
+                && x.PurchaseOrderText == data.item.PurchaseOrderText
+                && x.NameOfOffsettingaccount == data.item.NameOfOffsettingaccount
+                && x.TotalQuantity == data.item.TotalQuantity
+                && x.Val_COAreaCrcy == data.item.Val_COAreaCrcy
+                && x.UserName == data.item.UserName
+                && x.DE_ExpenseCategory == data.item.Expensecategory
+                && x.Description == data.item.Description).SingleOrDefault();
+            if (ds != null)
+            {
+                db.DirectExpensesInfo_CJI3_Selection.Remove(ds);
+                db.SaveChanges();
+            }
+
+            var obj = db.SP_Get_DE_CJI3_Data_SelectedList(data.ProjectID, data.item.Object, data.item.FiscalYear, data.item.Month, data.item.Expensecategory, data.item.Description).ToList();
             return Json(obj, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
         public JsonResult insert_de_cji3_selection(objdecji3data data)
         {
-            if (data.insert != null)
-            {
-                foreach (var item in data.insert)
-                {
-                    List<DirectExpensesInfo_CJI3_Selection> row = db.DirectExpensesInfo_CJI3_Selection.Where(
-                        x => x.Object == item.Object &&
-                        x.FiscalYear == item.FiscalYear &&
-                        x.Month == item.Month && x.DE_ExpenseCategory == item.Expensecategory
-                        && x.Description == item.Description).ToList();
+            string strWBSNumber = "";
+            string strFisyear = "";
+            string strMonth = "";
+            string Expensecategory = "";
+            string Description = "";
 
-                    foreach (var item_2 in row)
-                    {
-                        db.DirectExpensesInfo_CJI3_Selection.Remove(item_2);
-                        db.SaveChanges();
-                    }
-                }
+            if (data.insert != null)
+            {                
                 foreach (var item in data.insert)
                 {
                     if (item.FiscalYear != null)
                     {
-                        db.Insert_DirectExpensesInfo_CJI3_Selection(item.FiscalYear, item.Month,
-                        item.PostingDate, item.Object, item.CO_Object_Name,
-                        item.CostElementName, item.PurchasingDocument,
-                        item.PurchaseOrderText, item.NameOfOffsettingaccount,
-                        item.TotalQuantity, item.Val_COAreaCrcy, item.UserName, item.Expensecategory, item.Description);
+                        strWBSNumber = item.Object;
+                        strFisyear = item.FiscalYear;
+                        strMonth = item.Month;
+                        Expensecategory = item.Expensecategory;
+                        Description = item.Description;
+
+                        DirectExpensesInfo_CJI3_Selection DCS = new DirectExpensesInfo_CJI3_Selection();
+                        DCS.ProjectID = data.ProjectID;
+                        DCS.FiscalYear = item.FiscalYear;
+                        DCS.Month = item.Month;
+                        DCS.PostingDate = item.PostingDate;
+                        DCS.Object = item.Object;
+                        DCS.CO_Object_Name = item.CO_Object_Name;
+                        DCS.CostElementName = item.CostElementName;
+                        DCS.PurchasingDocument = item.PurchasingDocument;
+                        DCS.PurchaseOrderText = item.PurchaseOrderText;
+                        DCS.NameOfOffsettingaccount = item.NameOfOffsettingaccount;
+                        DCS.TotalQuantity = item.TotalQuantity;
+                        DCS.Val_COAreaCrcy = item.Val_COAreaCrcy;
+                        DCS.UserName = item.UserName;
+                        DCS.DE_ExpenseCategory = item.Expensecategory;
+                        DCS.Description = item.Description;
+                        db.DirectExpensesInfo_CJI3_Selection.Add(DCS);
+                        db.SaveChanges();
                     }
                 }
             }
-            return Json("", JsonRequestBehavior.AllowGet);
+
+            var obj = db.SP_Get_DE_CJI3_Data(strWBSNumber, strFisyear, strMonth, Expensecategory, Description).ToList();
+            return Json(obj, JsonRequestBehavior.AllowGet);            
+        }
+
+        [HttpPost]
+        public JsonResult getde_cji3_total_reconciliation_remaining(int intProjectID, int intFisYear)
+        {
+            var obj = db.SP_Get_DE_CJI3_Total_Reconciliation_Remaining(intProjectID, intFisYear).ToList();
+            return Json(obj, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public JsonResult get_directExpensesdata_forcheckbookedit(int intProjectID, string strWBSnumber, int intFisYear, string strExpensecategory, string strDescription)
+        {
+            var obj = db.SP_GetDirectExpensesData_forcheckbookedit(intProjectID, strWBSnumber, intFisYear, strExpensecategory, strDescription).ToList();
+            return Json(obj, JsonRequestBehavior.AllowGet);
         }
 
         [HttpGet]
@@ -3017,6 +3112,7 @@ namespace MECC_ReportPortal.Controllers
         public class objdecji3data
         {
             public List<SP_Get_DE_CJI3_Data_Result> insert { get; set; }
+            public int ProjectID { get; set; }
         }
 
         public class objcapitallabor
@@ -3222,10 +3318,37 @@ namespace MECC_ReportPortal.Controllers
             public List<ResourceCheckBook> ResourceCheckBook { get; set; }
         }
 
+        public class de_checkbook
+        {
+            public string WBSNumber { get; set; }
+            public string ExpenseCategory { get; set; }
+            public string Description { get; set; }
+            public string FisYear { get; set; }
+            public decimal MAY { get; set; }
+            public decimal JUN { get; set; }
+            public decimal JUL { get; set; }
+            public decimal AUG { get; set; }
+            public decimal SEP { get; set; }
+            public decimal OCT { get; set; }
+            public decimal NOV { get; set; }
+            public decimal DEC { get; set; }
+            public decimal JAN { get; set; }
+            public decimal FEB { get; set; }
+            public decimal MAR { get; set; }
+            public decimal APR { get; set; }
+            public List<SP_Get_DirectExpensesInfo_CJI3_Selection_Result> decheckbooksubmenu { get; set; }
+        }
+
         public class ResourceCheckbookChar
         {
             public string name { get; set; }
             public List<decimal> data { get; set; }
+        }
+
+        public class DEcheckbookSelectedList
+        {
+            public int ProjectID { get; set; }
+            public SP_Get_DE_CJI3_Data_Result item { get; set; }            
         }
 
         public class ResourceCheckBook

@@ -543,28 +543,21 @@ html, body {
     /*white-space: nowrap;*/
 }
 
-    #decheckbook tr td:nth-child(5) {
-        text-align: right;
-        cursor: pointer;
-        font-weight: 500;
-        color: #012042;
-        background-color: #e5effb;
-    }
-
-    #decheckbook tr td:nth-child(6) {
-        text-align: right;
-        font-weight: 500;
-        color: #012042;
-        background-color: #e5effb;
-        cursor: pointer;
+    #decheckbook tr:first-child th {
+        background: #054386;
+        color: #FFF;
+        z-index: 1;
+        border: 0px solid #034994;        
+        box-shadow: inset 0 0 1px #b1b0b0;
+        text-align: center;
     }
 
     #decheckbook tr td:nth-child(7) {
         text-align: right;
+        cursor: pointer;
         font-weight: 500;
         color: #012042;
         background-color: #e5effb;
-        cursor: pointer;
     }
 
     #decheckbook tr td:nth-child(8) {
@@ -639,12 +632,20 @@ html, body {
         cursor: pointer;
     }
 
-    #decheckbook tr td:nth-child(5):hover {
-        background-color: #d1e6fd;
+    #decheckbook tr td:nth-child(17) {
+        text-align: right;
+        font-weight: 500;
+        color: #012042;
+        background-color: #e5effb;
+        cursor: pointer;
     }
 
-    #decheckbook tr td:nth-child(6):hover {
-        background-color: #d1e6fd;
+    #decheckbook tr td:nth-child(18) {
+        text-align: right;
+        font-weight: 500;
+        color: #012042;
+        background-color: #e5effb;
+        cursor: pointer;
     }
 
     #decheckbook tr td:nth-child(7):hover {
@@ -684,6 +685,14 @@ html, body {
     }
 
     #decheckbook tr td:nth-child(16):hover {
+        background-color: #d1e6fd;
+    }
+
+    #decheckbook tr td:nth-child(17):hover {
+        background-color: #d1e6fd;
+    }
+
+    #decheckbook tr td:nth-child(18):hover {
         background-color: #d1e6fd;
     }
 
@@ -785,6 +794,36 @@ html, body {
     font-size: 15px;
 }
 
+.de_cji3update {
+    zoom: 80%;
+    margin-left: 10px;
+    width: 100%;
+    border-radius: 0px;
+    height: 34px;
+    background: linear-gradient(to right, #fc8a41, #f55926);
+    font-size: 15px;
+    color:white;
+}
+
+
 .sbcolor {
     background-color: #e4e4e4;
 }
+
+.tabcustomcss {
+    color: #05509f !important;
+    border: 1px solid #00000008 !important;
+    margin-right: 5px !important;
+    padding-left: 20px !important;
+    padding-right: 20px !important;
+    padding-top: 7px !important;
+    padding-bottom: 7px !important;
+    font-size: 14px !important;
+}
+
+.deplusdisabled {
+    font-size: 14px;
+    color: #ccc;
+    cursor: not-allowed;
+}
+

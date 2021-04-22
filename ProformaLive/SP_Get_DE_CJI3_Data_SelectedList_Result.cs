@@ -10,12 +10,12 @@
 namespace ProformaLive
 {
     using System;
-    using System.Collections.Generic;
     
-    public partial class DirectExpensesInfo_CJI3_Selection
+    public partial class SP_Get_DE_CJI3_Data_SelectedList_Result
     {
-        public int Sysid { get; set; }
-        public Nullable<int> ProjectID { get; set; }
+        public string Expensecategory { get; set; }
+        public string Description { get; set; }
+        public string Selected { get; set; }
         public string FiscalYear { get; set; }
         public string Month { get; set; }
         public string PostingDate { get; set; }
@@ -28,8 +28,5 @@ namespace ProformaLive
         public Nullable<decimal> TotalQuantity { get; set; }
         public Nullable<decimal> Val_COAreaCrcy { get; set; }
         public string UserName { get; set; }
-        public string DE_ExpenseCategory { get; set; }
-        public string Description { get; set; }
-        public Nullable<bool> Status { get; set; }
     }
 }

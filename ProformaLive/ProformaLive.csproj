@@ -825,6 +825,9 @@
     <Compile Include="DirectExpensesInfo_CJI3_Selection.cs">
       <DependentUpon>ProformaLive.tt</DependentUpon>
     </Compile>
+    <Compile Include="Get_DirectExpensesInfo_CJI3_Selection_Validation_Result.cs">
+      <DependentUpon>ProformaLive.tt</DependentUpon>
+    </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -916,6 +919,9 @@
     <Compile Include="SP_GetCapitalLaborData_Result.cs">
       <DependentUpon>ProformaLive.tt</DependentUpon>
     </Compile>
+    <Compile Include="SP_GetDirectExpensesData_forcheckbookedit_Result.cs">
+      <DependentUpon>ProformaLive.tt</DependentUpon>
+    </Compile>
     <Compile Include="SP_GetDirectExpensesData_Result.cs">
       <DependentUpon>ProformaLive.tt</DependentUpon>
     </Compile>
@@ -950,6 +956,15 @@
       <DependentUpon>ProformaLive.tt</DependentUpon>
     </Compile>
     <Compile Include="SP_Get_DE_CJI3_Data_Result.cs">
+      <DependentUpon>ProformaLive.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SP_Get_DE_CJI3_Data_SelectedList_Result.cs">
+      <DependentUpon>ProformaLive.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SP_Get_DE_CJI3_Total_Reconciliation_Remaining_Result.cs">
+      <DependentUpon>ProformaLive.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SP_Get_DirectExpensesInfo_CJI3_Selection_Result.cs">
       <DependentUpon>ProformaLive.tt</DependentUpon>
     </Compile>
     <Compile Include="SP_Get_DirectExpenses_CheckBook_Result.cs">
@@ -1166,7 +1181,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>60580</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:60111/</IISUrl>
+          <IISUrl>http://localhost:60221/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

@@ -65,8 +65,21 @@ namespace ProformaLive
         public virtual DbSet<Service_log> Service_log { get; set; }
         public virtual DbSet<Temp_ProjectMaster> Temp_ProjectMaster { get; set; }
     
-        public virtual int Insert_DirectExpensesInfo_CJI3_Selection(string fiscalYear, string month, string postingDate, string @object, string cO_Object_Name, string costElementName, string purchasingDocument, string purchaseOrderText, string nameOfOffsettingaccount, Nullable<decimal> totalQuantity, Nullable<decimal> val_COAreaCrcy, string userName, string dE_ExpenseCategory, string description)
+        public virtual ObjectResult<Get_DirectExpensesInfo_CJI3_Selection_Validation_Result> Get_DirectExpensesInfo_CJI3_Selection_Validation(Nullable<int> projectID)
         {
+            var projectIDParameter = projectID.HasValue ?
+                new ObjectParameter("ProjectID", projectID) :
+                new ObjectParameter("ProjectID", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Get_DirectExpensesInfo_CJI3_Selection_Validation_Result>("Get_DirectExpensesInfo_CJI3_Selection_Validation", projectIDParameter);
+        }
+    
+        public virtual int Insert_DirectExpensesInfo_CJI3_Selection(Nullable<int> projectID, string fiscalYear, string month, string postingDate, string @object, string cO_Object_Name, string costElementName, string purchasingDocument, string purchaseOrderText, string nameOfOffsettingaccount, Nullable<decimal> totalQuantity, Nullable<decimal> val_COAreaCrcy, string userName, string dE_ExpenseCategory, string description)
+        {
+            var projectIDParameter = projectID.HasValue ?
+                new ObjectParameter("ProjectID", projectID) :
+                new ObjectParameter("ProjectID", typeof(int));
+    
             var fiscalYearParameter = fiscalYear != null ?
                 new ObjectParameter("FiscalYear", fiscalYear) :
                 new ObjectParameter("FiscalYear", typeof(string));
@@ -123,7 +136,7 @@ namespace ProformaLive
                 new ObjectParameter("Description", description) :
                 new ObjectParameter("Description", typeof(string));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("Insert_DirectExpensesInfo_CJI3_Selection", fiscalYearParameter, monthParameter, postingDateParameter, objectParameter, cO_Object_NameParameter, costElementNameParameter, purchasingDocumentParameter, purchaseOrderTextParameter, nameOfOffsettingaccountParameter, totalQuantityParameter, val_COAreaCrcyParameter, userNameParameter, dE_ExpenseCategoryParameter, descriptionParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("Insert_DirectExpensesInfo_CJI3_Selection", projectIDParameter, fiscalYearParameter, monthParameter, postingDateParameter, objectParameter, cO_Object_NameParameter, costElementNameParameter, purchasingDocumentParameter, purchaseOrderTextParameter, nameOfOffsettingaccountParameter, totalQuantityParameter, val_COAreaCrcyParameter, userNameParameter, dE_ExpenseCategoryParameter, descriptionParameter);
         }
     
         public virtual int SP_APP_PFL_RESOURCES_SS_V_BulkInsert(Nullable<System.DateTime> date)
@@ -421,6 +434,48 @@ namespace ProformaLive
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_Get_DE_CJI3_Data_Result>("SP_Get_DE_CJI3_Data", wBSnumberParameter, fisYearParameter, monthParameter, expensecategoryParameter, descriptionParameter);
         }
     
+        public virtual ObjectResult<SP_Get_DE_CJI3_Data_SelectedList_Result> SP_Get_DE_CJI3_Data_SelectedList(Nullable<int> projectID, string wBSnumber, string fisYear, string month, string expensecategory, string description)
+        {
+            var projectIDParameter = projectID.HasValue ?
+                new ObjectParameter("ProjectID", projectID) :
+                new ObjectParameter("ProjectID", typeof(int));
+    
+            var wBSnumberParameter = wBSnumber != null ?
+                new ObjectParameter("WBSnumber", wBSnumber) :
+                new ObjectParameter("WBSnumber", typeof(string));
+    
+            var fisYearParameter = fisYear != null ?
+                new ObjectParameter("FisYear", fisYear) :
+                new ObjectParameter("FisYear", typeof(string));
+    
+            var monthParameter = month != null ?
+                new ObjectParameter("Month", month) :
+                new ObjectParameter("Month", typeof(string));
+    
+            var expensecategoryParameter = expensecategory != null ?
+                new ObjectParameter("Expensecategory", expensecategory) :
+                new ObjectParameter("Expensecategory", typeof(string));
+    
+            var descriptionParameter = description != null ?
+                new ObjectParameter("Description", description) :
+                new ObjectParameter("Description", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_Get_DE_CJI3_Data_SelectedList_Result>("SP_Get_DE_CJI3_Data_SelectedList", projectIDParameter, wBSnumberParameter, fisYearParameter, monthParameter, expensecategoryParameter, descriptionParameter);
+        }
+    
+        public virtual ObjectResult<SP_Get_DE_CJI3_Total_Reconciliation_Remaining_Result> SP_Get_DE_CJI3_Total_Reconciliation_Remaining(Nullable<int> projectID, Nullable<int> fisYear)
+        {
+            var projectIDParameter = projectID.HasValue ?
+                new ObjectParameter("ProjectID", projectID) :
+                new ObjectParameter("ProjectID", typeof(int));
+    
+            var fisYearParameter = fisYear.HasValue ?
+                new ObjectParameter("FisYear", fisYear) :
+                new ObjectParameter("FisYear", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_Get_DE_CJI3_Total_Reconciliation_Remaining_Result>("SP_Get_DE_CJI3_Total_Reconciliation_Remaining", projectIDParameter, fisYearParameter);
+        }
+    
         public virtual ObjectResult<string> SP_Get_DE_FiscalYear(Nullable<int> projectID)
         {
             var projectIDParameter = projectID.HasValue ?
@@ -467,6 +522,31 @@ namespace ProformaLive
                 new ObjectParameter("ProjectID", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_Get_DirectExpenses_Comments_Result>("SP_Get_DirectExpenses_Comments", projectIDParameter);
+        }
+    
+        public virtual ObjectResult<SP_Get_DirectExpensesInfo_CJI3_Selection_Result> SP_Get_DirectExpensesInfo_CJI3_Selection(Nullable<int> projectID, string fisYear, string wBSNumber, string expanceCategory, string description)
+        {
+            var projectIDParameter = projectID.HasValue ?
+                new ObjectParameter("ProjectID", projectID) :
+                new ObjectParameter("ProjectID", typeof(int));
+    
+            var fisYearParameter = fisYear != null ?
+                new ObjectParameter("FisYear", fisYear) :
+                new ObjectParameter("FisYear", typeof(string));
+    
+            var wBSNumberParameter = wBSNumber != null ?
+                new ObjectParameter("WBSNumber", wBSNumber) :
+                new ObjectParameter("WBSNumber", typeof(string));
+    
+            var expanceCategoryParameter = expanceCategory != null ?
+                new ObjectParameter("ExpanceCategory", expanceCategory) :
+                new ObjectParameter("ExpanceCategory", typeof(string));
+    
+            var descriptionParameter = description != null ?
+                new ObjectParameter("Description", description) :
+                new ObjectParameter("Description", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_Get_DirectExpensesInfo_CJI3_Selection_Result>("SP_Get_DirectExpensesInfo_CJI3_Selection", projectIDParameter, fisYearParameter, wBSNumberParameter, expanceCategoryParameter, descriptionParameter);
         }
     
         public virtual ObjectResult<string> SP_Get_FiscalYear(Nullable<int> projectID)
@@ -761,6 +841,31 @@ namespace ProformaLive
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_GetDirectExpensesData_Result>("SP_GetDirectExpensesData", projectidParameter);
         }
     
+        public virtual ObjectResult<SP_GetDirectExpensesData_forcheckbookedit_Result> SP_GetDirectExpensesData_forcheckbookedit(Nullable<int> projectID, string wBSnumber, Nullable<int> fisyear, string expensecategory, string description)
+        {
+            var projectIDParameter = projectID.HasValue ?
+                new ObjectParameter("ProjectID", projectID) :
+                new ObjectParameter("ProjectID", typeof(int));
+    
+            var wBSnumberParameter = wBSnumber != null ?
+                new ObjectParameter("WBSnumber", wBSnumber) :
+                new ObjectParameter("WBSnumber", typeof(string));
+    
+            var fisyearParameter = fisyear.HasValue ?
+                new ObjectParameter("Fisyear", fisyear) :
+                new ObjectParameter("Fisyear", typeof(int));
+    
+            var expensecategoryParameter = expensecategory != null ?
+                new ObjectParameter("Expensecategory", expensecategory) :
+                new ObjectParameter("Expensecategory", typeof(string));
+    
+            var descriptionParameter = description != null ?
+                new ObjectParameter("Description", description) :
+                new ObjectParameter("Description", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_GetDirectExpensesData_forcheckbookedit_Result>("SP_GetDirectExpensesData_forcheckbookedit", projectIDParameter, wBSnumberParameter, fisyearParameter, expensecategoryParameter, descriptionParameter);
+        }
+    
         public virtual ObjectResult<SP_Getlastmodifiedinfo_Result> SP_Getlastmodifiedinfo(Nullable<int> projectID)
         {
             var projectIDParameter = projectID.HasValue ?
@@ -768,27 +873,6 @@ namespace ProformaLive
                 new ObjectParameter("ProjectID", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_Getlastmodifiedinfo_Result>("SP_Getlastmodifiedinfo", projectIDParameter);
-        }
-    
-        public virtual int SP_GetNewSummary(string projectID, string fisYear, string month, string qtr)
-        {
-            var projectIDParameter = projectID != null ?
-                new ObjectParameter("ProjectID", projectID) :
-                new ObjectParameter("ProjectID", typeof(string));
-    
-            var fisYearParameter = fisYear != null ?
-                new ObjectParameter("FisYear", fisYear) :
-                new ObjectParameter("FisYear", typeof(string));
-    
-            var monthParameter = month != null ?
-                new ObjectParameter("Month", month) :
-                new ObjectParameter("Month", typeof(string));
-    
-            var qtrParameter = qtr != null ?
-                new ObjectParameter("Qtr", qtr) :
-                new ObjectParameter("Qtr", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SP_GetNewSummary", projectIDParameter, fisYearParameter, monthParameter, qtrParameter);
         }
     
         public virtual ObjectResult<SP_GetProject_Summary_Result> SP_GetProject_Summary(string projectID, string fisYear, string month, string qtr)

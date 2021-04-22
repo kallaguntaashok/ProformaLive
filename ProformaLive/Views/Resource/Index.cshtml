@@ -1,13 +1,13 @@
 ﻿
 <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
-<link href="~/assets/Jexcel/jexcel_44.css?ID=7200" rel="stylesheet" />
-<script src="~/assets/Jexcel/jexcelv44.js?ID=7200"></script>
-<script src="~/assets/Jexcel/jsuites38.js?ID=7200"></script>
-<link href="~/assets/Jexcel/jsuites38.css?ID=7200" rel="stylesheet" />
-<link href="~/assets/css/delete-confirmation.css?ID=7200" rel="stylesheet" />
-<script src="~/assets/scripts/resource.js?ID=7200"></script>
-<script src="~/assets/scripts/exportexcel/alasql.min.js?ID=7200"></script>
-<script src="~/assets/scripts/exportexcel/xlsx.core.min.js?ID=7200"></script>
+<link href="~/assets/Jexcel/jexcel_44.css?ID=7700" rel="stylesheet" />
+<script src="~/assets/Jexcel/jexcelv44.js?ID=7700"></script>
+<script src="~/assets/Jexcel/jsuites38.js?ID=7700"></script>
+<link href="~/assets/Jexcel/jsuites38.css?ID=7700" rel="stylesheet" />
+<link href="~/assets/css/delete-confirmation.css?ID=7700" rel="stylesheet" />
+<script src="~/assets/scripts/resource.js?ID=7700"></script>
+<script src="~/assets/scripts/exportexcel/alasql.min.js?ID=7700"></script>
+<script src="~/assets/scripts/exportexcel/xlsx.core.min.js?ID=7700"></script>
 
 <div id="alertbox" style="display:none; z-index:99999" class="confirmation_modal fade-up">
     <div style="opacity:0.7; background: linear-gradient(to right, #ff4767, #790032); border: 1px solid #afafaf;" class="confirmation_modal-content confirmation_container">
@@ -46,7 +46,6 @@
             </div>
         </div>
     </div>
-
     <div id="resourcecheckbookpanel" style="display:none;" class="viewpopup_modal fade-up">
         <div class="viewpopup-content viewProforma_container">
             <div id="resourcecheckbookpanelheader" class="viewpopupclearfix">
@@ -67,6 +66,31 @@
                     <span style="cursor: pointer;" ng-click="save_resource_checkbookchanges()" class="badge badge-success">Save Changes</span>
                 </div>
                 <div id="tbl_resource_checkbook">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="decheckbookpanel" style="display:none;" class="viewpopup_modal fade-up">
+        <div class="viewpopup-content viewProforma_container">
+            <div id="decheckbookpanelheader" class="viewpopupclearfix">
+                <span class="pull-left">
+                    <i class="fa fa-user" aria-hidden="true"></i>&nbsp;&nbsp;DE Info
+                </span>
+                <span>
+                    <label style="display:none;" id="notificationID"></label>
+                    <i class="fa fa-times pull-right" title="clear notification" style="padding-top: 5px; cursor: pointer;" ng-click="closepopup('decheckbookpanel');" aria-hidden="true"></i>
+                </span>
+            </div>
+            <div class="view_popup_body" id="decheckbookpanelBody">
+                <div style="display:none; width: 99.8% !important;" id="notification_de_checkbook" class="notification">
+                    <span class="badge badge-light"><i class="fa fa-bell" aria-hidden="true"></i> Found</span>
+                    <span style="display:none;" id="update_de_checkbook1" class="badge badge-info">0</span>
+                    <span style="display:none;" id="update_de_checkbook2" class="badge badge-info">update</span>
+                    <span class="badge badge-light">action in the table, please save the changes.</span>
+                    <span style="cursor: pointer;" ng-click="save_de_checkbookchanges()" class="badge badge-success">Save Changes</span>
+                </div>
+                <div id="tbl_de_checkbook">
                 </div>
             </div>
         </div>
@@ -105,7 +129,7 @@
                 <table style="width:100%" id="tbldecji3">
                     <thead>
                         <tr>
-                            <th title="Select All"><input type="checkbox" ng-model="IsAllChecked" ng-change="CheckUncheckAll()" /></th>
+                            <th ng-show="hidcheckboxde" title="Select All"><input type="checkbox" ng-model="IsAllChecked" ng-change="CheckUncheckAll()" /></th>
                             <th>PostingDate</th>
                             <th>WBSNumber</th>
                             <th>Cost Element Name</th>
@@ -115,11 +139,12 @@
                             <th>Quantity</th>
                             <th>Value</th>
                             <th>User Name</th>
+                            <th ng-hide="hidcheckboxde" style="width:80px;"></th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr ng-repeat="master in modelDECJI3">
-                            <td title="Select"><input type="checkbox" ng-checked="master.Selected" ng-model="master.Selected" ng-change="CheckUncheckHeader(modelDECJI3)" /></td>
+                            <td ng-show="hidcheckboxde" title="Select"><input type="checkbox" ng-checked="master.Selected" ng-model="master.Selected" ng-change="CheckUncheckHeader(modelDECJI3)" /></td>
                             <td>{{master.PostingDate}}</td>
                             <td>{{master.Object}}</td>
                             <td>{{master.CostElementName}}</td>
@@ -129,23 +154,30 @@
                             <td>{{master.TotalQuantity}}</td>
                             <td>{{master.Val_COAreaCrcy| number}}</td>
                             <td>{{master.UserName}}</td>
+                            <td ng-hide="hidcheckboxde" style="padding:0px; width:80px; border-radius:0px;"><a href="#" ng-click="removedecheckbookcji3(master)" title="remove po" style="width: 100%; color: #1f1e1e; border-radius: 0px; height: 35px; background-color: #ffcfd7; zoom: 80%;" class="btn btn-sm btn-warning"><i class="fa fa-trash" aria-hidden="true"></i>&nbsp;Remove</a></td>
                         </tr>
                         <tr style="background-color:#e4e4e4;">
-                            <td style="background-color:#e4e4e4;" colspan="7"></td>
+                            <td ng-hide="hidcheckboxde" style="background-color:#e4e4e4;" colspan="6"></td>
+                            <td ng-show="hidcheckboxde" style="background-color:#e4e4e4;" colspan="7"></td>
                             <td style="text-align:right; background-color: #c1ecf9;">{{de_cb_total}}</td>
                             <td style="text-align:right; background-color: #c1ecf9;">{{de_cb_value| number}}</td>
-                            <td></td>
+                            <td ng-hide="hidcheckboxde" colspan="2"></td>
+                            <td ng-show="hidcheckboxde"></td>
                         </tr>
-                        <tr ng-show="selected_de_cb_Total > 0 || selected_de_cb_value > 0" style="background-color:#c6fde4;">
-                            <td style="background-color:#c6fde4; text-align:right;" colspan="7">Selectd &nbsp;<i class="fa fa-check-square-o de_selectedcheckbox" aria-hidden="true"></i></td>
+                        <tr ng-show="(selected_de_cb_Total > 0 || selected_de_cb_value > 0) && hidcheckboxde" style="background-color:#c6fde4;">
+                            <td ng-hide="hidcheckboxde" style="background-color:#c6fde4; text-align:right;" colspan="6">Selected &nbsp;<i class="fa fa-check-square-o de_selectedcheckbox" aria-hidden="true"></i></td>
+                            <td ng-show="hidcheckboxde" style="background-color:#c6fde4; text-align:right;" colspan="7">Selected &nbsp;<i class="fa fa-check-square-o de_selectedcheckbox" aria-hidden="true"></i></td>
                             <td style="text-align:right; background-color: #c6fde4;">{{selected_de_cb_Total}}</td>
                             <td style="text-align:right; background-color: #c6fde4;">{{selected_de_cb_value| number}}</td>
-                            <td style="background-color:#c6fde4; padding:0px;">
-                                <button type="button" id="exporttoexcel" ng-click="insert_de_cji3data();" class="btn btn-success btn-sm de_cji3save float-right"><i class="fa fa-floppy-o" aria-hidden="true"></i>&nbsp;&nbsp;Save</button>
+                            <td ng-hide="hidcheckboxde" colspan="2" style="padding:0px;">
+                                <button type="button" ng-show="show_decji3save" ng-click="insert_de_cji3data();" class="btn btn-success btn-sm de_cji3save float-right"><i class="fa fa-floppy-o" aria-hidden="true"></i>&nbsp;&nbsp;Save</button>
+                            </td>
+                            <td ng-show="hidcheckboxde" style="padding:0px;">
+                                <button type="button" ng-show="show_decji3save" ng-click="insert_de_cji3data();" class="btn btn-success btn-sm de_cji3save float-right"><i class="fa fa-floppy-o" aria-hidden="true"></i>&nbsp;&nbsp;Save</button>
                             </td>
                         </tr>
                     </tbody>
-                </table>                               
+                </table>
 
             </div>
         </div>
@@ -400,7 +432,7 @@
                     <div id="tbl_capital">
                     </div>
                 </div>
-                <div id="capitallabour" style="padding-left:20px; padding-bottom:10px; padding-right:20px; opacity:0;">
+                <div id="capitallabor" style="padding-left:20px; padding-bottom:10px; padding-right:20px; opacity:0;">
                     <div id="capitallaborform" class="capitallaborformclass" ng-show="display_capitallaborform">
                         <br />
                         <div class="form-row">
@@ -718,45 +750,108 @@
                 <div id="decheckbook" style="padding-left:20px; padding-right:20px;">
                     <br />
                     <div style="overflow: scroll;" id="decheckbookcontainer">
-                        <table id="tbldecheckbook">
+                        <table ng-style="{ 'width' : decheckbookwidth }" id="tbldecheckbook">
                             <thead>
+                                <tr ng-repeat="rc in modelDECJI3reconciliation">
+                                    <th colspan="6">Total Reconciliation - Remaining</th>
+                                    <th>{{rc.MAY}}</th>
+                                    <th>{{rc.JUN}}</th>
+                                    <th>{{rc.JUL}}</th>
+                                    <th>{{rc.AUG}}</th>
+                                    <th>{{rc.SEP}}</th>
+                                    <th>{{rc.OCT}}</th>
+                                    <th>{{rc.NOV}}</th>
+                                    <th>{{rc.DEC}}</th>
+                                    <th>{{rc.JAN}}</th>
+                                    <th>{{rc.FEB}}</th>
+                                    <th>{{rc.MAR}}</th>
+                                    <th>{{rc.APR}}</th>
+                                </tr>
                                 <tr>
-                                    <th>WBSNumber</th>
-                                    <th>ExpenseCategory</th>
-                                    <th>Description</th>
-                                    <th>FisYear</th>
-                                    <th>MAY</th>
-                                    <th>JUN</th>
-                                    <th>JUL</th>
-                                    <th>AUG</th>
-                                    <th>SEP</th>
-                                    <th>OCT</th>
-                                    <th>NOV</th>
-                                    <th>DEC</th>
-                                    <th>JAN</th>
-                                    <th>FEB</th>
-                                    <th>MAR</th>
-                                    <th>APR</th>
+                                    <th width="30px"></th>
+                                    <th width="30px"></th>
+                                    <th width="100px">WBSNumber</th>
+                                    <th width="218px">ExpenseCategory</th>
+                                    <th width="248px">Description</th>
+                                    <th width="70px">FisYear</th>
+                                    <th width="68px">MAY</th>
+                                    <th width="68px">JUN</th>
+                                    <th width="68px">JUL</th>
+                                    <th width="68px">AUG</th>
+                                    <th width="68px">SEP</th>
+                                    <th width="68px">OCT</th>
+                                    <th width="68px">NOV</th>
+                                    <th width="68px">DEC</th>
+                                    <th width="68px">JAN</th>
+                                    <th width="68px">FEB</th>
+                                    <th width="68px">MAR</th>
+                                    <th width="68px">APR</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr ng-repeat="master in modelDECheckBook">
-                                    <td>{{master.WBSNumber}}</td>
-                                    <td>{{master.ExpenseCategory}}</td>
-                                    <td>{{master.Description}}</td>
-                                    <td>{{master.FisYear}}</td>
-                                    <td ng-click="show_de_cji3data(master.WBSNumber, master.FisYear, 'MAY',master.ExpenseCategory, master.Description)">{{master.MAY}}</td>
-                                    <td ng-click="show_de_cji3data(master.WBSNumber, master.FisYear, 'JUN',master.ExpenseCategory, master.Description)"><a>{{master.JUN}}</a></td>
-                                    <td ng-click="show_de_cji3data(master.WBSNumber, master.FisYear, 'JUL',master.ExpenseCategory, master.Description)"><a>{{master.JUL}}</a></td>
-                                    <td ng-click="show_de_cji3data(master.WBSNumber, master.FisYear, 'AUG',master.ExpenseCategory, master.Description)"><a>{{master.AUG}}</a></td>
-                                    <td ng-click="show_de_cji3data(master.WBSNumber, master.FisYear, 'SEP',master.ExpenseCategory, master.Description)"><a>{{master.SEP}}</a></td>
-                                    <td ng-click="show_de_cji3data(master.WBSNumber, master.FisYear, 'OCT',master.ExpenseCategory, master.Description)"><a>{{master.OCT}}</a></td>
-                                    <td ng-click="show_de_cji3data(master.WBSNumber, master.FisYear, 'NOV',master.ExpenseCategory, master.Description)"><a>{{master.NOV}}</a></td>
-                                    <td ng-click="show_de_cji3data(master.WBSNumber, master.FisYear, 'DEC',master.ExpenseCategory, master.Description)"><a>{{master.DEC}}</a></td>
-                                    <td ng-click="show_de_cji3data(master.WBSNumber, master.FisYear, 'JAN',master.ExpenseCategory, master.Description)"><a>{{master.JAN}}</a></td>
-                                    <td ng-click="show_de_cji3data(master.WBSNumber, master.FisYear, 'FEB',master.ExpenseCategory, master.Description)"><a>{{master.FEB}}</a></td>
-                                    <td ng-click="show_de_cji3data(master.WBSNumber, master.FisYear, 'MAR',master.ExpenseCategory, master.Description)"><a>{{master.MAR}}</a></td>
-                                    <td ng-click="show_de_cji3data(master.WBSNumber, master.FisYear, 'APR',master.ExpenseCategory, master.Description)"><a>{{master.APR}}</a></td>
+                                    <td style="padding: 0px; border: 0px;" colspan="18">
+                                        <table ng-style="{ 'width' : decheckbookwidth }" id="tbldecheckbooksub">
+                                            <tr>
+                                                <td style="text-align:center; background-color: #f3f9ff;" width="30px">
+                                                    <i title="P" ng-show="master.decheckbooksubmenu.length <= 1" class="fa fa-plus-square deplusdisabled" aria-hidden="true"></i>
+                                                    <i title="Expand" id="decb-{{$index}}" ng-show="master.decheckbooksubmenu.length > 1" ng-click="expandeddecji3 = !expandeddecji3;expandde(expandeddecji3,$index)" expand ng-class="expandeddecji3 ? 'fa fa-minus-square resourcecheckbookfontminus' : 'fa fa-plus-square resourcecheckbookfontplus'" class="fa fa-plus-square" aria-hidden="true"></i>
+                                                </td>
+                                                <td style="text-align:center; background-color: #e4fded;" width="30px">
+                                                    <i ng-click="viewdeinfo(master.WBSNumber,master.FisYear,master.ExpenseCategory,master.Description,master.decheckbooksubmenu[0])" class="fa fa-pencil-square resourcecheckbookfontedit" aria-hidden="true"></i>
+                                                </td>
+                                                <td width="100px">{{master.WBSNumber}}</td>
+                                                <td width="218px">{{master.ExpenseCategory| dotsFilter:30}}</td>
+                                                <td width="248px">{{master.Description}}</td>
+                                                <td width="70px">{{master.FisYear}}</td>
+                                                <td id="cbtd1-{{$index}}" width="68px" ng-style="setDECheckbookcolor(master.MAY, master.decheckbooksubmenu[0].MAY, master.decheckbooksubmenu[0].ID)" ng-click="show_de_cji3data(master.WBSNumber, master.FisYear, 'MAY',master.ExpenseCategory, master.Description, false,'save','cbtd1', $index)"><a>{{master.MAY}}</a></td>
+                                                <td id="cbtd2-{{$index}}" width="68px" ng-style="setDECheckbookcolor(master.JUN, master.decheckbooksubmenu[0].JUN, master.decheckbooksubmenu[0].ID)" ng-click="show_de_cji3data(master.WBSNumber, master.FisYear, 'JUN',master.ExpenseCategory, master.Description, false,'save','cbtd2', $index)"><a>{{master.JUN}}</a></td>
+                                                <td id="cbtd3-{{$index}}" width="68px" ng-style="setDECheckbookcolor(master.JUL, master.decheckbooksubmenu[0].JUL, master.decheckbooksubmenu[0].ID)" ng-click="show_de_cji3data(master.WBSNumber, master.FisYear, 'JUL',master.ExpenseCategory, master.Description, false,'save','cbtd3', $index)"><a>{{master.JUL}}</a></td>
+                                                <td id="cbtd4-{{$index}}" width="68px" ng-style="setDECheckbookcolor(master.AUG, master.decheckbooksubmenu[0].AUG, master.decheckbooksubmenu[0].ID)" ng-click="show_de_cji3data(master.WBSNumber, master.FisYear, 'AUG',master.ExpenseCategory, master.Description, false,'save','cbtd4', $index)"><a>{{master.AUG}}</a></td>
+                                                <td id="cbtd5-{{$index}}" width="68px" ng-style="setDECheckbookcolor(master.SEP, master.decheckbooksubmenu[0].SEP, master.decheckbooksubmenu[0].ID)" ng-click="show_de_cji3data(master.WBSNumber, master.FisYear, 'SEP',master.ExpenseCategory, master.Description, false,'save','cbtd5', $index)"><a>{{master.SEP}}</a></td>
+                                                <td id="cbtd6-{{$index}}" width="68px" ng-style="setDECheckbookcolor(master.OCT, master.decheckbooksubmenu[0].OCT, master.decheckbooksubmenu[0].ID)" ng-click="show_de_cji3data(master.WBSNumber, master.FisYear, 'OCT',master.ExpenseCategory, master.Description, false,'save','cbtd6', $index)"><a>{{master.OCT}}</a></td>
+                                                <td id="cbtd7-{{$index}}" width="68px" ng-style="setDECheckbookcolor(master.NOV, master.decheckbooksubmenu[0].NOV, master.decheckbooksubmenu[0].ID)" ng-click="show_de_cji3data(master.WBSNumber, master.FisYear, 'NOV',master.ExpenseCategory, master.Description, false,'save','cbtd7', $index)"><a>{{master.NOV}}</a></td>
+                                                <td id="cbtd8-{{$index}}" width="68px" ng-style="setDECheckbookcolor(master.DEC, master.decheckbooksubmenu[0].DEC, master.decheckbooksubmenu[0].ID)" ng-click="show_de_cji3data(master.WBSNumber, master.FisYear, 'DEC',master.ExpenseCategory, master.Description, false,'save','cbtd8', $index)"><a>{{master.DEC}}</a></td>
+                                                <td id="cbtd9-{{$index}}" width="68px" ng-style="setDECheckbookcolor(master.JAN, master.decheckbooksubmenu[0].JAN, master.decheckbooksubmenu[0].ID)" ng-click="show_de_cji3data(master.WBSNumber, master.FisYear, 'JAN',master.ExpenseCategory, master.Description, false,'save','cbtd9', $index)"><a>{{master.JAN}}</a></td>
+                                                <td id="cbtd10-{{$index}}" width="68px" ng-style="setDECheckbookcolor(master.FEB, master.decheckbooksubmenu[0].FEB, master.decheckbooksubmenu[0].ID)" ng-click="show_de_cji3data(master.WBSNumber, master.FisYear, 'FEB',master.ExpenseCategory, master.Description, false,'save','cbtd10', $index)"><a>{{master.FEB}}</a></td>
+                                                <td id="cbtd11-{{$index}}" width="68px" ng-style="setDECheckbookcolor(master.MAR, master.decheckbooksubmenu[0].MAR, master.decheckbooksubmenu[0].ID)" ng-click="show_de_cji3data(master.WBSNumber, master.FisYear, 'MAR',master.ExpenseCategory, master.Description, false,'save','cbtd11', $index)"><a>{{master.MAR}}</a></td>
+                                                <td id="cbtd12-{{$index}}" width="68px" ng-style="setDECheckbookcolor(master.APR, master.decheckbooksubmenu[0].APR, master.decheckbooksubmenu[0].ID)" ng-click="show_de_cji3data(master.WBSNumber, master.FisYear, 'APR',master.ExpenseCategory, master.Description, false,'save','cbtd12', $index)"><a>{{master.APR}}</a></td>
+                                            </tr>
+                                            <tr ng-repeat="submaster in master.decheckbooksubmenu" ng-show="expandeddecji3">
+                                                <td rowspan="2" colspan="2" ng-show="submaster.ID == 'A'" style="text-align:center;" width="30px">
+                                                </td>
+                                                <td ng-style="setDeSubmenuColor(submaster.ID,'center',0)" ng-show="submaster.ID == 'A'" colspan="3">Actual Spend - CJI3</td>
+                                                <td ng-style="setDeSubmenuColor(submaster.ID,'center',0)" ng-show="submaster.ID == 'B'" colspan="3">Reconciliation - Remaining</td>
+                                                <td ng-style="setDeSubmenuColor(submaster.ID,'left',0)">{{submaster.FiscalYear}}</td>
+
+                                                <td onMouseOver="this.style.background='rgb(232 251 130)'" onMouseOut="this.style.background='rgb(224, 239, 143)'" ng-show="submaster.ID == 'A'" ng-click="show_de_cji3data(submaster.WBSNumber, submaster.FiscalYear, 'MAY',submaster.DE_ExpenseCategory, submaster.Description, true,'update')" ng-style="setDeSubmenuColor(submaster.ID,'right',submaster.MAY)"><a>{{submaster.MAY}}</a></td>
+                                                <td onMouseOver="this.style.background='rgb(232 251 130)'" onMouseOut="this.style.background='rgb(224, 239, 143)'" ng-show="submaster.ID == 'A'" ng-click="show_de_cji3data(submaster.WBSNumber, submaster.FiscalYear, 'JUN',submaster.DE_ExpenseCategory, submaster.Description, true,'update')" ng-style="setDeSubmenuColor(submaster.ID,'right',submaster.JUN)"><a>{{submaster.JUN}}</a></td>
+                                                <td onMouseOver="this.style.background='rgb(232 251 130)'" onMouseOut="this.style.background='rgb(224, 239, 143)'" ng-show="submaster.ID == 'A'" ng-click="show_de_cji3data(submaster.WBSNumber, submaster.FiscalYear, 'JUL',submaster.DE_ExpenseCategory, submaster.Description, true,'update')" ng-style="setDeSubmenuColor(submaster.ID,'right',submaster.JUL)"><a>{{submaster.JUL}}</a></td>
+                                                <td onMouseOver="this.style.background='rgb(232 251 130)'" onMouseOut="this.style.background='rgb(224, 239, 143)'" ng-show="submaster.ID == 'A'" ng-click="show_de_cji3data(submaster.WBSNumber, submaster.FiscalYear, 'AUG',submaster.DE_ExpenseCategory, submaster.Description, true,'update')" ng-style="setDeSubmenuColor(submaster.ID,'right',submaster.AUG)"><a>{{submaster.AUG}}</a></td>
+                                                <td onMouseOver="this.style.background='rgb(232 251 130)'" onMouseOut="this.style.background='rgb(224, 239, 143)'" ng-show="submaster.ID == 'A'" ng-click="show_de_cji3data(submaster.WBSNumber, submaster.FiscalYear, 'SEP',submaster.DE_ExpenseCategory, submaster.Description, true,'update')" ng-style="setDeSubmenuColor(submaster.ID,'right',submaster.SEP)"><a>{{submaster.SEP}}</a></td>
+                                                <td onMouseOver="this.style.background='rgb(232 251 130)'" onMouseOut="this.style.background='rgb(224, 239, 143)'" ng-show="submaster.ID == 'A'" ng-click="show_de_cji3data(submaster.WBSNumber, submaster.FiscalYear, 'OCT',submaster.DE_ExpenseCategory, submaster.Description, true,'update')" ng-style="setDeSubmenuColor(submaster.ID,'right',submaster.OCT)"><a>{{submaster.OCT}}</a></td>
+                                                <td onMouseOver="this.style.background='rgb(232 251 130)'" onMouseOut="this.style.background='rgb(224, 239, 143)'" ng-show="submaster.ID == 'A'" ng-click="show_de_cji3data(submaster.WBSNumber, submaster.FiscalYear, 'NOV',submaster.DE_ExpenseCategory, submaster.Description, true,'update')" ng-style="setDeSubmenuColor(submaster.ID,'right',submaster.NOV)"><a>{{submaster.NOV}}</a></td>
+                                                <td onMouseOver="this.style.background='rgb(232 251 130)'" onMouseOut="this.style.background='rgb(224, 239, 143)'" ng-show="submaster.ID == 'A'" ng-click="show_de_cji3data(submaster.WBSNumber, submaster.FiscalYear, 'DEC',submaster.DE_ExpenseCategory, submaster.Description, true,'update')" ng-style="setDeSubmenuColor(submaster.ID,'right',submaster.DEC)"><a>{{submaster.DEC}}</a></td>
+                                                <td onMouseOver="this.style.background='rgb(232 251 130)'" onMouseOut="this.style.background='rgb(224, 239, 143)'" ng-show="submaster.ID == 'A'" ng-click="show_de_cji3data(submaster.WBSNumber, submaster.FiscalYear, 'JAN',submaster.DE_ExpenseCategory, submaster.Description, true,'update')" ng-style="setDeSubmenuColor(submaster.ID,'right',submaster.JAN)"><a>{{submaster.JAN}}</a></td>
+                                                <td onMouseOver="this.style.background='rgb(232 251 130)'" onMouseOut="this.style.background='rgb(224, 239, 143)'" ng-show="submaster.ID == 'A'" ng-click="show_de_cji3data(submaster.WBSNumber, submaster.FiscalYear, 'FEB',submaster.DE_ExpenseCategory, submaster.Description, true,'update')" ng-style="setDeSubmenuColor(submaster.ID,'right',submaster.FEB)"><a>{{submaster.FEB}}</a></td>
+                                                <td onMouseOver="this.style.background='rgb(232 251 130)'" onMouseOut="this.style.background='rgb(224, 239, 143)'" ng-show="submaster.ID == 'A'" ng-click="show_de_cji3data(submaster.WBSNumber, submaster.FiscalYear, 'MAR',submaster.DE_ExpenseCategory, submaster.Description, true,'update')" ng-style="setDeSubmenuColor(submaster.ID,'right',submaster.MAR)"><a>{{submaster.MAR}}</a></td>
+                                                <td onMouseOver="this.style.background='rgb(232 251 130)'" onMouseOut="this.style.background='rgb(224, 239, 143)'" ng-show="submaster.ID == 'A'" ng-click="show_de_cji3data(submaster.WBSNumber, submaster.FiscalYear, 'APR',submaster.DE_ExpenseCategory, submaster.Description, true,'update')" ng-style="setDeSubmenuColor(submaster.ID,'right',submaster.APR)"><a>{{submaster.APR}}</a></td>
+
+                                                <td ng-show="submaster.ID == 'B'" ng-style="setDeSubmenuColor(submaster.ID,'right',submaster.MAY)"><a>{{submaster.MAY}}</a></td>
+                                                <td ng-show="submaster.ID == 'B'" ng-style="setDeSubmenuColor(submaster.ID,'right',submaster.JUN)"><a>{{submaster.JUN}}</a></td>
+                                                <td ng-show="submaster.ID == 'B'" ng-style="setDeSubmenuColor(submaster.ID,'right',submaster.JUL)"><a>{{submaster.JUL}}</a></td>
+                                                <td ng-show="submaster.ID == 'B'" ng-style="setDeSubmenuColor(submaster.ID,'right',submaster.AUG)"><a>{{submaster.AUG}}</a></td>
+                                                <td ng-show="submaster.ID == 'B'" ng-style="setDeSubmenuColor(submaster.ID,'right',submaster.SEP)"><a>{{submaster.SEP}}</a></td>
+                                                <td ng-show="submaster.ID == 'B'" ng-style="setDeSubmenuColor(submaster.ID,'right',submaster.OCT)"><a>{{submaster.OCT}}</a></td>
+                                                <td ng-show="submaster.ID == 'B'" ng-style="setDeSubmenuColor(submaster.ID,'right',submaster.NOV)"><a>{{submaster.NOV}}</a></td>
+                                                <td ng-show="submaster.ID == 'B'" ng-style="setDeSubmenuColor(submaster.ID,'right',submaster.DEC)"><a>{{submaster.DEC}}</a></td>
+                                                <td ng-show="submaster.ID == 'B'" ng-style="setDeSubmenuColor(submaster.ID,'right',submaster.JAN)"><a>{{submaster.JAN}}</a></td>
+                                                <td ng-show="submaster.ID == 'B'" ng-style="setDeSubmenuColor(submaster.ID,'right',submaster.FEB)"><a>{{submaster.FEB}}</a></td>
+                                                <td ng-show="submaster.ID == 'B'" ng-style="setDeSubmenuColor(submaster.ID,'right',submaster.MAR)"><a>{{submaster.MAR}}</a></td>
+                                                <td ng-show="submaster.ID == 'B'" ng-style="setDeSubmenuColor(submaster.ID,'right',submaster.APR)"><a>{{submaster.APR}}</a></td>
+                                            </tr>
+                                        </table>
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>

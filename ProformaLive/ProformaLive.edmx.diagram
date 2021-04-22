@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="7d7c551d62c14142811ec4276ce3988c" Name="Diagram1" ZoomLevel="95">
+      <Diagram DiagramId="07917277ca6d4754a124e15b0a86d302" Name="Diagram1" ZoomLevel="95">
         <EntityTypeShape EntityType="ProformaLiveModel.APP_PFL_RESOURCES_SS_V" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="ProformaLiveModel.CapitalInfo" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="ProformaLiveModel.CapitalInfoComment" Width="1.5" PointX="4.75" PointY="0.75" IsExpanded="true" />

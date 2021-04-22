@@ -11,7 +11,7 @@ namespace ProformaLive
 {
     using System;
     
-    public partial class SP_GetDirectExpensesData_Result
+    public partial class SP_GetDirectExpensesData_forcheckbookedit_Result
     {
         public int MasterID { get; set; }
         public string Type { get; set; }
@@ -36,6 +36,5 @@ namespace ProformaLive
         public string ModifiedBy { get; set; }
         public string ModifiedOn { get; set; }
         public Nullable<int> RowID { get; set; }
-        public bool SelectListStatus { get; set; }
     }
 }
