@@ -825,6 +825,9 @@
     <Compile Include="DirectExpensesInfo_CJI3_Selection.cs">
       <DependentUpon>ProformaLive.tt</DependentUpon>
     </Compile>
+    <Compile Include="DirectExpenses_OpenPO.cs">
+      <DependentUpon>ProformaLive.tt</DependentUpon>
+    </Compile>
     <Compile Include="Get_DirectExpensesInfo_CJI3_Selection_Validation_Result.cs">
       <DependentUpon>ProformaLive.tt</DependentUpon>
     </Compile>

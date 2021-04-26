@@ -766,6 +766,12 @@ html, body {
         background-color: #e5effb;       
     }
 
+    #de_checkbooksummarypanelBody tr td:nth-child(7) {
+        text-align: right;
+        background-color: #e5effb;
+        color: #012042;
+    }
+
     #de_checkbooksummarypanelBody tr td:nth-child(8) {
         text-align: right;
         background-color: #e5effb;

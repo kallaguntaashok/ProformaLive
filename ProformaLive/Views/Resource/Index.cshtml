@@ -130,14 +130,14 @@
                     <thead>
                         <tr>
                             <th ng-show="hidcheckboxde" title="Select All"><input type="checkbox" ng-model="IsAllChecked" ng-change="CheckUncheckAll()" /></th>
-                            <th>PostingDate</th>
-                            <th>WBSNumber</th>
+                            <th>PostingDate</th>                            
                             <th>Cost Element Name</th>
                             <th>Purchasing Document</th>
                             <th>Purchase Order Text</th>
                             <th>Name Of Offsetting account</th>
                             <th>Quantity</th>
                             <th>Value</th>
+                            <th>Open PO</th>
                             <th>User Name</th>
                             <th ng-hide="hidcheckboxde" style="width:80px;"></th>
                         </tr>
@@ -145,30 +145,32 @@
                     <tbody>
                         <tr ng-repeat="master in modelDECJI3">
                             <td ng-show="hidcheckboxde" title="Select"><input type="checkbox" ng-checked="master.Selected" ng-model="master.Selected" ng-change="CheckUncheckHeader(modelDECJI3)" /></td>
-                            <td>{{master.PostingDate}}</td>
-                            <td>{{master.Object}}</td>
+                            <td>{{master.PostingDate}}</td>                            
                             <td>{{master.CostElementName}}</td>
                             <td>{{master.PurchasingDocument}}</td>
                             <td>{{master.PurchaseOrderText}}</td>
                             <td>{{master.NameOfOffsettingaccount}}</td>
                             <td>{{master.TotalQuantity}}</td>
                             <td>{{master.Val_COAreaCrcy| number}}</td>
+                            <td>{{master.PO_Amount| number}}</td>
                             <td>{{master.UserName}}</td>
                             <td ng-hide="hidcheckboxde" style="padding:0px; width:80px; border-radius:0px;"><a href="#" ng-click="removedecheckbookcji3(master)" title="remove po" style="width: 100%; color: #1f1e1e; border-radius: 0px; height: 35px; background-color: #ffcfd7; zoom: 80%;" class="btn btn-sm btn-warning"><i class="fa fa-trash" aria-hidden="true"></i>&nbsp;Remove</a></td>
                         </tr>
                         <tr style="background-color:#e4e4e4;">
-                            <td ng-hide="hidcheckboxde" style="background-color:#e4e4e4;" colspan="6"></td>
-                            <td ng-show="hidcheckboxde" style="background-color:#e4e4e4;" colspan="7"></td>
+                            <td ng-hide="hidcheckboxde" style="background-color:#e4e4e4;" colspan="5"></td>
+                            <td ng-show="hidcheckboxde" style="background-color:#e4e4e4;" colspan="6"></td>
                             <td style="text-align:right; background-color: #c1ecf9;">{{de_cb_total}}</td>
                             <td style="text-align:right; background-color: #c1ecf9;">{{de_cb_value| number}}</td>
+                            <td style="text-align:right; background-color: #c1ecf9;">{{select_de_openpo| number}}</td>
                             <td ng-hide="hidcheckboxde" colspan="2"></td>
                             <td ng-show="hidcheckboxde"></td>
                         </tr>
                         <tr ng-show="(selected_de_cb_Total > 0 || selected_de_cb_value > 0) && hidcheckboxde" style="background-color:#c6fde4;">
-                            <td ng-hide="hidcheckboxde" style="background-color:#c6fde4; text-align:right;" colspan="6">Selected &nbsp;<i class="fa fa-check-square-o de_selectedcheckbox" aria-hidden="true"></i></td>
-                            <td ng-show="hidcheckboxde" style="background-color:#c6fde4; text-align:right;" colspan="7">Selected &nbsp;<i class="fa fa-check-square-o de_selectedcheckbox" aria-hidden="true"></i></td>
+                            <td ng-hide="hidcheckboxde" style="background-color:#c6fde4; text-align:right;" colspan="5">Selected &nbsp;<i class="fa fa-check-square-o de_selectedcheckbox" aria-hidden="true"></i></td>
+                            <td ng-show="hidcheckboxde" style="background-color:#c6fde4; text-align:right;" colspan="6">Selected &nbsp;<i class="fa fa-check-square-o de_selectedcheckbox" aria-hidden="true"></i></td>
                             <td style="text-align:right; background-color: #c6fde4;">{{selected_de_cb_Total}}</td>
-                            <td style="text-align:right; background-color: #c6fde4;">{{selected_de_cb_value| number}}</td>
+                            <td style="text-align:right; background-color: #c6fde4;">{{selected_de_cb_value | number}}</td>
+                            <td style="text-align:right; background-color: #c6fde4;">{{select_de_openpo | number}}</td>
                             <td ng-hide="hidcheckboxde" colspan="2" style="padding:0px;">
                                 <button type="button" ng-show="show_decji3save" ng-click="insert_de_cji3data();" class="btn btn-success btn-sm de_cji3save float-right"><i class="fa fa-floppy-o" aria-hidden="true"></i>&nbsp;&nbsp;Save</button>
                             </td>
@@ -795,7 +797,7 @@
                                             <tr>
                                                 <td style="text-align:center; background-color: #f3f9ff;" width="30px">
                                                     <i title="P" ng-show="master.decheckbooksubmenu.length <= 1" class="fa fa-plus-square deplusdisabled" aria-hidden="true"></i>
-                                                    <i title="Expand" id="decb-{{$index}}" ng-show="master.decheckbooksubmenu.length > 1" ng-click="expandeddecji3 = !expandeddecji3;expandde(expandeddecji3,$index)" expand ng-class="expandeddecji3 ? 'fa fa-minus-square resourcecheckbookfontminus' : 'fa fa-plus-square resourcecheckbookfontplus'" class="fa fa-plus-square" aria-hidden="true"></i>
+                                                    <i title="Expand" id="decb-{{$index}}" ng-show="master.decheckbooksubmenu.length > 1" ng-click="expandeddecji3 = !expandeddecji3;expandde(expandeddecji3,$index, master.decheckbooksubmenu)" expand ng-class="expandeddecji3 ? 'fa fa-minus-square resourcecheckbookfontminus' : 'fa fa-plus-square resourcecheckbookfontplus'" class="fa fa-plus-square" aria-hidden="true"></i>
                                                 </td>
                                                 <td style="text-align:center; background-color: #e4fded;" width="30px">
                                                     <i ng-click="viewdeinfo(master.WBSNumber,master.FisYear,master.ExpenseCategory,master.Description,master.decheckbooksubmenu[0])" class="fa fa-pencil-square resourcecheckbookfontedit" aria-hidden="true"></i>
@@ -817,7 +819,7 @@
                                                 <td id="cbtd11-{{$index}}" width="68px" ng-style="setDECheckbookcolor(master.MAR, master.decheckbooksubmenu[0].MAR, master.decheckbooksubmenu[0].ID)" ng-click="show_de_cji3data(master.WBSNumber, master.FisYear, 'MAR',master.ExpenseCategory, master.Description, false,'save','cbtd11', $index)"><a>{{master.MAR}}</a></td>
                                                 <td id="cbtd12-{{$index}}" width="68px" ng-style="setDECheckbookcolor(master.APR, master.decheckbooksubmenu[0].APR, master.decheckbooksubmenu[0].ID)" ng-click="show_de_cji3data(master.WBSNumber, master.FisYear, 'APR',master.ExpenseCategory, master.Description, false,'save','cbtd12', $index)"><a>{{master.APR}}</a></td>
                                             </tr>
-                                            <tr ng-repeat="submaster in master.decheckbooksubmenu" ng-show="expandeddecji3">
+                                            <tr ng-repeat="submaster in master.decheckbooksubmenu" ng-show="expandeddecji3 && master.decheckbooksubmenu.length == 2">
                                                 <td rowspan="2" colspan="2" ng-show="submaster.ID == 'A'" style="text-align:center;" width="30px">
                                                 </td>
                                                 <td ng-style="setDeSubmenuColor(submaster.ID,'center',0)" ng-show="submaster.ID == 'A'" colspan="3">Actual Spend - CJI3</td>

@@ -39,6 +39,7 @@ namespace ProformaLive
         public virtual DbSet<Configure_ProjectComments> Configure_ProjectComments { get; set; }
         public virtual DbSet<Configure_RateCard> Configure_RateCard { get; set; }
         public virtual DbSet<Configure_Skill> Configure_Skill { get; set; }
+        public virtual DbSet<DirectExpenses_OpenPO> DirectExpenses_OpenPO { get; set; }
         public virtual DbSet<DirectExpensesInfo> DirectExpensesInfoes { get; set; }
         public virtual DbSet<DirectExpensesInfo_CJI3_Selection> DirectExpensesInfo_CJI3_Selection { get; set; }
         public virtual DbSet<DirectExpensesInfoComment> DirectExpensesInfoComments { get; set; }

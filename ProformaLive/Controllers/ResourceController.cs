@@ -266,6 +266,7 @@ namespace MECC_ReportPortal.Controllers
                 && x.NameOfOffsettingaccount == data.item.NameOfOffsettingaccount
                 && x.TotalQuantity == data.item.TotalQuantity
                 && x.Val_COAreaCrcy == data.item.Val_COAreaCrcy
+                && x.PO_Amount == data.item.PO_Amount
                 && x.UserName == data.item.UserName
                 && x.DE_ExpenseCategory == data.item.Expensecategory
                 && x.Description == data.item.Description).SingleOrDefault();
@@ -313,6 +314,7 @@ namespace MECC_ReportPortal.Controllers
                         DCS.NameOfOffsettingaccount = item.NameOfOffsettingaccount;
                         DCS.TotalQuantity = item.TotalQuantity;
                         DCS.Val_COAreaCrcy = item.Val_COAreaCrcy;
+                        DCS.PO_Amount = item.PO_Amount;
                         DCS.UserName = item.UserName;
                         DCS.DE_ExpenseCategory = item.Expensecategory;
                         DCS.Description = item.Description;

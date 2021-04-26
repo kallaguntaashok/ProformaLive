@@ -86,7 +86,7 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
     var resource_comments = [];
     var capital_comments = [];
     var capitallabor_comments = [];
-    var directexpenses_comments = [];    
+    var directexpenses_comments = [];
     var decbsource = { deitems: [] };
     var de_cb_readonly_status = false;
 
@@ -151,12 +151,12 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
 
     $scope.viewdeinfo = function (wbsnumber, fisyear, expensecategory, description, rowinfo) {
 
-        var sum = 0.00        
+        var sum = 0.00
         if (rowinfo != null && rowinfo.ID == 'A') {
             sum = rowinfo.MAY + rowinfo.JUN + rowinfo.JUL + rowinfo.AUG + rowinfo.SEP + rowinfo.OCT + rowinfo.NOV + rowinfo.DEC + rowinfo.JAN + rowinfo.FEB + rowinfo.MAR + rowinfo.APR;
-        }        
+        }
         de_cb_readonly_status = sum > 0 ? true : false;
-               
+
         updateprogressbar(20, "DE is loading...");
         $http({
             method: 'POST',
@@ -209,6 +209,7 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
         document.getElementById(value).style.display = 'none';
 
         if (value == "decheckbookcji3panel" || value == "decheckbookpanel") {
+
             updateprogressbar(25, "DE checkbook is loading....");
             var Fisyear = jSuite_dropResourceCheckboo_FisYear.getValue();
             $http({
@@ -219,19 +220,19 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
                 $scope.modelDECheckBook = response.data;
                 if (response.data.length === 0)
                     showalert('No records found!');
-
+                
                 if (response.data.length > 0) {
                     updateprogressbar(75, "DE checkbook is loading....");
                     setTimeout(function () {
                         $scope.$apply(function () {
                             if (decbsource != null) {
                                 for (var i = 0; i < decbsource.deitems.length; i++) {
-                                    document.getElementById("decb-" + decbsource.deitems[i].fid).click();
+                                    document.getElementById("decb-" + decbsource.deitems[0].fid).click();                                   
                                 }
                                 document.getElementById('progressbar').style.display = 'none';
                             }
                         });
-                    }, 500);
+                    }, 1000);
                 }
                 else {
 
@@ -258,7 +259,6 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
 
                     directexpenses_cb_updatedInfo = [];
                     document.getElementById('progressbar').style.display = 'none';
-
                 }
 
 
@@ -618,7 +618,7 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
             console.log(error);
         });
     }
-        
+
     function refreshtablesum() {
 
         var activetab = document.getElementById('activetabid').innerHTML;
@@ -1487,17 +1487,33 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
             }
         }).then(function (response) {
             $scope.modelDECJI3 = response.data;
-            if (response.data.length === 0)
+            if (response.data.length === 0) {
+                document.getElementById('decheckbookcji3panel').style.display = 'none';
                 showalert('No records found!');
+
+                var Fisyear = jSuite_dropResourceCheckboo_FisYear.getValue();
+                $http({
+                    method: 'POST',
+                    url: '../Resource/get_decheckbook',
+                    params: { "intProjectID": localStorage.getItem("projectid"), "intFisYear": Fisyear }
+                }).then(function (response) {
+                    $scope.modelDECheckBook = response.data;
+                }, function (error) {
+                    console.log(error);
+                });
+            }
+
             calculatetotal_de_checkbook();
             calculatevalue_de_checkbook();
+            calculatetotal_de_openpo();
+
         }, function (error) {
             console.log(error);
         });
     }
 
-    $scope.expandde = function (status, id) {
-
+    $scope.expandde = function (status, id, dataitem) {
+               
         decbsource = JSON.parse(localStorage.getItem("decb_expandid"));
         if (status == false) {
             if (decbsource != null) {
@@ -1533,15 +1549,15 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
             params: { "intProjectID": localStorage.getItem("projectid"), "strWBSNumber": wbsnumber, "strFisYear": fisyear, "strMonth": month, "strExpensecategory": expensecategory, "strDescription": description, "boolstatus": status }
         }).then(function (response) {
             $scope.modelDECJI3 = response.data;
-                       
+
             if (response.data.length === 0) {
-                showalert('No records found!');    
-                document.getElementById('decheckbookcji3panel').style.display = 'none'; 
+                showalert('No records found!');
+                document.getElementById('decheckbookcji3panel').style.display = 'none';
                 remove_decheckbook_cell_highlight();
-                
+
             }
             else {
-                               
+
                 if (show == "save") {
                     remove_decheckbook_cell_highlight();
                     localStorage.setItem("decellID", rowstr + '-' + rowid)
@@ -1557,11 +1573,13 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
                 $scope.selected_de_cb_Total = 0;
                 $scope.selected_de_cb_value = 0;
                 $scope.CheckUncheckHeader(response.data);
+
                 calculatetotal_de_checkbook();
                 calculatevalue_de_checkbook();
+                calculatetotal_de_openpo();
 
                 dragElement(document.getElementById("decheckbookcji3panel"));
-                document.getElementById('decheckbookcji3panel').style.display = 'block';                
+                document.getElementById('decheckbookcji3panel').style.display = 'block';
             }
 
             document.getElementById('progressbar').style.display = 'none';
@@ -1610,8 +1628,11 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
         }).then(function (response) {
             $scope.modelDECJI3 = response.data;
             document.getElementById('progressbar').style.display = 'none';
+
             calculatetotal_de_checkbook();
             calculatevalue_de_checkbook();
+            calculatetotal_de_openpo();
+
             $scope.selected_de_cb_Total = 0;
             $scope.selected_de_cb_value = 0;
         }, function (error) {
@@ -1692,7 +1713,7 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
             if (capitalSubmitting === false || formSubmitting === false || capitallaborSubmitting === false) {
                 showalertsavechangesalert('It looks like you have been editing something, so please savechanges!');
             }
-            else {                
+            else {
                 update_directexpenses_comments();
                 updateprogressbar(20, "Direct Expenses is loading...");
                 getDirectExpenses();
@@ -1708,9 +1729,9 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
             default_tabsetting("resourcecheckbook");
             refresh_resourcecheckbook();
         }
-        else if (value === "decheckbook") {            
+        else if (value === "decheckbook") {
             updateprogressbar(25, "DE checkbook is loading....");
-            default_tabsetting("decheckbook");            
+            default_tabsetting("decheckbook");
             refresh_decheckbook();
         }
     }
@@ -1821,6 +1842,7 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
         var count = 0;
         var select_de_cb_total = 0;
         var select_de_cb_value = 0;
+        var select_de_openpo = 0;
         for (var i = 0; i < $scope.modelDECJI3.length; i++) {
 
             if (!$scope.modelDECJI3[i].Selected) {
@@ -1830,6 +1852,7 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
                 count++;
                 select_de_cb_total = select_de_cb_total + $scope.modelDECJI3[i].TotalQuantity;
                 select_de_cb_value = select_de_cb_value + $scope.modelDECJI3[i].Val_COAreaCrcy;
+                select_de_openpo = select_de_openpo + $scope.modelDECJI3[i].PO_Amount; 
             }
         };
         if ($scope.modelDECJI3.length == count) {
@@ -1837,6 +1860,7 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
         }
         $scope.selected_de_cb_Total = select_de_cb_total;
         $scope.selected_de_cb_value = select_de_cb_value;
+        $scope.select_de_openpo = select_de_openpo;
     };
 
     function calculatetotal_de_checkbook() {
@@ -1846,6 +1870,15 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
         }
         $scope.de_cb_total = total;
     }
+
+    function calculatetotal_de_openpo() {
+        var total = 0.00;
+        for (var i = 0; i < $scope.modelDECJI3.length; i++) {
+            total = total + $scope.modelDECJI3[i].PO_Amount;
+        }
+        $scope.select_de_openpo = total;
+    }
+
     function calculatevalue_de_checkbook() {
         var total = 0.00;
         for (var i = 0; i < $scope.modelDECJI3.length; i++) {
@@ -2562,6 +2595,21 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
         });
     }
 
+    function delete_directexpenses_comments(MasterID, ColumnID) {
+        updateprogressbar(50, "Updating comments...");
+        $http({
+            method: 'POST',
+            url: '../Resource/delete_directexpensescomments',
+            params: { "intMasterID": MasterID, "intColumnID": ColumnID, "intColumnID": ColumnID }
+        }).then(function (response) {
+            update_directexpenses_comments();
+            updateprogressbar(100, "Comments are updated...");
+            document.getElementById('progressbar').style.display = 'none';
+        }, function (error) {
+            console.log(error);
+        });
+    }
+
     function load_directexpensedatatable() {
 
         var de_selectionActive = function (instance, x1, y1, x2, y2, origin) {
@@ -2715,21 +2763,6 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
             loadfullscreencss(screenst);
         }
 
-        function delete_directexpenses_comments(MasterID, ColumnID) {
-            updateprogressbar(50, "Updating comments...");
-            $http({
-                method: 'POST',
-                url: '../Resource/delete_directexpensescomments',
-                params: { "intMasterID": MasterID, "intColumnID": ColumnID, "intColumnID": ColumnID }
-            }).then(function (response) {
-                update_directexpenses_comments();
-                updateprogressbar(100, "Comments are updated...");
-                document.getElementById('progressbar').style.display = 'none';
-            }, function (error) {
-                console.log(error);
-            });
-        }
-                
         objdirectexpenses = jexcel(document.getElementById('tbl_directexpenses'), {
 
             data: dsDirectExpense,
@@ -2878,12 +2911,12 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
                 }
 
                 if (col == 2 || col == 3 || col == 4 || col == 5) {
-                    var row = instance.jexcel.getRowData(row);                    
+                    var row = instance.jexcel.getRowData(row);
                     if (row[23] == true) {
                         cell.setAttribute("class", "readonly");
-                    }                    
-                }                
-                
+                    }
+                }
+
                 // Number formating
                 if (col == 5 || col == 6 || col == 7 || col == 8 || col == 9 || col == 10 || col == 11 || col == 12 || col == 13 || col == 14 || col == 15 || col == 16 || col == 17) {
                     cell.onkeypress = function isNumberKey(evt) {

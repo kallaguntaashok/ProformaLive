@@ -27,6 +27,7 @@ namespace ProformaLive
         public string NameOfOffsettingaccount { get; set; }
         public Nullable<decimal> TotalQuantity { get; set; }
         public Nullable<decimal> Val_COAreaCrcy { get; set; }
+        public Nullable<decimal> PO_Amount { get; set; }
         public string UserName { get; set; }
     }
 }
