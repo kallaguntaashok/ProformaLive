@@ -15,7 +15,7 @@ namespace ProformaLive
     {
         public string Expensecategory { get; set; }
         public string Description { get; set; }
-        public bool Selected { get; set; }
+        public Nullable<bool> Selected { get; set; }
         public string FiscalYear { get; set; }
         public string Month { get; set; }
         public string PostingDate { get; set; }

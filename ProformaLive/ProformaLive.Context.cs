@@ -410,7 +410,7 @@ namespace ProformaLive
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_Get_Configure_RateCard_Result>("SP_Get_Configure_RateCard");
         }
     
-        public virtual ObjectResult<SP_Get_DE_CJI3_Data_Result> SP_Get_DE_CJI3_Data(string wBSnumber, string fisYear, string month, string expensecategory, string description)
+        public virtual ObjectResult<SP_Get_DE_CJI3_Data_Result> SP_Get_DE_CJI3_Data(string wBSnumber, string fisYear, string month, string expensecategory, string description, string pONumber)
         {
             var wBSnumberParameter = wBSnumber != null ?
                 new ObjectParameter("WBSnumber", wBSnumber) :
@@ -432,7 +432,11 @@ namespace ProformaLive
                 new ObjectParameter("Description", description) :
                 new ObjectParameter("Description", typeof(string));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_Get_DE_CJI3_Data_Result>("SP_Get_DE_CJI3_Data", wBSnumberParameter, fisYearParameter, monthParameter, expensecategoryParameter, descriptionParameter);
+            var pONumberParameter = pONumber != null ?
+                new ObjectParameter("PONumber", pONumber) :
+                new ObjectParameter("PONumber", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_Get_DE_CJI3_Data_Result>("SP_Get_DE_CJI3_Data", wBSnumberParameter, fisYearParameter, monthParameter, expensecategoryParameter, descriptionParameter, pONumberParameter);
         }
     
         public virtual ObjectResult<SP_Get_DE_CJI3_Data_SelectedList_Result> SP_Get_DE_CJI3_Data_SelectedList(Nullable<int> projectID, string wBSnumber, string fisYear, string month, string expensecategory, string description)

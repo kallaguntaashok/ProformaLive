@@ -234,6 +234,7 @@
           <Property Name="WBSNumber" Type="varchar" MaxLength="100" />
           <Property Name="ExpenseCategory" Type="varchar" MaxLength="2000" />
           <Property Name="Description" Type="varchar(max)" />
+          <Property Name="PONumber" Type="varchar(max)" />
           <Property Name="CreatedBy" Type="varchar" MaxLength="50" />
           <Property Name="CreatedOn" Type="datetime" />
           <Property Name="ModifiedBy" Type="varchar" MaxLength="50" />
@@ -727,6 +728,7 @@ warning 6013: The table/view 'ProformaLive.dbo.Tbl_PDW_CJI3' does not have a pri
           <Parameter Name="Month" Type="varchar" Mode="In" />
           <Parameter Name="Expensecategory" Type="varchar" Mode="In" />
           <Parameter Name="Description" Type="varchar" Mode="In" />
+          <Parameter Name="PONumber" Type="varchar(max)" Mode="In" />
         </Function>
         <Function Name="SP_Get_DE_CJI3_Data_SelectedList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="ProjectID" Type="int" Mode="In" />
@@ -1183,6 +1185,7 @@ warning 6013: The table/view 'ProformaLive.dbo.Tbl_PDW_CJI3' does not have a pri
           <Property Name="WBSNumber" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="ExpenseCategory" Type="String" MaxLength="2000" FixedLength="false" Unicode="false" />
           <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="PONumber" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="CreatedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="CreatedOn" Type="DateTime" Precision="3" />
           <Property Name="ModifiedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
@@ -1701,6 +1704,7 @@ warning 6013: The table/view 'ProformaLive.dbo.Tbl_PDW_CJI3' does not have a pri
             <Parameter Name="Month" Mode="In" Type="String" />
             <Parameter Name="Expensecategory" Mode="In" Type="String" />
             <Parameter Name="Description" Mode="In" Type="String" />
+            <Parameter Name="PONumber" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="SP_Get_DE_CJI3_Data_SelectedList" ReturnType="Collection(ProformaLiveModel.SP_Get_DE_CJI3_Data_SelectedList_Result)">
             <Parameter Name="ProjectID" Mode="In" Type="Int32" />
@@ -2003,10 +2007,10 @@ warning 6013: The table/view 'ProformaLive.dbo.Tbl_PDW_CJI3' does not have a pri
         <ComplexType Name="SP_Get_DE_CJI3_Data_Result">
           <Property Type="String" Name="Expensecategory" Nullable="true" MaxLength="5000" />
           <Property Type="String" Name="Description" Nullable="true" MaxLength="5000" />
-          <Property Type="Boolean" Name="Selected" Nullable="false" />
+          <Property Type="Boolean" Name="Selected" Nullable="true" />
           <Property Type="String" Name="FiscalYear" Nullable="true" MaxLength="4" />
           <Property Type="String" Name="Month" Nullable="true" MaxLength="50" />
-          <Property Type="String" Name="PostingDate" Nullable="true" MaxLength="10" />
+          <Property Type="String" Name="PostingDate" Nullable="true" MaxLength="4000" />
           <Property Type="String" Name="Object" Nullable="true" MaxLength="500" />
           <Property Type="String" Name="CO_Object_Name" Nullable="true" MaxLength="500" />
           <Property Type="String" Name="CostElementName" Nullable="true" MaxLength="500" />
@@ -2024,7 +2028,7 @@ warning 6013: The table/view 'ProformaLive.dbo.Tbl_PDW_CJI3' does not have a pri
           <Property Type="String" Name="Selected" Nullable="false" MaxLength="4" />
           <Property Type="String" Name="FiscalYear" Nullable="true" MaxLength="4" />
           <Property Type="String" Name="Month" Nullable="true" MaxLength="10" />
-          <Property Type="String" Name="PostingDate" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="PostingDate" Nullable="true" MaxLength="4000" />
           <Property Type="String" Name="Object" Nullable="true" MaxLength="500" />
           <Property Type="String" Name="CO_Object_Name" Nullable="true" MaxLength="500" />
           <Property Type="String" Name="CostElementName" Nullable="true" MaxLength="500" />
@@ -2070,6 +2074,7 @@ warning 6013: The table/view 'ProformaLive.dbo.Tbl_PDW_CJI3' does not have a pri
           <Property Type="String" Name="WBSNumber" Nullable="true" MaxLength="100" />
           <Property Type="String" Name="ExpenseCategory" Nullable="true" MaxLength="2000" />
           <Property Type="String" Name="Description" Nullable="true" />
+          <Property Type="String" Name="PONumber" Nullable="true" />
           <Property Type="String" Name="FisYear" Nullable="true" MaxLength="50" />
           <Property Type="Decimal" Name="MAY" Nullable="false" Precision="38" Scale="6" />
           <Property Type="Decimal" Name="JUN" Nullable="false" Precision="38" Scale="6" />
@@ -2318,6 +2323,7 @@ warning 6013: The table/view 'ProformaLive.dbo.Tbl_PDW_CJI3' does not have a pri
           <Property Type="String" Name="WBSNumber" Nullable="true" MaxLength="100" />
           <Property Type="String" Name="ExpenseCategory" Nullable="true" MaxLength="2000" />
           <Property Type="String" Name="Description" Nullable="true" />
+          <Property Type="String" Name="PONumber" Nullable="true" />
           <Property Type="String" Name="FisYear" Nullable="true" MaxLength="50" />
           <Property Type="Decimal" Name="MAY" Nullable="true" Precision="38" Scale="6" />
           <Property Type="Decimal" Name="JUN" Nullable="true" Precision="38" Scale="6" />
@@ -2688,6 +2694,7 @@ warning 6013: The table/view 'ProformaLive.dbo.Tbl_PDW_CJI3' does not have a pri
                 <ScalarProperty Name="WBSNumber" ColumnName="WBSNumber" />
                 <ScalarProperty Name="ExpenseCategory" ColumnName="ExpenseCategory" />
                 <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="PONumber" ColumnName="PONumber" />
                 <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
                 <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
                 <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
@@ -3351,6 +3358,7 @@ warning 6013: The table/view 'ProformaLive.dbo.Tbl_PDW_CJI3' does not have a pri
                 <ScalarProperty Name="WBSNumber" ColumnName="WBSNumber" />
                 <ScalarProperty Name="ExpenseCategory" ColumnName="ExpenseCategory" />
                 <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="PONumber" ColumnName="PONumber" />
                 <ScalarProperty Name="FisYear" ColumnName="FisYear" />
                 <ScalarProperty Name="MAY" ColumnName="MAY" />
                 <ScalarProperty Name="JUN" ColumnName="JUN" />
@@ -3679,6 +3687,7 @@ warning 6013: The table/view 'ProformaLive.dbo.Tbl_PDW_CJI3' does not have a pri
                 <ScalarProperty Name="WBSNumber" ColumnName="WBSNumber" />
                 <ScalarProperty Name="ExpenseCategory" ColumnName="ExpenseCategory" />
                 <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="PONumber" ColumnName="PONumber" />
                 <ScalarProperty Name="FisYear" ColumnName="FisYear" />
                 <ScalarProperty Name="MAY" ColumnName="MAY" />
                 <ScalarProperty Name="JUN" ColumnName="JUN" />

@@ -130,12 +130,14 @@
     <Content Include="assets\Jexcel\jexcel.js" />
     <Content Include="assets\Jexcel\jexcelv44.js" />
     <Content Include="assets\Jexcel\jexcel_44.css" />
+    <Content Include="assets\Jexcel\jexcel_v4_7_3.js" />
     <Content Include="assets\Jexcel\jquery-1.11.0.min.js" />
     <Content Include="assets\Jexcel\jquery.CongelarFilaColumna.js" />
     <Content Include="assets\Jexcel\jsuites.css" />
     <Content Include="assets\Jexcel\jsuites.js" />
     <Content Include="assets\Jexcel\jsuites38.css" />
     <Content Include="assets\Jexcel\jsuites38.js" />
+    <Content Include="assets\Jexcel\jsuites_v4.js" />
     <Content Include="assets\Jexcel\ScrollTabla.css" />
     <Content Include="assets\scripts\browser.js" />
     <Content Include="assets\scripts\Customjexcel.js" />

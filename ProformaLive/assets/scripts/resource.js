@@ -1,18 +1,12 @@
-﻿
-var app = angular.module('MECC', []);
-
-app.controller('MECCController', function ($scope, $sce, FileUploadService, $http, $rootScope) {
-
+﻿var app = angular.module('MECC', []);
+app.controller('MECCController', function ($scope, $sce, FileUploadService, $http) {
+      
     //Dynamic table width: based on screen size system will configure the table cells width. (Start)
     var proforma_mainwidth = document.getElementById("mainbody").offsetWidth;
-    capital_mainwidth = (proforma_mainwidth - 1098) / 5;
-    //---------------------------------------------------------    
-    resource_mainwidth = (proforma_mainwidth - 1096) / 4;
-    //---------------------------------------------------------    
-    capitallabor_mainwidth = (proforma_mainwidth - 938) / 6;
-    //---------------------------------------------------------    
-    de_mainwidth = (proforma_mainwidth - 1230) / 2;
-
+    var capital_mainwidth = (proforma_mainwidth - 1098) / 5;
+    var resource_mainwidth = (proforma_mainwidth - 1096) / 4;
+    var capitallabor_mainwidth = (proforma_mainwidth - 938) / 6;
+    var de_mainwidth = (proforma_mainwidth - 1230) / 2;
 
     //End Dynamic width code.
     loadmastersettings();
@@ -66,11 +60,11 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
     var jSuite_dropResourceCheckboo_FisYear = [];
     var jSuite_dropProjects = [];
     var jSuite_drop_Capital_AOPProject_CapitalLabor = [];
-    var s_startvalue = 0;
-    var s_endvalue = 0;
-    var c_startvalue = 0;
-    var c_endvalue = 0;
-    var resource_hidecolumns = [];
+    //var s_startvalue = 0;
+    //var s_endvalue = 0;
+    //var c_startvalue = 0;
+    //var c_endvalue = 0;
+    //var resource_hidecolumns = [];
     $scope.IsFormSubmitted = false;
     $scope.SelectedFileForUpload = null;
     $scope.clonealert = false;
@@ -89,6 +83,7 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
     var directexpenses_comments = [];
     var decbsource = { deitems: [] };
     var de_cb_readonly_status = false;
+    $scope.showExporttoexcel = true;
 
     document.getElementById('resourcetotal').innerHTML = "0";
     document.getElementById('capitaltotal').innerHTML = "0";
@@ -101,29 +96,26 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
     var mainwidth_PC = (mainwidth - 110) + "px";
     mainwidth = (mainwidth - 76) + "px";
 
-
     //1)Method will load project master dropdown.
     //2)It will configure default tab settings and default project.
     //3)If project name is not selected, it will move to landing page.
     loadProjectMaster();
-    //updateskillfilter();
 
-    //$scope.validatedisplay = function (WBSNumber, MidOrg, Teams, RequiredSkills, value) {
-    //    console.log(WBSNumber);
-    //    console.log(MidOrg);
-    //    console.log(Teams);
-    //    console.log(RequiredSkills);
-    //    if (WBSNumber + "-" + MidOrg + "-" + Teams + "-" + RequiredSkills == localStorage.getItem("ex_wbs")) {
-    //        localStorage.setItem("ex_wbs", "");
-    //        return true;
-    //    }
-    //    else {
-    //        return value;
-    //    }        
-    //}
+    $scope.edittooltip = function (value) {
+        if (value != null) {
+            var item = value.split(","); 
+            var text = '';
+            for (i = 0; i < item.length; i++) {
+                text += item[i] + "<br>";
+            }            
+            return $sce.trustAsHtml(text);
+        }
+        else {
+            return $sce.trustAsHtml("");
+        }        
+    }
 
     $scope.viewresourceinfo = function (PID, WBSNumber, BU, HighOrg, MidOrg, Teams, RequiredSkills, FisYear) {
-
         updateprogressbar(20, "Resource is loading...");
         $http({
             method: 'GET',
@@ -220,45 +212,23 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
                 $scope.modelDECheckBook = response.data;
                 if (response.data.length === 0)
                     showalert('No records found!');
-                
+
                 if (response.data.length > 0) {
                     updateprogressbar(75, "DE checkbook is loading....");
                     setTimeout(function () {
                         $scope.$apply(function () {
                             if (decbsource != null) {
                                 for (var i = 0; i < decbsource.deitems.length; i++) {
-                                    document.getElementById("decb-" + decbsource.deitems[0].fid).click();                                   
+                                    document.getElementById("decb-" + decbsource.deitems[0].fid).click();
                                 }
-                                document.getElementById('progressbar').style.display = 'none';
+                                updateprogressbar(100, "Completed...");
                             }
                         });
                     }, 1000);
                 }
                 else {
-
-                    if (decbsource != null) {
-
-                        //if (decbsource.deitems.find(x => x.fid === decbsource.deitems[decbsource.deitems.length - 1].fid)) {
-                        //    const index = decbsource.deitems.findIndex(c => c.fid === decbsource.deitems[decbsource.deitems.length - 1].fid);
-                        //    decbsource.deitems.splice(index, 1)
-                        //    localStorage.setItem("decb_expandid", JSON.stringify(decbsource));
-                        //}
-
-                        //setTimeout(function () {
-                        //    $scope.$apply(function () {
-                        //        if (decbsource != null) {
-                        //            for (var i = 0; i < decbsource.deitems.length; i++) {
-                        //                document.getElementById("decb-" + decbsource.deitems[i].fid).click();
-                        //            }
-                        //            document.getElementById('progressbar').style.display = 'none';
-                        //        }
-                        //    });
-                        //}, 500);
-
-                    }
-
                     directexpenses_cb_updatedInfo = [];
-                    document.getElementById('progressbar').style.display = 'none';
+                    updateprogressbar(100, "Completed...");
                 }
 
 
@@ -779,7 +749,7 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
 
                 document.getElementById('mainbody').setAttribute("style", "opacity:1")
                 updateprogressbar(100, "Completed...");
-                document.getElementById('progressbar').style.display = 'none';
+
                 document.getElementById('maincard').style.display = 'block';
                 document.getElementById('summary').setAttribute("style", "padding-left:20px; padding-right:20px; opacity:1;")
             }
@@ -850,12 +820,6 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
         }
     }
 
-    //setTimeout(function () {
-    //    $scope.$apply(function () {
-    //        jexcel(document.getElementById('ST'));
-    //    });
-    //}, 5000);
-
     // To Display Toy Details as Toy Name wise Pivot Column wise Total
     $scope.showYMColumnGrandTotal = function (colName, colToyName) {
 
@@ -869,11 +833,9 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
 
         if (colName === "Total Project FTEs (Operating & Capital)" || colName === "Total Site Operating FTEs" || colName === "Site Operating FTEs" || colName === "Site Non Project Charging FTEs" || colName === "Total Non Site Operating FTEs" || colName === "Non Site Operating FTEs" || colName === "Non Site Non Project Charging FTEs" || colName === "Total Site and Non Site Capital FTEs" || colName === "Site Capital FTEs" || colName === "Site Non Project Charge Capital FTEs" || colName === "Non Site Capital FTEs" || colName === "Non Site Non Project Charge Capital FTEs") {
             return $sce.trustAsHtml("<b>" + $scope.getColumTots.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + "</b>");
-            //return $sce.trustAsHtml($scope.getColumTots.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
         }
         else {
             return $sce.trustAsHtml("<b>$" + $scope.getColumTots.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + "</b>");
-            //return $sce.trustAsHtml($scope.getColumTots.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
         }
 
     }
@@ -1005,12 +967,6 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
         });
     };
 
-    //window.onresize = function () {
-    //    var mainwidth = window.innerWidth;
-    //    alert(mainwidth);
-    //    document.getElementsByClassName("jexcel_content").style.width = "500px !important";
-    //};    
-
     function downloadURI(uri, name) {
         var link = document.createElement("a");
         link.download = name;
@@ -1071,7 +1027,7 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
                     }).then(function (response) {
                         document.getElementById('cloneproject').style.display = 'none';
                         updateprogressbar(100, "Completed...");
-                        document.getElementById('progressbar').style.display = 'none';
+
 
                         var element = document.getElementById('dropProjects');
                         element.innerHTML = "";
@@ -1119,7 +1075,7 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
             }).then(function (response) {
                 downloadURI("../upload/" + response.data, response.data);
                 updateprogressbar(100, "Completed...");
-                document.getElementById('progressbar').style.display = 'none';
+
             }, function (error) {
                 console.log(error);
             });
@@ -1133,7 +1089,7 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
             }).then(function (response) {
                 downloadURI("../upload/" + response.data, response.data);
                 updateprogressbar(100, "Completed...");
-                document.getElementById('progressbar').style.display = 'none';
+
             }, function (error) {
                 console.log(error);
             });
@@ -1146,7 +1102,7 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
             }).then(function (response) {
                 downloadURI("../upload/" + response.data, response.data);
                 updateprogressbar(100, "Completed...");
-                document.getElementById('progressbar').style.display = 'none';
+
             }, function (error) {
                 console.log(error);
             });
@@ -1159,7 +1115,7 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
             }).then(function (response) {
                 downloadURI("../upload/" + response.data, response.data);
                 updateprogressbar(100, "Completed...");
-                document.getElementById('progressbar').style.display = 'none';
+
             }, function (error) {
                 console.log(error);
             });
@@ -1172,7 +1128,7 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
             }).then(function (response) {
                 downloadURI("../upload/" + response.data, response.data);
                 updateprogressbar(100, "Completed...");
-                document.getElementById('progressbar').style.display = 'none';
+
             }, function (error) {
                 console.log(error);
             });
@@ -1199,19 +1155,6 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
             alert(e);
         });
     };
-
-    //loadsummarydata();
-
-    //function loadsummarydata() {
-    //    $http({
-    //        method: 'GET',
-    //        url: '../Resource/getsummarydata'
-    //    }).then(function (response) {
-    //        dssummary = response.data;
-    //    }, function (error) {
-    //        console.log(error);
-    //    });
-    //}
 
     function updateskillfilter() {
         $http({
@@ -1513,7 +1456,7 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
     }
 
     $scope.expandde = function (status, id, dataitem) {
-               
+
         decbsource = JSON.parse(localStorage.getItem("decb_expandid"));
         if (status == false) {
             if (decbsource != null) {
@@ -1540,13 +1483,13 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
         }
     }
 
-    $scope.show_de_cji3data = function (wbsnumber, fisyear, month, expensecategory, description, status, show, rowstr, rowid) {
+    $scope.show_de_cji3data = function (PONumber, wbsnumber, fisyear, month, expensecategory, description, status, show, rowstr, rowid) {
 
         updateprogressbar(20, "loading...");
         $http({
             method: 'POST',
             url: '../Resource/get_de_cji3_data',
-            params: { "intProjectID": localStorage.getItem("projectid"), "strWBSNumber": wbsnumber, "strFisYear": fisyear, "strMonth": month, "strExpensecategory": expensecategory, "strDescription": description, "boolstatus": status }
+            params: { "intProjectID": localStorage.getItem("projectid"), "strWBSNumber": wbsnumber, "strFisYear": fisyear, "strMonth": month, "strExpensecategory": expensecategory, "strDescription": description, "boolstatus": status, "strPONumber": PONumber }
         }).then(function (response) {
             $scope.modelDECJI3 = response.data;
 
@@ -1572,17 +1515,22 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
                 $scope.IsAllChecked = false;
                 $scope.selected_de_cb_Total = 0;
                 $scope.selected_de_cb_value = 0;
-                $scope.CheckUncheckHeader(response.data);
 
                 calculatetotal_de_checkbook();
                 calculatevalue_de_checkbook();
                 calculatetotal_de_openpo();
 
+                setTimeout(function () {
+                    $scope.$apply(function () {
+                        $scope.CheckUncheckHeader(response.data);
+                    });
+                }, 500);
+
                 dragElement(document.getElementById("decheckbookcji3panel"));
                 document.getElementById('decheckbookcji3panel').style.display = 'block';
             }
 
-            document.getElementById('progressbar').style.display = 'none';
+            updateprogressbar(100, "Completed...");
 
         }, function (error) {
             console.log(error);
@@ -1627,7 +1575,7 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
             }
         }).then(function (response) {
             $scope.modelDECJI3 = response.data;
-            document.getElementById('progressbar').style.display = 'none';
+            updateprogressbar(100, "Completed...");
 
             calculatetotal_de_checkbook();
             calculatevalue_de_checkbook();
@@ -1726,11 +1674,13 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
         }
         else if (value === "resourcecheckbook") {
             updateprogressbar(25, "Resource checkbook is loading....");
+            $scope.showExporttoexcel = false;
             default_tabsetting("resourcecheckbook");
             refresh_resourcecheckbook();
         }
         else if (value === "decheckbook") {
             updateprogressbar(25, "DE checkbook is loading....");
+            $scope.showExporttoexcel = false;
             default_tabsetting("decheckbook");
             refresh_decheckbook();
         }
@@ -1740,7 +1690,7 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
     function refresh_decheckbook() {
         updateprogressbar(20, "Loading DE CheckBook...");
         var summaryheight = parseInt(window.innerHeight);
-        summaryheight = summaryheight - 270;
+        summaryheight = summaryheight - 220;
         document.getElementById('decheckbookcontainer').setAttribute('style', 'height: ' + summaryheight + 'px; overflow: scroll;');
         $scope.Drop_ProjectClass = "col-md-5";
         document.getElementById('Display_FisYearFilter').style.display = "block";
@@ -1751,6 +1701,7 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
             params: { "intProjectID": localStorage.getItem("projectid") }
         }).then(function (response) {
             var resourcecheckbookyear = response.data;
+
             var defaultvalue = 0;
             if (resourcecheckbookyear.length > 0) {
                 defaultvalue = resourcecheckbookyear[0];
@@ -1766,13 +1717,20 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
                 onchange: changeCheckBookFisYear
             });
 
-            var Fisyear = jSuite_dropResourceCheckboo_FisYear.getValue();
-            load_de_checkbook(Fisyear);
+            if (resourcecheckbookyear.length > 0) {
+                var Fisyear = jSuite_dropResourceCheckboo_FisYear.getValue();
+                load_de_checkbook(Fisyear);
+            }
+            else {
+                showalert('No records found!');
+                updateprogressbar(100, "Completed...");
+                $scope.modelDECheckBook = null;
+                $scope.modelDECJI3reconciliation = null;
+            }
 
         }, function (error) {
             console.log(error);
         });
-
 
     }
 
@@ -1788,11 +1746,19 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
 
             if (response.data.length === 0)
                 showalert('No records found!');
-            document.getElementById('progressbar').style.display = 'none';
+            updateprogressbar(100, "Completed...");
 
             var tablewidth = document.getElementById('decheckbook').offsetWidth;
             tablewidth = tablewidth - 52;
+            var tablezoom = '100%';
+            if (tablewidth < 1512) {
+                tablewidth = 1512;
+                tablezoom = '80%';
+            }
+            $scope.decheckbookzoom = tablezoom;
             $scope.decheckbookwidth = tablewidth + "px";
+            $scope.de_dynamic_checkbook_width = parseInt((tablewidth - 1046) / 3) + "px";
+            $scope.defiltercount = Math.round(parseInt((tablewidth - 1000) / 3) / 8);
 
             $http({
                 method: 'POST',
@@ -1852,8 +1818,13 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
                 count++;
                 select_de_cb_total = select_de_cb_total + $scope.modelDECJI3[i].TotalQuantity;
                 select_de_cb_value = select_de_cb_value + $scope.modelDECJI3[i].Val_COAreaCrcy;
-                select_de_openpo = select_de_openpo + $scope.modelDECJI3[i].PO_Amount; 
+                select_de_openpo = select_de_openpo + $scope.modelDECJI3[i].PO_Amount;
+                document.getElementById("decbcji3-" + i).setAttribute("style", "background: #cce9ff8c;");
             }
+            else {
+                document.getElementById("decbcji3-" + i).removeAttribute("style");
+            }
+
         };
         if ($scope.modelDECJI3.length == count) {
             $scope.IsAllChecked = true;
@@ -1905,7 +1876,7 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
 
         updateprogressbar(20, "Loading Resource CheckBook...");
         var summaryheight = parseInt(window.innerHeight);
-        summaryheight = summaryheight - 270;
+        summaryheight = summaryheight - 220;
         document.getElementById('resourcecheckbookcontainer').setAttribute('style', 'height: ' + summaryheight + 'px; overflow: scroll;');
         $scope.Drop_ProjectClass = "col-md-5";
         document.getElementById('Display_FisYearFilter').style.display = "block";
@@ -1963,12 +1934,17 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
             $scope.modelRresourceCheckBook = response.data;
             if (response.data.length === 0)
                 showalert('No records found!');
-            document.getElementById('progressbar').style.display = 'none';
+            updateprogressbar(100, "Completed...");
 
             var tablewidth = document.getElementById('resourcecheckbook').offsetWidth;
             tablewidth = tablewidth - 52;
+            var tablezoom = '100%';
+            if (tablewidth < 1512) {
+                tablewidth = 1512;
+                tablezoom = '80%';
+            }
             $scope.subResourcetablewidth = tablewidth + 'px';
-            document.getElementById("tblresourcecheckbook").setAttribute("style", "width:" + tablewidth + "px;");
+            document.getElementById("tblresourcecheckbook").setAttribute("style", "width:" + tablewidth + "px; zoom:" + tablezoom + "");
 
             tablewidth = parseInt(tablewidth) - 1208;
             document.getElementById("checkbook_MidOrg").setAttribute("style", "width:" + tablewidth + "px;");
@@ -2318,7 +2294,7 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
             });
 
             if (localStorage.getItem("projectname") === null || localStorage.getItem("projectname") === undefined) {
-                document.getElementById('progressbar').style.display = 'none';
+                updateprogressbar(100, "Completed...");
                 showalert('Please select project!');
                 //if project name is not selected, it will navigate to landing page, 
                 //I am using 1 sec delay before navigating, as user has to see the alert message.
@@ -2345,33 +2321,6 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
             console.log(error);
         });
 
-        //updateprogressbar(20, "Validating selected project...");
-
-        //$http({
-        //    method: 'GET',
-        //    url: '../Resource/getprojectname'
-        //}).then(function (response) {
-        //    if (response.data.length == 0) {
-        //        document.getElementById('progressbar').style.display = 'none';
-        //        showalert('Please select project!');
-        //        setTimeout(function () {
-        //            $scope.$apply(function () {
-        //                window.location.href = '../index/Index';
-        //            });
-        //        }, 2000);
-        //    } else {
-        //        projectname = response.data[0].ProjectName;
-        //        jSuite_dropProjects.setValue(projectname);
-
-        //        //dropdown_update_BU();
-        //        loaddefaultsummary();
-        //        getusername();
-        //        //getlastmodifieddata();
-
-        //    }
-        //}, function (error) {
-        //    console.log(error);
-        //});
     }
 
     function changeProjectData() {
@@ -2485,8 +2434,6 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
                 console.log(error);
             });
 
-            //refreshing resource table operating expense WBS number column
-            //objdirectexpenses.options.columns[2].source = rowOperatingExpenseWBS;
         }, function (error) {
             console.log(error);
         });
@@ -2545,11 +2492,6 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
                         }).then(function (response) {
                             if (response.data.length > 0) {
 
-                                //var twidth = document.getElementById("mainbody").offsetWidth
-                                //var mywidth = (twidth - 108) + "px";
-                                //var elms = document.getElementById("tbl_directexpenses").getElementsByTagName("*");
-                                //elms[5].setAttribute("style", "width:" + mywidth);
-
                                 if (response.data.length === 1) {
                                     document.getElementById('tbl_directexpenses').innerHTML = "";
                                     dsDirectExpense = response.data;
@@ -2559,9 +2501,7 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
                                     objdirectexpenses.setData(response.data);
                                 }
 
-                                updateprogressbar(100, "Data is loading...");
-                                document.getElementById('progressbar').style.display = 'none';
-                                //clear_de();
+                                updateprogressbar(100, "Completed...");
                             }
 
                         }, function (error) {
@@ -2576,8 +2516,8 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
 
         }
 
-        updateprogressbar(100, "Data is loading...");
-        document.getElementById('progressbar').style.display = 'none';
+        updateprogressbar(100, "Completed...");
+
     }
 
     function insert_directexpenses_comments(MasterID, ColumnID, Comments) {
@@ -2588,8 +2528,8 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
             params: { "intProjectID": localStorage.getItem("projectid"), "intMasterID": MasterID, "intColumnID": ColumnID, "strComments": Comments, "userid": localStorage.getItem("userID") }
         }).then(function (response) {
             update_directexpenses_comments();
-            updateprogressbar(100, "Comments are updated...");
-            document.getElementById('progressbar').style.display = 'none';
+            updateprogressbar(100, "Completed...");
+
         }, function (error) {
             console.log(error);
         });
@@ -2603,8 +2543,8 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
             params: { "intMasterID": MasterID, "intColumnID": ColumnID, "intColumnID": ColumnID }
         }).then(function (response) {
             update_directexpenses_comments();
-            updateprogressbar(100, "Comments are updated...");
-            document.getElementById('progressbar').style.display = 'none';
+            updateprogressbar(100, "Completed...");
+
         }, function (error) {
             console.log(error);
         });
@@ -2648,8 +2588,8 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
             var newstyle = vartable + "; max-height: " + height + "px;"
             subelms[5].setAttribute("style", newstyle);
 
-            updateprogressbar(100, "Completed....");
-            document.getElementById('progressbar').style.display = 'none';
+            updateprogressbar(100, "Completed...");
+
             document.getElementById('directexpenses').setAttribute("style", "padding-left:20px; padding-right:20px; padding-bottom:10px; opacity:1;")
         }
 
@@ -2703,7 +2643,7 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
                 vto = instance.jexcel.getRowData(parseInt(to - 1));
             }
 
-            updateprogressbar(100, "Updating...");
+            updateprogressbar(100, "Completed...");
             $http({
                 method: 'POST',
                 url: '../Resource/moverows',
@@ -2719,7 +2659,7 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
                     objdirectexpenses.setData(response.data);
                     validatefilters("directexpenses", objdirectexpenses);
                     updateprogressbar(100, "Completed...");
-                    document.getElementById('progressbar').style.display = 'none';
+
                 }, function (error) {
                     console.log(error);
                 });
@@ -2783,6 +2723,7 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
                 { type: 'dropdown', title: 'WBSNumber', width: 150, source: rowOperatingExpenseWBS, autocomplete: true },
                 { type: 'dropdown', title: 'Expense Category', width: de_mainwidth, source: rowDirectExpense, autocomplete: true },
                 { type: 'text', title: 'Description', width: de_mainwidth },
+                { type: 'customtextbox', title: 'PONumber', width: de_mainwidth },
                 { type: 'text', title: 'FYear', width: 70, maxlength: 4 },
                 { type: 'number', title: 'MAY', width: 70 },
                 { type: 'number', title: 'JUN', width: 70 },
@@ -2918,7 +2859,7 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
                 }
 
                 // Number formating
-                if (col == 5 || col == 6 || col == 7 || col == 8 || col == 9 || col == 10 || col == 11 || col == 12 || col == 13 || col == 14 || col == 15 || col == 16 || col == 17) {
+                if (col == 6 || col == 7 || col == 8 || col == 9 || col == 10 || col == 11 || col == 12 || col == 13 || col == 14 || col == 15 || col == 16 || col == 17 || col == 18) {
                     cell.onkeypress = function isNumberKey(evt) {
                         var charCode = (evt.which) ? evt.which : evt.keyCode;
                         if (charCode != 46 && charCode != 45 && charCode > 31
@@ -3007,8 +2948,8 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
                 "Content-Type": "application/json"
             }
         }).then(function (response) {
-            updateprogressbar(100, "Saving changes....");
-            document.getElementById('progressbar').style.display = 'none';
+            updateprogressbar(100, "Completed...");
+
             document.getElementById('notification_de_checkbook').style.display = 'none';
             document.getElementById('update_de_checkbook1').innerHTML = 0;
             directexpenses_cb_updatedInfo = [];
@@ -3047,8 +2988,8 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
                 }).then(function (response) {
                     dsDirectExpense = response.data;
                     objdirectexpenses.setData(response.data);
-                    updateprogressbar(100, "Data is loading...");
-                    document.getElementById('progressbar').style.display = 'none';
+                    updateprogressbar(100, "Completed...");
+
                     directexpenses_duplicateInfo = [];
                     savechangesinfullscreenmode();
                 }, function (error) {
@@ -3056,8 +2997,8 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
                 });
             }
             else {
-                updateprogressbar(100, "Saving changes....");
-                document.getElementById('progressbar').style.display = 'none';
+                updateprogressbar(100, "Completed...");
+
                 document.getElementById('de_notification').style.display = 'none';
                 document.getElementById('de_update_notificationnumber1').innerHTML = 0;
                 document.getElementById('de_delete_notificationnumber1').innerHTML = 0;
@@ -3429,8 +3370,8 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
                                 }
 
 
-                                updateprogressbar(100, "Data is loading...");
-                                document.getElementById('progressbar').style.display = 'none';
+                                updateprogressbar(100, "Completed...");
+
                                 //clearcapitallaborform();
                             }
 
@@ -3499,12 +3440,6 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
         capitallabor_duplicateInfo = [];
         refreshcapitallabordata();
     }
-    //abc();
-    //function abc() {
-
-    //    var abcd = "ashok\kallagunta";
-    //    alert(abcd.replace("\\/g", " "));
-    //}
 
     function savecapitallabor(status) {
 
@@ -3538,14 +3473,14 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
                 objcapitallabour.setData(response.data);
 
                 if (status === true) {
-                    updateprogressbar(100, "Data is loading...");
-                    document.getElementById('progressbar').style.display = 'none';
+                    updateprogressbar(100, "Completed...");
+
                     capitallabor_duplicateInfo = [];
                     savechangesinfullscreenmode();
                 }
                 else {
-                    updateprogressbar(100, "Saving changes....");
-                    document.getElementById('progressbar').style.display = 'none';
+                    updateprogressbar(100, "Completed...");
+
                     document.getElementById('capitallabor_notification').style.display = 'none';
                     document.getElementById('capitallabor_update_notificationnumber1').innerHTML = 0;
                     document.getElementById('capitallabor_delete_notificationnumber1').innerHTML = 0;
@@ -3606,51 +3541,10 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
             subelms[5].setAttribute("style", newstyle);
 
             updateprogressbar(100, "Completed....");
-            document.getElementById('progressbar').style.display = 'none';
+
             document.getElementById('capitallabor').setAttribute("style", "padding-left:20px; padding-right:20px; padding-bottom:10px; opacity:1;")
         }
-        //var capitallabor_deleted = function (instance) {
 
-        //    for (i = s_startvalue; i <= s_endvalue; i++) {
-
-        //        //creates json object of jexcel
-        //        var jsonobj = objcapitallabour.getJson(false);
-
-        //        //getting particular row from json object       
-        //        var rowobj = jsonobj[i]; //row id getting from event
-
-        //        capitallabor_deleteInfo.push(rowobj);
-        //        if (capitallabor_updatedInfo.find(x => x.MasterID === rowobj.MasterID)) {
-        //            index = capitallabor_updatedInfo.indexOf(capitallabor_updatedInfo.find(x => x.ProjectNumber === rowobj.ProjectNumber)); //getting index of that rec
-        //            capitallabor_updatedInfo.splice(index, 1); //remove the existing rec from object 
-        //        }
-
-        //        document.getElementById('capitallabor_update_notificationnumber1').innerHTML = capitallabor_updatedInfo.length;
-        //        document.getElementById('capitallabor_delete_notificationnumber1').innerHTML = capitallabor_deleteInfo.length;
-
-        //        if (parseInt(capitallabor_updatedInfo.length) > 0) {
-        //            document.getElementById('capitallabor_update_notificationnumber1').style.display = 'initial';
-        //            document.getElementById('capitallabor_update_notificationnumber2').style.display = 'initial';
-        //        }
-        //        else {
-        //            document.getElementById('capitallabor_update_notificationnumber1').style.display = 'none';
-        //            document.getElementById('capitallabor_update_notificationnumber2').style.display = 'none';
-        //        }
-
-        //        if (parseInt(capitallabor_deleteInfo.length) > 0) {
-        //            document.getElementById('capitallabor_delete_notificationnumber1').style.display = 'initial';
-        //            document.getElementById('capitallabor_delete_notificationnumber2').style.display = 'initial';
-        //        }
-        //        else {
-        //            document.getElementById('capitallabor_delete_notificationnumber1').style.display = 'none';
-        //            document.getElementById('capitallabor_delete_notificationnumber2').style.display = 'none';
-        //        }
-        //        setcapitallaborSubmitting();
-        //        var screenst = $scope.ProjectsTable_fullscreen;
-        //        loadfullscreencss(screenst);
-        //    }
-
-        //}
         var capitallabor_update = function (instance, cell, col, row, value) {
 
             if (col == 5) {
@@ -3847,23 +3741,7 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
                 url: '../Resource/moverows',
                 params: { "intFrom": vfrom[29], "intTo": vto[29], "intMasterID": vfrom[0], "strTabname": "capitallabor" }
             }).then(function (response) {
-
-                //$http({
-                //    method: 'GET',
-                //    url: '../Resource/getDirectExpensedata',
-                //    params: { "ProjectID": localStorage.getItem("projectid") }
-                //}).then(function (response) {
-                //    dsCapitalLabour = response.data;
-                //    objcapitallabour.setData(response.data);
-                //    validatefilters("capitallabor", objcapitallabour);
-                //    updateprogressbar(100, "Completed...");
-                //    document.getElementById('progressbar').style.display = 'none';
-                //}, function (error) {
-                //    console.log(error);
-                //});
-
                 refreshcapitallabordata();
-
             }, function (error) {
                 console.log(error);
             });
@@ -3911,8 +3789,8 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
                 params: { "intProjectID": localStorage.getItem("projectid"), "intMasterID": MasterID, "intColumnID": ColumnID, "strComments": Comments, "userid": localStorage.getItem("userID") }
             }).then(function (response) {
                 update_capitallabor_comments();
-                updateprogressbar(100, "Comments are updated...");
-                document.getElementById('progressbar').style.display = 'none';
+                updateprogressbar(100, "Completed...");
+
             }, function (error) {
                 console.log(error);
             });
@@ -3926,8 +3804,8 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
                 params: { "intMasterID": MasterID, "intColumnID": ColumnID, "intColumnID": ColumnID }
             }).then(function (response) {
                 update_capitallabor_comments();
-                updateprogressbar(100, "Comments are updated...");
-                document.getElementById('progressbar').style.display = 'none';
+                updateprogressbar(100, "Completed...");
+
             }, function (error) {
                 console.log(error);
             });
@@ -4378,11 +4256,6 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
                         }).then(function (response) {
                             if (response.data.length > 0) {
 
-                                //var twidth = document.getElementById("mainbody").offsetWidth
-                                //var mywidth = (twidth - 108) + "px";
-                                //var elms = document.getElementById("tbl_capital").getElementsByTagName("*");
-                                //elms[5].setAttribute("style", "width:" + mywidth);
-
                                 if (response.data.length === 1) {
                                     document.getElementById('tbl_capital').innerHTML = "";
                                     dsCapital = response.data;
@@ -4392,10 +4265,7 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
                                     objcapital.setData(response.data);
                                 }
 
-                                updateprogressbar(100, "Data is loading...");
-                                document.getElementById('progressbar').style.display = 'none';
-                                //clearcapitalform();
-
+                                updateprogressbar(100, "Completed...");
                             }
 
                         }, function (error) {
@@ -4466,52 +4336,12 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
             subelms[5].setAttribute("style", newstyle);
 
             updateprogressbar(100, "Completed....");
-            document.getElementById('progressbar').style.display = 'none';
+
             document.getElementById('capital').setAttribute("style", "padding-left:20px; padding-bottom:10px; padding-right:20px; opacity:1;")
 
         }
-        //var capital_deletedRow = function (instance) {
 
-        //    for (i = s_startvalue; i <= s_endvalue; i++) {
 
-        //        //creates json object of jexcel
-        //        var jsonobj = objcapital.getJson(false);
-
-        //        //getting particular row from json object       
-        //        var rowobj = jsonobj[i]; //row id getting from event
-
-        //        capital_deleteInfo.push(rowobj);
-        //        if (capital_updatedInfo.find(x => x.MasterID === rowobj.MasterID)) {
-        //            index = capital_updatedInfo.indexOf(capital_updatedInfo.find(x => x.ProjectNumber === rowobj.ProjectNumber)); //getting index of that rec
-        //            capital_updatedInfo.splice(index, 1); //remove the existing rec from object 
-        //        }
-
-        //        document.getElementById('capital_update_notificationnumber1').innerHTML = capital_updatedInfo.length;
-        //        document.getElementById('capital_delete_notificationnumber1').innerHTML = capital_deleteInfo.length;
-
-        //        if (parseInt(capital_updatedInfo.length) > 0) {
-        //            document.getElementById('capital_update_notificationnumber1').style.display = 'initial';
-        //            document.getElementById('capital_update_notificationnumber2').style.display = 'initial';
-        //        }
-        //        else {
-        //            document.getElementById('capital_update_notificationnumber1').style.display = 'none';
-        //            document.getElementById('capital_update_notificationnumber2').style.display = 'none';
-        //        }
-
-        //        if (parseInt(capital_deleteInfo.length) > 0) {
-        //            document.getElementById('capital_delete_notificationnumber1').style.display = 'initial';
-        //            document.getElementById('capital_delete_notificationnumber2').style.display = 'initial';
-        //        }
-        //        else {
-        //            document.getElementById('capital_delete_notificationnumber1').style.display = 'none';
-        //            document.getElementById('capital_delete_notificationnumber2').style.display = 'none';
-        //        }
-        //        setcapitalSubmitting();
-        //        var screenst = $scope.ProjectsTable_fullscreen;
-        //        loadfullscreencss(screenst);
-        //    }
-
-        //}
         var capital_update = function (instance, cell, col, row, value) {
 
             //creates json object of jexcel
@@ -4562,7 +4392,7 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
                 vto = instance.jexcel.getRowData(parseInt(to - 1));
             }
 
-            updateprogressbar(100, "Updating...");
+            updateprogressbar(100, "Completed...");
             $http({
                 method: 'POST',
                 url: '../Resource/moverows',
@@ -4578,7 +4408,7 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
                     objcapital.setData(response.data);
                     validatefilters("capital", objcapital);
                     updateprogressbar(100, "Completed...");
-                    document.getElementById('progressbar').style.display = 'none';
+
                 }, function (error) {
                     console.log(error);
                 });
@@ -4631,8 +4461,8 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
                 params: { "intProjectID": localStorage.getItem("projectid"), "intMasterID": MasterID, "intColumnID": ColumnID, "strComments": Comments, "userid": localStorage.getItem("userID") }
             }).then(function (response) {
                 update_capital_comments();
-                updateprogressbar(100, "Comments are updated...");
-                document.getElementById('progressbar').style.display = 'none';
+                updateprogressbar(100, "Completed...");
+
             }, function (error) {
                 console.log(error);
             });
@@ -4646,8 +4476,8 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
                 params: { "intMasterID": MasterID, "intColumnID": ColumnID, "intColumnID": ColumnID }
             }).then(function (response) {
                 update_capital_comments();
-                updateprogressbar(100, "Comments are updated...");
-                document.getElementById('progressbar').style.display = 'none';
+                updateprogressbar(100, "Completed...");
+
             }, function (error) {
                 console.log(error);
             });
@@ -4748,22 +4578,6 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
                             }
                             validatefilters("capital", objcapital);
 
-
-                            //if (confirm('Are you sure do you want to delete?')) {
-                            //    obj.deleteRow(obj.getSelectedRows().length ? undefined : parseInt(y));
-                            //    validatefilters("capital", objcapital);
-                            //}
-
-                            //var filterstatus = checkfilters('capital');
-                            //if (filterstatus == 1 && obj.getSelectedRows().length > 1) {
-                            //    showalertsavechangesalert('Please select a single row to delete, multiple rows not possible in the filtered table.');
-                            //}
-                            //else {
-                            //    if (confirm('Are you sure do you want to delete?')) {
-                            //        obj.deleteRow(obj.getSelectedRows().length ? undefined : parseInt(y));
-                            //        validatefilters("capital", objcapital);
-                            //    }
-                            //}
                         }
                     });
                 }
@@ -4874,99 +4688,15 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
         refreshtablesum();
     }
 
-
-
-    function getresourcedata() {
-        //$http({
-        //    method: 'GET',
-        //    url: '../Resource/getresourcedata'
-        //}).then(function (response) {
-        //    dsResource = response.data;
-        //    $http({
-        //        method: 'GET',
-        //        url: '../Resource/getBusiness'
-        //    }).then(function (response) {
-        //        rowbusiness = response.data;
-
-        //        $http({
-        //            method: 'POST',
-        //            url: '../Resource/getBU'
-        //        }).then(function (response) {
-        //            rowbu = response.data;
-
-        //            $http({
-        //                method: 'POST',
-        //                url: '../Resource/getHighOrg'
-        //            }).then(function (response) {
-        //                rowhighorg = response.data;
-
-        //                $http({
-        //                    method: 'POST',
-        //                    url: '../Resource/getMidOrgData'
-        //                }).then(function (response) {
-        //                    rowMidOrg = response.data;
-
-        //                    $http({
-        //                        method: 'POST',
-        //                        url: '../Resource/getTeamData'
-        //                    }).then(function (response) {
-        //                        rowTeam = response.data;
-
-        //                        $http({
-        //                            method: 'GET',
-        //                            url: '../Resource/SkillData'
-        //                        }).then(function (response) {
-        //                            rowRequiredSkills = response.data;
-        //                            loadresourcetable();
-        //                        }, function (error) {
-        //                            console.log(error);
-        //                        });
-
-        //                    }, function (error) {
-        //                        console.log(error);
-        //                    });
-
-        //                }, function (error) {
-        //                    console.log(error);
-        //                });
-
-        //            }, function (error) {
-        //                console.log(error);
-        //            });
-
-        //        }, function (error) {
-        //            console.log(error);
-        //        });
-
-        //    }, function (error) {
-        //        console.log(error);
-        //    });
-
-        //}, function (error) {
-        //    console.log(error);
-        //});
-    }
-
-    //function getusername() {
-    //    $http({
-    //        method: 'GET',
-    //        url: '../Projects/validateLogin'
-    //    }).then(function (response) {
-    //        var username = response.data;
-    //        document.getElementById('loginusername').innerHTML = "Welcome, " + username;
-    //        document.getElementById('userprofilepanel1').style.display = 'block';
-    //        document.getElementById('userprofilepanel2').style.display = 'block';
-    //    }, function (error) {
-    //        console.log(error);
-    //    });
-    //}
-
     function updateprogressbar(value, item) {
         document.getElementById('progressBarText').innerHTML = item;
         document.getElementById('progressbar').style.display = 'block'
         progressbarstyle = document.getElementsByClassName('progress-bar progress-bar-striped progress-bar-animated');
         pstyle = "width: " + value + "%";
         progressbarstyle[0].setAttribute("style", pstyle)
+        if (value == 100) {
+            document.getElementById('progressbar').style.display = 'none'
+        }
     }
 
     function isNumberKey(evt, obj) {
@@ -4990,8 +4720,7 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
             params: { "intProjectID": localStorage.getItem("projectid"), "intMasterID": MasterID, "intColumnID": ColumnID, "strComments": Comments, "userid": localStorage.getItem("userID") }
         }).then(function (response) {
             update_resource_comments();
-            updateprogressbar(100, "Comments are updated...");
-            document.getElementById('progressbar').style.display = 'none';
+            updateprogressbar(100, "Completed...");
         }, function (error) {
             console.log(error);
         });
@@ -5005,8 +4734,7 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
             params: { "intMasterID": MasterID, "intColumnID": ColumnID, "intColumnID": ColumnID }
         }).then(function (response) {
             update_resource_comments();
-            updateprogressbar(100, "Comments are updated...");
-            document.getElementById('progressbar').style.display = 'none';
+            updateprogressbar(100, "Completed...");
         }, function (error) {
             console.log(error);
         });
@@ -5031,7 +4759,6 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
 
             document.getElementById('resource').setAttribute("style", "padding-left:20px; padding-right:20px; padding-bottom:10px; opacity:1;")
             updateprogressbar(100, "Completed....");
-            document.getElementById('progressbar').style.display = 'none';
         }
 
         //start delete & update even code
@@ -5240,7 +4967,7 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
                 vto = instance.jexcel.getRowData(parseInt(to - 1));
             }
 
-            updateprogressbar(100, "Updating...");
+            updateprogressbar(100, "Completed...");
             $http({
                 method: 'POST',
                 url: '../Resource/moverows',
@@ -5256,7 +4983,6 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
                     obj.setData(response.data);
                     validatefilters("resource", obj);
                     updateprogressbar(100, "Completed...");
-                    document.getElementById('progressbar').style.display = 'none';
                 }, function (error) {
                     console.log(error);
                 });
@@ -5458,7 +5184,6 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
                         }
                     }
                 }
-
                 return items;
             },
             updateTable: function (instance, cell, col, row, val, label, cellName) {
@@ -5534,336 +5259,9 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
         }
 
         refreshtablesum();
-
-        //method to load captial data table
-        //summary = jexcel(document.getElementById('excelsummary'), {
-        //    csv: '/assets/Jexcel/summary.csv',
-        //    csvHeaders: true,
-        //    tableOverflow: true,
-        //    tableWidth: mainwidth,
-        //    search: true,
-        //    freezeColumns: 1,
-        //    columns: [
-        //        { type: 'text', width: 400, readOnly: true },
-        //        { type: 'text', width: 100, readOnly: true },
-        //        { type: 'text', width: 100, readOnly: true },
-        //        { type: 'text', width: 100, readOnly: true },
-        //        { type: 'text', width: 100, readOnly: true },
-        //        { type: 'text', width: 100, readOnly: true },
-        //        { type: 'text', width: 100, readOnly: true },
-        //        { type: 'text', width: 100, readOnly: true },
-        //        { type: 'text', width: 100, readOnly: true },
-        //        { type: 'text', width: 100, readOnly: true },
-        //        { type: 'text', width: 100, readOnly: true },
-        //        { type: 'text', width: 100, readOnly: true },
-        //        { type: 'text', width: 100, readOnly: true },
-        //        { type: 'text', width: 100, readOnly: true },
-        //        { type: 'text', width: 100, readOnly: true },
-        //        { type: 'text', width: 100, readOnly: true },
-        //        { type: 'text', width: 100, readOnly: true },
-        //        { type: 'text', width: 100, readOnly: true },
-        //        { type: 'text', width: 100, readOnly: true },
-        //        { type: 'text', width: 100, readOnly: true },
-        //        { type: 'text', width: 100, readOnly: true },
-        //        { type: 'text', width: 100, readOnly: true },
-        //        { type: 'text', width: 100, readOnly: true },
-        //        { type: 'text', width: 100, readOnly: true },
-        //        { type: 'text', width: 100, readOnly: true },
-        //        { type: 'text', width: 100, readOnly: true },
-        //        { type: 'text', width: 100, readOnly: true },
-        //        { type: 'text', width: 100, readOnly: true },
-        //        { type: 'text', width: 100, readOnly: true },
-        //        { type: 'text', width: 100, readOnly: true },
-        //        { type: 'text', width: 100, readOnly: true },
-        //        { type: 'text', width: 100, readOnly: true },
-        //        { type: 'text', width: 100, readOnly: true },
-        //        { type: 'text', width: 100, readOnly: true },
-        //        { type: 'text', width: 100, readOnly: true },
-        //        { type: 'text', width: 100, readOnly: true },
-        //        { type: 'text', width: 100, readOnly: true },
-        //        { type: 'text', width: 100, readOnly: true },
-        //        { type: 'text', width: 100, readOnly: true },
-        //        { type: 'text', width: 100, readOnly: true },
-        //        { type: 'text', width: 100, readOnly: true },
-        //        { type: 'text', width: 100, readOnly: true },
-        //        { type: 'text', width: 100, readOnly: true },
-        //        { type: 'text', width: 100, readOnly: true },
-        //        { type: 'text', width: 100, readOnly: true },
-        //        { type: 'text', width: 100, readOnly: true },
-        //        { type: 'text', width: 100, readOnly: true },
-        //        { type: 'text', width: 100, readOnly: true },
-        //        { type: 'text', width: 100, readOnly: true },
-        //        { type: 'text', width: 100, readOnly: true },
-        //        { type: 'text', width: 100, readOnly: true },
-        //        { type: 'text', width: 100, readOnly: true },
-        //        { type: 'text', width: 100, readOnly: true },
-        //        { type: 'text', width: 100, readOnly: true },
-        //        { type: 'text', width: 100, readOnly: true },
-        //        { type: 'text', width: 100, readOnly: true },
-        //        { type: 'text', width: 100, readOnly: true },
-        //        { type: 'text', width: 100, readOnly: true },
-        //        { type: 'text', width: 100, readOnly: true },
-        //        { type: 'text', width: 100, readOnly: true },
-        //        { type: 'text', width: 100, readOnly: true },
-        //        { type: 'text', width: 100, readOnly: true },
-        //    ],
-        //    contextMenu: function () {
-        //        return false;
-        //    }
-        //});
-
-        //method to load captial data table
-        //FTEsummary = jexcel(document.getElementById('excelFTEsummary'), {
-        //    csv: '/assets/Jexcel/FETsummary.csv',
-        //    csvHeaders: true,
-        //    tableOverflow: true,
-        //    tableWidth: mainwidth,
-        //    search: true,
-        //    freezeColumns: 1,
-        //    columns: [
-        //        { type: 'text', width: 250, readOnly: true },
-        //        { type: 'text', width: 100, readOnly: true },
-        //        { type: 'text', width: 100, readOnly: true },
-        //        { type: 'text', width: 100, readOnly: true },
-        //        { type: 'text', width: 100, readOnly: true },
-        //        { type: 'text', width: 100, readOnly: true },
-        //        { type: 'text', width: 100, readOnly: true },
-        //        { type: 'text', width: 100, readOnly: true },
-        //        { type: 'text', width: 100, readOnly: true },
-        //        { type: 'text', width: 100, readOnly: true },
-        //        { type: 'text', width: 100, readOnly: true },
-        //        { type: 'text', width: 100, readOnly: true },
-        //        { type: 'text', width: 100, readOnly: true },
-        //        { type: 'text', width: 100, readOnly: true },
-        //        { type: 'text', width: 100, readOnly: true },
-        //        { type: 'text', width: 100, readOnly: true },
-        //        { type: 'text', width: 100, readOnly: true },
-        //        { type: 'text', width: 100, readOnly: true },
-        //        { type: 'text', width: 100, readOnly: true },
-        //        { type: 'text', width: 100, readOnly: true },
-        //        { type: 'text', width: 100, readOnly: true },
-        //        { type: 'text', width: 100, readOnly: true },
-        //        { type: 'text', width: 100, readOnly: true },
-        //        { type: 'text', width: 100, readOnly: true },
-        //        { type: 'text', width: 100, readOnly: true },
-        //        { type: 'text', width: 100, readOnly: true },
-        //        { type: 'text', width: 100, readOnly: true },
-        //        { type: 'text', width: 100, readOnly: true },
-        //        { type: 'text', width: 100, readOnly: true },
-        //        { type: 'text', width: 100, readOnly: true },
-        //        { type: 'text', width: 100, readOnly: true },
-        //        { type: 'text', width: 100, readOnly: true },
-        //        { type: 'text', width: 100, readOnly: true },
-        //        { type: 'text', width: 100, readOnly: true },
-        //        { type: 'text', width: 100, readOnly: true },
-        //        { type: 'text', width: 100, readOnly: true },
-        //        { type: 'text', width: 100, readOnly: true },
-        //        { type: 'text', width: 100, readOnly: true },
-        //        { type: 'text', width: 100, readOnly: true },
-        //        { type: 'text', width: 100, readOnly: true },
-        //        { type: 'text', width: 100, readOnly: true },
-        //        { type: 'text', width: 100, readOnly: true },
-        //        { type: 'text', width: 100, readOnly: true },
-        //        { type: 'text', width: 100, readOnly: true },
-        //        { type: 'text', width: 100, readOnly: true },
-        //        { type: 'text', width: 100, readOnly: true },
-        //        { type: 'text', width: 100, readOnly: true },
-        //        { type: 'text', width: 100, readOnly: true },
-        //        { type: 'text', width: 100, readOnly: true },
-        //        { type: 'text', width: 100, readOnly: true },
-        //        { type: 'text', width: 100, readOnly: true },
-        //        { type: 'text', width: 100, readOnly: true },
-        //        { type: 'text', width: 100, readOnly: true },
-        //        { type: 'text', width: 100, readOnly: true },
-        //        { type: 'text', width: 100, readOnly: true },
-        //        { type: 'text', width: 100, readOnly: true },
-        //        { type: 'text', width: 100, readOnly: true },
-        //        { type: 'text', width: 100, readOnly: true },
-        //        { type: 'text', width: 100, readOnly: true },
-        //        { type: 'text', width: 100, readOnly: true },
-        //        { type: 'text', width: 100, readOnly: true },
-        //    ],
-        //    contextMenu: function () {
-        //        return false;
-        //    }
-        //});
-
-        //}
-
-        //window.onkeyup = function (event) {
-
-        //    if (event.keyCode == 27) {
-
-        //        var width = window.innerWidth
-        //        var height = parseInt(window.innerHeight) - 37;
-
-        //        // search box css
-        //        var elm = {};
-        //        var elms = document.getElementById("tbl_resource").getElementsByTagName("*");
-
-        //        var varsearch = elms[3].getAttribute("style");
-        //        var searchstyle = "width: 100%; background-color: rgb(6, 114, 236); color: black; font-size: 12px; padding-left: 15px; padding-top: 7px; padding-bottom: 7px; border: 1px solid rgb(6, 114, 236);";
-
-        //        if (varsearch === searchstyle) {
-        //            varsearch = "position: fixed; " + varsearch;
-        //        }
-        //        else if (varsearch === "position: fixed; " + searchstyle) {
-        //            varsearch = searchstyle;
-        //        }
-        //        elms[3].setAttribute("style", varsearch)
-
-        //        //table css
-        //        var vartable = elms[5].getAttribute("style");
-        //        var searchtablestyle = "overflow: auto; width: " + mainwidth + ";";
-
-        //        if (vartable === searchtablestyle) {
-        //            vartable = "overflow: auto; top: 33px; height:" + height + "px; width: " + width + "px;";
-        //        }
-        //        else {
-        //            vartable = searchtablestyle;
-        //        }
-        //        elms[5].setAttribute("style", vartable)
-
-        //        //table position
-        //        var fullscreen = document.getElementById("tbl_resource");
-        //        var css = fullscreen.getAttribute("style");
-        //        var style = "position: fixed; top: 0px; left: 0px; width:100%; height:100%; background-color: white;";
-        //        if (css === null || css === "position: inherit;") {
-        //            css = style;
-        //        }
-        //        else if (css === "position: fixed; top: 0px; left: 0px; width:100%; height:100%; background-color: white;") {
-        //            css = "position: inherit;";
-        //        }
-        //        fullscreen.setAttribute("style", css);
-
-        //    }
-
-        //alert(dsResource.length);
-        //if (dsResource.length === 0) {
-        //    alert('hi');
-        //    var norecordsfound = document.createElement("div");
-        //    norecordsfound.id = "tbl_resource_norecordfound";
-        //    var textnorecordfound = document.createElement("span");
-        //    textnorecordfound.className = "badge badge-danger";
-        //    textnorecordfound.innerHTML = "No Records Found!";
-        //    norecordsfound.appendChild(textnorecordfound);
-        //    var maindivresource = document.getElementById("resource");
-        //    maindivresource.appendChild(norecordsfound);
-        //    document.getElementById("tbl_resource").setAttribute("style", "display:none;");
-        //}
-
     }
 
     function bindresourcedropdowns() {
-
-        //var jSuite_drop_Capital_Priority = jSuites.dropdown(document.getElementById('drop_Capital_Priority'), {
-        //    data: [],
-        //    autocomplete: true,
-        //    placeholder: "Select Priority",
-        //    lazyLoading: false,
-        //    multiple: false,
-        //    width: '100%',
-        //});
-
-        //var jSuite_drop_Capital_Category = jSuites.dropdown(document.getElementById('drop_Capital_Category'), {
-        //    data: [],
-        //    autocomplete: true,
-        //    placeholder: "Select Capital Category",
-        //    lazyLoading: false,
-        //    multiple: false,
-        //    width: '100%',
-        //});
-
-        //var jSuite_drop_Capital_Type_2 = jSuites.dropdown(document.getElementById('drop_Capital_Type_2'), {
-        //    data: [],
-        //    autocomplete: true,
-        //    placeholder: "Select Capital Type",
-        //    lazyLoading: false,
-        //    multiple: false,
-        //    width: '100%',
-        //});
-
-        //var jSuite_drop_Capitallabour_Priority = jSuites.dropdown(document.getElementById('drop_capital_labour_Priority'), {
-        //    data: [],
-        //    autocomplete: true,
-        //    placeholder: "Select Priority",
-        //    lazyLoading: false,
-        //    multiple: false,
-        //    width: '100%',
-        //});
-
-        //var jSuite_drop_drop_DE_ExpenseCategory = jSuites.dropdown(document.getElementById('drop_DE_ExpenseCategory'), {
-        //    data: [],
-        //    autocomplete: true,
-        //    placeholder: "Select Direct Expense",
-        //    lazyLoading: false,
-        //    multiple: false,
-        //    width: '100%',
-        //});
-
-        //var jSuite_drop_Capital_Labor_Category = jSuites.dropdown(document.getElementById('drop_Capital_Labor_Category'), {
-        //    data: [],
-        //    autocomplete: true,
-        //    placeholder: "Select Capital Category",
-        //    lazyLoading: false,
-        //    multiple: false,
-        //    width: '100%',
-        //});
-
-
-        //var jSuite_dropBusiness_CL = jSuites.dropdown(document.getElementById('dropBusiness_CL'), {
-        //    data: [],
-        //    autocomplete: true,
-        //    placeholder: "Select Business",
-        //    lazyLoading: false,
-        //    multiple: false,
-        //    width: '100%',
-        //});
-
-        //var jSuite_dropBU_CL = jSuites.dropdown(document.getElementById('dropBU_CL'), {
-        //    data: [],
-        //    autocomplete: true,
-        //    placeholder: "Select Business Unit",
-        //    lazyLoading: false,
-        //    multiple: false,
-        //    width: '100%',
-        //});
-
-        //var jSuite_dropHighOrg_CL = jSuites.dropdown(document.getElementById('dropHighOrg_CL'), {
-        //    data: [],
-        //    autocomplete: true,
-        //    placeholder: "Select HighOrg",
-        //    lazyLoading: false,
-        //    multiple: false,
-        //    width: '100%',
-        //});
-
-        //var jSuite_dropMidOrg_CL = jSuites.dropdown(document.getElementById('dropMidOrg_CL'), {
-        //    data: [],
-        //    autocomplete: true,
-        //    placeholder: "Select MidOrg",
-        //    lazyLoading: false,
-        //    multiple: false,
-        //    width: '100%',
-        //});
-
-        //var jSuite_dropTeam_CL = jSuites.dropdown(document.getElementById('dropTeam_CL'), {
-        //    data: [],
-        //    autocomplete: true,
-        //    placeholder: "Select Team",
-        //    lazyLoading: false,
-        //    multiple: false,
-        //    width: '100%'
-        //});
-
-        //var jSuite_dropRequiredSkills_CL = jSuites.dropdown(document.getElementById('dropRequiredSkills_CL'), {
-        //    data: [],
-        //    autocomplete: true,
-        //    placeholder: "Select Required Skills",
-        //    lazyLoading: false,
-        //    multiple: false,
-        //    width: '100%',
-        //});
 
         document.getElementById('dropOperatingExpenseWBS').innerHTML = '';
         document.getElementById('dropBusiness').innerHTML = '';
@@ -6128,35 +5526,16 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
                     }).then(function (response) {
                         if (response.data.length > 0) {
 
-                            //var twidth = document.getElementById("mainbody").offsetWidth
-                            //var mywidth = (twidth - 108) + "px";
-                            //var elms = document.getElementById("tbl_resource").getElementsByTagName("*");
-                            //elms[5].setAttribute("style", "width:" + mywidth);
-
                             if (response.data.length === 1) {
                                 dsResource = response.data;
                                 loadresourcetable();
                             }
                             else {
-
-                                //for (var i = 0; i < resource_hidecolumns.length; i++) {
-                                //    //console.log(resource_hidecolumns[i])
-                                //    var index = resource_hidecolumns[i];
-                                //    obj.filter.children[index + 1].style.display = "block";
-                                //    obj.showColumn(index);
-                                //}
                                 obj.setData(response.data);
-                                //for (var i = 0; i < resource_hidecolumns.length; i++) {
-                                //    //console.log(resource_hidecolumns[i])
-                                //    var index = resource_hidecolumns[i];
-                                //    obj.filter.children[index + 1].style.display = "none";
-                                //    obj.hideColumn(index);
-                                //}
                             }
 
-                            updateprogressbar(100, "Data is loading...");
-                            document.getElementById('progressbar').style.display = 'none';
-                            //resource_clear();
+                            updateprogressbar(100, "Completed...");
+
                         }
 
                     }, function (error) {
@@ -6218,8 +5597,7 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
             loadresourcecheckbook(Fisyear);
 
             updatedInfo_resource_checkbook = [];
-            updateprogressbar(100, "Saving changes....");
-            document.getElementById('progressbar').style.display = 'none';
+            updateprogressbar(100, "Completed...");
             document.getElementById('notification_resource_checkbook').style.display = 'none';
             document.getElementById('update_resource_checkbook1').innerHTML = 0;
 
@@ -6268,16 +5646,13 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
                     duplicateInfo = [];
                     updatedInfo = [];
                     deleteInfo = [];
-                    updateprogressbar(100, "Saving changes....");
-                    document.getElementById('progressbar').style.display = 'none';
+                    updateprogressbar(100, "Completed...");
                     document.getElementById('notification').style.display = 'none';
                     document.getElementById('update_notificationnumber1').innerHTML = 0;
                     document.getElementById('delete_notificationnumber1').innerHTML = 0;
-                    //validaterecords();
                 }
 
-                updateprogressbar(100, "Data is loading...");
-                document.getElementById('progressbar').style.display = 'none';
+                updateprogressbar(100, "Completed...");
                 savechangesinfullscreenmode();
 
                 validatefilters("resource", obj);
@@ -6339,15 +5714,12 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
                 objcapital.setData(response.data);
 
                 if (status === true) {
-
-                    updateprogressbar(100, "Data is loading...");
-                    document.getElementById('progressbar').style.display = 'none';
+                    updateprogressbar(100, "Completed...");
                     capital_duplicateInfo = [];
                     savechangesinfullscreenmode();
                 }
                 else {
-                    updateprogressbar(100, "Saving changes....");
-                    document.getElementById('progressbar').style.display = 'none';
+                    updateprogressbar(100, "Completed...");
                     document.getElementById('capital_notification').style.display = 'none';
                     document.getElementById('capital_update_notificationnumber1').innerHTML = 0;
                     document.getElementById('capital_delete_notificationnumber1').innerHTML = 0;
@@ -6381,16 +5753,6 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
             object.filters[fild] = res;
             object.closeFilter();
         }
-
-        //var reloadfilterinfo = localStorage.getItem(key + "_filtervalue");
-        //var reloadfilterkey = localStorage.getItem(key + "_filterkey");
-        //if (reloadfilterinfo != null && reloadfilterkey != null) {
-        //    var res = reloadfilterinfo.split(";");
-        //    res = res.map(s => s.trim());
-        //    object.filter.children[parseInt(reloadfilterkey) + 1].innerHTML = reloadfilterinfo;
-        //    object.filters[reloadfilterkey] = res;
-        //    object.closeFilter();
-        //}
     }
 
     function checkfilters(key) {
@@ -6401,26 +5763,6 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
         else {
             return true;
         }
-    }
-
-    function validaterecords() {
-
-        //var jsonobj = obj.getJson(false);
-        //if (jsonobj.length === 0) {            
-        //    var norecordsfound = document.createElement("div");
-        //    norecordsfound.id = "tbl_resource_norecordfound";
-        //    var textnorecordfound = document.createElement("span");
-        //    textnorecordfound.className = "badge badge-dangerno";
-        //    textnorecordfound.innerHTML = "No Records Found!";
-        //    norecordsfound.appendChild(textnorecordfound);
-        //    var maindivresource = document.getElementById("resource");
-        //    maindivresource.appendChild(norecordsfound);
-        //    document.getElementById("tbl_resource").setAttribute("style", "display:none;");
-        //}
-        //else {
-        //    document.getElementById("tbl_resource_norecordfound").setAttribute("style", "display:none;");
-        //    document.getElementById("tbl_resource").setAttribute("style", "display:block;");
-        //}
     }
 
     $scope.resetfilter = function () {
@@ -6475,8 +5817,7 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
                 element.innerHTML = "";
 
                 dsResource = response.data;
-                updateprogressbar(100, "Data is loading...");
-                document.getElementById('progressbar').style.display = 'none';
+                updateprogressbar(100, "Completed...");
                 duplicateInfo = [];
                 if (dsResource.length === 0) {
                     showalert('No records found!');
@@ -6486,8 +5827,7 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
             else {
                 dsResource = response.data;
                 obj.setData(response.data);
-                updateprogressbar(100, "Data is loading...");
-                document.getElementById('progressbar').style.display = 'none';
+                updateprogressbar(100, "Completed...");
                 duplicateInfo = [];
                 if (dsResource.length === 0) {
                     showalert('No records found!');
@@ -6520,8 +5860,7 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
                 element.innerHTML = "";
 
                 dsCapital = response.data;
-                updateprogressbar(100, "Data is loading...");
-                document.getElementById('progressbar').style.display = 'none';
+                updateprogressbar(100, "Completed...");
                 capital_duplicateInfo = [];
                 if (dsCapital.length === 0) {
                     showalert('No records found!');
@@ -6530,8 +5869,7 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
             }
             else {
                 objcapital.setData(response.data);
-                updateprogressbar(100, "Data is loading...");
-                document.getElementById('progressbar').style.display = 'none';
+                updateprogressbar(100, "Completed...");
                 if (response.data.length === 0) {
                     showalert('No records found!');
                 }
@@ -6563,8 +5901,7 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
                 element.innerHTML = "";
 
                 dsCapitalLabour = response.data;
-                updateprogressbar(100, "Data is loading...");
-                document.getElementById('progressbar').style.display = 'none';
+                updateprogressbar(100, "Completed...");
                 capitallabor_duplicateInfo = [];
                 if (dsCapitalLabour.length === 0) {
                     showalert('No records found!');
@@ -6575,8 +5912,7 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
 
                 dsCapitalLabour = response.data;
                 objcapitallabour.setData(response.data);
-                updateprogressbar(100, "Data is loading...");
-                document.getElementById('progressbar').style.display = 'none';
+                updateprogressbar(100, "Completed...");
                 capitallabor_duplicateInfo = [];
                 if (dsCapitalLabour.length === 0) {
                     showalert('No records found!');
@@ -6609,8 +5945,7 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
                 element.innerHTML = "";
 
                 dsDirectExpense = response.data;
-                updateprogressbar(100, "Data is loading...");
-                document.getElementById('progressbar').style.display = 'none';
+                updateprogressbar(100, "Completed...");
                 directexpenses_duplicateInfo = [];
                 if (dsDirectExpense.length === 0) {
                     showalert('No records found!');
@@ -6621,8 +5956,8 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
 
                 dsDirectExpense = response.data;
                 objdirectexpenses.setData(response.data);
-                updateprogressbar(100, "Data is loading...");
-                document.getElementById('progressbar').style.display = 'none';
+                updateprogressbar(100, "Completed...");
+
                 directexpenses_duplicateInfo = [];
                 if (dsDirectExpense.length === 0) {
                     showalert('No records found!');
@@ -6857,44 +6192,6 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
         }
     }
 
-    //function InputMaxLenght(maxLength) {
-
-    //    // Methods
-    //    this.closeEditor = function (cell, save) {
-    //        var value = cell.children[0].value;
-    //        cell.innerHTML = value;
-    //        return value;
-    //    };
-    //    this.openEditor = function (cell) {
-    //        var previousvalue = cell.innerHTML;
-    //        // Create input
-    //        var element = document.createElement('input');
-    //        element.maxLength = maxLength;
-    //        element.value = previousvalue;
-    //        // // Update cell
-    //        cell.classList.add('editor');
-    //        cell.innerHTML = "";
-    //        cell.appendChild(element);
-    //        // // Focus on the element
-    //        element.focus();
-    //    };
-    //    this.getValue = function (cell) {
-    //        return cell.innerHTML;
-    //    };
-    //    this.setValue = function (cell, value) {
-    //        cell.innerHTML = value;
-    //    };
-    //    this.updateCell = function (cell, value) {
-    //        let instance = cell.parentNode.parentNode.parentNode.parentNode.parentNode.jexcel;
-    //        let y = cell.dataset.y;
-    //        let x = cell.dataset.x
-    //        cell.innerHTML = value;
-    //        instance.options.data[y][x] = value;
-    //        return value;
-    //    };
-    //}
-
-
     function loadmastersettings() {
 
         var usertype = localStorage.getItem("isAdmin");
@@ -7017,7 +6314,7 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
             subelms[5].setAttribute("style", newstyle);
 
             updateprogressbar(100, "Completed....");
-            document.getElementById('progressbar').style.display = 'none';
+
             document.getElementById('decheckbookpanel').style.display = 'block';
         }
         var de_update = function (instance, cell, col, row, value) {
@@ -7195,7 +6492,7 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
 
             document.getElementById('resource').setAttribute("style", "padding-left:20px; padding-right:20px; padding-bottom:10px; opacity:1;")
             updateprogressbar(100, "Completed....");
-            document.getElementById('progressbar').style.display = 'none';
+
             document.getElementById('resourcecheckbookpanel').style.display = 'block';
         }
 
@@ -7557,9 +6854,16 @@ app.filter('dotsFilter', [
          * @param {number} limit
          */
         function dotsFilter(input, limit) {
-            var newContent = $filter('limitTo')(input, limit);
-            if (newContent.length < input.length) { newContent += '...'; }
-            return newContent;
+
+            if (input == null) {
+                return '';
+            }
+            else {
+                var newContent = $filter('limitTo')(input, limit);
+                if (newContent.length < input.length) { newContent += '...'; }
+                return newContent;
+            }
+
         }
         return dotsFilter;
     }
@@ -7576,14 +6880,3 @@ app.directive('expand', function () {
     };
 });
 
-app.directive('ngRightClick', function ($parse) {
-    return function (scope, element, attrs) {
-        var fn = $parse(attrs.ngRightClick);
-        element.bind('contextmenu', function (event) {
-            scope.$apply(function () {
-                event.preventDefault();
-                fn(scope, { $event: event });
-            });
-        });
-    };
-});

@@ -209,6 +209,7 @@ namespace MECC_ReportPortal.Controllers
                     WBSNumber = item.WBSNumber,
                     ExpenseCategory = item.ExpenseCategory,
                     Description = item.Description,
+                    PONumber = item.PONumber,
                     FisYear = item.FisYear,
                     MAY = Convert.ToDecimal(item.MAY),
                     JUN = Convert.ToDecimal(item.JUN),
@@ -230,11 +231,11 @@ namespace MECC_ReportPortal.Controllers
         }
 
         [HttpPost]
-        public JsonResult get_de_cji3_data(int intProjectID, string strWBSNumber, string strFisYear, string strMonth, string strExpensecategory, string strDescription, bool boolstatus)
+        public JsonResult get_de_cji3_data(int intProjectID, string strWBSNumber, string strFisYear, string strMonth, string strExpensecategory, string strDescription, bool boolstatus, string strPONumber)
         {
             if(boolstatus == false)
             {
-                var obj = db.SP_Get_DE_CJI3_Data(strWBSNumber, strFisYear, strMonth, strExpensecategory, strDescription).ToList();
+                var obj = db.SP_Get_DE_CJI3_Data(strWBSNumber, strFisYear, strMonth, strExpensecategory, strDescription, strPONumber).ToList();
                 return Json(obj, JsonRequestBehavior.AllowGet);
             }
             else
@@ -288,6 +289,7 @@ namespace MECC_ReportPortal.Controllers
             string strMonth = "";
             string Expensecategory = "";
             string Description = "";
+            string strPONumber = "";
 
             if (data.insert != null)
             {                
@@ -324,7 +326,7 @@ namespace MECC_ReportPortal.Controllers
                 }
             }
 
-            var obj = db.SP_Get_DE_CJI3_Data(strWBSNumber, strFisyear, strMonth, Expensecategory, Description).ToList();
+            var obj = db.SP_Get_DE_CJI3_Data(strWBSNumber, strFisyear, strMonth, Expensecategory, Description, strPONumber).ToList();
             return Json(obj, JsonRequestBehavior.AllowGet);            
         }
 
@@ -632,6 +634,7 @@ namespace MECC_ReportPortal.Controllers
                                 obj.WBSNumber = row["WBSNumber"].ToString();
                                 obj.ExpenseCategory = row["ExpenseCategory"].ToString();
                                 obj.Description = row["Description"].ToString();
+                                obj.PONumber = row["PONumber"].ToString();
                                 obj.CreatedBy = userid;
                                 obj.CreatedOn = DateTime.Now;
                                 db.DirectExpensesInfoes.Add(obj);
@@ -2524,6 +2527,7 @@ namespace MECC_ReportPortal.Controllers
                         row.Type = item.Type;
                         row.ExpenseCategory = item.ExpenseCategory;
                         row.Description = item.Description;
+                        row.PONumber = item.PONumber;
                         row.ModifiedBy = obj.userid;
                         row.ModifiedOn = DateTime.Now;
 
@@ -3325,6 +3329,7 @@ namespace MECC_ReportPortal.Controllers
             public string WBSNumber { get; set; }
             public string ExpenseCategory { get; set; }
             public string Description { get; set; }
+            public string PONumber { get; set; }
             public string FisYear { get; set; }
             public decimal MAY { get; set; }
             public decimal JUN { get; set; }

@@ -514,6 +514,12 @@ html, body {
     color: #075bb6;
 }
 
+.disableresourcecheckbookfontplus {
+    font-size: 14px;
+    color: #ccc;
+    cursor: not-allowed;
+}
+
 .resourcecheckbookfontminus {
     font-size: 14px;
     color: #157ff1;
@@ -552,20 +558,12 @@ html, body {
         text-align: center;
     }
 
-    #decheckbook tr td:nth-child(7) {
-        text-align: right;
-        cursor: pointer;
-        font-weight: 500;
-        color: #012042;
-        background-color: #e5effb;
-    }
-
     #decheckbook tr td:nth-child(8) {
         text-align: right;
+        cursor: pointer;
         font-weight: 500;
         color: #012042;
         background-color: #e5effb;
-        cursor: pointer;
     }
 
     #decheckbook tr td:nth-child(9) {
@@ -648,8 +646,12 @@ html, body {
         cursor: pointer;
     }
 
-    #decheckbook tr td:nth-child(7):hover {
-        background-color: #d1e6fd;
+    #decheckbook tr td:nth-child(19) {
+        text-align: right;
+        font-weight: 500;
+        color: #012042;
+        background-color: #e5effb;
+        cursor: pointer;
     }
 
     #decheckbook tr td:nth-child(8):hover {
@@ -693,6 +695,10 @@ html, body {
     }
 
     #decheckbook tr td:nth-child(18):hover {
+        background-color: #d1e6fd;
+    }
+
+    #decheckbook tr td:nth-child(19):hover {
         background-color: #d1e6fd;
     }
 
@@ -833,3 +839,96 @@ html, body {
     cursor: not-allowed;
 }
 
+.exporttoexcel {
+    zoom: 80%;
+    margin-left: 10px;
+    background: linear-gradient(to right, #11998e, #06b347);
+}
+
+/* The Modal (background) */
+.alert_modal {
+    display: block; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 99999; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    /* background-color: rgba(26, 26, 27, 0.19);*/
+    padding-top: 50px;
+    -webkit-animation-name: animatetop;
+    -webkit-animation-duration: 0.5s;
+    animation-name: animatetop;
+    animation-duration: 0.5s;
+    display:none;
+}
+
+/* Modal Content/Box */
+.alert_modal-content {
+    background: linear-gradient(to right, #ff4767, #790032);
+    opacity: 0.8;
+    border: 1px solid #afafaf;
+    margin: 5% auto 15% auto; /* 5% from the top, 15% from the bottom and centered */    
+    width: 30%; /* Could be more or less, depending on screen size */
+    color: white;
+    -webkit-box-shadow: 10px 10px 160px 8px rgba(0,0,0,1);
+    -moz-box-shadow: 10px 10px 160px 8px rgba(0,0,0,1);
+    box-shadow: 10px 10px 400px 8px #007bff;
+}
+
+/* Add padding and center-align text to the container */
+.alert_container {
+    padding: 16px;
+    text-align: center;
+}
+
+    .alert_container p {
+        font-size: 12px;
+        margin-bottom: 0px;
+        font-weight: 500;
+    }
+
+
+
+.tooltip_custom {
+    position: relative; 
+}
+
+.tooltiphide{
+    display:none;
+}
+
+.tooltip_custom .tooltiptext_custom {
+    visibility: hidden;
+    width: 90px;
+    background-color: #e5eef6;
+    color: #012042;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+    position: absolute;
+    z-index: 1;
+    bottom: 125%;
+    left: 50%;
+    margin-left: -60px;
+    opacity: 0;
+    transition: opacity 0.3s;
+    border: 1px solid #b1d9fc;
+}
+
+    .tooltip_custom .tooltiptext_custom::after {
+        content: "";
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        margin-left: -5px;
+        border-width: 5px;
+        border-style: solid;
+        border-color: #555 transparent transparent transparent;
+    }
+
+.tooltip_custom:hover .tooltiptext_custom {
+    visibility: visible;
+    opacity: 1;
+}

@@ -20,6 +20,7 @@ namespace ProformaLive
         public string WBSNumber { get; set; }
         public string ExpenseCategory { get; set; }
         public string Description { get; set; }
+        public string PONumber { get; set; }
         public string CreatedBy { get; set; }
         public Nullable<System.DateTime> CreatedOn { get; set; }
         public string ModifiedBy { get; set; }

@@ -16,6 +16,7 @@ namespace ProformaLive
         public string WBSNumber { get; set; }
         public string ExpenseCategory { get; set; }
         public string Description { get; set; }
+        public string PONumber { get; set; }
         public string FisYear { get; set; }
         public decimal MAY { get; set; }
         public decimal JUN { get; set; }
