@@ -67,6 +67,37 @@
 
 <div ng-controller="ProjectChargeBackController" class="container-fluid">
 
+    <div id="helpcenter" style="display:none; z-index: 999;" class="viewpopup_modal fade-up">
+        <div class="viewpopup-content viewProforma_container">
+            <div id="helpcenterheader" style="background-color: #28a745; color: white;" class="viewpopupclearfix">
+                <span class="pull-left">
+                    <i class="fa fa-info-circle" aria-hidden="true"></i>&nbsp;&nbsp;Help Center
+                </span>
+                <span>
+                    <label style="display:none;" id="notificationID"></label>
+                    <i class="fa fa-times pull-right" title="clear notification" style="padding-top: 5px; cursor: pointer;" ng-click="closepopup('helpcenter');" aria-hidden="true"></i>
+                </span>
+            </div>
+            <div style="background-color: #ccffd8;" class="view_popup_body" id="resourcecheckbookpanelheader">
+                <h5 class="helptitle"><i class="fa fa-yelp" aria-hidden="true"></i> &nbsp; We're here to help</h5>
+                <div>
+                    <input type="text" id="capital_description" class="form-control form-control-sm" ng-model="txtSearchProformaLiveHelp" placeholder="Search ProformaLive Help">
+                </div>
+            </div>
+            <div class="view_popup_body" id="resourcecheckbookpanellist">
+                <div class="row">
+                    <div ng-repeat="item in helplist | filter: txtSearchProformaLiveHelp" class="col-sm-3">
+                        <div>
+                            <div style="padding: 5px; font-weight: 500; font-size: 12px; padding-left: 20px;" class="card-body">
+                                <i class="fa fa-check" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp; <a ng-click="shownotification(item.Sysid)" href="#">{{item.Title}}</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div id="notificationpanel" style="display:none;" class="notification_modal fade-up">
         <div class="notification_modal-content notification_modal_container">
             <div class="notificationclearfix">

@@ -26,7 +26,7 @@ namespace ProformaLive.Controllers
         [HttpPost]
         public JsonResult update_notification(objdata obj)
         {
-            db.SP_Insert_Notification(obj.intID, obj.strTitle, obj.strNotificationdata, obj.stringStatus, obj.strUser);
+            db.SP_Insert_Notification(obj.intID, obj.strTitle, obj.strNotificationdata, obj.stringStatus, obj.strUser, obj.strType);
             return Json("", JsonRequestBehavior.AllowGet);
         }
 
@@ -35,7 +35,7 @@ namespace ProformaLive.Controllers
         {
             NotificationPanel row = db.NotificationPanels.Where(x => x.Sysid == intID).SingleOrDefault();
             db.NotificationPanels.Remove(row);
-            db.SaveChanges();            
+            db.SaveChanges();
             return Json("", JsonRequestBehavior.AllowGet);
         }
 
@@ -67,9 +67,9 @@ namespace ProformaLive.Controllers
         }
 
         [HttpGet]
-        public JsonResult get_completenotification()
+        public JsonResult get_completenotification(string strType)
         {
-            var npData = db.SP_GET_CompleteNotificationData().ToList();
+            var npData = db.SP_GET_CompleteNotificationData(strType == null ? "Notification" : strType).ToList();
             return Json(npData, JsonRequestBehavior.AllowGet);
         }
 
@@ -93,7 +93,7 @@ namespace ProformaLive.Controllers
                 Directory.CreateDirectory(path);
 
             // here logic to upload image
-            string ImageName = Guid.NewGuid() + Path.GetExtension(upload.FileName);            
+            string ImageName = Guid.NewGuid() + Path.GetExtension(upload.FileName);
             upload.SaveAs(System.IO.Path.Combine(path, ImageName));
 
             // and get file path of the image
@@ -115,6 +115,8 @@ namespace ProformaLive.Controllers
             public string strNotificationdata { get; set; }
             public string strUser { get; set; }
             public string stringStatus { get; set; }
+
+            public string strType { get; set; }
         }
 
     }

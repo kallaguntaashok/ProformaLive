@@ -10,11 +10,11 @@
 namespace ProformaLive
 {
     using System;
+    using System.Collections.Generic;
     
-    public partial class SP_GET_Notification_Result
+    public partial class Master_Help
     {
         public int Sysid { get; set; }
-        public string Type { get; set; }
         public string Title { get; set; }
         public string Data { get; set; }
         public string Status { get; set; }

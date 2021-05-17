@@ -139,6 +139,7 @@
     <Content Include="assets\Jexcel\jsuites38.js" />
     <Content Include="assets\Jexcel\jsuites_v4.js" />
     <Content Include="assets\Jexcel\ScrollTabla.css" />
+    <Content Include="assets\scripts\master.js" />
     <Content Include="assets\scripts\browser.js" />
     <Content Include="assets\scripts\Customjexcel.js" />
     <Content Include="assets\scripts\masterlandingpage.js" />
@@ -842,6 +843,9 @@
     <Compile Include="Master_CJI3.cs">
       <DependentUpon>ProformaLive.tt</DependentUpon>
     </Compile>
+    <Compile Include="Master_Help.cs">
+      <DependentUpon>ProformaLive.tt</DependentUpon>
+    </Compile>
     <Compile Include="Master_Months.cs">
       <DependentUpon>ProformaLive.tt</DependentUpon>
     </Compile>
@@ -884,8 +888,8 @@
       <DependentUpon>ProformaLive.Context.tt</DependentUpon>
     </Compile>
     <Compile Include="ProformaLive.cs">
-      <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
       <DependentUpon>ProformaLive.tt</DependentUpon>
     </Compile>
     <Compile Include="ProformaLive.Designer.cs">
@@ -976,6 +980,9 @@
       <DependentUpon>ProformaLive.tt</DependentUpon>
     </Compile>
     <Compile Include="SP_Get_DirectExpenses_Comments_Result.cs">
+      <DependentUpon>ProformaLive.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SP_GET_HelpData_Result.cs">
       <DependentUpon>ProformaLive.tt</DependentUpon>
     </Compile>
     <Compile Include="SP_Get_Master_AOPProject_Result.cs">

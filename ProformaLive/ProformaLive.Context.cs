@@ -46,6 +46,7 @@ namespace ProformaLive
         public virtual DbSet<DirectExpensesInfoList> DirectExpensesInfoLists { get; set; }
         public virtual DbSet<Master_AOPProject> Master_AOPProject { get; set; }
         public virtual DbSet<Master_CJI3> Master_CJI3 { get; set; }
+        public virtual DbSet<Master_Help> Master_Help { get; set; }
         public virtual DbSet<Master_Months> Master_Months { get; set; }
         public virtual DbSet<Master_ProjectChargeBack> Master_ProjectChargeBack { get; set; }
         public virtual DbSet<Master_Qtr> Master_Qtr { get; set; }
@@ -400,9 +401,13 @@ namespace ProformaLive
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_Get_CapitalLabor_Comments_Result>("SP_Get_CapitalLabor_Comments", projectIDParameter);
         }
     
-        public virtual ObjectResult<SP_GET_CompleteNotificationData_Result> SP_GET_CompleteNotificationData()
+        public virtual ObjectResult<SP_GET_CompleteNotificationData_Result> SP_GET_CompleteNotificationData(string type)
         {
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_GET_CompleteNotificationData_Result>("SP_GET_CompleteNotificationData");
+            var typeParameter = type != null ?
+                new ObjectParameter("Type", type) :
+                new ObjectParameter("Type", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_GET_CompleteNotificationData_Result>("SP_GET_CompleteNotificationData", typeParameter);
         }
     
         public virtual ObjectResult<SP_Get_Configure_RateCard_Result> SP_Get_Configure_RateCard()
@@ -563,6 +568,19 @@ namespace ProformaLive
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<string>("SP_Get_FiscalYear", projectIDParameter);
         }
     
+        public virtual ObjectResult<SP_GET_HelpData_Result> SP_GET_HelpData(string title, string data)
+        {
+            var titleParameter = title != null ?
+                new ObjectParameter("Title", title) :
+                new ObjectParameter("Title", typeof(string));
+    
+            var dataParameter = data != null ?
+                new ObjectParameter("Data", data) :
+                new ObjectParameter("Data", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_GET_HelpData_Result>("SP_GET_HelpData", titleParameter, dataParameter);
+        }
+    
         public virtual ObjectResult<string> SP_Get_HighOrg(string business, string businessUnit)
         {
             var businessParameter = business != null ?
@@ -679,7 +697,7 @@ namespace ProformaLive
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_Get_Resource_Comments_Result>("SP_Get_Resource_Comments", projectIDParameter);
         }
     
-        public virtual ObjectResult<SP_Get_ResourceCheckBook_Result> SP_Get_ResourceCheckBook(Nullable<int> projectID, string wBSNumber, string bU, string highOrg, string midOrg, string team, string requiredSkills, Nullable<int> fisYear)
+        public virtual ObjectResult<SP_Get_ResourceCheckBook_Result> SP_Get_ResourceCheckBook(Nullable<int> projectID, string wBSNumber, string bU, string highOrg, string midOrg, string team, Nullable<int> fisYear)
         {
             var projectIDParameter = projectID.HasValue ?
                 new ObjectParameter("ProjectID", projectID) :
@@ -705,15 +723,11 @@ namespace ProformaLive
                 new ObjectParameter("Team", team) :
                 new ObjectParameter("Team", typeof(string));
     
-            var requiredSkillsParameter = requiredSkills != null ?
-                new ObjectParameter("RequiredSkills", requiredSkills) :
-                new ObjectParameter("RequiredSkills", typeof(string));
-    
             var fisYearParameter = fisYear.HasValue ?
                 new ObjectParameter("FisYear", fisYear) :
                 new ObjectParameter("FisYear", typeof(int));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_Get_ResourceCheckBook_Result>("SP_Get_ResourceCheckBook", projectIDParameter, wBSNumberParameter, bUParameter, highOrgParameter, midOrgParameter, teamParameter, requiredSkillsParameter, fisYearParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_Get_ResourceCheckBook_Result>("SP_Get_ResourceCheckBook", projectIDParameter, wBSNumberParameter, bUParameter, highOrgParameter, midOrgParameter, teamParameter, fisYearParameter);
         }
     
         public virtual ObjectResult<SP_Get_ResourceCheckBook_MainList_Result> SP_Get_ResourceCheckBook_MainList(Nullable<int> projectID, Nullable<int> fisyear)
@@ -742,7 +756,7 @@ namespace ProformaLive
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_Get_ResourceCheckBook_Summary_Result>("SP_Get_ResourceCheckBook_Summary", projectIDParameter, fisyearParameter);
         }
     
-        public virtual ObjectResult<SP_Get_ResourceCheckBookData_Result> SP_Get_ResourceCheckBookData(string wBSNumber, string bU, string highOrg, string midOrg, string team, string requiredSkills, Nullable<int> fisYear)
+        public virtual ObjectResult<SP_Get_ResourceCheckBookData_Result> SP_Get_ResourceCheckBookData(string wBSNumber, string bU, string highOrg, string midOrg, string team, Nullable<int> fisYear)
         {
             var wBSNumberParameter = wBSNumber != null ?
                 new ObjectParameter("WBSNumber", wBSNumber) :
@@ -764,15 +778,11 @@ namespace ProformaLive
                 new ObjectParameter("Team", team) :
                 new ObjectParameter("Team", typeof(string));
     
-            var requiredSkillsParameter = requiredSkills != null ?
-                new ObjectParameter("RequiredSkills", requiredSkills) :
-                new ObjectParameter("RequiredSkills", typeof(string));
-    
             var fisYearParameter = fisYear.HasValue ?
                 new ObjectParameter("FisYear", fisYear) :
                 new ObjectParameter("FisYear", typeof(int));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_Get_ResourceCheckBookData_Result>("SP_Get_ResourceCheckBookData", wBSNumberParameter, bUParameter, highOrgParameter, midOrgParameter, teamParameter, requiredSkillsParameter, fisYearParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_Get_ResourceCheckBookData_Result>("SP_Get_ResourceCheckBookData", wBSNumberParameter, bUParameter, highOrgParameter, midOrgParameter, teamParameter, fisYearParameter);
         }
     
         public virtual ObjectResult<SP_Get_Skillmaster_Result> SP_Get_Skillmaster()
@@ -910,7 +920,7 @@ namespace ProformaLive
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_GetResourceData_Result>("SP_GetResourceData", projectidParameter);
         }
     
-        public virtual ObjectResult<SP_GetResourceData_forCheckBook_Result> SP_GetResourceData_forCheckBook(Nullable<int> projectid, string wBSNumber, string bU, string highOrg, string midOrg, string teams, string requiredSkills, Nullable<int> fisYear)
+        public virtual ObjectResult<SP_GetResourceData_forCheckBook_Result> SP_GetResourceData_forCheckBook(Nullable<int> projectid, string wBSNumber, string bU, string highOrg, string midOrg, string teams, Nullable<int> fisYear)
         {
             var projectidParameter = projectid.HasValue ?
                 new ObjectParameter("projectid", projectid) :
@@ -936,15 +946,11 @@ namespace ProformaLive
                 new ObjectParameter("Teams", teams) :
                 new ObjectParameter("Teams", typeof(string));
     
-            var requiredSkillsParameter = requiredSkills != null ?
-                new ObjectParameter("RequiredSkills", requiredSkills) :
-                new ObjectParameter("RequiredSkills", typeof(string));
-    
             var fisYearParameter = fisYear.HasValue ?
                 new ObjectParameter("FisYear", fisYear) :
                 new ObjectParameter("FisYear", typeof(int));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_GetResourceData_forCheckBook_Result>("SP_GetResourceData_forCheckBook", projectidParameter, wBSNumberParameter, bUParameter, highOrgParameter, midOrgParameter, teamsParameter, requiredSkillsParameter, fisYearParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_GetResourceData_forCheckBook_Result>("SP_GetResourceData_forCheckBook", projectidParameter, wBSNumberParameter, bUParameter, highOrgParameter, midOrgParameter, teamsParameter, fisYearParameter);
         }
     
         public virtual int SP_GetSummaryData()
@@ -952,7 +958,7 @@ namespace ProformaLive
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SP_GetSummaryData");
         }
     
-        public virtual int SP_Insert_Notification(Nullable<int> id, string title, string data, string status, string createdby)
+        public virtual int SP_Insert_Notification(Nullable<int> id, string title, string data, string status, string createdby, string type)
         {
             var idParameter = id.HasValue ?
                 new ObjectParameter("id", id) :
@@ -974,7 +980,11 @@ namespace ProformaLive
                 new ObjectParameter("createdby", createdby) :
                 new ObjectParameter("createdby", typeof(string));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SP_Insert_Notification", idParameter, titleParameter, dataParameter, statusParameter, createdbyParameter);
+            var typeParameter = type != null ?
+                new ObjectParameter("Type", type) :
+                new ObjectParameter("Type", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SP_Insert_Notification", idParameter, titleParameter, dataParameter, statusParameter, createdbyParameter, typeParameter);
         }
     
         public virtual int SP_InsertInto_ServiceLog(string serviceName, Nullable<int> rowsMoved)

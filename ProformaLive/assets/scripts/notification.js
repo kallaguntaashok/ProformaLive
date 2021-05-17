@@ -1,20 +1,61 @@
 ﻿var app = angular.module('MECC', []);
 app.controller('notificationController', function ($scope, $http, $q) {
 
+    $scope.lbl_name = "Notification";
     var myEditor;
     loadmastersettings();   
     getusername();
     getcompletelist();
+    getcompletelistofnotification();
 
     CKEDITOR.replace('editor1', {
         filebrowserImageUploadUrl: '/notification/UploadImage'
-    });    
+    });   
+    
+    $scope.loadnotificationdata = function () {
+        $scope.lbl_name = "Notification";        
+        getcompletelist();
+    }
+    $scope.loadhelpdata = function () {
+        $scope.lbl_name = "Help";        
+        getcompletelist();
+    }
 
-    getcompletelistofnotification();
+    document.getElementById("masterHelpCenter").addEventListener("click", loadhelpdesk);
+    function loadhelpdesk() {
+        document.getElementById('helpcenter').style.display = 'block';
+        dragElement(document.getElementById("helpcenter"));
+        $scope.getcompletelist();
+    }
+
+
+    $scope.getcompletelist = function () {
+        $http({
+            method: 'GET',
+            url: '../resource/get_completehelp'
+        }).then(function (response) {
+
+            var helplistdata = response.data;
+            for (var i = 0; i < helplistdata.length; i++) {
+                var encodenotification = atob(helplistdata[i].Data);
+                helplistdata[i].Data = encodenotification.replace(/<[^>]+>/g, '');
+                console.log(helplistdata[i].Data);
+            }
+            $scope.helplist = helplistdata;
+
+        }, function (error) {
+            console.log(error);
+        });
+    }
+
+    $scope.closepopup = function (value) {
+        document.getElementById(value).style.display = 'none';
+    }
+    
     function getcompletelistofnotification() {
         $http({
             method: 'GET',
-            url: '../notification/get_completenotification'
+            url: '../notification/get_completenotification'            
         }).then(function (response) {            
             document.getElementById('notificationtotal').innerHTML = "Notification (" + response.data.length + ")";
             var notificationlist = "";
@@ -26,6 +67,7 @@ app.controller('notificationController', function ($scope, $http, $q) {
             console.log(error);
         });
     }
+
     $scope.shownotification = function (item) {
         $http({
             method: 'POST',
@@ -35,17 +77,18 @@ app.controller('notificationController', function ($scope, $http, $q) {
             }
         }).then(function (response) {
             var encodenotification = atob(response.data[0].Data);
+            dragElement(document.getElementById("notificationpanel"));
             document.getElementById("notificationID").innerHTML = response.data[0].Sysid;
             document.getElementById("notificationBody").innerHTML = encodenotification;
             document.getElementById('notificationpanel').style.display = 'block';
-            document.getElementById("closeNotification").style.display = 'block';   
-            var summaryheight = parseInt(window.innerHeight);
-            summaryheight = summaryheight - 270;            
-            document.getElementById('notificationBody').setAttribute('style', 'height: ' + (parseInt(window.innerHeight) - parseInt(110)) + 'px;');
+            document.getElementById("closeNotification").style.display = 'block';
+            document.getElementById("clearNotification").style.display = 'none';
+            document.getElementById('notificationBody').setAttribute('style', 'height: ' + (parseInt(window.innerHeight) - parseInt(210)) + 'px;');
         }, function (error) {
             console.log(error);
         });
     }
+
     $scope.closenotification = function () {        
         document.getElementById('notificationpanel').style.display = 'none';
     }
@@ -70,7 +113,8 @@ app.controller('notificationController', function ($scope, $http, $q) {
             strTitle: notificationTitle,
             strNotificationdata: notificationdata,
             strUser: localStorage.getItem("userID"),
-            stringStatus: stringStatus
+            stringStatus: stringStatus,
+            strType: $scope.lbl_name
         };
 
         if (notificationTitle != "" && notificationTitle != undefined) {
@@ -106,7 +150,8 @@ app.controller('notificationController', function ($scope, $http, $q) {
     function getcompletelist() {
         $http({
             method: 'GET',
-            url: '../notification/get_completenotification'
+            url: '../notification/get_completenotification',
+            params: { "strType": $scope.lbl_name }
         }).then(function (response) {
             $scope.notificationList = response.data;            
             $scope.notificationid = 0;
@@ -126,7 +171,7 @@ app.controller('notificationController', function ($scope, $http, $q) {
         $scope.notificationTitle = item.Title;
         var encodenotification = atob(item.Data);
         CKEDITOR.instances['editor1'].setData(encodenotification);
-        debugger
+        
         if (item.Status == "Active") {
             $scope.displaycheckbox_resource = true;
         }
@@ -205,9 +250,9 @@ app.controller('notificationController', function ($scope, $http, $q) {
             document.getElementById("mastermenu").setAttribute("style", "display:none;");
         }
 
-        var panelheight = parseInt(window.innerHeight);
-        panelheight = panelheight - 100;
-        document.getElementById('notificationbody').setAttribute('style', 'height: ' + panelheight + 'px;');
+        //var panelheight = parseInt(window.innerHeight);
+        //panelheight = panelheight - 100;
+        //document.getElementById('notificationbody').setAttribute('style', 'height: ' + panelheight + 'px;');
 
     }
 

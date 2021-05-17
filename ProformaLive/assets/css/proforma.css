@@ -901,12 +901,14 @@ html, body {
 
 .tooltip_custom .tooltiptext_custom {
     visibility: hidden;
-    width: 90px;
-    background-color: #e5eef6;
-    color: #012042;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    background-color: #05509f;
+    color: #ffffff;
     text-align: center;
     border-radius: 6px;
-    padding: 5px 0;
     position: absolute;
     z-index: 1;
     bottom: 125%;
@@ -915,6 +917,7 @@ html, body {
     opacity: 0;
     transition: opacity 0.3s;
     border: 1px solid #b1d9fc;
+    font-size:12px;
 }
 
     .tooltip_custom .tooltiptext_custom::after {

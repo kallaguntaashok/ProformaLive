@@ -447,21 +447,21 @@ input:checked + .slider:before {
     position: fixed; /* Stay in place */
     z-index: 9999; /* Sit on top */
     left: 0;
-    top: -50px;
-    width: 100%; /* Full width */
+    top: 20px;
+    width: 40%;
     overflow: auto; /* Enable scroll if needed */
-    /* background-color: rgba(26, 26, 27, 0.19);*/   
+    /* background-color: rgba(26, 26, 27, 0.19);*/
 }
 
 /* Modal Content/Box */
 .notification_modal-content {
     background: white; /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
     margin: 5% auto 15% auto; /* 5% from the top, 15% from the bottom and centered */
-    border: 2px solid #014077;
+    border: 1px solid #014077;
     width: 95%; /* Could be more or less, depending on screen size */
-    -webkit-box-shadow: 10px 10px 400px 8px #212529;
+    /*-webkit-box-shadow: 10px 10px 400px 8px #212529;
     -moz-box-shadow: 10px 10px 400px 8px #212529;
-    box-shadow: 10px 10px 400px 110px #000000db;
+    box-shadow: 10px 10px 400px 110px #000000db;*/
 }
 
 .notification_modal-content-403 {
@@ -505,8 +505,7 @@ input:checked + .slider:before {
 
 .panelnotificationbox {
     margin-right: 5px;
-    background-color: #0e62b5;
-    
+    background-color: #0e62b5;    
     padding-left: 15px;
     height: 43px;
     padding-right: 12px;
@@ -572,7 +571,7 @@ input:checked + .slider:before {
     z-index: 9999; /* Sit on top */
     left: 50px;
     top: 0px;
-    width: 100%; /* Full width */
+    width: 70%; /* Full width */
     overflow: auto; /* Enable scroll if needed */
     /* background-color: rgba(26, 26, 27, 0.19);*/
 }
@@ -614,4 +613,33 @@ input:checked + .slider:before {
     padding-top: 1rem;
     padding-bottom: 0.6rem;
     border-radius: 0rem !important;
+}
+
+.panelhelpbox {
+    margin-right: 5px;
+    background: linear-gradient(to right, #11998e, #06b347);
+    padding-left: 15px;
+    height: 43px;
+    padding-right: 16px;
+    cursor: pointer;
+    font-size:15px;
+}
+
+    .panelhelpbox:hover {
+        margin-right: 5px;
+        background: linear-gradient(to right, #1baea2, #0ecf57);
+        padding-left: 15px;
+        height: 43px;
+        padding-right: 16px;
+        cursor: pointer;
+        font-size: 15px;
+    }
+
+.helptitle {
+    text-align: center;
+    padding-bottom: 10px;
+    color: #28a745;
+    text-transform: uppercase;
+    font-weight: 500;
+    font-size: 19px;
 }

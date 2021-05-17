@@ -12,7 +12,79 @@ app.controller('Master_SnapshotController', function ($scope, $http) {
     $scope.addsnapshot = true;
     $scope.updatesnapshot = false;
 
+    document.getElementById("masterHelpCenter").addEventListener("click", loadhelpdesk);
+    function loadhelpdesk() {
+        document.getElementById('helpcenter').style.display = 'block';
+        dragElement(document.getElementById("helpcenter"));
+        $scope.getcompletelist();
+    }
 
+
+    $scope.getcompletelist = function () {
+        $http({
+            method: 'GET',
+            url: '../resource/get_completehelp'
+        }).then(function (response) {
+
+            var helplistdata = response.data;
+            for (var i = 0; i < helplistdata.length; i++) {
+                var encodenotification = atob(helplistdata[i].Data);
+                helplistdata[i].Data = encodenotification.replace(/<[^>]+>/g, '');
+                console.log(helplistdata[i].Data);
+            }
+            $scope.helplist = helplistdata;
+
+        }, function (error) {
+            console.log(error);
+        });
+    }
+
+    $scope.closepopup = function (value) {
+        document.getElementById(value).style.display = 'none';
+    }
+
+    //Method will add drag option to popup panels.
+    //Parameter: pass control ID as a parameter (Example: dragElement(document.getElementById("ID")))
+    function dragElement(elmnt) {
+        var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+        if (document.getElementById(elmnt.id + "header")) {
+            // if present, the header is where you move the DIV from:
+            document.getElementById(elmnt.id + "header").onmousedown = dragMouseDown;
+        } else {
+            // otherwise, move the DIV from anywhere inside the DIV:
+            elmnt.onmousedown = dragMouseDown;
+        }
+
+        function dragMouseDown(e) {
+            e = e || window.event;
+            e.preventDefault();
+            // get the mouse cursor position at startup:
+            pos3 = e.clientX;
+            pos4 = e.clientY;
+            document.onmouseup = closeDragElement;
+            // call a function whenever the cursor moves:
+            document.onmousemove = elementDrag;
+        }
+
+        function elementDrag(e) {
+            e = e || window.event;
+            e.preventDefault();
+            // calculate the new cursor position:
+            pos1 = pos3 - e.clientX;
+            pos2 = pos4 - e.clientY;
+            pos3 = e.clientX;
+            pos4 = e.clientY;
+            // set the element's new position:
+            elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
+            elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
+        }
+
+        function closeDragElement() {
+            // stop moving when mouse button is released:
+            document.onmouseup = null;
+            document.onmousemove = null;
+        }
+    }
 
     function updateprogressbar(value, item) {
         document.getElementById('progressBarText').innerHTML = item;
@@ -203,6 +275,27 @@ app.controller('Master_SnapshotController', function ($scope, $http) {
                 notificationlist = notificationlist + " <a class='dropdown-item' onclick='shownotification(" + response.data[i].Sysid + ")'><i class='fa fa-dot-circle-o' aria-hidden='true'></i>&nbsp;&nbsp;" + response.data[i].Title + "</a>";
             }
             document.getElementById('notificationlistbody').innerHTML = notificationlist;
+        }, function (error) {
+            console.log(error);
+        });
+    }
+
+    $scope.shownotification = function (item) {
+        $http({
+            method: 'POST',
+            url: '../notification/get_notificationdata',
+            params: {
+                "intID": item
+            }
+        }).then(function (response) {
+            var encodenotification = atob(response.data[0].Data);
+            dragElement(document.getElementById("notificationpanel"));
+            document.getElementById("notificationID").innerHTML = response.data[0].Sysid;
+            document.getElementById("notificationBody").innerHTML = encodenotification;
+            document.getElementById('notificationpanel').style.display = 'block';
+            document.getElementById("closeNotification").style.display = 'block';
+            document.getElementById("clearNotification").style.display = 'none';
+            document.getElementById('notificationBody').setAttribute('style', 'height: ' + (parseInt(window.innerHeight) - parseInt(210)) + 'px;');
         }, function (error) {
             console.log(error);
         });

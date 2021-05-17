@@ -15,6 +15,7 @@ namespace ProformaLive
     public partial class NotificationPanel
     {
         public int Sysid { get; set; }
+        public string Type { get; set; }
         public string Title { get; set; }
         public string Data { get; set; }
         public string Status { get; set; }

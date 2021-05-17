@@ -327,6 +327,17 @@
           <Property Name="DocumentNumber" Type="varchar" MaxLength="500" />
           <Property Name="Record_CreatedOn" Type="datetime" />
         </EntityType>
+        <EntityType Name="Master_Help">
+          <Key>
+            <PropertyRef Name="Sysid" />
+          </Key>
+          <Property Name="Sysid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Title" Type="varchar(max)" />
+          <Property Name="Data" Type="varchar(max)" />
+          <Property Name="Status" Type="varchar" MaxLength="10" />
+          <Property Name="CreatedOn" Type="datetime" />
+          <Property Name="CreatedBy" Type="varchar" MaxLength="50" />
+        </EntityType>
         <EntityType Name="Master_Months">
           <Key>
             <PropertyRef Name="Sysid" />
@@ -442,6 +453,7 @@
             <PropertyRef Name="Sysid" />
           </Key>
           <Property Name="Sysid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Type" Type="varchar" MaxLength="50" />
           <Property Name="Title" Type="varchar(max)" />
           <Property Name="Data" Type="varchar(max)" />
           <Property Name="Status" Type="varchar" MaxLength="10" />
@@ -720,7 +732,9 @@ warning 6013: The table/view 'ProformaLive.dbo.Tbl_PDW_CJI3' does not have a pri
         <Function Name="SP_Get_CapitalLabor_Comments" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="ProjectID" Type="int" Mode="In" />
         </Function>
-        <Function Name="SP_GET_CompleteNotificationData" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="SP_GET_CompleteNotificationData" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Type" Type="varchar" Mode="In" />
+        </Function>
         <Function Name="SP_Get_Configure_RateCard" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="SP_Get_DE_CJI3_Data" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="WBSnumber" Type="varchar" Mode="In" />
@@ -728,7 +742,7 @@ warning 6013: The table/view 'ProformaLive.dbo.Tbl_PDW_CJI3' does not have a pri
           <Parameter Name="Month" Type="varchar" Mode="In" />
           <Parameter Name="Expensecategory" Type="varchar" Mode="In" />
           <Parameter Name="Description" Type="varchar" Mode="In" />
-          <Parameter Name="PONumber" Type="varchar(max)" Mode="In" />
+          <Parameter Name="PONumber" Type="varchar" Mode="In" />
         </Function>
         <Function Name="SP_Get_DE_CJI3_Data_SelectedList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="ProjectID" Type="int" Mode="In" />
@@ -766,6 +780,10 @@ warning 6013: The table/view 'ProformaLive.dbo.Tbl_PDW_CJI3' does not have a pri
         </Function>
         <Function Name="SP_Get_FiscalYear" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="ProjectID" Type="int" Mode="In" />
+        </Function>
+        <Function Name="SP_GET_HelpData" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Title" Type="varchar(max)" Mode="In" />
+          <Parameter Name="Data" Type="varchar(max)" Mode="In" />
         </Function>
         <Function Name="SP_Get_HighOrg" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="Business" Type="varchar" Mode="In" />
@@ -807,7 +825,6 @@ warning 6013: The table/view 'ProformaLive.dbo.Tbl_PDW_CJI3' does not have a pri
           <Parameter Name="HighOrg" Type="varchar" Mode="In" />
           <Parameter Name="MidOrg" Type="varchar" Mode="In" />
           <Parameter Name="Team" Type="varchar" Mode="In" />
-          <Parameter Name="RequiredSkills" Type="varchar" Mode="In" />
           <Parameter Name="FisYear" Type="int" Mode="In" />
         </Function>
         <Function Name="SP_Get_ResourceCheckBook_MainList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
@@ -824,7 +841,6 @@ warning 6013: The table/view 'ProformaLive.dbo.Tbl_PDW_CJI3' does not have a pri
           <Parameter Name="HighOrg" Type="varchar" Mode="In" />
           <Parameter Name="MidOrg" Type="varchar" Mode="In" />
           <Parameter Name="Team" Type="varchar" Mode="In" />
-          <Parameter Name="RequiredSkills" Type="varchar" Mode="In" />
           <Parameter Name="FisYear" Type="int" Mode="In" />
         </Function>
         <Function Name="SP_Get_Skillmaster" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
@@ -874,7 +890,6 @@ warning 6013: The table/view 'ProformaLive.dbo.Tbl_PDW_CJI3' does not have a pri
           <Parameter Name="HighOrg" Type="varchar" Mode="In" />
           <Parameter Name="MidOrg" Type="varchar" Mode="In" />
           <Parameter Name="Teams" Type="varchar" Mode="In" />
-          <Parameter Name="RequiredSkills" Type="varchar" Mode="In" />
           <Parameter Name="FisYear" Type="int" Mode="In" />
         </Function>
         <Function Name="SP_GetSummaryData" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
@@ -884,6 +899,7 @@ warning 6013: The table/view 'ProformaLive.dbo.Tbl_PDW_CJI3' does not have a pri
           <Parameter Name="data" Type="varchar(max)" Mode="In" />
           <Parameter Name="status" Type="varchar" Mode="In" />
           <Parameter Name="createdby" Type="varchar" Mode="In" />
+          <Parameter Name="Type" Type="varchar" Mode="In" />
         </Function>
         <Function Name="SP_InsertInto_ServiceLog" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="ServiceName" Type="varchar" Mode="In" />
@@ -931,6 +947,7 @@ warning 6013: The table/view 'ProformaLive.dbo.Tbl_PDW_CJI3' does not have a pri
           <EntitySet Name="DirectExpensesInfoList" EntityType="Self.DirectExpensesInfoList" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Master_AOPProject" EntityType="Self.Master_AOPProject" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Master_CJI3" EntityType="Self.Master_CJI3" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Master_Help" EntityType="Self.Master_Help" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Master_Months" EntityType="Self.Master_Months" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Master_ProjectChargeBack" EntityType="Self.Master_ProjectChargeBack" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Master_Qtr" EntityType="Self.Master_Qtr" Schema="dbo" store:Type="Tables" />
@@ -1278,6 +1295,17 @@ warning 6013: The table/view 'ProformaLive.dbo.Tbl_PDW_CJI3' does not have a pri
           <Property Name="DocumentNumber" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="Record_CreatedOn" Type="DateTime" Precision="3" />
         </EntityType>
+        <EntityType Name="Master_Help">
+          <Key>
+            <PropertyRef Name="Sysid" />
+          </Key>
+          <Property Name="Sysid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Title" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Data" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Status" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="CreatedOn" Type="DateTime" Precision="3" />
+          <Property Name="CreatedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
         <EntityType Name="Master_Months">
           <Key>
             <PropertyRef Name="Sysid" />
@@ -1393,6 +1421,7 @@ warning 6013: The table/view 'ProformaLive.dbo.Tbl_PDW_CJI3' does not have a pri
             <PropertyRef Name="Sysid" />
           </Key>
           <Property Name="Sysid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Type" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Title" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="Data" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="Status" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
@@ -1579,6 +1608,7 @@ warning 6013: The table/view 'ProformaLive.dbo.Tbl_PDW_CJI3' does not have a pri
           <EntitySet Name="DirectExpensesInfoLists" EntityType="Self.DirectExpensesInfoList" />
           <EntitySet Name="Master_AOPProject" EntityType="Self.Master_AOPProject" />
           <EntitySet Name="Master_CJI3" EntityType="Self.Master_CJI3" />
+          <EntitySet Name="Master_Help" EntityType="Self.Master_Help" />
           <EntitySet Name="Master_Months" EntityType="Self.Master_Months" />
           <EntitySet Name="Master_ProjectChargeBack" EntityType="Self.Master_ProjectChargeBack" />
           <EntitySet Name="Master_Qtr" EntityType="Self.Master_Qtr" />
@@ -1696,7 +1726,9 @@ warning 6013: The table/view 'ProformaLive.dbo.Tbl_PDW_CJI3' does not have a pri
           <FunctionImport Name="SP_Get_CapitalLabor_Comments" ReturnType="Collection(ProformaLiveModel.SP_Get_CapitalLabor_Comments_Result)">
             <Parameter Name="ProjectID" Mode="In" Type="Int32" />
           </FunctionImport>
-          <FunctionImport Name="SP_GET_CompleteNotificationData" ReturnType="Collection(ProformaLiveModel.SP_GET_CompleteNotificationData_Result)" />
+          <FunctionImport Name="SP_GET_CompleteNotificationData" ReturnType="Collection(ProformaLiveModel.SP_GET_CompleteNotificationData_Result)">
+            <Parameter Name="Type" Mode="In" Type="String" />
+          </FunctionImport>
           <FunctionImport Name="SP_Get_Configure_RateCard" ReturnType="Collection(ProformaLiveModel.SP_Get_Configure_RateCard_Result)" />
           <FunctionImport Name="SP_Get_DE_CJI3_Data" ReturnType="Collection(ProformaLiveModel.SP_Get_DE_CJI3_Data_Result)">
             <Parameter Name="WBSnumber" Mode="In" Type="String" />
@@ -1743,6 +1775,10 @@ warning 6013: The table/view 'ProformaLive.dbo.Tbl_PDW_CJI3' does not have a pri
           <FunctionImport Name="SP_Get_FiscalYear" ReturnType="Collection(String)">
             <Parameter Name="ProjectID" Mode="In" Type="Int32" />
           </FunctionImport>
+          <FunctionImport Name="SP_GET_HelpData" ReturnType="Collection(ProformaLiveModel.SP_GET_HelpData_Result)">
+            <Parameter Name="Title" Mode="In" Type="String" />
+            <Parameter Name="Data" Mode="In" Type="String" />
+          </FunctionImport>
           <FunctionImport Name="SP_Get_HighOrg" ReturnType="Collection(String)">
             <Parameter Name="Business" Mode="In" Type="String" />
             <Parameter Name="BusinessUnit" Mode="In" Type="String" />
@@ -1783,7 +1819,6 @@ warning 6013: The table/view 'ProformaLive.dbo.Tbl_PDW_CJI3' does not have a pri
             <Parameter Name="HighOrg" Mode="In" Type="String" />
             <Parameter Name="MidOrg" Mode="In" Type="String" />
             <Parameter Name="Team" Mode="In" Type="String" />
-            <Parameter Name="RequiredSkills" Mode="In" Type="String" />
             <Parameter Name="FisYear" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="SP_Get_ResourceCheckBook_MainList" ReturnType="Collection(ProformaLiveModel.SP_Get_ResourceCheckBook_MainList_Result)">
@@ -1800,7 +1835,6 @@ warning 6013: The table/view 'ProformaLive.dbo.Tbl_PDW_CJI3' does not have a pri
             <Parameter Name="HighOrg" Mode="In" Type="String" />
             <Parameter Name="MidOrg" Mode="In" Type="String" />
             <Parameter Name="Team" Mode="In" Type="String" />
-            <Parameter Name="RequiredSkills" Mode="In" Type="String" />
             <Parameter Name="FisYear" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="SP_Get_Skillmaster" ReturnType="Collection(ProformaLiveModel.SP_Get_Skillmaster_Result)" />
@@ -1850,7 +1884,6 @@ warning 6013: The table/view 'ProformaLive.dbo.Tbl_PDW_CJI3' does not have a pri
             <Parameter Name="HighOrg" Mode="In" Type="String" />
             <Parameter Name="MidOrg" Mode="In" Type="String" />
             <Parameter Name="Teams" Mode="In" Type="String" />
-            <Parameter Name="RequiredSkills" Mode="In" Type="String" />
             <Parameter Name="FisYear" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="SP_GetSummaryData" />
@@ -1860,6 +1893,7 @@ warning 6013: The table/view 'ProformaLive.dbo.Tbl_PDW_CJI3' does not have a pri
             <Parameter Name="data" Mode="In" Type="String" />
             <Parameter Name="status" Mode="In" Type="String" />
             <Parameter Name="createdby" Mode="In" Type="String" />
+            <Parameter Name="Type" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="SP_InsertInto_ServiceLog">
             <Parameter Name="ServiceName" Mode="In" Type="String" />
@@ -2115,6 +2149,14 @@ warning 6013: The table/view 'ProformaLive.dbo.Tbl_PDW_CJI3' does not have a pri
           <Property Type="Decimal" Name="MAR" Nullable="false" Precision="38" Scale="6" />
           <Property Type="Decimal" Name="APR" Nullable="false" Precision="38" Scale="6" />
         </ComplexType>
+        <ComplexType Name="SP_GET_HelpData_Result">
+          <Property Type="Int32" Name="Sysid" Nullable="false" />
+          <Property Type="String" Name="Title" Nullable="true" />
+          <Property Type="String" Name="Data" Nullable="true" />
+          <Property Type="String" Name="Status" Nullable="true" MaxLength="10" />
+          <Property Type="String" Name="CreatedOn" Nullable="true" MaxLength="10" />
+          <Property Type="String" Name="CreatedBy" Nullable="true" MaxLength="50" />
+        </ComplexType>
         <ComplexType Name="SP_Get_Master_AOPProject_Result">
           <Property Type="Int32" Name="Sysid" Nullable="false" />
           <Property Type="String" Name="Name" Nullable="true" MaxLength="5000" />
@@ -2136,6 +2178,7 @@ warning 6013: The table/view 'ProformaLive.dbo.Tbl_PDW_CJI3' does not have a pri
         </ComplexType>
         <ComplexType Name="SP_GET_Notification_Result">
           <Property Type="Int32" Name="Sysid" Nullable="false" />
+          <Property Type="String" Name="Type" Nullable="true" MaxLength="50" />
           <Property Type="String" Name="Title" Nullable="true" />
           <Property Type="String" Name="Data" Nullable="true" />
           <Property Type="String" Name="Status" Nullable="true" MaxLength="10" />
@@ -2168,13 +2211,12 @@ warning 6013: The table/view 'ProformaLive.dbo.Tbl_PDW_CJI3' does not have a pri
         </ComplexType>
         <ComplexType Name="SP_Get_ResourceCheckBook_Result">
           <Property Type="String" Name="Type" Nullable="false" MaxLength="1" />
-          <Property Type="Int32" Name="ProjectID" Nullable="true" />
-          <Property Type="String" Name="WBSNumber" Nullable="true" MaxLength="100" />
-          <Property Type="String" Name="BusinessUnit" Nullable="true" MaxLength="50" />
-          <Property Type="String" Name="HighOrg" Nullable="true" MaxLength="500" />
-          <Property Type="String" Name="MidOrg" Nullable="true" MaxLength="500" />
+          <Property Type="Int32" Name="ProjectID" Nullable="false" />
+          <Property Type="String" Name="WBSNumber" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="BusinessUnit" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="HighOrg" Nullable="false" MaxLength="500" />
+          <Property Type="String" Name="MidOrg" Nullable="false" MaxLength="500" />
           <Property Type="String" Name="Team" Nullable="true" MaxLength="8000" />
-          <Property Type="String" Name="RequiredSkill" Nullable="true" MaxLength="500" />
           <Property Type="String" Name="FinYear" Nullable="true" MaxLength="50" />
           <Property Type="Decimal" Name="MAY" Nullable="true" Precision="38" Scale="6" />
           <Property Type="Decimal" Name="JUN" Nullable="true" Precision="38" Scale="6" />
@@ -2190,12 +2232,11 @@ warning 6013: The table/view 'ProformaLive.dbo.Tbl_PDW_CJI3' does not have a pri
           <Property Type="Decimal" Name="APR" Nullable="true" Precision="38" Scale="6" />
         </ComplexType>
         <ComplexType Name="SP_Get_ResourceCheckBook_MainList_Result">
-          <Property Type="String" Name="WBSNumber" Nullable="true" MaxLength="100" />
-          <Property Type="String" Name="BusinessUnit" Nullable="true" MaxLength="50" />
-          <Property Type="String" Name="HighOrg" Nullable="true" MaxLength="500" />
-          <Property Type="String" Name="MidOrg" Nullable="true" MaxLength="500" />
+          <Property Type="String" Name="WBSNumber" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="BusinessUnit" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="HighOrg" Nullable="false" MaxLength="500" />
+          <Property Type="String" Name="MidOrg" Nullable="false" MaxLength="500" />
           <Property Type="String" Name="Team" Nullable="true" MaxLength="8000" />
-          <Property Type="String" Name="RequiredSkill" Nullable="true" MaxLength="500" />
           <Property Type="String" Name="FinYear" Nullable="true" MaxLength="50" />
           <Property Type="Decimal" Name="MAY" Nullable="true" Precision="38" Scale="6" />
           <Property Type="Decimal" Name="JUN" Nullable="true" Precision="38" Scale="6" />
@@ -2794,6 +2835,18 @@ warning 6013: The table/view 'ProformaLive.dbo.Tbl_PDW_CJI3' does not have a pri
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="Master_Help">
+            <EntityTypeMapping TypeName="ProformaLiveModel.Master_Help">
+              <MappingFragment StoreEntitySet="Master_Help">
+                <ScalarProperty Name="Sysid" ColumnName="Sysid" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="Data" ColumnName="Data" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="Master_Months">
             <EntityTypeMapping TypeName="ProformaLiveModel.Master_Months">
               <MappingFragment StoreEntitySet="Master_Months">
@@ -2916,6 +2969,7 @@ warning 6013: The table/view 'ProformaLive.dbo.Tbl_PDW_CJI3' does not have a pri
             <EntityTypeMapping TypeName="ProformaLiveModel.NotificationPanel">
               <MappingFragment StoreEntitySet="NotificationPanel">
                 <ScalarProperty Name="Sysid" ColumnName="Sysid" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
                 <ScalarProperty Name="Title" ColumnName="Title" />
                 <ScalarProperty Name="Data" ColumnName="Data" />
                 <ScalarProperty Name="Status" ColumnName="Status" />
@@ -3410,6 +3464,18 @@ warning 6013: The table/view 'ProformaLive.dbo.Tbl_PDW_CJI3' does not have a pri
             </ResultMapping>
           </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="SP_Get_FiscalYear" FunctionName="ProformaLiveModel.Store.SP_Get_FiscalYear" />
+          <FunctionImportMapping FunctionImportName="SP_GET_HelpData" FunctionName="ProformaLiveModel.Store.SP_GET_HelpData">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="ProformaLiveModel.SP_GET_HelpData_Result">
+                <ScalarProperty Name="Sysid" ColumnName="Sysid" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="Data" ColumnName="Data" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="SP_Get_HighOrg" FunctionName="ProformaLiveModel.Store.SP_Get_HighOrg" />
           <FunctionImportMapping FunctionImportName="SP_Get_Master_AOPProject" FunctionName="ProformaLiveModel.Store.SP_Get_Master_AOPProject">
             <ResultMapping>
@@ -3447,6 +3513,7 @@ warning 6013: The table/view 'ProformaLive.dbo.Tbl_PDW_CJI3' does not have a pri
             <ResultMapping>
               <ComplexTypeMapping TypeName="ProformaLiveModel.SP_GET_Notification_Result">
                 <ScalarProperty Name="Sysid" ColumnName="Sysid" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
                 <ScalarProperty Name="Title" ColumnName="Title" />
                 <ScalarProperty Name="Data" ColumnName="Data" />
                 <ScalarProperty Name="Status" ColumnName="Status" />
@@ -3507,7 +3574,6 @@ warning 6013: The table/view 'ProformaLive.dbo.Tbl_PDW_CJI3' does not have a pri
                 <ScalarProperty Name="HighOrg" ColumnName="HighOrg" />
                 <ScalarProperty Name="MidOrg" ColumnName="MidOrg" />
                 <ScalarProperty Name="Team" ColumnName="Team" />
-                <ScalarProperty Name="RequiredSkill" ColumnName="RequiredSkill" />
                 <ScalarProperty Name="FinYear" ColumnName="FinYear" />
                 <ScalarProperty Name="MAY" ColumnName="MAY" />
                 <ScalarProperty Name="JUN" ColumnName="JUN" />
@@ -3532,7 +3598,6 @@ warning 6013: The table/view 'ProformaLive.dbo.Tbl_PDW_CJI3' does not have a pri
                 <ScalarProperty Name="HighOrg" ColumnName="HighOrg" />
                 <ScalarProperty Name="MidOrg" ColumnName="MidOrg" />
                 <ScalarProperty Name="Team" ColumnName="Team" />
-                <ScalarProperty Name="RequiredSkill" ColumnName="RequiredSkill" />
                 <ScalarProperty Name="FinYear" ColumnName="FinYear" />
                 <ScalarProperty Name="MAY" ColumnName="MAY" />
                 <ScalarProperty Name="JUN" ColumnName="JUN" />

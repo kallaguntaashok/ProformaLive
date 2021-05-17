@@ -18,7 +18,6 @@ namespace ProformaLive
         public string HighOrg { get; set; }
         public string MidOrg { get; set; }
         public string Team { get; set; }
-        public string RequiredSkill { get; set; }
         public string FinYear { get; set; }
         public Nullable<decimal> MAY { get; set; }
         public Nullable<decimal> JUN { get; set; }

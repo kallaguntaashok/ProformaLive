@@ -54,6 +54,26 @@ namespace MECC_ReportPortal.Controllers
             return Json("", JsonRequestBehavior.AllowGet);
         }
 
+        [HttpGet]
+        public JsonResult get_completehelp()
+        {
+            var npData = db.SP_GET_CompleteNotificationData("Help").ToList();
+            return Json(npData, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public JsonResult get_help(objHelp obH)
+       {
+            var npData = db.SP_GET_HelpData(obH.strTitle, obH.strData).ToList();
+            return Json(npData, JsonRequestBehavior.AllowGet);
+        }
+
+        public class objHelp
+        {           
+            public string strTitle { get; set; }
+            public string strData { get; set; }            
+        }
+
         [HttpPost]
         public JsonResult insert_capitalcomments(int intProjectID, int intMasterID, int intColumnID, string strComments, string userid)
         {
@@ -1366,9 +1386,9 @@ namespace MECC_ReportPortal.Controllers
         }
 
         [HttpGet]
-        public JsonResult getresourcedata_forCheckBook(int intProjectID, string strWBSNumber, string strBU, string strHighOrg, string strMidOrg, string strTeams, string strRequestedSkills, int intFisYear)
+        public JsonResult getresourcedata_forCheckBook(int intProjectID, string strWBSNumber, string strBU, string strHighOrg, string strMidOrg, string strTeams, int intFisYear)
         {
-            var obj = db.SP_GetResourceData_forCheckBook(intProjectID, strWBSNumber, strBU, strHighOrg, strMidOrg, strTeams, strRequestedSkills, intFisYear).ToList();
+            var obj = db.SP_GetResourceData_forCheckBook(intProjectID, strWBSNumber, strBU, strHighOrg, strMidOrg, strTeams, intFisYear).ToList();
             return Json(obj, JsonRequestBehavior.AllowGet);
         }
 
@@ -3197,7 +3217,7 @@ namespace MECC_ReportPortal.Controllers
             var objMainCheckBook = db.SP_Get_ResourceCheckBook_MainList(intProjectID, intFisYear);
             foreach (var item in objMainCheckBook)
             {
-                var objCBData = db.SP_Get_ResourceCheckBook(intProjectID, item.WBSNumber, item.BusinessUnit, item.HighOrg, item.MidOrg, item.Team, item.RequiredSkill, Convert.ToInt32(item.FinYear)).ToList();
+                var objCBData = db.SP_Get_ResourceCheckBook(intProjectID, item.WBSNumber, item.BusinessUnit, item.HighOrg, item.MidOrg, item.Team, Convert.ToInt32(item.FinYear)).ToList();
                 List<ResourceCheckBook> objCB = new List<ResourceCheckBook>();
                 foreach (var Res_CB in objCBData)
                 {
@@ -3209,22 +3229,21 @@ namespace MECC_ReportPortal.Controllers
                         BusinessUnit = Res_CB.BusinessUnit,
                         HighOrg = Res_CB.HighOrg,
                         MidOrg = Res_CB.MidOrg,
-                        Team = Res_CB.Team,
-                        RequiredSkill = Res_CB.RequiredSkill,
+                        Team = Res_CB.Team,                        
                         FinYear = Convert.ToInt32(Res_CB.FinYear),
-                        MAY = Convert.ToDecimal(Res_CB.MAY),
-                        JUN = Convert.ToDecimal(Res_CB.JUN),
-                        JUL = Convert.ToDecimal(Res_CB.JUL),
-                        AUG = Convert.ToDecimal(Res_CB.AUG),
-                        SEP = Convert.ToDecimal(Res_CB.SEP),
-                        OCT = Convert.ToDecimal(Res_CB.OCT),
-                        NOV = Convert.ToDecimal(Res_CB.NOV),
-                        DEC = Convert.ToDecimal(Res_CB.DEC),
-                        JAN = Convert.ToDecimal(Res_CB.JAN),
-                        FEB = Convert.ToDecimal(Res_CB.FEB),
-                        MAR = Convert.ToDecimal(Res_CB.MAR),
-                        APR = Convert.ToDecimal(Res_CB.APR),
-                        ResourceCheckBookData = Res_CB.Type == "F" ? null : db.SP_Get_ResourceCheckBookData(Res_CB.WBSNumber, Res_CB.BusinessUnit, Res_CB.HighOrg, Res_CB.MidOrg, Res_CB.Team, Res_CB.RequiredSkill, Convert.ToInt32(Res_CB.FinYear)).ToList()
+                        MAY = Math.Round(Convert.ToDecimal(Res_CB.MAY),2),
+                        JUN = Math.Round(Convert.ToDecimal(Res_CB.JUN), 2),
+                        JUL = Math.Round(Convert.ToDecimal(Res_CB.JUL), 2),
+                        AUG = Math.Round(Convert.ToDecimal(Res_CB.AUG), 2),
+                        SEP = Math.Round(Convert.ToDecimal(Res_CB.SEP), 2),
+                        OCT = Math.Round(Convert.ToDecimal(Res_CB.OCT), 2),
+                        NOV = Math.Round(Convert.ToDecimal(Res_CB.NOV), 2),
+                        DEC = Math.Round(Convert.ToDecimal(Res_CB.DEC), 2),
+                        JAN = Math.Round(Convert.ToDecimal(Res_CB.JAN), 2),
+                        FEB = Math.Round(Convert.ToDecimal(Res_CB.FEB), 2),
+                        MAR = Math.Round(Convert.ToDecimal(Res_CB.MAR), 2),
+                        APR = Math.Round(Convert.ToDecimal(Res_CB.APR), 2),
+                        ResourceCheckBookData = Res_CB.Type == "F" ? null : db.SP_Get_ResourceCheckBookData(Res_CB.WBSNumber, Res_CB.BusinessUnit, Res_CB.HighOrg, Res_CB.MidOrg, Res_CB.Team, Convert.ToInt32(Res_CB.FinYear)).ToList()
                     });
                 }
 
@@ -3234,21 +3253,20 @@ namespace MECC_ReportPortal.Controllers
                     BusinessUnit = item.BusinessUnit,
                     HighOrg = item.HighOrg,
                     MidOrg = item.MidOrg,
-                    Team = item.Team,
-                    RequiredSkill = item.RequiredSkill,
+                    Team = item.Team,                    
                     FinYear = Convert.ToInt32(item.FinYear),
-                    MAY = Convert.ToDecimal(item.MAY),
-                    JUN = Convert.ToDecimal(item.JUN),
-                    JUL = Convert.ToDecimal(item.JUL),
-                    AUG = Convert.ToDecimal(item.AUG),
-                    SEP = Convert.ToDecimal(item.SEP),
-                    OCT = Convert.ToDecimal(item.OCT),
-                    NOV = Convert.ToDecimal(item.NOV),
-                    DEC = Convert.ToDecimal(item.DEC),
-                    JAN = Convert.ToDecimal(item.JAN),
-                    FEB = Convert.ToDecimal(item.FEB),
-                    MAR = Convert.ToDecimal(item.MAR),
-                    APR = Convert.ToDecimal(item.APR),
+                    MAY = Math.Round(Convert.ToDecimal(item.MAY), 2),
+                    JUN = Math.Round(Convert.ToDecimal(item.JUN), 2),
+                    JUL = Math.Round(Convert.ToDecimal(item.JUL), 2),
+                    AUG = Math.Round(Convert.ToDecimal(item.AUG), 2),
+                    SEP = Math.Round(Convert.ToDecimal(item.SEP), 2),
+                    OCT = Math.Round(Convert.ToDecimal(item.OCT), 2),
+                    NOV = Math.Round(Convert.ToDecimal(item.NOV), 2),
+                    DEC = Math.Round(Convert.ToDecimal(item.DEC), 2),
+                    JAN = Math.Round(Convert.ToDecimal(item.JAN), 2),
+                    FEB = Math.Round(Convert.ToDecimal(item.FEB), 2),
+                    MAR = Math.Round(Convert.ToDecimal(item.MAR), 2),
+                    APR = Math.Round(Convert.ToDecimal(item.APR), 2),
                     ResourceCheckBook = objCB.ToList()
                 });
             }
@@ -3366,8 +3384,7 @@ namespace MECC_ReportPortal.Controllers
             public string BusinessUnit { get; set; }
             public string HighOrg { get; set; }
             public string MidOrg { get; set; }
-            public string Team { get; set; }
-            public string RequiredSkill { get; set; }
+            public string Team { get; set; }            
             public int FinYear { get; set; }
             public Nullable<decimal> MAY { get; set; }
             public Nullable<decimal> JUN { get; set; }

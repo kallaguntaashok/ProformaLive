@@ -1,7 +1,6 @@
-﻿<script src="~/ckeditor/ckeditor.js?ID=6300"></script>
-<script src="~/ckeditor/styles.js?ID=6300"></script>
-<script src="~/assets/scripts/notification.js?ID=6300"></script>
-<link href="~/assets/css/delete-confirmation.css?ID=6300" rel="stylesheet" />
+﻿<script src="~/ckeditor/ckeditor.js?ID=8600"></script>
+<script src="~/ckeditor/styles.js?ID=8600"></script>
+<script src="~/assets/scripts/notification.js?ID=8600"></script>
 
 <div id="alertbox" style="display:none; z-index:99999" class="confirmation_modal fade-up">
     <div style="opacity:0.7; background: linear-gradient(to right, #ff4767, #790032); border: 1px solid #afafaf;" class="confirmation_modal-content confirmation_container">
@@ -24,11 +23,42 @@
 
 <div ng-controller="notificationController" class="container-fluid">
 
+    <div id="helpcenter" style="display:none; z-index: 999;" class="viewpopup_modal fade-up">
+        <div class="viewpopup-content viewProforma_container">
+            <div id="helpcenterheader" style="background-color: #28a745; color: white;" class="viewpopupclearfix">
+                <span class="pull-left">
+                    <i class="fa fa-info-circle" aria-hidden="true"></i>&nbsp;&nbsp;Help Center
+                </span>
+                <span>
+                    <label style="display:none;" id="notificationID"></label>
+                    <i class="fa fa-times pull-right" title="clear notification" style="padding-top: 5px; cursor: pointer;" ng-click="closepopup('helpcenter');" aria-hidden="true"></i>
+                </span>
+            </div>
+            <div style="background-color: #ccffd8;" class="view_popup_body" id="resourcecheckbookpanelheader">
+                <h5 class="helptitle"><i class="fa fa-yelp" aria-hidden="true"></i> &nbsp; We're here to help</h5>
+                <div>
+                    <input type="text" id="capital_description" class="form-control form-control-sm" ng-model="txtSearchProformaLiveHelp" placeholder="Search ProformaLive Help">
+                </div>
+            </div>
+            <div class="view_popup_body" id="resourcecheckbookpanellist">
+                <div class="row">
+                    <div ng-repeat="item in helplist | filter: txtSearchProformaLiveHelp" class="col-sm-3">
+                        <div>
+                            <div style="padding: 5px; font-weight: 500; font-size: 12px; padding-left: 20px;" class="card-body">
+                                <i class="fa fa-check" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp; <a ng-click="shownotification(item.Sysid)" href="#">{{item.Title}}</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div id="notificationpanel" style="display:none;" class="notification_modal fade-up">
         <div class="notification_modal-content notification_modal_container">
             <div class="notificationclearfix">
                 <span class="pull-left">
-                    <i class="fa fa-bell" aria-hidden="true"></i>&nbsp;&nbsp;Notification Panel
+                    <i class="fa fa-bell" aria-hidden="true"></i>&nbsp;&nbsp;{{lbl_name}} Panel
                 </span>
                 <span>
                     <label style="display:none;" id="notificationID"></label>
@@ -49,18 +79,29 @@
                 <span class="slider round"></span>
             </label>
 
-            <label style="padding-right: 10px; padding-top: 2px;" class="float-right">&nbsp;Notification Status:</label>
-            <i class="fa fa-bell" style="color:rgb(0, 0, 0);" aria-hidden="true"></i>
-            &nbsp;&nbsp;Notification Panel
+            <label style="padding-right: 10px; padding-top: 2px;" class="float-right">&nbsp;{{lbl_name}} Status:</label>
+
+            <div class="form-check pull-left">
+                <input class="form-check-input" type="radio" ng-click="loadnotificationdata();" name="flexRadioDefault" id="flexRadioDefault1" checked>
+                <label class="form-check-label" for="flexRadioDefault1">
+                    <i class="fa fa-bell" style="color:rgb(0, 0, 0);" aria-hidden="true"></i> Notification Panel &nbsp;&nbsp; &nbsp;&nbsp;
+                </label>
+            </div> &nbsp;&nbsp;
+            <div class="form-check pull-left">
+                <input class="form-check-input" type="radio" ng-click="loadhelpdata();" name="flexRadioDefault" id="flexRadioDefault2">
+                <label class="form-check-label" for="flexRadioDefault2">
+                    <i class="fa fa-info-circle" aria-hidden="true"></i> Help Panel
+                </label>
+            </div>
         </div>
         <div id="notificationbody" class="card-body notificationpanelbody">
-            <input type="text" id="notificationid" style="display:none;" ng-model="notificationid" class="form-control form-control-sm" placeholder="Enter Notification Title">
-            <input type="text" id="notificationTitle" ng-model="notificationTitle" class="form-control form-control-sm" placeholder="Enter Notification Title">
+            <input type="text" id="notificationid" style="display:none;" ng-model="notificationid" class="form-control form-control-sm" placeholder="Enter {{lbl_name}} Title">
+            <input type="text" id="notificationTitle" ng-model="notificationTitle" class="form-control form-control-sm" placeholder="Enter {{lbl_name}} Title">
             <textarea name="editor1" id="editor1" rows="10" cols="80">                
             </textarea>
             <br />
             <p style="font-size: 13px; font-weight: 500;">
-                <span style="font-size:13px; padding-top:15px; font-weight:500;"><i class="fa fa-list" aria-hidden="true"></i>&nbsp;&nbsp;Notification List</span>
+                <span style="font-size:13px; padding-top:15px; font-weight:500;"><i class="fa fa-list" aria-hidden="true"></i>&nbsp;&nbsp;{{lbl_name}} List</span>
             </p>
 
             <table style="width:100%" class="table table-striped table-bordered">
@@ -76,7 +117,7 @@
                 </thead>
                 <tbody>
                     <tr ng-repeat="item in notificationList">
-                        <td>{{item.Sysid}}</td>
+                        <td><span class="badge badge-light-primary">{{item.Sysid}}</span></td>
                         <td><span class="badge badge-light-primary">{{item.Title}}</span></td>
                         <td><span style="padding-bottom: 5px;" ng-class="item.Status=='Active' ? 'badge badge-success' : 'badge badge-danger'">{{item.Status}}</span></td>
                         <td><span class="badge badge-light-primary">{{item.CreatedOn | date: 'dd/MM/yyyy'}}</span></td>

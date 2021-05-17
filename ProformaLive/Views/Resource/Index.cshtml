@@ -2,14 +2,14 @@
     Technologies used: MVC, Angular JS, Javascript, SQL Server, C#, Jexcel, Jsuite.*@
 
 <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
-<link href="~/assets/Jexcel/jexcel_44.css?ID=8400" rel="stylesheet" />
-<script src="~/assets/Jexcel/jexcelv44.js?ID=8400"></script>
-<script src="~/assets/jexcel/jsuites38.js?id=8400"></script>
-<link href="~/assets/jexcel/jsuites38.css?id=8400" rel="stylesheet" />
-<link href="~/assets/css/delete-confirmation.css?ID=8400" rel="stylesheet" />
-<script src="~/assets/scripts/resource.js?ID=8400"></script>
-<script src="~/assets/scripts/exportexcel/alasql.min.js?ID=8400"></script>
-<script src="~/assets/scripts/exportexcel/xlsx.core.min.js?ID=8400"></script>
+<link href="~/assets/Jexcel/jexcel_44.css?ID=8600" rel="stylesheet" />
+<script src="~/assets/Jexcel/jexcelv44.js?ID=8600"></script>
+<script src="~/assets/jexcel/jsuites38.js?id=8600"></script>
+<link href="~/assets/jexcel/jsuites38.css?id=8600" rel="stylesheet" />
+<link href="~/assets/css/delete-confirmation.css?ID=8600" rel="stylesheet" />
+<script src="~/assets/scripts/resource.js?ID=8600"></script>
+<script src="~/assets/scripts/exportexcel/alasql.min.js?ID=8600"></script>
+<script src="~/assets/scripts/exportexcel/xlsx.core.min.js?ID=8600"></script>
 
 @*alert box to display errors.*@
 <div id="alertbox" class="alert_modal fade-up">
@@ -19,8 +19,6 @@
         </div>
     </div>
 </div>
-
-
 <div id="progressbar" style="z-index:999999" class="confirmation_modal fade-up">
     <div class="confirmation_modal-content confirmation_container">
         <div class="clearfix">
@@ -33,24 +31,25 @@
 </div>
 
 <div id="mainbody" style="opacity:0;" ng-controller="MECCController" class="container-fluid">
-
-    <div id="notificationpanel" style="display:none;" class="notification_modal fade-up">
-        <div class="notification_modal-content notification_modal_container">
-            <div class="notificationclearfix">
+        
+    <div id="notificationpanel" style="display:none; z-index: 9999;" class="viewpopup_modal fade-up">
+        <div class="viewpopup-content viewProforma_container">
+            <div id="notificationpanelheader" style="background-color: #e88722; color: white;" class="viewpopupclearfix">
                 <span class="pull-left">
-                    <i class="fa fa-bell" aria-hidden="true"></i>&nbsp;&nbsp;Notification Panel
+                    <i class="fa fa-info-circle" aria-hidden="true"></i>&nbsp;&nbsp;Notification Panel
                 </span>
                 <span>
                     <label style="display:none;" id="notificationID"></label>
                     <i class="fa fa-times pull-right" id="closeNotification" title="clear notification" style="padding-top: 5px; cursor: pointer; display:none;" ng-click="closenotification();" aria-hidden="true"></i>
                     <i class="fa fa-times pull-right" id="clearNotification" title="clear notification" style="padding-top: 5px; cursor: pointer; display:none;" ng-click="clearnotificaiton();" aria-hidden="true"></i>
                 </span>
-            </div>
-            <div class="notificationbody" id="notificationBody">
+            </div>           
+            <div class="notificationbody" id="notificationBody">                
             </div>
         </div>
     </div>
-    <div id="resourcecheckbookpanel" style="display:none;" class="viewpopup_modal fade-up">
+
+    <div id="resourcecheckbookpanel" style="display:none; width:100%;" class="viewpopup_modal fade-up">
         <div class="viewpopup-content viewProforma_container">
             <div id="resourcecheckbookpanelheader" class="viewpopupclearfix">
                 <span class="pull-left">
@@ -70,6 +69,37 @@
                     <span style="cursor: pointer;" ng-click="save_resource_checkbookchanges()" class="badge badge-success">Save Changes</span>
                 </div>
                 <div id="tbl_resource_checkbook">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="helpcenter" style="display:none; z-index: 999;" class="viewpopup_modal fade-up">
+        <div class="viewpopup-content viewProforma_container">
+            <div id="helpcenterheader" style="background-color: #28a745; color: white;" class="viewpopupclearfix">
+                <span class="pull-left">
+                    <i class="fa fa-info-circle" aria-hidden="true"></i>&nbsp;&nbsp;Help Center
+                </span>
+                <span>
+                    <label style="display:none;" id="notificationID"></label>
+                    <i class="fa fa-times pull-right" title="clear notification" style="padding-top: 5px; cursor: pointer;" ng-click="closepopup('helpcenter');" aria-hidden="true"></i>
+                </span>
+            </div>
+            <div style="background-color: #ccffd8;" class="view_popup_body" id="resourcecheckbookpanelheader">
+                <h5 class="helptitle"><i class="fa fa-yelp" aria-hidden="true"></i> &nbsp; We're here to help</h5>
+                <div>
+                    <input type="text" id="capital_description" class="form-control form-control-sm" ng-model="txtSearchProformaLiveHelp" placeholder="Search ProformaLive Help">
+                </div>
+            </div>
+            <div class="view_popup_body" id="resourcecheckbookpanellist">
+                <div class="row">
+                    <div ng-repeat="item in helplist | filter: txtSearchProformaLiveHelp" class="col-sm-3">
+                        <div>
+                            <div style="padding: 5px; font-weight: 500; font-size: 12px; padding-left: 20px;" class="card-body">
+                                <i class="fa fa-check" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp; <a ng-click="shownotification(item.Sysid)" href="#">{{item.Title}}</a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -272,7 +302,7 @@
 
             <!-- Tab panes -->
             <div style="border-left: 1px solid #e9e8e8;  border-right: 1px solid #e9e8e8; border-bottom: 1px solid #e9e8e8;" class="tab-content">
-                <div id="summary" style="padding-left:20px; padding-right:20px; opacity:0;">                    
+                <div id="summary" style="padding-left:20px; padding-right:20px; opacity:0;">
                     <div id="summarymaindiv">
                         <br />
                         <div class="form-row">
@@ -567,7 +597,7 @@
                         <table id="tblresourcecheckbook">
                             <thead>
                                 <tr>
-                                    <th id="blankrow" style="background-color: white; position: initial; border: 0px !important;" colspan="6">
+                                    <th id="blankrow" style="background-color: white; position: initial; border: 0px !important;" colspan="5">
                                     </th>
                                     <th colspan="2" style="text-align:left;">
                                         &nbsp;
@@ -600,8 +630,9 @@
                                     <td style="padding:0px; border: 0px;" colspan="14">
                                         <table>
                                             <tr>
-                                                <td colspan="2" ng-show="summary.Name == 'Over/Under Spent'" style="width:209px; background-color: #e5f1ff; text-align: left; font-weight: 500;"><i class="fa fa-square" style="color:rgb(255, 69, 89);" aria-hidden="true"></i>&nbsp;Over Spent &nbsp; <i class="fa fa-square" style="color:rgb(226, 192, 24);" aria-hidden="true"></i>&nbsp;Under Spent</td>
-                                                <td colspan="2" ng-show="summary.Name != 'Over/Under Spent'" style="width:209px; background-color: #e5f1ff; text-align: left; font-weight: 500;">
+                                                <td colspan="2" ng-show="summary.Name == 'Over/Under Spent'" style="width:229px; background-color: #e5f1ff; text-align: left; font-weight: 500;">
+                                                    <i class="fa fa-square" style="color:rgb(255, 69, 89);" aria-hidden="true"></i>&nbsp;Over Spent &nbsp; <i class="fa fa-square" style="color:rgb(226, 192, 24);" aria-hidden="true"></i>&nbsp;Under Spent</td>
+                                                <td colspan="2" ng-show="summary.Name != 'Over/Under Spent'" style="width:229px; background-color: #e5f1ff; text-align: left; font-weight: 500;">
                                                     <i ng-show="summary.Name=='AOP Forecast' || summary.Name=='6Q Forecast' || summary.Name=='5Q Forecast'" style="color:#404344; padding-right:4px; margin-top: 2px;" title="Expand All" ng-click="allES = !allES" ng-class="allES ? 'fa fa-minus-square resourcecheckbookfontminus' : 'fa fa-plus-square resourcecheckbookfontplus'" class="fa fa-plus-square" aria-hidden="true"></i>
                                                     {{summary.Name}}
                                                 </td>
@@ -631,7 +662,7 @@
                                                 <td ng-show="summary.Name != 'Over/Under Spent'" ng-style="celldefalutstyle()">{{summary.APR}}</td>
                                             </tr>
                                             <tr ng-show="allES" style="background-color:rgb(229, 246, 255);" ng-repeat="summarydata in summary.ResourceCheckBookSummaryResult">
-                                                <td colspan="2" style="width:209px; padding-left: 30px; background-color: #8bb3e2; text-align: left; font-weight: 500;">{{summarydata.Name}}</td>
+                                                <td colspan="2" style="width:229px; padding-left: 30px; background-color: #8bb3e2; text-align: left; font-weight: 500;">{{summarydata.Name}}</td>
                                                 <td ng-style="celldefalutstyle()">{{summarydata.MAY}}</td>
                                                 <td ng-style="celldefalutstyle()">{{summarydata.JUN}}</td>
                                                 <td ng-style="celldefalutstyle()">{{summarydata.JUL}}</td>
@@ -652,23 +683,22 @@
                                     <th style="width: 30px;"><i style="color:#c1ffc3;" title="Expand All" ng-click="expandAll(allExpanded = !allExpanded)" expand ng-class="allExpanded ? 'fa fa-minus-square resourcecheckbookfontminus' : 'fa fa-plus-square resourcecheckbookfontplus'" class="fa fa-plus-square" aria-hidden="true"></i></th>
                                     <th style="width:120px;">WBSNumber</th>
                                     <th style="width:43px;">BU</th>
-                                    <th style="width:140px;">HighOrg</th>
+                                    <th style="width:150px;">HighOrg</th>
                                     <th id="checkbook_MidOrg">MidOrg</th>
-                                    <th style="width:150px;">Team</th>
-                                    <th style="width:150px;">RequiredSkill</th>
+                                    <th style="width:170px;">Team</th>                                   
                                     <th style="width:59px;">FinYear</th>
-                                    <th style="width:43px;">MAY</th>
-                                    <th style="width:43px;">JUN</th>
-                                    <th style="width:43px;">JUL</th>
-                                    <th style="width:43px;">AUG</th>
-                                    <th style="width:43px;">SEP</th>
-                                    <th style="width:43px;">OCT</th>
-                                    <th style="width:43px;">NOV</th>
-                                    <th style="width:43px;">DEC</th>
-                                    <th style="width:43px;">JAN</th>
-                                    <th style="width:43px;">FEB</th>
-                                    <th style="width:43px;">MAR</th>
-                                    <th style="width:43px;">APR</th>
+                                    <th style="width:53px;">MAY</th>
+                                    <th style="width:53px;">JUN</th>
+                                    <th style="width:53px;">JUL</th>
+                                    <th style="width:53px;">AUG</th>
+                                    <th style="width:53px;">SEP</th>
+                                    <th style="width:53px;">OCT</th>
+                                    <th style="width:53px;">NOV</th>
+                                    <th style="width:53px;">DEC</th>
+                                    <th style="width:53px;">JAN</th>
+                                    <th style="width:53px;">FEB</th>
+                                    <th style="width:53px;">MAR</th>
+                                    <th style="width:53px;">APR</th>
                                 </tr>
                             </thead>
                             <tbody ng-repeat="master in modelRresourceCheckBook">
@@ -680,8 +710,7 @@
                                     <td>{{master.BusinessUnit}}</td>
                                     <td title={{master.HighOrg}}>{{master.HighOrg | dotsFilter:20}}</td>
                                     <td title={{master.MidOrg}}>{{master.MidOrg}}</td>
-                                    <td title={{master.Team}}>{{master.Team | dotsFilter:20}}</td>
-                                    <td title={{master.RequiredSkill}}>{{master.RequiredSkill | dotsFilter:20}}</td>
+                                    <td title={{master.Team}}>{{master.Team | dotsFilter:20}}</td>                                    
                                     <td>{{master.FinYear}}</td>
                                     <td ng-style="setcolor(master.MAY)">{{master.MAY}}</td>
                                     <td ng-style="setcolor(master.JUN)">{{master.JUN}}</td>
@@ -698,57 +727,56 @@
                                 </tr>
                                 <tr ng-show="expanded" ng-repeat="checkbook in master.ResourceCheckBook">
                                     <td id="subResourcetable" colspan="20">
-                                        <table ng-style="{ 'width' : subResourcetablewidth }">
+                                        <table>
                                             <tbody>
                                                 <tr ng-style="setAFColor(checkbook.Type)">
                                                     <td style="width:30px; background-color: white !important; border: 0px !important;">
                                                         &nbsp;&nbsp;
                                                     </td>
-                                                    <td style="width:26px; text-align:center;">
+                                                    <td style="width:25px; text-align:center;">
                                                         <i ng-show="checkbook.Type == 'A' && checkbook.ResourceCheckBookData.length == 0" class="fa fa-plus-square disableresourcecheckbookfontplus" aria-hidden="true"></i>
                                                         <i ng-show="checkbook.Type == 'A' && checkbook.ResourceCheckBookData.length > 0" ng-click="expandedCJI = !expandedCJI" ng-class="expandedCJI ? 'fa fa-minus-square resourcecheckbookfontminus' : 'fa fa-plus-square resourcecheckbookfontplus'" class="fa fa-plus-square" aria-hidden="true"></i>
-                                                        <i ng-show="checkbook.Type == 'F'" ng-click="viewresourceinfo(checkbook.ProjectID,checkbook.WBSNumber,checkbook.BusinessUnit, master.HighOrg, master.MidOrg,checkbook.Team, checkbook.RequiredSkill, checkbook.FinYear)" class="fa fa-pencil-square resourcecheckbookfontedit" aria-hidden="true"></i>
+                                                        <i ng-show="checkbook.Type == 'F'" ng-click="viewresourceinfo(checkbook.ProjectID,checkbook.WBSNumber,checkbook.BusinessUnit, master.HighOrg, master.MidOrg,checkbook.Team, checkbook.FinYear)" class="fa fa-pencil-square resourcecheckbookfontedit" aria-hidden="true"></i>
                                                     </td>
                                                     <td style="width:95px;">{{checkbook.WBSNumber}}</td>
                                                     <td style="width:43px;">{{checkbook.BusinessUnit}}</td>
-                                                    <td style="width:140px;" title={{master.HighOrg}}>{{checkbook.HighOrg | dotsFilter:20}}</td>
+                                                    <td style="width:150px;" title={{master.HighOrg}}>{{checkbook.HighOrg | dotsFilter:20}}</td>
                                                     <td ng-style="{ 'width' : subresourcewidth }" title={{master.MidOrg}}>{{checkbook.MidOrg}}</td>
-                                                    <td style="width:150px;" title={{master.Team}}>{{checkbook.Team | dotsFilter:20}}</td>
-                                                    <td style="width:150px;" title={{master.RequiredSkill}}>{{checkbook.RequiredSkill | dotsFilter:20}}</td>
+                                                    <td style="width:170px;" title={{master.Team}}>{{checkbook.Team | dotsFilter:20}}</td>                                                    
                                                     <td style="width:59px;">{{checkbook.FinYear}}</td>
-                                                    <td style="width:43px; text-align:right;">{{checkbook.MAY}}</td>
-                                                    <td style="width:43px; text-align:right;">{{checkbook.JUN}}</td>
-                                                    <td style="width:43px; text-align:right;">{{checkbook.JUL}}</td>
-                                                    <td style="width:43px; text-align:right;">{{checkbook.AUG}}</td>
-                                                    <td style="width:43px; text-align:right;">{{checkbook.SEP}}</td>
-                                                    <td style="width:43px; text-align:right;">{{checkbook.OCT}}</td>
-                                                    <td style="width:43px; text-align:right;">{{checkbook.NOV}}</td>
-                                                    <td style="width:43px; text-align:right;">{{checkbook.DEC}}</td>
-                                                    <td style="width:43px; text-align:right;">{{checkbook.JAN}}</td>
-                                                    <td style="width:43px; text-align:right;">{{checkbook.FEB}}</td>
-                                                    <td style="width:43px; text-align:right;">{{checkbook.MAR}}</td>
-                                                    <td style="width:43px; text-align:right;">{{checkbook.APR}}</td>
+                                                    <td style="width:53px; text-align:right;">{{checkbook.MAY}}</td>
+                                                    <td style="width:53px; text-align:right;">{{checkbook.JUN}}</td>
+                                                    <td style="width:53px; text-align:right;">{{checkbook.JUL}}</td>
+                                                    <td style="width:53px; text-align:right;">{{checkbook.AUG}}</td>
+                                                    <td style="width:53px; text-align:right;">{{checkbook.SEP}}</td>
+                                                    <td style="width:53px; text-align:right;">{{checkbook.OCT}}</td>
+                                                    <td style="width:53px; text-align:right;">{{checkbook.NOV}}</td>
+                                                    <td style="width:53px; text-align:right;">{{checkbook.DEC}}</td>
+                                                    <td style="width:53px; text-align:right;">{{checkbook.JAN}}</td>
+                                                    <td style="width:53px; text-align:right;">{{checkbook.FEB}}</td>
+                                                    <td style="width:53px; text-align:right;">{{checkbook.MAR}}</td>
+                                                    <td style="width:53px; text-align:right;">{{checkbook.APR}}</td>
                                                 </tr>
                                                 <tr ng-show="expandedCJI" ng-repeat="CJI3Data in checkbook.ResourceCheckBookData">
                                                     <td style="width:30px; background-color: white !important; border: 0px !important;">
                                                     </td>
-                                                    <td style="width:26px; background-color: white !important; border: 0px !important;">
+                                                    <td style="width:25px; background-color: white !important; border: 0px !important;">
                                                     </td>
                                                     <td>{{CJI3Data.CJI3_WBSNumber}}</td>
-                                                    <td colspan="5" id="O_CJI3_ResourceName">{{CJI3Data.CJI3_ResourceName}}</td>
+                                                    <td colspan="4" id="O_CJI3_ResourceName">{{CJI3Data.CJI3_ResourceName}}</td>
                                                     <td style="width:59px;">{{CJI3Data.CJI3_FinYear}}</td>
-                                                    <td style="width:43px; text-align:right;">{{CJI3Data.MAY}}</td>
-                                                    <td style="width:43px; text-align:right;">{{CJI3Data.JUN}}</td>
-                                                    <td style="width:43px; text-align:right;">{{CJI3Data.JUL}}</td>
-                                                    <td style="width:43px; text-align:right;">{{CJI3Data.AUG}}</td>
-                                                    <td style="width:43px; text-align:right;">{{CJI3Data.SEP}}</td>
-                                                    <td style="width:43px; text-align:right;">{{CJI3Data.OCT}}</td>
-                                                    <td style="width:43px; text-align:right;">{{CJI3Data.NOV}}</td>
-                                                    <td style="width:43px; text-align:right;">{{CJI3Data.DEC}}</td>
-                                                    <td style="width:43px; text-align:right;">{{CJI3Data.JAN}}</td>
-                                                    <td style="width:43px; text-align:right;">{{CJI3Data.FEB}}</td>
-                                                    <td style="width:43px; text-align:right;">{{CJI3Data.MAR}}</td>
-                                                    <td style="width:43px; text-align:right;">{{CJI3Data.APR}}</td>
+                                                    <td style="width:53px; text-align:right;">{{CJI3Data.MAY}}</td>
+                                                    <td style="width:53px; text-align:right;">{{CJI3Data.JUN}}</td>
+                                                    <td style="width:53px; text-align:right;">{{CJI3Data.JUL}}</td>
+                                                    <td style="width:53px; text-align:right;">{{CJI3Data.AUG}}</td>
+                                                    <td style="width:53px; text-align:right;">{{CJI3Data.SEP}}</td>
+                                                    <td style="width:53px; text-align:right;">{{CJI3Data.OCT}}</td>
+                                                    <td style="width:53px; text-align:right;">{{CJI3Data.NOV}}</td>
+                                                    <td style="width:53px; text-align:right;">{{CJI3Data.DEC}}</td>
+                                                    <td style="width:53px; text-align:right;">{{CJI3Data.JAN}}</td>
+                                                    <td style="width:53px; text-align:right;">{{CJI3Data.FEB}}</td>
+                                                    <td style="width:53px; text-align:right;">{{CJI3Data.MAR}}</td>
+                                                    <td style="width:53px; text-align:right;">{{CJI3Data.APR}}</td>
                                                 </tr>
                                             </tbody>
                                         </table>
@@ -814,8 +842,8 @@
                                                     <i ng-click="viewdeinfo(master.WBSNumber,master.FisYear,master.ExpenseCategory,master.Description,master.decheckbooksubmenu[0])" class="fa fa-pencil-square resourcecheckbookfontedit" aria-hidden="true"></i>
                                                 </td>
                                                 <td width="100px">{{master.WBSNumber}}</td>
-                                                <td title={{master.ExpenseCategory}} ng-style="{ 'width' : de_dynamic_checkbook_width }">{{master.ExpenseCategory| dotsFilter: defiltercount}}</td>
-                                                <td title={{master.Description}} ng-style="{ 'width' : de_dynamic_checkbook_width }">{{master.Description | dotsFilter: defiltercount}}</td>
+                                                <td class="tooltip_custom" ng-style="{ 'width' : de_dynamic_checkbook_width }">{{master.ExpenseCategory| dotsFilter: defiltercount}} <span class="tooltiptext_custom">{{master.ExpenseCategory}}</span></td>
+                                                <td class="tooltip_custom" ng-style="{ 'width' : de_dynamic_checkbook_width }">{{master.Description | dotsFilter: defiltercount}} <span class="tooltiptext_custom">{{master.Description}}</span></td>
                                                 <td class="tooltip_custom" ng-style="{ 'width' : de_dynamic_checkbook_width }">{{master.PONumber | dotsFilter: defiltercount}} <span ng-bind-html="edittooltip(master.PONumber)" class="{{ master.PONumber.length > 0 ? 'tooltiptext_custom' : 'tooltiphide' }}"></span></td>
                                                 <td width="70px">{{master.FisYear}}</td>
                                                 <td id="cbtd1-{{$index}}" width="68px" ng-style="setDECheckbookcolor(master.MAY, master.decheckbooksubmenu[0].MAY, master.decheckbooksubmenu[0].ID)" ng-click="show_de_cji3data(master.PONumber, master.WBSNumber, master.FisYear, 'MAY',master.ExpenseCategory, master.Description, false,'save','cbtd1', $index)"><a>{{master.MAY}}</a></td>

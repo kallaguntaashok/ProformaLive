@@ -11,14 +11,13 @@ namespace ProformaLive
 {
     using System;
     
-    public partial class SP_GET_Notification_Result
+    public partial class SP_GET_HelpData_Result
     {
         public int Sysid { get; set; }
-        public string Type { get; set; }
         public string Title { get; set; }
         public string Data { get; set; }
         public string Status { get; set; }
-        public Nullable<System.DateTime> CreatedOn { get; set; }
+        public string CreatedOn { get; set; }
         public string CreatedBy { get; set; }
     }
 }
