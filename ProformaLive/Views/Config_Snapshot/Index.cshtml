@@ -1,12 +1,11 @@
 ﻿
 <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
-<script src="~/assets/Jexcel/jsuites38.js?ID=6800"></script>
-<link href="~/assets/Jexcel/jsuites38.css?ID=6800" rel="stylesheet" />
-
-<link href="~/assets/css/delete-confirmation.css?ID=6200" rel="stylesheet" />
-<script src="~/assets/scripts/Master_Snapshot.js?ID=6200"></script>
-<script src="~/assets/scripts/exportexcel/alasql.min.js?ID=6200"></script>
-<script src="~/assets/scripts/exportexcel/xlsx.core.min.js?ID=6200"></script>
+<script src="~/assets/Jexcel/jsuites38.js?ID=90000"></script>
+<link href="~/assets/Jexcel/jsuites38.css?ID=90000" rel="stylesheet" />
+<link href="~/assets/css/delete-confirmation.css?ID=90000" rel="stylesheet" />
+<script src="~/assets/scripts/Master_Snapshot.js?ID=90000"></script>
+<script src="~/assets/scripts/exportexcel/alasql.min.js?ID=90000"></script>
+<script src="~/assets/scripts/exportexcel/xlsx.core.min.js?ID=90000"></script>
 
 <style type="text/css">
     .notification {
@@ -126,11 +125,11 @@
         </div>
     </div>
 
-    <div id="notificationpanel" style="display:none;" class="notification_modal fade-up">
-        <div class="notification_modal-content notification_modal_container">
-            <div class="notificationclearfix">
+    <div id="notificationpanel" style="display:none; z-index: 9999;" class="viewpopup_modal fade-up">
+        <div class="viewpopup-content viewProforma_container">
+            <div id="notificationpanelheader" style="background-color: #e88722; color: white;" class="viewpopupclearfix">
                 <span class="pull-left">
-                    <i class="fa fa-bell" aria-hidden="true"></i>&nbsp;&nbsp;Notification Panel
+                    <i class="fa fa-info-circle" aria-hidden="true"></i>&nbsp;&nbsp;Notification Panel
                 </span>
                 <span>
                     <label style="display:none;" id="notificationID"></label>

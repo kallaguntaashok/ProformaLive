@@ -141,6 +141,7 @@ app.controller('RateCardController', function ($scope, $http) {
         var usertype = localStorage.getItem("isAdmin");
         document.getElementById("menudashboard").setAttribute("class", "nav-item");
         document.getElementById("menuresource").setAttribute("class", "nav-item");
+        document.getElementById("menuassignments").setAttribute("class", "nav-item");
         document.getElementById("mastermenu").setAttribute("class", "nav-item dropdown");
         document.getElementById("mastermenu").setAttribute("class", "nav-item dropdown active");
 

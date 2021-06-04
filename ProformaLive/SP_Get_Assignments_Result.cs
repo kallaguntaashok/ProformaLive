@@ -11,16 +11,12 @@ namespace ProformaLive
 {
     using System;
     
-    public partial class SP_Get_ResourceCheckBook_Result
+    public partial class SP_Get_Assignments_Result
     {
-        public string Type { get; set; }
         public Nullable<int> ProjectID { get; set; }
-        public string WBSNumber { get; set; }
-        public string BusinessUnit { get; set; }
-        public string HighOrg { get; set; }
-        public string MidOrg { get; set; }
+        public string Project { get; set; }
         public string Team { get; set; }
-        public string FinYear { get; set; }
+        public Nullable<int> ResourceName { get; set; }
         public Nullable<decimal> MAY { get; set; }
         public Nullable<decimal> JUN { get; set; }
         public Nullable<decimal> JUL { get; set; }
@@ -33,5 +29,6 @@ namespace ProformaLive
         public Nullable<decimal> FEB { get; set; }
         public Nullable<decimal> MAR { get; set; }
         public Nullable<decimal> APR { get; set; }
+        public string RequestType { get; set; }
     }
 }

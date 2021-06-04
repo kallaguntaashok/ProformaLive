@@ -1,0 +1,152 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link href="~/assets/Jexcel/jexcel_44.css?ID=90000" rel="stylesheet" />
+<link href="~/assets/Jexcel/jsuites38.css?ID=90000" rel="stylesheet" />
+<link href="~/assets/css/delete-confirmation.css?ID=90000" rel="stylesheet" />
+<script src="~/assets/Jexcel/jexcelv44.js?ID=90000"></script>
+<script src="~/assets/Jexcel/jsuites38.js?ID=90000"></script>
+<script src="~/assets/scripts/Assignments.js"></script>
+
+<div ng-controller="AssignmentController" class="container-fluid">
+
+    <div id="mainbody" style="display:none; min-height: 690px;" class="card">
+
+        <div class="form-row card-header">
+            <div style="padding-top: 4px;" class="col-md-3">
+                <i class="fa fa-th" style="color:#043a7c;" aria-hidden="true"></i>&nbsp;&nbsp;<span style="font-size:14px; font-weight:500;">Assign-Live</span>
+            </div>
+            <div class="col-md-5">
+                <div class="pull-left" id="dropTeams"></div>
+            </div>
+            <div class="col-md-1">
+                <div class="pull-left" id="dropfisyear"></div>
+            </div>
+            <div class="col-md-3">
+            </div>
+        </div>
+        <div  class="card-body">
+            <div id="divAssignments">
+                <div style="overflow: scroll;">
+                    <table width="1515px" id="tblMainAssignments">
+                        <thead>
+                            <tr>
+                                <th width="575px">Project Name</th>
+                                <th width="70px">MAY</th>
+                                <th width="70px">JUN</th>
+                                <th width="70px">JUL</th>
+                                <th width="70px">AUG</th>
+                                <th width="70px">SEP</th>
+                                <th width="70px">OCT</th>
+                                <th width="70px">NOV</th>
+                                <th width="70px">DEC</th>
+                                <th width="70px">JAN</th>
+                                <th width="70px">FEB</th>
+                                <th width="70px">MAR</th>
+                                <th width="70px">APR</th>
+                                <th width="140px">Request Type</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="master in AssignmentData">
+                                <td style="padding: 0px; border: 0px;" colspan="14">
+                                    <table width="1555px" id="tbldecheckbooksub">
+                                        <tr>
+                                            <td class="mintblAssignmentstd" style="text-align:center; width: 30px; background-color: #f3f9ff;">
+                                                <i title="Expand" ng-click="expandeddecji3 = !expandeddecji3;" expand ng-class="expandeddecji3 ? 'fa fa-minus-square resourcecheckbookfontminus' : 'fa fa-plus-square resourcecheckbookfontplus'" class="fa fa-plus-square" aria-hidden="true"></i>
+                                            </td>
+                                            <td class="mintblAssignmentstd" width="545px">{{master.PROJECT_NAME}}</td>
+                                            <td class="mintblAssignmentstd" width="70px">{{master.MAY}}</td>
+                                            <td class="mintblAssignmentstd" width="70px">{{master.JUN}}</td>
+                                            <td class="mintblAssignmentstd" width="70px">{{master.JUL}}</td>
+                                            <td class="mintblAssignmentstd" width="70px">{{master.AUG}}</td>
+                                            <td class="mintblAssignmentstd" width="70px">{{master.SEP}}</td>
+                                            <td class="mintblAssignmentstd" width="70px">{{master.OCT}}</td>
+                                            <td class="mintblAssignmentstd" width="70px">{{master.NOV}}</td>
+                                            <td class="mintblAssignmentstd" width="70px">{{master.DEC}}</td>
+                                            <td class="mintblAssignmentstd" width="70px">{{master.JAN}}</td>
+                                            <td class="mintblAssignmentstd" width="70px">{{master.FEB}}</td>
+                                            <td class="mintblAssignmentstd" width="70px">{{master.MAR}}</td>
+                                            <td class="mintblAssignmentstd" width="70px">{{master.APR}}</td>
+                                            <th class="mintblAssignmentstd" width="140px"></th>
+                                        </tr>
+                                        <tr ng-show="expandeddecji3">
+                                            <td style="background-color: #fbfbfb; vertical-align: central; text-align: center;  cursor: pointer;" class="mintblAssignmentstd">
+                                                @*<i title="Add Assignment" style="font-size: 13px; padding-bottom:7px; color: #179a35;" class="fa fa-list-alt" aria-hidden="true"></i>*@
+                                                @*<i title="Save Assignment" style="font-size: 14px; padding-bottom:7px; color: #2542c2;" class="fa fa-floppy-o" aria-hidden="true"></i>
+                                                <i title="Discard Changes" style="font-size: 15px; padding-bottom:7px; color: #ff0000;" class="fa fa-trash" aria-hidden="true"></i>*@
+                                            </td>
+                                            <td style="padding: 0px; background: #dfecf9;" colspan="14">
+                                                <div id="decb_{{$index}}">
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        @*<div class="wrapper">
+            <div class="box1">A</div>
+            <div class="handler"></div>
+            <div class="box2">B</div>
+        </div>*@
+
+    </div>
+</div>
+
+<script type="text/javascript">
+    function calculatesum() {
+        angular.element(document.getElementById('mainbody')).scope().updatefilters();
+    }
+
+    var handler = document.querySelector('.handler');
+    var wrapper = handler.closest('.wrapper');
+    var boxA = wrapper.querySelector('.box1');
+    var boxB = wrapper.querySelector('.box2');
+    var isHandlerDragging = false;
+
+    document.addEventListener('mousedown', function (e) {
+        // If mousedown event is fired from .handler, toggle flag to true
+        if (e.target === handler) {
+            isHandlerDragging = true;
+        }
+    });
+
+    document.addEventListener('mousemove', function (e) {
+        // Don't do anything if dragging flag is false
+        if (!isHandlerDragging) {
+            return false;
+        }
+
+        e.preventDefault();
+
+        // Get offset
+        var containerOffsetTop = wrapper.offsetTop;
+        var containerOffsetBottom = wrapper.offsetBottom;
+
+
+        // Get x-coordinate of pointer relative to container
+        var pointerRelativeXpos = e.clientY - containerOffsetTop;
+        var pointerRelativeXpos2 = e.clientY - e.offsetTop + e.offsetHeight;
+
+
+        var boxAminWidth = 30;
+
+
+        boxA.style.height = (Math.max(boxAminWidth, pointerRelativeXpos - 2)) + 'px';
+        boxB.style.height = (Math.max(boxAminWidth, pointerRelativeXpos2 - 8)) + 'px';
+    });
+    document.addEventListener('mouseup', function (e) {
+        // Turn off dragging flag when user mouse is up
+        isHandlerDragging = false;
+    });
+
+</script>

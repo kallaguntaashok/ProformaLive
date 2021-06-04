@@ -12,15 +12,12 @@ namespace ProformaLive
     using System;
     using System.Collections.Generic;
     
-    public partial class PFL_MDT_SKILLS
+    public partial class Assignment
     {
-        public int SYSID { get; set; }
-        public string BUSINESS { get; set; }
-        public string BU { get; set; }
-        public string HIGH_ORG { get; set; }
-        public string MID_ORG { get; set; }
-        public string TEAM { get; set; }
-        public string SKILL_NAME { get; set; }
-        public Nullable<System.DateTime> CREATEDON { get; set; }
+        public int Sysid { get; set; }
+        public Nullable<int> ProjectID { get; set; }
+        public string Required_Skill { get; set; }
+        public string ResourceName { get; set; }
+        public string RequestType { get; set; }
     }
 }

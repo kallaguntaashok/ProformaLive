@@ -139,6 +139,7 @@
     <Content Include="assets\Jexcel\jsuites38.js" />
     <Content Include="assets\Jexcel\jsuites_v4.js" />
     <Content Include="assets\Jexcel\ScrollTabla.css" />
+    <Content Include="assets\scripts\Assignments.js" />
     <Content Include="assets\scripts\master.js" />
     <Content Include="assets\scripts\browser.js" />
     <Content Include="assets\scripts\Customjexcel.js" />
@@ -768,6 +769,12 @@
       <DependentUpon>ProformaLive.tt</DependentUpon>
     </Compile>
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Assignment.cs">
+      <DependentUpon>ProformaLive.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AssignmentsList.cs">
+      <DependentUpon>ProformaLive.tt</DependentUpon>
+    </Compile>
     <Compile Include="Authorization\AuthorizeADAttribute.cs" />
     <Compile Include="CapitalInfo.cs">
       <DependentUpon>ProformaLive.tt</DependentUpon>
@@ -803,6 +810,7 @@
       <DependentUpon>ProformaLive.tt</DependentUpon>
     </Compile>
     <Compile Include="Controllers\AOPProjectController.cs" />
+    <Compile Include="Controllers\AssignmentsController.cs" />
     <Compile Include="Controllers\ConfigureRateCardController.cs" />
     <Compile Include="Controllers\Config_SnapshotController.cs" />
     <Compile Include="Controllers\DashboardController.cs" />
@@ -879,17 +887,14 @@
     <Compile Include="PFL_MDT_PDW.cs">
       <DependentUpon>ProformaLive.tt</DependentUpon>
     </Compile>
-    <Compile Include="PFL_MDT_SKILLS.cs">
-      <DependentUpon>ProformaLive.tt</DependentUpon>
-    </Compile>
     <Compile Include="ProformaLive.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>ProformaLive.Context.tt</DependentUpon>
     </Compile>
     <Compile Include="ProformaLive.cs">
-      <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
       <DependentUpon>ProformaLive.tt</DependentUpon>
     </Compile>
     <Compile Include="ProformaLive.Designer.cs">
@@ -947,6 +952,9 @@
       <DependentUpon>ProformaLive.tt</DependentUpon>
     </Compile>
     <Compile Include="SP_Get_APP_PFL_RESOURCES_SS_V_Result.cs">
+      <DependentUpon>ProformaLive.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SP_Get_Assignments_Result.cs">
       <DependentUpon>ProformaLive.tt</DependentUpon>
     </Compile>
     <Compile Include="SP_Get_CapitalLabor_Comments_Result.cs">
@@ -1130,6 +1138,7 @@
     <Content Include="Scripts\angular.min.js.map" />
     <Content Include="Scripts\angular-resource.min.js.map" />
     <Content Include="Views\Config_Snapshot\Index.cshtml" />
+    <Content Include="Views\Assignments\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -1193,7 +1202,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>60580</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:60221/</IISUrl>
+          <IISUrl>http://localhost:60331/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

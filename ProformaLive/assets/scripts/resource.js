@@ -84,6 +84,7 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
     var decbsource = { deitems: [] };
     var de_cb_readonly_status = false;
     $scope.showExporttoexcel = true;
+    localStorage.setItem("decellID", null);
 
     document.getElementById('resourcetotal').innerHTML = "0";
     document.getElementById('capitaltotal').innerHTML = "0";
@@ -650,7 +651,7 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
             filterid = "capitallabor_clearfilters";
         }
         else if (activetab === "directexpenses") {
-            in_number = 7;
+            in_number = 8
             tablobj = objdirectexpenses;
             filterid = "de_clearfilters";
         }
@@ -1523,7 +1524,7 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
     }
 
     $scope.show_de_cji3data = function (PONumber, wbsnumber, fisyear, month, expensecategory, description, status, show, rowstr, rowid) {
-
+        
         updateprogressbar(20, "loading...");
         $http({
             method: 'POST',
@@ -1579,11 +1580,12 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
     }
 
     //The medthod will remove the DE Checkbook cell highlight color    
-    function remove_decheckbook_cell_highlight() {
+    function remove_decheckbook_cell_highlight() {        
         /* once user click on cell, it store the cell ID, next time if user click different cell system will 
          * replace the cell ID which is stored and stored cell style will be removed. */
-        var decellid = localStorage.getItem("decellID")
-        if (decellid != null) {
+        var decellid = localStorage.getItem("decellID") 
+        console.log(decellid);
+        if (decellid != 'null') {
             document.getElementById(decellid).removeAttribute("style");
         }
     }
@@ -1843,7 +1845,7 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
     }
 
     $scope.CheckUncheckHeader = function (masterDECJI3) {
-
+        
         $scope.modelDECJI3 = masterDECJI3;
         var count = 0;
         var select_de_cb_total = 0;
@@ -2598,7 +2600,7 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
         var de_selectionActive = function (instance, x1, y1, x2, y2, origin) {
 
             document.getElementById('detotal').innerHTML = "0";
-            if ((x1 >= 6 && x1 <= 17) && (x2 >= 6 && x2 <= 17)) {
+            if ((x1 >= 7 && x1 <= 18) && (x2 >= 7 && x2 <= 18)) {
                 var value = 0;
                 for (var i = y1; i <= y2; i++) {
                     for (var j = x1; j <= x2; j++) {
@@ -2758,7 +2760,7 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
             tableOverflow: true,
             onmoverow: moveDERow,
             filters: true,
-            footers: [['', '', '', 'Total', '=ROUND(SUM(G1:G300),2)', '=ROUND(SUM(H1:H300),2)', '=ROUND(SUM(I1:I300),2)', '=ROUND(SUM(J1:J300),2)', '=ROUND(SUM(K1:K300),2)', '=ROUND(SUM(L1:L300),2)', '=ROUND(SUM(M1:M300),2)', '=ROUND(SUM(N1:N300),2)', '=ROUND(SUM(O1:O300),2)', '=ROUND(SUM(P1:P300),2)', '=ROUND(SUM(Q1:Q300),2)', '=ROUND(SUM(R1:R300),2)', '']],
+            footers: [['', '', '', '', 'Total', '=ROUND(SUM(G1:G300),2)', '=ROUND(SUM(H1:H300),2)', '=ROUND(SUM(I1:I300),2)', '=ROUND(SUM(J1:J300),2)', '=ROUND(SUM(K1:K300),2)', '=ROUND(SUM(L1:L300),2)', '=ROUND(SUM(M1:M300),2)', '=ROUND(SUM(N1:N300),2)', '=ROUND(SUM(O1:O300),2)', '=ROUND(SUM(P1:P300),2)', '=ROUND(SUM(Q1:Q300),2)', '=ROUND(SUM(R1:R300),2)', '']],
             tableWidth: mainwidth,
             columns: [
                 { type: 'hidden', title: 'ID', width: 30 },
@@ -6241,6 +6243,7 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
         var usertype = localStorage.getItem("isAdmin");
         document.getElementById("menudashboard").setAttribute("class", "nav-item");
         document.getElementById("menuresource").setAttribute("class", "nav-item");
+        document.getElementById("menuassignments").setAttribute("class", "nav-item");
         document.getElementById("mastermenu").setAttribute("class", "nav-item dropdown");
         document.getElementById("menuresource").setAttribute("class", "nav-item active");
 

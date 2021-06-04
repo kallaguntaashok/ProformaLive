@@ -34,6 +34,26 @@
           <Property Name="SNAPSHOT_DT" Type="varchar" MaxLength="500" />
           <Property Name="MAKEDW_UPDATE_DT" Type="varchar" MaxLength="500" />
         </EntityType>
+        <EntityType Name="Assignments">
+          <Key>
+            <PropertyRef Name="Sysid" />
+          </Key>
+          <Property Name="Sysid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ProjectID" Type="int" />
+          <Property Name="Required_Skill" Type="varchar" MaxLength="500" />
+          <Property Name="ResourceName" Type="varchar" MaxLength="500" />
+          <Property Name="RequestType" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="AssignmentsList">
+          <Key>
+            <PropertyRef Name="Sysid" />
+          </Key>
+          <Property Name="Sysid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MasterID" Type="int" />
+          <Property Name="FisYear" Type="varchar" MaxLength="50" />
+          <Property Name="Month" Type="varchar" MaxLength="10" />
+          <Property Name="value" Type="decimal" Precision="18" Scale="2" />
+        </EntityType>
         <EntityType Name="CapitalInfo">
           <Key>
             <PropertyRef Name="MasterID" />
@@ -312,6 +332,7 @@
           <Property Name="CostElementName" Type="varchar" MaxLength="500" />
           <Property Name="Name" Type="varchar" MaxLength="500" />
           <Property Name="FullName" Type="varchar" MaxLength="500" StoreGeneratedPattern="Computed" />
+          <Property Name="Ops_ResourceName" Type="varchar" MaxLength="8000" StoreGeneratedPattern="Computed" />
           <Property Name="DocumentHeaderText" Type="varchar" MaxLength="500" />
           <Property Name="PurchasingDocument" Type="varchar" MaxLength="500" />
           <Property Name="PurchaseOrderText" Type="varchar" MaxLength="1000" />
@@ -510,19 +531,6 @@
           <Property Name="UPDATE_DT" Type="varchar" MaxLength="100" />
           <Property Name="CREATEDON" Type="datetime" />
         </EntityType>
-        <EntityType Name="PFL_MDT_SKILLS">
-          <Key>
-            <PropertyRef Name="SYSID" />
-          </Key>
-          <Property Name="SYSID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="BUSINESS" Type="varchar" MaxLength="50" />
-          <Property Name="BU" Type="varchar" MaxLength="50" />
-          <Property Name="HIGH_ORG" Type="varchar" MaxLength="2000" />
-          <Property Name="MID_ORG" Type="varchar" MaxLength="2000" />
-          <Property Name="TEAM" Type="varchar" MaxLength="2000" />
-          <Property Name="SKILL_NAME" Type="varchar" MaxLength="500" />
-          <Property Name="CREATEDON" Type="datetime" />
-        </EntityType>
         <EntityType Name="Proforma_DataFrasfer_DuplicateData">
           <Key>
             <PropertyRef Name="Sysid" />
@@ -613,6 +621,34 @@
           <Property Name="CreatedOn" Type="datetime" />
         </EntityType>
         <!--Errors Found During Generation:
+warning 6013: The table/view 'ProformaLive.dbo.Sheet1$' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+        <EntityType Name="Sheet1$">
+          <Property Name="Fiscal Year" Type="nvarchar" MaxLength="255" />
+          <Property Name="Posting Date" Type="datetime" />
+          <Property Name="Created on" Type="datetime" />
+          <Property Name="Document Date" Type="datetime" />
+          <Property Name="Period" Type="nvarchar" MaxLength="255" />
+          <Property Name="Object" Type="nvarchar" MaxLength="255" />
+          <Property Name="CO object name" Type="nvarchar" MaxLength="255" />
+          <Property Name="Partner-CCtr" Type="nvarchar" MaxLength="255" />
+          <Property Name="Cost Element" Type="nvarchar" MaxLength="255" />
+          <Property Name="Cost element name" Type="nvarchar" MaxLength="255" />
+          <Property Name="Name" Type="nvarchar" MaxLength="255" />
+          <Property Name="Document Header Text" Type="nvarchar" MaxLength="255" />
+          <Property Name="Purchasing Document" Type="nvarchar" MaxLength="255" />
+          <Property Name="Purchase order text" Type="nvarchar" MaxLength="255" />
+          <Property Name="Name of offsetting account" Type="nvarchar" MaxLength="255" />
+          <Property Name="Total quantity" Type="float" />
+          <Property Name="Posted unit of meas#" Type="nvarchar" MaxLength="255" />
+          <Property Name="CO area currency" Type="nvarchar" MaxLength="255" />
+          <Property Name="Val/COArea Crcy" Type="float" />
+          <Property Name="User Name" Type="nvarchar" MaxLength="255" />
+          <Property Name="Value Type" Type="nvarchar" MaxLength="255" />
+          <Property Name="Object Currency" Type="nvarchar" MaxLength="255" />
+          <Property Name="Document type" Type="nvarchar" MaxLength="255" />
+          <Property Name="Document Number" Type="nvarchar" MaxLength="255" />
+        </EntityType>-->
+        <!--Errors Found During Generation:
 warning 6013: The table/view 'ProformaLive.dbo.Tbl_PDW_CJI3' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
         <EntityType Name="Tbl_PDW_CJI3">
           <Property Name="CJI3_FinYear" Type="varchar" MaxLength="4" />
@@ -622,7 +658,7 @@ warning 6013: The table/view 'ProformaLive.dbo.Tbl_PDW_CJI3' does not have a pri
           <Property Name="PWD_HighOrg" Type="varchar" MaxLength="1000" />
           <Property Name="PWD_MidOrg" Type="varchar" MaxLength="1000" />
           <Property Name="PWD_Team" Type="varchar" MaxLength="100" />
-          <Property Name="PWD_RequiredSkills" Type="varchar" MaxLength="100" />
+          <Property Name="PWD_ResourceName" Type="varchar" MaxLength="100" />
           <Property Name="CJI3_TimeSpentInProject" Type="decimal" Precision="38" Scale="2" />
           <Property Name="CJI3_Amount" Type="decimal" Precision="38" Scale="2" />
         </EntityType>-->
@@ -653,6 +689,9 @@ warning 6013: The table/view 'ProformaLive.dbo.Tbl_PDW_CJI3' does not have a pri
           <Parameter Name="UserName" Type="varchar" Mode="In" />
           <Parameter Name="DE_ExpenseCategory" Type="varchar" Mode="In" />
           <Parameter Name="Description" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="RemoveNumericCharacters" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="varchar">
+          <Parameter Name="Temp" Type="varchar" Mode="In" />
         </Function>
         <Function Name="SP_APP_PFL_RESOURCES_SS_V_BulkInsert" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="date" Type="datetime" Mode="In" />
@@ -719,6 +758,10 @@ warning 6013: The table/view 'ProformaLive.dbo.Tbl_PDW_CJI3' does not have a pri
           <Parameter Name="Month" Type="varchar" Mode="In" />
         </Function>
         <Function Name="SP_Get_APP_PFL_RESOURCES_SS_V" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="SP_Get_Assignments" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="FisYear" Type="int" Mode="In" />
+          <Parameter Name="Teams" Type="varchar" Mode="In" />
+        </Function>
         <Function Name="SP_Get_Business" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="SP_Get_BusinessUnit" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="Business" Type="varchar" Mode="In" />
@@ -855,6 +898,7 @@ warning 6013: The table/view 'ProformaLive.dbo.Tbl_PDW_CJI3' does not have a pri
           <Parameter Name="HighOrg" Type="varchar" Mode="In" />
           <Parameter Name="MidOrg" Type="varchar" Mode="In" />
         </Function>
+        <Function Name="SP_Get_Year" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="SP_GetCapitalData" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="projectid" Type="int" Mode="In" />
         </Function>
@@ -929,6 +973,8 @@ warning 6013: The table/view 'ProformaLive.dbo.Tbl_PDW_CJI3' does not have a pri
         </Function>
         <EntityContainer Name="ProformaLiveModelStoreContainer">
           <EntitySet Name="APP_PFL_RESOURCES_SS_V" EntityType="Self.APP_PFL_RESOURCES_SS_V" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Assignments" EntityType="Self.Assignments" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AssignmentsList" EntityType="Self.AssignmentsList" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CapitalInfo" EntityType="Self.CapitalInfo" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CapitalInfoComments" EntityType="Self.CapitalInfoComments" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CapitalInfoList" EntityType="Self.CapitalInfoList" Schema="dbo" store:Type="Tables" />
@@ -959,7 +1005,6 @@ warning 6013: The table/view 'ProformaLive.dbo.Tbl_PDW_CJI3' does not have a pri
           <EntitySet Name="NotificationPanel" EntityType="Self.NotificationPanel" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PFL_MDT_FISCAL_DAYS" EntityType="Self.PFL_MDT_FISCAL_DAYS" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PFL_MDT_PDW" EntityType="Self.PFL_MDT_PDW" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="PFL_MDT_SKILLS" EntityType="Self.PFL_MDT_SKILLS" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Proforma_DataFrasfer_DuplicateData" EntityType="Self.Proforma_DataFrasfer_DuplicateData" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Resource_TempData" EntityType="Self.Resource_TempData" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ResourceInfo" EntityType="Self.ResourceInfo" Schema="dbo" store:Type="Tables" />
@@ -1001,6 +1046,26 @@ warning 6013: The table/view 'ProformaLive.dbo.Tbl_PDW_CJI3' does not have a pri
           <Property Name="SOURCE_MODIFIED_DT" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="SNAPSHOT_DT" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="MAKEDW_UPDATE_DT" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="Assignment">
+          <Key>
+            <PropertyRef Name="Sysid" />
+          </Key>
+          <Property Name="Sysid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ProjectID" Type="Int32" />
+          <Property Name="Required_Skill" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="ResourceName" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="RequestType" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="AssignmentsList">
+          <Key>
+            <PropertyRef Name="Sysid" />
+          </Key>
+          <Property Name="Sysid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MasterID" Type="Int32" />
+          <Property Name="FisYear" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Month" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="value" Type="Decimal" Precision="18" Scale="2" />
         </EntityType>
         <EntityType Name="CapitalInfo">
           <Key>
@@ -1280,6 +1345,7 @@ warning 6013: The table/view 'ProformaLive.dbo.Tbl_PDW_CJI3' does not have a pri
           <Property Name="CostElementName" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="Name" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="FullName" Type="String" MaxLength="500" FixedLength="false" Unicode="false" annotation:StoreGeneratedPattern="Computed" />
+          <Property Name="Ops_ResourceName" Type="String" MaxLength="8000" FixedLength="false" Unicode="false" annotation:StoreGeneratedPattern="Computed" />
           <Property Name="DocumentHeaderText" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="PurchasingDocument" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="PurchaseOrderText" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
@@ -1478,19 +1544,6 @@ warning 6013: The table/view 'ProformaLive.dbo.Tbl_PDW_CJI3' does not have a pri
           <Property Name="UPDATE_DT" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="CREATEDON" Type="DateTime" Precision="3" />
         </EntityType>
-        <EntityType Name="PFL_MDT_SKILLS">
-          <Key>
-            <PropertyRef Name="SYSID" />
-          </Key>
-          <Property Name="SYSID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="BUSINESS" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="BU" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="HIGH_ORG" Type="String" MaxLength="2000" FixedLength="false" Unicode="false" />
-          <Property Name="MID_ORG" Type="String" MaxLength="2000" FixedLength="false" Unicode="false" />
-          <Property Name="TEAM" Type="String" MaxLength="2000" FixedLength="false" Unicode="false" />
-          <Property Name="SKILL_NAME" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="CREATEDON" Type="DateTime" Precision="3" />
-        </EntityType>
         <EntityType Name="Proforma_DataFrasfer_DuplicateData">
           <Key>
             <PropertyRef Name="Sysid" />
@@ -1590,6 +1643,8 @@ warning 6013: The table/view 'ProformaLive.dbo.Tbl_PDW_CJI3' does not have a pri
         </EntityType>
         <EntityContainer Name="ProformaLiveEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="APP_PFL_RESOURCES_SS_V" EntityType="Self.APP_PFL_RESOURCES_SS_V" />
+          <EntitySet Name="Assignments" EntityType="Self.Assignment" />
+          <EntitySet Name="AssignmentsLists" EntityType="Self.AssignmentsList" />
           <EntitySet Name="CapitalInfoes" EntityType="Self.CapitalInfo" />
           <EntitySet Name="CapitalInfoComments" EntityType="Self.CapitalInfoComment" />
           <EntitySet Name="CapitalInfoLists" EntityType="Self.CapitalInfoList" />
@@ -1620,7 +1675,6 @@ warning 6013: The table/view 'ProformaLive.dbo.Tbl_PDW_CJI3' does not have a pri
           <EntitySet Name="NotificationPanels" EntityType="Self.NotificationPanel" />
           <EntitySet Name="PFL_MDT_FISCAL_DAYS" EntityType="Self.PFL_MDT_FISCAL_DAYS" />
           <EntitySet Name="PFL_MDT_PDW" EntityType="Self.PFL_MDT_PDW" />
-          <EntitySet Name="PFL_MDT_SKILLS" EntityType="Self.PFL_MDT_SKILLS" />
           <EntitySet Name="Proforma_DataFrasfer_DuplicateData" EntityType="Self.Proforma_DataFrasfer_DuplicateData" />
           <EntitySet Name="Resource_TempData" EntityType="Self.Resource_TempData" />
           <EntitySet Name="ResourceInfoes" EntityType="Self.ResourceInfo" />
@@ -1713,6 +1767,10 @@ warning 6013: The table/view 'ProformaLive.dbo.Tbl_PDW_CJI3' does not have a pri
             <Parameter Name="Month" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="SP_Get_APP_PFL_RESOURCES_SS_V" ReturnType="Collection(ProformaLiveModel.SP_Get_APP_PFL_RESOURCES_SS_V_Result)" />
+          <FunctionImport Name="SP_Get_Assignments" ReturnType="Collection(ProformaLiveModel.SP_Get_Assignments_Result)">
+            <Parameter Name="FisYear" Mode="In" Type="Int32" />
+            <Parameter Name="Teams" Mode="In" Type="String" />
+          </FunctionImport>
           <FunctionImport Name="SP_Get_Business" ReturnType="Collection(String)" />
           <FunctionImport Name="SP_Get_BusinessUnit" ReturnType="Collection(String)">
             <Parameter Name="Business" Mode="In" Type="String" />
@@ -1849,6 +1907,7 @@ warning 6013: The table/view 'ProformaLive.dbo.Tbl_PDW_CJI3' does not have a pri
             <Parameter Name="HighOrg" Mode="In" Type="String" />
             <Parameter Name="MidOrg" Mode="In" Type="String" />
           </FunctionImport>
+          <FunctionImport Name="SP_Get_Year" ReturnType="Collection(String)" />
           <FunctionImport Name="SP_GetCapitalData" ReturnType="Collection(ProformaLiveModel.SP_GetCapitalData_Result)">
             <Parameter Name="projectid" Mode="In" Type="Int32" />
           </FunctionImport>
@@ -2008,6 +2067,25 @@ warning 6013: The table/view 'ProformaLive.dbo.Tbl_PDW_CJI3' does not have a pri
           <Property Type="String" Name="SOURCE_MODIFIED_DT" Nullable="true" MaxLength="500" />
           <Property Type="String" Name="SNAPSHOT_DT" Nullable="true" MaxLength="500" />
           <Property Type="String" Name="MAKEDW_UPDATE_DT" Nullable="true" MaxLength="500" />
+        </ComplexType>
+        <ComplexType Name="SP_Get_Assignments_Result">
+          <Property Type="Int32" Name="ProjectID" Nullable="true" />
+          <Property Type="String" Name="Project" Nullable="true" />
+          <Property Type="String" Name="Team" Nullable="true" MaxLength="500" />
+          <Property Type="Int32" Name="ResourceName" Nullable="true" />
+          <Property Type="Decimal" Name="MAY" Nullable="true" Precision="38" Scale="6" />
+          <Property Type="Decimal" Name="JUN" Nullable="true" Precision="38" Scale="6" />
+          <Property Type="Decimal" Name="JUL" Nullable="true" Precision="38" Scale="6" />
+          <Property Type="Decimal" Name="AUG" Nullable="true" Precision="38" Scale="6" />
+          <Property Type="Decimal" Name="SEP" Nullable="true" Precision="38" Scale="6" />
+          <Property Type="Decimal" Name="OCT" Nullable="true" Precision="38" Scale="6" />
+          <Property Type="Decimal" Name="NOV" Nullable="true" Precision="38" Scale="6" />
+          <Property Type="Decimal" Name="DEC" Nullable="true" Precision="38" Scale="6" />
+          <Property Type="Decimal" Name="JAN" Nullable="true" Precision="38" Scale="6" />
+          <Property Type="Decimal" Name="FEB" Nullable="true" Precision="38" Scale="6" />
+          <Property Type="Decimal" Name="MAR" Nullable="true" Precision="38" Scale="6" />
+          <Property Type="Decimal" Name="APR" Nullable="true" Precision="38" Scale="6" />
+          <Property Type="String" Name="RequestType" Nullable="false" MaxLength="6" />
         </ComplexType>
         <ComplexType Name="SP_Get_Capital_Comments_Result">
           <Property Type="Int32" Name="Sysid" Nullable="false" />
@@ -2211,11 +2289,11 @@ warning 6013: The table/view 'ProformaLive.dbo.Tbl_PDW_CJI3' does not have a pri
         </ComplexType>
         <ComplexType Name="SP_Get_ResourceCheckBook_Result">
           <Property Type="String" Name="Type" Nullable="false" MaxLength="1" />
-          <Property Type="Int32" Name="ProjectID" Nullable="false" />
-          <Property Type="String" Name="WBSNumber" Nullable="false" MaxLength="100" />
-          <Property Type="String" Name="BusinessUnit" Nullable="false" MaxLength="50" />
-          <Property Type="String" Name="HighOrg" Nullable="false" MaxLength="500" />
-          <Property Type="String" Name="MidOrg" Nullable="false" MaxLength="500" />
+          <Property Type="Int32" Name="ProjectID" Nullable="true" />
+          <Property Type="String" Name="WBSNumber" Nullable="true" MaxLength="500" />
+          <Property Type="String" Name="BusinessUnit" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="HighOrg" Nullable="true" MaxLength="1000" />
+          <Property Type="String" Name="MidOrg" Nullable="true" MaxLength="1000" />
           <Property Type="String" Name="Team" Nullable="true" MaxLength="8000" />
           <Property Type="String" Name="FinYear" Nullable="true" MaxLength="50" />
           <Property Type="Decimal" Name="MAY" Nullable="true" Precision="38" Scale="6" />
@@ -2269,20 +2347,20 @@ warning 6013: The table/view 'ProformaLive.dbo.Tbl_PDW_CJI3' does not have a pri
         </ComplexType>
         <ComplexType Name="SP_Get_ResourceCheckBookData_Result">
           <Property Type="String" Name="CJI3_WBSNumber" Nullable="true" MaxLength="500" />
-          <Property Type="String" Name="CJI3_ResourceName" Nullable="true" MaxLength="500" />
+          <Property Type="String" Name="CJI3_ResourceName" Nullable="true" MaxLength="100" />
           <Property Type="String" Name="CJI3_FinYear" Nullable="true" MaxLength="4" />
-          <Property Type="Decimal" Name="MAY" Nullable="true" Precision="38" Scale="6" />
-          <Property Type="Decimal" Name="JUN" Nullable="true" Precision="38" Scale="6" />
-          <Property Type="Decimal" Name="JUL" Nullable="true" Precision="38" Scale="6" />
-          <Property Type="Decimal" Name="AUG" Nullable="true" Precision="38" Scale="6" />
-          <Property Type="Decimal" Name="SEP" Nullable="true" Precision="38" Scale="6" />
-          <Property Type="Decimal" Name="OCT" Nullable="true" Precision="38" Scale="6" />
-          <Property Type="Decimal" Name="NOV" Nullable="true" Precision="38" Scale="6" />
-          <Property Type="Decimal" Name="DEC" Nullable="true" Precision="38" Scale="6" />
-          <Property Type="Decimal" Name="JAN" Nullable="true" Precision="38" Scale="6" />
-          <Property Type="Decimal" Name="FEB" Nullable="true" Precision="38" Scale="6" />
-          <Property Type="Decimal" Name="MAR" Nullable="true" Precision="38" Scale="6" />
-          <Property Type="Decimal" Name="APR" Nullable="true" Precision="38" Scale="6" />
+          <Property Type="Decimal" Name="MAY" Nullable="true" Precision="38" Scale="2" />
+          <Property Type="Decimal" Name="JUN" Nullable="true" Precision="38" Scale="2" />
+          <Property Type="Decimal" Name="JUL" Nullable="true" Precision="38" Scale="2" />
+          <Property Type="Decimal" Name="AUG" Nullable="true" Precision="38" Scale="2" />
+          <Property Type="Decimal" Name="SEP" Nullable="true" Precision="38" Scale="2" />
+          <Property Type="Decimal" Name="OCT" Nullable="true" Precision="38" Scale="2" />
+          <Property Type="Decimal" Name="NOV" Nullable="true" Precision="38" Scale="2" />
+          <Property Type="Decimal" Name="DEC" Nullable="true" Precision="38" Scale="2" />
+          <Property Type="Decimal" Name="JAN" Nullable="true" Precision="38" Scale="2" />
+          <Property Type="Decimal" Name="FEB" Nullable="true" Precision="38" Scale="2" />
+          <Property Type="Decimal" Name="MAR" Nullable="true" Precision="38" Scale="2" />
+          <Property Type="Decimal" Name="APR" Nullable="true" Precision="38" Scale="2" />
         </ComplexType>
         <ComplexType Name="SP_Get_Skillmaster_Result">
           <Property Type="String" Name="Business" Nullable="true" MaxLength="50" />
@@ -2521,6 +2599,28 @@ warning 6013: The table/view 'ProformaLive.dbo.Tbl_PDW_CJI3' does not have a pri
                 <ScalarProperty Name="SOURCE_MODIFIED_DT" ColumnName="SOURCE_MODIFIED_DT" />
                 <ScalarProperty Name="SNAPSHOT_DT" ColumnName="SNAPSHOT_DT" />
                 <ScalarProperty Name="MAKEDW_UPDATE_DT" ColumnName="MAKEDW_UPDATE_DT" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Assignments">
+            <EntityTypeMapping TypeName="ProformaLiveModel.Assignment">
+              <MappingFragment StoreEntitySet="Assignments">
+                <ScalarProperty Name="Sysid" ColumnName="Sysid" />
+                <ScalarProperty Name="ProjectID" ColumnName="ProjectID" />
+                <ScalarProperty Name="Required_Skill" ColumnName="Required_Skill" />
+                <ScalarProperty Name="ResourceName" ColumnName="ResourceName" />
+                <ScalarProperty Name="RequestType" ColumnName="RequestType" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AssignmentsLists">
+            <EntityTypeMapping TypeName="ProformaLiveModel.AssignmentsList">
+              <MappingFragment StoreEntitySet="AssignmentsList">
+                <ScalarProperty Name="Sysid" ColumnName="Sysid" />
+                <ScalarProperty Name="MasterID" ColumnName="MasterID" />
+                <ScalarProperty Name="FisYear" ColumnName="FisYear" />
+                <ScalarProperty Name="Month" ColumnName="Month" />
+                <ScalarProperty Name="value" ColumnName="value" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -2818,6 +2918,7 @@ warning 6013: The table/view 'ProformaLive.dbo.Tbl_PDW_CJI3' does not have a pri
                 <ScalarProperty Name="CostElementName" ColumnName="CostElementName" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="FullName" ColumnName="FullName" />
+                <ScalarProperty Name="Ops_ResourceName" ColumnName="Ops_ResourceName" />
                 <ScalarProperty Name="DocumentHeaderText" ColumnName="DocumentHeaderText" />
                 <ScalarProperty Name="PurchasingDocument" ColumnName="PurchasingDocument" />
                 <ScalarProperty Name="PurchaseOrderText" ColumnName="PurchaseOrderText" />
@@ -3026,20 +3127,6 @@ warning 6013: The table/view 'ProformaLive.dbo.Tbl_PDW_CJI3' does not have a pri
                 <ScalarProperty Name="CAL_Y_FISCAL_M" ColumnName="CAL_Y_FISCAL_M" />
                 <ScalarProperty Name="CAL_MONTH_NO" ColumnName="CAL_MONTH_NO" />
                 <ScalarProperty Name="UPDATE_DT" ColumnName="UPDATE_DT" />
-                <ScalarProperty Name="CREATEDON" ColumnName="CREATEDON" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="PFL_MDT_SKILLS">
-            <EntityTypeMapping TypeName="ProformaLiveModel.PFL_MDT_SKILLS">
-              <MappingFragment StoreEntitySet="PFL_MDT_SKILLS">
-                <ScalarProperty Name="SYSID" ColumnName="SYSID" />
-                <ScalarProperty Name="BUSINESS" ColumnName="BUSINESS" />
-                <ScalarProperty Name="BU" ColumnName="BU" />
-                <ScalarProperty Name="HIGH_ORG" ColumnName="HIGH_ORG" />
-                <ScalarProperty Name="MID_ORG" ColumnName="MID_ORG" />
-                <ScalarProperty Name="TEAM" ColumnName="TEAM" />
-                <ScalarProperty Name="SKILL_NAME" ColumnName="SKILL_NAME" />
                 <ScalarProperty Name="CREATEDON" ColumnName="CREATEDON" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -3272,6 +3359,29 @@ warning 6013: The table/view 'ProformaLive.dbo.Tbl_PDW_CJI3' does not have a pri
                 <ScalarProperty Name="SOURCE_MODIFIED_DT" ColumnName="SOURCE_MODIFIED_DT" />
                 <ScalarProperty Name="SNAPSHOT_DT" ColumnName="SNAPSHOT_DT" />
                 <ScalarProperty Name="MAKEDW_UPDATE_DT" ColumnName="MAKEDW_UPDATE_DT" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="SP_Get_Assignments" FunctionName="ProformaLiveModel.Store.SP_Get_Assignments">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="ProformaLiveModel.SP_Get_Assignments_Result">
+                <ScalarProperty Name="ProjectID" ColumnName="ProjectID" />
+                <ScalarProperty Name="Project" ColumnName="Project" />
+                <ScalarProperty Name="Team" ColumnName="Team" />
+                <ScalarProperty Name="ResourceName" ColumnName="ResourceName" />
+                <ScalarProperty Name="MAY" ColumnName="MAY" />
+                <ScalarProperty Name="JUN" ColumnName="JUN" />
+                <ScalarProperty Name="JUL" ColumnName="JUL" />
+                <ScalarProperty Name="AUG" ColumnName="AUG" />
+                <ScalarProperty Name="SEP" ColumnName="SEP" />
+                <ScalarProperty Name="OCT" ColumnName="OCT" />
+                <ScalarProperty Name="NOV" ColumnName="NOV" />
+                <ScalarProperty Name="DEC" ColumnName="DEC" />
+                <ScalarProperty Name="JAN" ColumnName="JAN" />
+                <ScalarProperty Name="FEB" ColumnName="FEB" />
+                <ScalarProperty Name="MAR" ColumnName="MAR" />
+                <ScalarProperty Name="APR" ColumnName="APR" />
+                <ScalarProperty Name="RequestType" ColumnName="RequestType" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
@@ -3674,6 +3784,7 @@ warning 6013: The table/view 'ProformaLive.dbo.Tbl_PDW_CJI3' does not have a pri
           <FunctionImportMapping FunctionImportName="SP_GET_SnapshotTitle" FunctionName="ProformaLiveModel.Store.SP_GET_SnapshotTitle" />
           <FunctionImportMapping FunctionImportName="SP_Get_SwapProjects" FunctionName="ProformaLiveModel.Store.SP_Get_SwapProjects" />
           <FunctionImportMapping FunctionImportName="SP_Get_Team" FunctionName="ProformaLiveModel.Store.SP_Get_Team" />
+          <FunctionImportMapping FunctionImportName="SP_Get_Year" FunctionName="ProformaLiveModel.Store.SP_Get_Year" />
           <FunctionImportMapping FunctionImportName="SP_GetCapitalData" FunctionName="ProformaLiveModel.Store.SP_GetCapitalData">
             <ResultMapping>
               <ComplexTypeMapping TypeName="ProformaLiveModel.SP_GetCapitalData_Result">

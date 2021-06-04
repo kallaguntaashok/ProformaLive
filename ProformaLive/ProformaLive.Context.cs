@@ -28,6 +28,8 @@ namespace ProformaLive
         }
     
         public virtual DbSet<APP_PFL_RESOURCES_SS_V> APP_PFL_RESOURCES_SS_V { get; set; }
+        public virtual DbSet<Assignment> Assignments { get; set; }
+        public virtual DbSet<AssignmentsList> AssignmentsLists { get; set; }
         public virtual DbSet<CapitalInfo> CapitalInfoes { get; set; }
         public virtual DbSet<CapitalInfoComment> CapitalInfoComments { get; set; }
         public virtual DbSet<CapitalInfoList> CapitalInfoLists { get; set; }
@@ -58,7 +60,6 @@ namespace ProformaLive
         public virtual DbSet<NotificationPanel> NotificationPanels { get; set; }
         public virtual DbSet<PFL_MDT_FISCAL_DAYS> PFL_MDT_FISCAL_DAYS { get; set; }
         public virtual DbSet<PFL_MDT_PDW> PFL_MDT_PDW { get; set; }
-        public virtual DbSet<PFL_MDT_SKILLS> PFL_MDT_SKILLS { get; set; }
         public virtual DbSet<Proforma_DataFrasfer_DuplicateData> Proforma_DataFrasfer_DuplicateData { get; set; }
         public virtual DbSet<Resource_TempData> Resource_TempData { get; set; }
         public virtual DbSet<ResourceInfo> ResourceInfoes { get; set; }
@@ -358,6 +359,19 @@ namespace ProformaLive
         public virtual ObjectResult<SP_Get_APP_PFL_RESOURCES_SS_V_Result> SP_Get_APP_PFL_RESOURCES_SS_V()
         {
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_Get_APP_PFL_RESOURCES_SS_V_Result>("SP_Get_APP_PFL_RESOURCES_SS_V");
+        }
+    
+        public virtual ObjectResult<SP_Get_Assignments_Result> SP_Get_Assignments(Nullable<int> fisYear, string teams)
+        {
+            var fisYearParameter = fisYear.HasValue ?
+                new ObjectParameter("FisYear", fisYear) :
+                new ObjectParameter("FisYear", typeof(int));
+    
+            var teamsParameter = teams != null ?
+                new ObjectParameter("Teams", teams) :
+                new ObjectParameter("Teams", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_Get_Assignments_Result>("SP_Get_Assignments", fisYearParameter, teamsParameter);
         }
     
         public virtual ObjectResult<string> SP_Get_Business()
@@ -827,6 +841,11 @@ namespace ProformaLive
                 new ObjectParameter("MidOrg", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<string>("SP_Get_Team", businessParameter, businessUnitParameter, highOrgParameter, midOrgParameter);
+        }
+    
+        public virtual ObjectResult<string> SP_Get_Year()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<string>("SP_Get_Year");
         }
     
         public virtual ObjectResult<SP_GetCapitalData_Result> SP_GetCapitalData(Nullable<int> projectid)

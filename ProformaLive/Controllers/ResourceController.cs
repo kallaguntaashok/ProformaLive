@@ -63,15 +63,15 @@ namespace MECC_ReportPortal.Controllers
 
         [HttpPost]
         public JsonResult get_help(objHelp obH)
-       {
+        {
             var npData = db.SP_GET_HelpData(obH.strTitle, obH.strData).ToList();
             return Json(npData, JsonRequestBehavior.AllowGet);
         }
 
         public class objHelp
-        {           
+        {
             public string strTitle { get; set; }
-            public string strData { get; set; }            
+            public string strData { get; set; }
         }
 
         [HttpPost]
@@ -253,7 +253,7 @@ namespace MECC_ReportPortal.Controllers
         [HttpPost]
         public JsonResult get_de_cji3_data(int intProjectID, string strWBSNumber, string strFisYear, string strMonth, string strExpensecategory, string strDescription, bool boolstatus, string strPONumber)
         {
-            if(boolstatus == false)
+            if (boolstatus == false)
             {
                 var obj = db.SP_Get_DE_CJI3_Data(strWBSNumber, strFisYear, strMonth, strExpensecategory, strDescription, strPONumber).ToList();
                 return Json(obj, JsonRequestBehavior.AllowGet);
@@ -312,7 +312,7 @@ namespace MECC_ReportPortal.Controllers
             string strPONumber = "";
 
             if (data.insert != null)
-            {                
+            {
                 foreach (var item in data.insert)
                 {
                     if (item.FiscalYear != null)
@@ -347,7 +347,7 @@ namespace MECC_ReportPortal.Controllers
             }
 
             var obj = db.SP_Get_DE_CJI3_Data(strWBSNumber, strFisyear, strMonth, Expensecategory, Description, strPONumber).ToList();
-            return Json(obj, JsonRequestBehavior.AllowGet);            
+            return Json(obj, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
@@ -374,11 +374,6 @@ namespace MECC_ReportPortal.Controllers
         [HttpGet]
         public JsonResult getlastmodifiedinfo(int ProjectID)
         {
-            //string strProjectName = Convert.ToString(Session["ProjectName"]);
-            //var projectid = db.Configure_Project
-            //    .Where(x => x.ProjectName == strProjectName)
-            //    .Select(y => y.ProjectID).ToList();
-
             var obj = db.SP_Getlastmodifiedinfo(ProjectID).ToList();
             List<lastmodifeddata> data = new List<lastmodifeddata>();
             foreach (var item in obj)
@@ -396,8 +391,6 @@ namespace MECC_ReportPortal.Controllers
 
         public string GetUserFromLdap(string UserName)
         {
-            string sRetVal = string.Empty;
-
             string ServiceAccountID = ConfigurationManager.AppSettings["ServiceAccountID"];
             string ServicePassword = ConfigurationManager.AppSettings["ServicePassword"];
 
@@ -3215,36 +3208,68 @@ namespace MECC_ReportPortal.Controllers
         {
             List<ResourceCheckBook_MainList> objM = new List<ResourceCheckBook_MainList>();
             var objMainCheckBook = db.SP_Get_ResourceCheckBook_MainList(intProjectID, intFisYear);
+
             foreach (var item in objMainCheckBook)
             {
                 var objCBData = db.SP_Get_ResourceCheckBook(intProjectID, item.WBSNumber, item.BusinessUnit, item.HighOrg, item.MidOrg, item.Team, Convert.ToInt32(item.FinYear)).ToList();
                 List<ResourceCheckBook> objCB = new List<ResourceCheckBook>();
                 foreach (var Res_CB in objCBData)
                 {
-                    objCB.Add(new ResourceCheckBook()
+                    if (Res_CB.Type == "F")
                     {
-                        ProjectID = Convert.ToInt32(Res_CB.ProjectID),
-                        Type = Res_CB.Type,
-                        WBSNumber = Res_CB.WBSNumber,
-                        BusinessUnit = Res_CB.BusinessUnit,
-                        HighOrg = Res_CB.HighOrg,
-                        MidOrg = Res_CB.MidOrg,
-                        Team = Res_CB.Team,                        
-                        FinYear = Convert.ToInt32(Res_CB.FinYear),
-                        MAY = Math.Round(Convert.ToDecimal(Res_CB.MAY),2),
-                        JUN = Math.Round(Convert.ToDecimal(Res_CB.JUN), 2),
-                        JUL = Math.Round(Convert.ToDecimal(Res_CB.JUL), 2),
-                        AUG = Math.Round(Convert.ToDecimal(Res_CB.AUG), 2),
-                        SEP = Math.Round(Convert.ToDecimal(Res_CB.SEP), 2),
-                        OCT = Math.Round(Convert.ToDecimal(Res_CB.OCT), 2),
-                        NOV = Math.Round(Convert.ToDecimal(Res_CB.NOV), 2),
-                        DEC = Math.Round(Convert.ToDecimal(Res_CB.DEC), 2),
-                        JAN = Math.Round(Convert.ToDecimal(Res_CB.JAN), 2),
-                        FEB = Math.Round(Convert.ToDecimal(Res_CB.FEB), 2),
-                        MAR = Math.Round(Convert.ToDecimal(Res_CB.MAR), 2),
-                        APR = Math.Round(Convert.ToDecimal(Res_CB.APR), 2),
-                        ResourceCheckBookData = Res_CB.Type == "F" ? null : db.SP_Get_ResourceCheckBookData(Res_CB.WBSNumber, Res_CB.BusinessUnit, Res_CB.HighOrg, Res_CB.MidOrg, Res_CB.Team, Convert.ToInt32(Res_CB.FinYear)).ToList()
-                    });
+                        objCB.Add(new ResourceCheckBook()
+                        {
+                            ProjectID = Convert.ToInt32(Res_CB.ProjectID),
+                            Type = Res_CB.Type,
+                            WBSNumber = Res_CB.WBSNumber,
+                            BusinessUnit = Res_CB.BusinessUnit,
+                            HighOrg = Res_CB.HighOrg,
+                            MidOrg = Res_CB.MidOrg,
+                            Team = Res_CB.Team,
+                            FinYear = Convert.ToInt32(Res_CB.FinYear),
+                            MAY = Math.Round(Convert.ToDecimal(Res_CB.MAY), 2),
+                            JUN = Math.Round(Convert.ToDecimal(Res_CB.JUN), 2),
+                            JUL = Math.Round(Convert.ToDecimal(Res_CB.JUL), 2),
+                            AUG = Math.Round(Convert.ToDecimal(Res_CB.AUG), 2),
+                            SEP = Math.Round(Convert.ToDecimal(Res_CB.SEP), 2),
+                            OCT = Math.Round(Convert.ToDecimal(Res_CB.OCT), 2),
+                            NOV = Math.Round(Convert.ToDecimal(Res_CB.NOV), 2),
+                            DEC = Math.Round(Convert.ToDecimal(Res_CB.DEC), 2),
+                            JAN = Math.Round(Convert.ToDecimal(Res_CB.JAN), 2),
+                            FEB = Math.Round(Convert.ToDecimal(Res_CB.FEB), 2),
+                            MAR = Math.Round(Convert.ToDecimal(Res_CB.MAR), 2),
+                            APR = Math.Round(Convert.ToDecimal(Res_CB.APR), 2),
+                            ResourceCheckBookData = null                           
+                        });
+                    }
+                    else
+                    {
+                        var objresource = db.SP_Get_ResourceCheckBookData(Res_CB.WBSNumber, Res_CB.BusinessUnit, Res_CB.HighOrg, Res_CB.MidOrg, Res_CB.Team, Convert.ToInt32(Res_CB.FinYear)).ToList();
+                        objCB.Add(new ResourceCheckBook()
+                        {
+                            ProjectID = Convert.ToInt32(Res_CB.ProjectID),
+                            Type = Res_CB.Type,
+                            WBSNumber = Res_CB.WBSNumber,
+                            BusinessUnit = Res_CB.BusinessUnit,
+                            HighOrg = Res_CB.HighOrg,
+                            MidOrg = Res_CB.MidOrg,
+                            Team = Res_CB.Team,
+                            FinYear = Convert.ToInt32(Res_CB.FinYear),
+                            MAY = Math.Round(Convert.ToDecimal(Res_CB.MAY), 2),
+                            JUN = Math.Round(Convert.ToDecimal(Res_CB.JUN), 2),
+                            JUL = Math.Round(Convert.ToDecimal(Res_CB.JUL), 2),
+                            AUG = Math.Round(Convert.ToDecimal(Res_CB.AUG), 2),
+                            SEP = Math.Round(Convert.ToDecimal(Res_CB.SEP), 2),
+                            OCT = Math.Round(Convert.ToDecimal(Res_CB.OCT), 2),
+                            NOV = Math.Round(Convert.ToDecimal(Res_CB.NOV), 2),
+                            DEC = Math.Round(Convert.ToDecimal(Res_CB.DEC), 2),
+                            JAN = Math.Round(Convert.ToDecimal(Res_CB.JAN), 2),
+                            FEB = Math.Round(Convert.ToDecimal(Res_CB.FEB), 2),
+                            MAR = Math.Round(Convert.ToDecimal(Res_CB.MAR), 2),
+                            APR = Math.Round(Convert.ToDecimal(Res_CB.APR), 2),
+                            ResourceCheckBookData = objresource
+                        });
+                    }
                 }
 
                 objM.Add(new ResourceCheckBook_MainList()
@@ -3253,7 +3278,7 @@ namespace MECC_ReportPortal.Controllers
                     BusinessUnit = item.BusinessUnit,
                     HighOrg = item.HighOrg,
                     MidOrg = item.MidOrg,
-                    Team = item.Team,                    
+                    Team = item.Team,
                     FinYear = Convert.ToInt32(item.FinYear),
                     MAY = Math.Round(Convert.ToDecimal(item.MAY), 2),
                     JUN = Math.Round(Convert.ToDecimal(item.JUN), 2),
@@ -3373,7 +3398,7 @@ namespace MECC_ReportPortal.Controllers
         public class DEcheckbookSelectedList
         {
             public int ProjectID { get; set; }
-            public SP_Get_DE_CJI3_Data_Result item { get; set; }            
+            public SP_Get_DE_CJI3_Data_Result item { get; set; }
         }
 
         public class ResourceCheckBook
@@ -3384,7 +3409,7 @@ namespace MECC_ReportPortal.Controllers
             public string BusinessUnit { get; set; }
             public string HighOrg { get; set; }
             public string MidOrg { get; set; }
-            public string Team { get; set; }            
+            public string Team { get; set; }
             public int FinYear { get; set; }
             public Nullable<decimal> MAY { get; set; }
             public Nullable<decimal> JUN { get; set; }

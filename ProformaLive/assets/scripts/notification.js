@@ -89,6 +89,49 @@ app.controller('notificationController', function ($scope, $http, $q) {
         });
     }
 
+    //Method will add drag option to popup panels.
+    //Parameter: pass control ID as a parameter (Example: dragElement(document.getElementById("ID")))
+    function dragElement(elmnt) {
+        var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+        if (document.getElementById(elmnt.id + "header")) {
+            // if present, the header is where you move the DIV from:
+            document.getElementById(elmnt.id + "header").onmousedown = dragMouseDown;
+        } else {
+            // otherwise, move the DIV from anywhere inside the DIV:
+            elmnt.onmousedown = dragMouseDown;
+        }
+
+        function dragMouseDown(e) {
+            e = e || window.event;
+            e.preventDefault();
+            // get the mouse cursor position at startup:
+            pos3 = e.clientX;
+            pos4 = e.clientY;
+            document.onmouseup = closeDragElement;
+            // call a function whenever the cursor moves:
+            document.onmousemove = elementDrag;
+        }
+
+        function elementDrag(e) {
+            e = e || window.event;
+            e.preventDefault();
+            // calculate the new cursor position:
+            pos1 = pos3 - e.clientX;
+            pos2 = pos4 - e.clientY;
+            pos3 = e.clientX;
+            pos4 = e.clientY;
+            // set the element's new position:
+            elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
+            elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
+        }
+
+        function closeDragElement() {
+            // stop moving when mouse button is released:
+            document.onmouseup = null;
+            document.onmousemove = null;
+        }
+    }
+
     $scope.closenotification = function () {        
         document.getElementById('notificationpanel').style.display = 'none';
     }
@@ -238,6 +281,7 @@ app.controller('notificationController', function ($scope, $http, $q) {
         var usertype = localStorage.getItem("isAdmin");
         document.getElementById("menudashboard").setAttribute("class", "nav-item");
         document.getElementById("menuresource").setAttribute("class", "nav-item");
+        document.getElementById("menuassignments").setAttribute("class", "nav-item");
         document.getElementById("mastermenu").setAttribute("class", "nav-item dropdown");
         document.getElementById("mastermenu").setAttribute("class", "nav-item dropdown active");
 

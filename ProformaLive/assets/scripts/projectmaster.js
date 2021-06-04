@@ -28,7 +28,7 @@ app.controller('ProjectController', function ($scope, $http) {
     }
 
     $scope.closepopup = function (value) {
-        document.getElementById(value).style.display = 'none'; 
+        document.getElementById(value).style.display = 'none';
     }
 
     //Method will add drag option to popup panels.
@@ -93,16 +93,13 @@ app.controller('ProjectController', function ($scope, $http) {
         });
     }
 
-    let abc;
-    abc = Number(5.5567);
-    console.log(typeof abc);
-    console.log(abc.toFixed(2));
-
     $scope.btncreatenewproject = function () {
         document.getElementById('CreateNewProject').style.display = 'block';
         localStorage.setItem("CReferencePID", 262);
         document.getElementById("newCreateProject").value = "";
         document.getElementById("newCreateProjectName").value = "";
+        $scope.createnewprojectalert = false;
+        $scope.createnewprojectmessage = "";
     }
 
     $scope.export_projectdata = function () {
@@ -124,6 +121,7 @@ app.controller('ProjectController', function ($scope, $http) {
         var usertype = localStorage.getItem("isAdmin");
         document.getElementById("menudashboard").setAttribute("class", "nav-item");
         document.getElementById("menuresource").setAttribute("class", "nav-item");
+        document.getElementById("menuassignments").setAttribute("class", "nav-item");
         document.getElementById("mastermenu").setAttribute("class", "nav-item dropdown");
         document.getElementById("mastermenu").setAttribute("class", "nav-item dropdown active");
 
@@ -279,7 +277,7 @@ app.controller('ProjectController', function ($scope, $http) {
     }
 
     function updatemasteritem() {
-                
+
         var mastertext = document.getElementById('masterhandlerText').innerHTML;
         var mastervalue = document.getElementById('masteritem').value;
         var type = "";
@@ -345,7 +343,7 @@ app.controller('ProjectController', function ($scope, $http) {
             updateprogressbar(100, progressbartext);
             var datavalues = document.getElementById("spreadsheetprojectmaster").getElementsByTagName("thead");
             var subchilditem = datavalues[0].lastChild.getElementsByTagName("td");
-            subchilditem[3].style = "display:none";            
+            subchilditem[3].style = "display:none";
             document.getElementById('progressbar').style.display = 'none';
             document.getElementById('mainbody').style.display = 'block';
 
@@ -422,7 +420,7 @@ app.controller('ProjectController', function ($scope, $http) {
             document.getElementById('masteritem').value = "";
             clearmessage();
         }
-                
+
         //Considers only updated records from jexcel 
         var update = function (instance, cell, col, row, value) {
 
@@ -524,13 +522,25 @@ app.controller('ProjectController', function ($scope, $http) {
 
                 //creates json object of jexcel
                 var jsonobj = projectmaster.getJson(false);
+                
+                if (col == 1) {
+                    console.log(value);
+                    var objdata = projectmaster.getJson(false);
+                    var resultDuplicateProjectNumber = objdata.filter(x => x.ProjectNumber == value);
+                    console.log(resultDuplicateProjectNumber);
+                    if (resultDuplicateProjectNumber.length >= 2) {
+                        showalertsavechangesalert(value + " - Project number already used, please enter different project number"); 
+                        projectmaster.rows[row].children[(parseInt(col) + 1)].innerHTML = '';
+                        return false;
+                    }
+                }
 
                 //getting particular row from json object       
-                var rowobj = jsonobj[row]; //row id getting from event
+                var rowobj = jsonobj[row]; //row id getting from event 
 
                 //check for existance of respective rec in global object
                 if (updatedInfo.find(x => x.ProjectID === rowobj.ProjectID)) {
-                    index = updatedInfo.indexOf(updatedInfo.find(x => x.MasterID === rowobj.MasterID)); //getting index of that rec
+                    index = updatedInfo.indexOf(updatedInfo.find(x => x.ProjectID === rowobj.ProjectID)); //getting index of that rec
                     updatedInfo.splice(index, 1); //remove the existing rec from object 
                     updatedInfo.push(rowobj); //pushing newly updated rec
                 }
@@ -675,17 +685,17 @@ app.controller('ProjectController', function ($scope, $http) {
                 { type: 'text', title: 'Project Manager ID', width: 150 },
                 { type: 'text', title: 'Project Manager Name', width: 180, readOnly: true },
                 { type: 'dropdown', title: 'Project Category', width: 220, url: '/Projects/getProjectCategory', autocomplete: true },
-                { type: 'dropdown', title: 'Status', width: 120, url: '/Projects/getParentChild', autocomplete: true, readOnly: true },                
+                { type: 'dropdown', title: 'Status', width: 120, url: '/Projects/getParentChild', autocomplete: true, readOnly: true },
                 { type: 'text', title: 'Operating Expense WBS', width: 180 },
                 { type: 'text', title: 'Capital Expenditure WBS', width: 180 },
                 { type: 'text', title: 'GPS Project Number', width: 180 },
                 { type: 'text', title: 'Program', width: 180 },
-                { type: 'text', title: 'Business Unit', width: 180 },
+                { type: 'text', title: 'Business', width: 180 },
                 { type: 'text', title: 'Period Burden Expense', width: 180 },
                 { type: 'text', title: 'Settlement Cost Center', width: 180 },
                 { type: 'text', title: 'Settlement Cost Center Name', width: 250 },
                 { type: 'text', title: 'Summary of Settlement', width: 250 },
-                { type: 'text', title: 'Ending Business Unit', width: 180 },
+                { type: 'text', title: 'Operating Unit', width: 180 },
                 { type: 'text', title: 'Funding Source', width: 180 },
                 { type: 'text', title: 'Score Card', width: 180 },
                 { type: 'dropdown', title: 'In Plan', width: 120, url: '/Projects/getInPLAN', autocomplete: true },
@@ -911,7 +921,7 @@ app.controller('ProjectController', function ($scope, $http) {
     }
 
     $scope.startsubmitthecloning = function () {
-        
+
         if ($scope.model_newProjectID == "" || $scope.model_newProjectID == undefined) {
             $scope.clonealert = true;
             $scope.clonemessage = "Please enter new project id";
@@ -957,26 +967,34 @@ app.controller('ProjectController', function ($scope, $http) {
                 }
             }).then(function (response) {
 
-                $http({
-                    method: 'GET',
-                    url: '../Projects/getProjects'
-                }).then(function (response) {
-                    alert(response.data.responseCode);
-                    if (response.data.responseCode === 200) {
-                        projectmasterdata = response.data.Message;
-                        projectmaster.setData(projectmasterdata);
-                        document.getElementById('CreateNewProject').style.display = 'none';
-                        updateprogressbar(100, "Completed....");
-                        document.getElementById('progressbar').style.display = 'none';
-                    }
-                }, function (error) {
-                    if (error.status === 403) {
-                        window.location.href = '../unAuthorized/Index';
-                    }
-                    else {
-                        console.error(error);
-                    }
-                });
+                if (response.data.Message == 'Success') {
+
+                    $http({
+                        method: 'GET',
+                        url: '../Projects/getProjects'
+                    }).then(function (response) {
+                        if (response.data.responseCode === 200) {
+                            projectmasterdata = response.data.Message;
+                            projectmaster.setData(projectmasterdata);
+                            document.getElementById('CreateNewProject').style.display = 'none';
+                            updateprogressbar(100, "Completed....");
+                            document.getElementById('progressbar').style.display = 'none';
+                        }
+                    }, function (error) {
+                        if (error.status === 403) {
+                            window.location.href = '../unAuthorized/Index';
+                        }
+                        else {
+                            console.error(error);
+                        }
+                    });
+
+                }
+                else {
+                    $scope.createnewprojectalert = true;
+                    $scope.createnewprojectmessage = response.data.Message;
+                    document.getElementById('progressbar').style.display = 'none';
+                }
 
             }, function (error) {
                 console.log(error);
@@ -996,7 +1014,7 @@ app.controller('ProjectController', function ($scope, $http) {
         document.getElementById('CreateNewProject').style.display = 'none';
     }
 
-    function cloneproforma(newid, newname) {        
+    function cloneproforma(newid, newname) {
 
         var data = {
             clone: projectmaster_cloneproforma,
@@ -1013,7 +1031,7 @@ app.controller('ProjectController', function ($scope, $http) {
             }
         }).then(function (response) {
 
-            var closestatus = response.data;           
+            var closestatus = response.data;
             if (closestatus != "Invalid ProjectID") {
 
                 updateprogressbar(20, "Cloning started...");

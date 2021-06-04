@@ -301,6 +301,10 @@ app.controller('Master_SnapshotController', function ($scope, $http) {
         });
     }
 
+    $scope.closenotification = function () {
+        document.getElementById('notificationpanel').style.display = 'none';
+    }
+
     function getusername() {
 
         var updatedUsername = localStorage.getItem("userName")
@@ -344,6 +348,8 @@ app.controller('Master_SnapshotController', function ($scope, $http) {
         var usertype = localStorage.getItem("isAdmin");
         document.getElementById("menudashboard").setAttribute("class", "nav-item");
         document.getElementById("menuresource").setAttribute("class", "nav-item");
+        document.getElementById("menuassignments").setAttribute("class", "nav-item");
+
         document.getElementById("mastermenu").setAttribute("class", "nav-item dropdown");
         document.getElementById("mastermenu").setAttribute("class", "nav-item dropdown active");
 

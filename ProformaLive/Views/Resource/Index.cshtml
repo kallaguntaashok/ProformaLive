@@ -2,14 +2,14 @@
     Technologies used: MVC, Angular JS, Javascript, SQL Server, C#, Jexcel, Jsuite.*@
 
 <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
-<link href="~/assets/Jexcel/jexcel_44.css?ID=8600" rel="stylesheet" />
-<script src="~/assets/Jexcel/jexcelv44.js?ID=8600"></script>
-<script src="~/assets/jexcel/jsuites38.js?id=8600"></script>
-<link href="~/assets/jexcel/jsuites38.css?id=8600" rel="stylesheet" />
-<link href="~/assets/css/delete-confirmation.css?ID=8600" rel="stylesheet" />
-<script src="~/assets/scripts/resource.js?ID=8600"></script>
-<script src="~/assets/scripts/exportexcel/alasql.min.js?ID=8600"></script>
-<script src="~/assets/scripts/exportexcel/xlsx.core.min.js?ID=8600"></script>
+<link href="~/assets/Jexcel/jexcel_44.css?ID=92000" rel="stylesheet" />
+<script src="~/assets/Jexcel/jexcelv44.js?ID=92000"></script>
+<script src="~/assets/jexcel/jsuites38.js?id=92000"></script>
+<link href="~/assets/jexcel/jsuites38.css?id=92000" rel="stylesheet" />
+<link href="~/assets/css/delete-confirmation.css?ID=92000" rel="stylesheet" />
+<script src="~/assets/scripts/resource.js?ID=92000"></script>
+<script src="~/assets/scripts/exportexcel/alasql.min.js?ID=92000"></script>
+<script src="~/assets/scripts/exportexcel/xlsx.core.min.js?ID=92000"></script>
 
 @*alert box to display errors.*@
 <div id="alertbox" class="alert_modal fade-up">
@@ -43,8 +43,8 @@
                     <i class="fa fa-times pull-right" id="closeNotification" title="clear notification" style="padding-top: 5px; cursor: pointer; display:none;" ng-click="closenotification();" aria-hidden="true"></i>
                     <i class="fa fa-times pull-right" id="clearNotification" title="clear notification" style="padding-top: 5px; cursor: pointer; display:none;" ng-click="clearnotificaiton();" aria-hidden="true"></i>
                 </span>
-            </div>           
-            <div class="notificationbody" id="notificationBody">                
+            </div>
+            <div class="notificationbody" id="notificationBody">
             </div>
         </div>
     </div>
@@ -105,7 +105,7 @@
         </div>
     </div>
 
-    <div id="decheckbookpanel" style="display:none;" class="viewpopup_modal fade-up">
+    <div id="decheckbookpanel" style="display:none; width:100%;" class="viewpopup_modal fade-up">
         <div class="viewpopup-content viewProforma_container">
             <div id="decheckbookpanelheader" class="viewpopupclearfix">
                 <span class="pull-left">
@@ -204,7 +204,7 @@
                             <td ng-hide="hidcheckboxde" colspan="2"></td>
                             <td ng-show="hidcheckboxde"></td>
                         </tr>
-                        <tr ng-show="(selected_de_cb_Total > 0 || selected_de_cb_value > 0) && hidcheckboxde" style="background-color:#c6fde4;">
+                        <tr ng-show="(selected_de_cb_Total > 0 || selected_de_cb_value != 0) && hidcheckboxde" style="background-color:#c6fde4;">
                             <td ng-hide="hidcheckboxde" style="background-color:#c6fde4; text-align:right;" colspan="5">Selected &nbsp;<i class="fa fa-check-square-o de_selectedcheckbox" aria-hidden="true"></i></td>
                             <td ng-show="hidcheckboxde" style="background-color:#c6fde4; text-align:right;" colspan="6">Selected &nbsp;<i class="fa fa-check-square-o de_selectedcheckbox" aria-hidden="true"></i></td>
                             <td style="text-align:right; background-color: #c6fde4;">{{selected_de_cb_Total}}</td>
@@ -218,8 +218,7 @@
                             </td>
                         </tr>
                     </tbody>
-                </table>
-
+                </table>              
             </div>
         </div>
     </div>

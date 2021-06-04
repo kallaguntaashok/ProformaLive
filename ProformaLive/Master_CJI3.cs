@@ -27,6 +27,7 @@ namespace ProformaLive
         public string CostElementName { get; set; }
         public string Name { get; set; }
         public string FullName { get; set; }
+        public string Ops_ResourceName { get; set; }
         public string DocumentHeaderText { get; set; }
         public string PurchasingDocument { get; set; }
         public string PurchaseOrderText { get; set; }
