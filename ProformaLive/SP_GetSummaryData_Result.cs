@@ -10,15 +10,18 @@
 namespace ProformaLive
 {
     using System;
-    using System.Collections.Generic;
     
-    public partial class Assignment
+    public partial class SP_GetSummaryData_Result
     {
-        public int Sysid { get; set; }
         public Nullable<int> ProjectID { get; set; }
-        public string Team { get; set; }
-        public string RequiredSkills { get; set; }
-        public string ResourceName { get; set; }
-        public string RequestType { get; set; }
+        public Nullable<int> SummaryID { get; set; }
+        public string SummaryTitle { get; set; }
+        public string Type { get; set; }
+        public string ProjectNumber { get; set; }
+        public string ProjectName { get; set; }
+        public string FisYear { get; set; }
+        public Nullable<int> MID { get; set; }
+        public string FisMonth { get; set; }
+        public decimal value { get; set; }
     }
 }

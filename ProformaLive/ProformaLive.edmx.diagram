@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="34db6fd4fae54c9c8ba97f0fe6c1d2f2" Name="Diagram1" ZoomLevel="95">
+      <Diagram DiagramId="e9420eb255cb477aa7849875ff064013" Name="Diagram1" ZoomLevel="95">
         <EntityTypeShape EntityType="ProformaLiveModel.APP_PFL_RESOURCES_SS_V" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="ProformaLiveModel.Assignment" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="ProformaLiveModel.AssignmentsList" Width="1.5" PointX="2.75" PointY="3.75" IsExpanded="true" />
@@ -44,7 +44,9 @@
         <EntityTypeShape EntityType="ProformaLiveModel.ResourceInfoComment" Width="1.5" PointX="14.75" PointY="17.75" IsExpanded="true" />
         <EntityTypeShape EntityType="ProformaLiveModel.ResourceInfoList" Width="1.5" PointX="16.75" PointY="17.75" IsExpanded="true" />
         <EntityTypeShape EntityType="ProformaLiveModel.Service_log" Width="1.5" PointX="18.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="ProformaLiveModel.Temp_ProjectMaster" Width="1.5" PointX="18.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ProformaLiveModel.Tbl_PDW_CJI3" Width="1.5" PointX="18.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ProformaLiveModel.Temp_PFL_Table" Width="1.5" PointX="18.75" PointY="7.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ProformaLiveModel.Temp_ProjectMaster" Width="1.5" PointX="18.75" PointY="10.75" IsExpanded="true" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -85,7 +85,7 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
     var de_cb_readonly_status = false;
     $scope.showExporttoexcel = true;
     localStorage.setItem("decellID", null);
-
+    var defaultFisYear = '';
     document.getElementById('resourcetotal').innerHTML = "0";
     document.getElementById('capitaltotal').innerHTML = "0";
     document.getElementById('capitallabortotal').innerHTML = "0";
@@ -102,11 +102,22 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
     //2)It will configure default tab settings and default project.
     //3)If project name is not selected, it will move to landing page.
     loadProjectMaster();
-
+    loaddefaultfisyear();
     function loadhelpdesk() {
         document.getElementById('helpcenter').style.display = 'block';
         dragElement(document.getElementById("helpcenter"));
         $scope.getcompletelist();
+    }
+
+    function loaddefaultfisyear() {
+        $http({
+            method: 'GET',
+            url: '../resource/get_defaultfisyear'
+        }).then(function (response) {
+            defaultFisYear = response.data;
+        }, function (error) {
+            console.log(error);
+        });
     }
 
     $scope.getcompletelist = function() {         
@@ -1495,7 +1506,7 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
         });
     }
 
-    $scope.expandde = function (status, id, dataitem) {
+    $scope.expandde = function (status, id) {
 
         decbsource = JSON.parse(localStorage.getItem("decb_expandid"));
         if (status == false) {
@@ -1743,18 +1754,14 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
             params: { "intProjectID": localStorage.getItem("projectid") }
         }).then(function (response) {
             var resourcecheckbookyear = response.data;
-
-            var defaultvalue = 0;
-            if (resourcecheckbookyear.length > 0) {
-                defaultvalue = resourcecheckbookyear[0];
-            }
+                       
             document.getElementById('dropResourceCheckboo_FisYear').innerHTML = "";
             jSuite_dropResourceCheckboo_FisYear = jSuites.dropdown(document.getElementById('dropResourceCheckboo_FisYear'), {
                 data: resourcecheckbookyear,
                 autocomplete: true,
                 lazyLoading: false,
                 multiple: false,
-                value: defaultvalue,
+                value: defaultFisYear,
                 width: '100%',
                 onchange: changeCheckBookFisYear
             });
@@ -1930,24 +1937,21 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
             params: { "intProjectID": localStorage.getItem("projectid") }
         }).then(function (response) {
             var resourcecheckbookyear = response.data;
-            var defaultvalue = 0;
-            if (resourcecheckbookyear.length > 0) {
-                defaultvalue = resourcecheckbookyear[0];
-            }
+            
             document.getElementById('dropResourceCheckboo_FisYear').innerHTML = "";
             jSuite_dropResourceCheckboo_FisYear = jSuites.dropdown(document.getElementById('dropResourceCheckboo_FisYear'), {
                 data: resourcecheckbookyear,
                 autocomplete: true,
                 lazyLoading: false,
                 multiple: false,
-                value: defaultvalue,
+                value: defaultFisYear,
                 width: '100%',
                 onchange: changeCheckBookFisYear
             });
 
             update_resource_comments();
-            loadresourcecheckbooksummary(defaultvalue);
-            loadresourcecheckbook(defaultvalue);
+            loadresourcecheckbooksummary(defaultFisYear);
+            loadresourcecheckbook(defaultFisYear);
 
         }, function (error) {
             console.log(error);

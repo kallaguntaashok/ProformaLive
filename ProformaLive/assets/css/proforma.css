@@ -1,5 +1,6 @@
 ﻿body {
     line-height: 1.6 !important;
+    font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
 }
 
 .nav-link {
@@ -964,7 +965,8 @@ html, body {
 #tblMainAssignments th {
     padding: 0.5em;
     font-size: 11px;
-    border: 1px solid #ccdaea;
+    border-top: 0.5px solid #ccdaea;
+    border-left: 0.5px solid #ccdaea;
     padding-left: 5px;
     overflow: visible;
     word-wrap: break-word;
@@ -975,7 +977,8 @@ html, body {
 .mintblAssignmentstd {
     padding: 0.5em;
     font-size: 11px;
-    border: 1px solid #ccdaea;
+    border-top: 0.5px solid #ccdaea;
+    border-left: 0.5px solid #ccdaea;
     padding-left: 5px;
     overflow: visible;
     word-wrap: break-word;
@@ -990,25 +993,26 @@ html, body {
     /* Use flexbox */
     display: flex;
     flex-direction: column;
-    height: 630px;
+    /*height: 630px;*/
 }
 
-.box1, .box2 {    
-    color: #fff;   
-    
+.box1, .box2 {   
+        
     /* Use box-sizing so that element's outerwidth will match width property */
     box-sizing: border-box;
     /* Allow box to grow and shrink, and ensure they are all equally sized */
-    border: 1px solid #034994;
+    /*border: 1px solid #034994;*/
 }
 
 .box1 {
-    height: 400px;
+    /*height: 400px;*/
+    z-index:999;
 }
 
 .box2 {
-    height: 230px;
+    /*height: 230px;*/
     flex: 1;
+    z-index: 9999;
 }
 
 
@@ -1036,4 +1040,39 @@ html, body {
     padding-bottom: 1px;
     font-size: 14px;
     zoom: 80%;
+}
+
+
+#tblMainUnAssignments thead th {
+    background: #002d5d;
+    color: #FFF;
+    z-index: 1;
+    border: 0px solid #034994;
+    text-align: center;
+    box-shadow: inset 0 0 1px #e6e6e6;
+}
+
+#tblMainUnAssignments th {
+    padding: 0.5em;
+    font-size: 11px;
+    border-top: 0.5px solid #ccdaea;
+    border-left: 0.5px solid #ccdaea;
+    padding-left: 5px;
+    overflow: visible;
+    word-wrap: break-word;
+    font-weight: 500;
+    z-index: 9;
+}
+
+.unAssignmentstd {
+    padding: 0.5em;
+    font-size: 11px;
+    border-top: 0.5px solid #ccdaea;
+    border-left: 0.5px solid #ccdaea;
+    border-bottom: 0.5px solid #ccdaea;
+    padding-left: 5px;
+    overflow: visible;
+    word-wrap: break-word;
+    font-weight: 500;
+    z-index: 9;
 }

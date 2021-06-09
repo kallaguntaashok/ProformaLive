@@ -12,13 +12,18 @@ namespace ProformaLive
     using System;
     using System.Collections.Generic;
     
-    public partial class Assignment
+    public partial class Tbl_PDW_CJI3
     {
         public int Sysid { get; set; }
-        public Nullable<int> ProjectID { get; set; }
-        public string Team { get; set; }
-        public string RequiredSkills { get; set; }
-        public string ResourceName { get; set; }
-        public string RequestType { get; set; }
+        public string CJI3_FinYear { get; set; }
+        public string CJI3_Month { get; set; }
+        public string CJI3_WBSNumber { get; set; }
+        public string PWD_BusinessUnit { get; set; }
+        public string PWD_HighOrg { get; set; }
+        public string PWD_MidOrg { get; set; }
+        public string PWD_Team { get; set; }
+        public string PWD_ResourceName { get; set; }
+        public Nullable<decimal> CJI3_TimeSpentInProject { get; set; }
+        public Nullable<decimal> CJI3_Amount { get; set; }
     }
 }

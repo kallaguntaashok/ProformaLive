@@ -61,6 +61,13 @@ namespace MECC_ReportPortal.Controllers
             return Json(npData, JsonRequestBehavior.AllowGet);
         }
 
+        [HttpGet]
+        public JsonResult get_defaultfisyear()
+        {
+            var npData = db.SP_Get_DefaultFisYear().ToList();
+            return Json(npData, JsonRequestBehavior.AllowGet);
+        }
+
         [HttpPost]
         public JsonResult get_help(objHelp obH)
         {

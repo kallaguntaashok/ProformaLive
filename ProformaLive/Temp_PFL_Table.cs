@@ -12,13 +12,13 @@ namespace ProformaLive
     using System;
     using System.Collections.Generic;
     
-    public partial class Assignment
+    public partial class Temp_PFL_Table
     {
         public int Sysid { get; set; }
-        public Nullable<int> ProjectID { get; set; }
-        public string Team { get; set; }
-        public string RequiredSkills { get; set; }
-        public string ResourceName { get; set; }
-        public string RequestType { get; set; }
+        public string PWD_ResourceName { get; set; }
+        public string PWD_BusinessUnit { get; set; }
+        public string PWD_HighOrg { get; set; }
+        public string PWD_MidOrg { get; set; }
+        public string PWD_Team { get; set; }
     }
 }
