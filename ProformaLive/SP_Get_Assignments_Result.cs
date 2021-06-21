@@ -15,6 +15,7 @@ namespace ProformaLive
     {
         public int ID { get; set; }
         public Nullable<int> ProjectID { get; set; }
+        public string WBSNumber { get; set; }
         public string Project { get; set; }
         public string Team { get; set; }
         public string RequiredSkill { get; set; }

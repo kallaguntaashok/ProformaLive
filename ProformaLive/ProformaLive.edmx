@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="ProformaLiveModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="ProformaLiveModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="APP_PFL_RESOURCES_SS_V">
           <Key>
             <PropertyRef Name="SYSID" />
@@ -40,10 +40,27 @@
           </Key>
           <Property Name="Sysid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ProjectID" Type="int" />
+          <Property Name="WBSNumber" Type="varchar" MaxLength="200" />
           <Property Name="Team" Type="varchar" MaxLength="500" />
           <Property Name="RequiredSkills" Type="varchar" MaxLength="500" />
           <Property Name="ResourceName" Type="varchar" MaxLength="500" />
           <Property Name="RequestType" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="AssignmentsComments">
+          <Key>
+            <PropertyRef Name="Sysid" />
+          </Key>
+          <Property Name="Sysid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ProjectID" Type="int" />
+          <Property Name="MasterID" Type="int" />
+          <Property Name="ColumnID" Type="int" />
+          <Property Name="Team" Type="varchar" MaxLength="500" />
+          <Property Name="RequiredSkills" Type="varchar" MaxLength="500" />
+          <Property Name="Comments" Type="varchar(max)" />
+          <Property Name="CreatedBy" Type="varchar" MaxLength="500" />
+          <Property Name="CreatedOn" Type="datetime" />
+          <Property Name="ModifiedBy" Type="varchar" MaxLength="500" />
+          <Property Name="ModifiedOn" Type="datetime" />
         </EntityType>
         <EntityType Name="AssignmentsList">
           <Key>
@@ -621,34 +638,6 @@
           <Property Name="RowsMoved" Type="int" />
           <Property Name="CreatedOn" Type="datetime" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6013: The table/view 'ProformaLive.dbo.Sheet1$' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
-        <EntityType Name="Sheet1$">
-          <Property Name="Fiscal Year" Type="float" />
-          <Property Name="Posting Date" Type="datetime" />
-          <Property Name="Created on" Type="datetime" />
-          <Property Name="Document Date" Type="datetime" />
-          <Property Name="Period" Type="float" />
-          <Property Name="Object" Type="nvarchar" MaxLength="255" />
-          <Property Name="CO object name" Type="nvarchar" MaxLength="255" />
-          <Property Name="Partner-CCtr" Type="float" />
-          <Property Name="Cost Element" Type="float" />
-          <Property Name="Cost element name" Type="nvarchar" MaxLength="255" />
-          <Property Name="Name" Type="nvarchar" MaxLength="255" />
-          <Property Name="Document Header Text" Type="nvarchar" MaxLength="255" />
-          <Property Name="Purchasing Document" Type="nvarchar" MaxLength="255" />
-          <Property Name="Purchase order text" Type="nvarchar" MaxLength="255" />
-          <Property Name="Name of offsetting account" Type="nvarchar" MaxLength="255" />
-          <Property Name="Total quantity" Type="float" />
-          <Property Name="Posted unit of meas#" Type="nvarchar" MaxLength="255" />
-          <Property Name="CO area currency" Type="nvarchar" MaxLength="255" />
-          <Property Name="Val/COArea Crcy " Type="float" />
-          <Property Name="User Name" Type="nvarchar" MaxLength="255" />
-          <Property Name="Value Type" Type="float" />
-          <Property Name="Object Currency" Type="nvarchar" MaxLength="255" />
-          <Property Name="Document type" Type="nvarchar" MaxLength="255" />
-          <Property Name="Document Number" Type="float" />
-        </EntityType>-->
         <EntityType Name="Tbl_PDW_CJI3">
           <Key>
             <PropertyRef Name="Sysid" />
@@ -776,7 +765,14 @@ warning 6013: The table/view 'ProformaLive.dbo.Sheet1$' does not have a primary 
           <Parameter Name="FisYear" Type="int" Mode="In" />
           <Parameter Name="Teams" Type="varchar" Mode="In" />
         </Function>
+        <Function Name="SP_Get_Assignment_Comments" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Team" Type="varchar" Mode="In" />
+        </Function>
         <Function Name="SP_Get_Assignments" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="FisYear" Type="int" Mode="In" />
+          <Parameter Name="Teams" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="SP_Get_Assignments_ResourceData" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="FisYear" Type="int" Mode="In" />
           <Parameter Name="Teams" Type="varchar" Mode="In" />
         </Function>
@@ -1001,6 +997,7 @@ warning 6013: The table/view 'ProformaLive.dbo.Sheet1$' does not have a primary 
         <EntityContainer Name="ProformaLiveModelStoreContainer">
           <EntitySet Name="APP_PFL_RESOURCES_SS_V" EntityType="Self.APP_PFL_RESOURCES_SS_V" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Assignments" EntityType="Self.Assignments" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AssignmentsComments" EntityType="Self.AssignmentsComments" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AssignmentsList" EntityType="Self.AssignmentsList" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CapitalInfo" EntityType="Self.CapitalInfo" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CapitalInfoComments" EntityType="Self.CapitalInfoComments" Schema="dbo" store:Type="Tables" />
@@ -1042,8 +1039,7 @@ warning 6013: The table/view 'ProformaLive.dbo.Sheet1$' does not have a primary 
           <EntitySet Name="Temp_PFL_Table" EntityType="Self.Temp_PFL_Table" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Temp_ProjectMaster" EntityType="Self.Temp_ProjectMaster" Schema="dbo" store:Type="Tables" />
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="ProformaLiveModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -1082,10 +1078,27 @@ warning 6013: The table/view 'ProformaLive.dbo.Sheet1$' does not have a primary 
           </Key>
           <Property Name="Sysid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="ProjectID" Type="Int32" />
+          <Property Name="WBSNumber" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
           <Property Name="Team" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="RequiredSkills" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="ResourceName" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="RequestType" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="AssignmentsComment">
+          <Key>
+            <PropertyRef Name="Sysid" />
+          </Key>
+          <Property Name="Sysid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ProjectID" Type="Int32" />
+          <Property Name="MasterID" Type="Int32" />
+          <Property Name="ColumnID" Type="Int32" />
+          <Property Name="Team" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="RequiredSkills" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="Comments" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="CreatedBy" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="CreatedOn" Type="DateTime" Precision="3" />
+          <Property Name="ModifiedBy" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="ModifiedOn" Type="DateTime" Precision="3" />
         </EntityType>
         <EntityType Name="AssignmentsList">
           <Key>
@@ -1701,6 +1714,7 @@ warning 6013: The table/view 'ProformaLive.dbo.Sheet1$' does not have a primary 
         <EntityContainer Name="ProformaLiveEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="APP_PFL_RESOURCES_SS_V" EntityType="Self.APP_PFL_RESOURCES_SS_V" />
           <EntitySet Name="Assignments" EntityType="Self.Assignment" />
+          <EntitySet Name="AssignmentsComments" EntityType="Self.AssignmentsComment" />
           <EntitySet Name="AssignmentsLists" EntityType="Self.AssignmentsList" />
           <EntitySet Name="CapitalInfoes" EntityType="Self.CapitalInfo" />
           <EntitySet Name="CapitalInfoComments" EntityType="Self.CapitalInfoComment" />
@@ -1742,7 +1756,7 @@ warning 6013: The table/view 'ProformaLive.dbo.Sheet1$' does not have a primary 
           <EntitySet Name="Temp_PFL_Table" EntityType="Self.Temp_PFL_Table" />
           <EntitySet Name="Temp_ProjectMaster" EntityType="Self.Temp_ProjectMaster" />
           <FunctionImport Name="Get_DirectExpensesInfo_CJI3_Selection_Validation" ReturnType="Collection(ProformaLiveModel.Get_DirectExpensesInfo_CJI3_Selection_Validation_Result)">
-            <Parameter Name="ProjectID" Mode="In" Type="Int32" />
+          <Parameter Name="ProjectID" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="Insert_DirectExpensesInfo_CJI3_Selection">
             <Parameter Name="ProjectID" Mode="In" Type="Int32" />
@@ -1762,7 +1776,7 @@ warning 6013: The table/view 'ProformaLive.dbo.Sheet1$' does not have a primary 
             <Parameter Name="Description" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="SP_APP_PFL_RESOURCES_SS_V_BulkInsert">
-            <Parameter Name="date" Mode="In" Type="DateTime" />
+          <Parameter Name="date" Mode="In" Type="DateTime" />
           </FunctionImport>
           <FunctionImport Name="SP_Clone_Proforma">
             <Parameter Name="ProjectID" Mode="In" Type="Int32" />
@@ -1783,19 +1797,19 @@ warning 6013: The table/view 'ProformaLive.dbo.Sheet1$' does not have a primary 
             <Parameter Name="CreatedBy" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="SP_Delete_CapitalData">
-            <Parameter Name="ID" Mode="In" Type="Int32" />
+          <Parameter Name="ID" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="SP_Delete_CapitalLaborInfo">
-            <Parameter Name="ID" Mode="In" Type="Int32" />
+          <Parameter Name="ID" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="SP_Delete_DirectExpensesInfo">
-            <Parameter Name="ID" Mode="In" Type="Int32" />
+          <Parameter Name="ID" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="SP_Delete_ResourceData">
-            <Parameter Name="ID" Mode="In" Type="Int32" />
+          <Parameter Name="ID" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="SP_DeleteProjectData">
-            <Parameter Name="ProjectID" Mode="In" Type="Int32" />
+          <Parameter Name="ProjectID" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="SP_Duplicate_CapitallaborRows">
             <Parameter Name="ID" Mode="In" Type="Int32" />
@@ -1810,20 +1824,20 @@ warning 6013: The table/view 'ProformaLive.dbo.Sheet1$' does not have a primary 
             <Parameter Name="UserID" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="SP_DuplicateRows">
-            <Parameter Name="ID" Mode="In" Type="Int32" />
+          <Parameter Name="ID" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="SP_EXPORT_ResourceData" ReturnType="Collection(ProformaLiveModel.SP_EXPORT_ResourceData_Result)">
-            <Parameter Name="projectid" Mode="In" Type="Int32" />
+          <Parameter Name="projectid" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="SP_Filter_GetFinYear" ReturnType="Collection(String)">
-            <Parameter Name="ProjectID" Mode="In" Type="Int32" />
+          <Parameter Name="ProjectID" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="SP_Filter_GetMonths" ReturnType="Collection(String)">
             <Parameter Name="ProjectID" Mode="In" Type="Int32" />
             <Parameter Name="FisYear" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="SP_Filter_GetQuarter" ReturnType="Collection(String)">
-            <Parameter Name="Month" Mode="In" Type="String" />
+          <Parameter Name="Month" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="SP_Get_APP_PFL_RESOURCES_SS_V" ReturnType="Collection(ProformaLiveModel.SP_Get_APP_PFL_RESOURCES_SS_V_Result)" />
           <FunctionImport Name="SP_Get_Assign_Live_MainView" ReturnType="Collection(ProformaLiveModel.SP_Get_Assign_Live_MainView_Result)">
@@ -1834,21 +1848,25 @@ warning 6013: The table/view 'ProformaLive.dbo.Sheet1$' does not have a primary 
             <Parameter Name="FisYear" Mode="In" Type="Int32" />
             <Parameter Name="Teams" Mode="In" Type="String" />
           </FunctionImport>
+          <FunctionImport Name="SP_Get_Assignments_ResourceData" ReturnType="Collection(ProformaLiveModel.SP_Get_Assignments_ResourceData_Result)">
+            <Parameter Name="FisYear" Mode="In" Type="Int32" />
+            <Parameter Name="Teams" Mode="In" Type="String" />
+          </FunctionImport>
           <FunctionImport Name="SP_Get_Business" ReturnType="Collection(String)" />
           <FunctionImport Name="SP_Get_BusinessUnit" ReturnType="Collection(String)">
-            <Parameter Name="Business" Mode="In" Type="String" />
+          <Parameter Name="Business" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="SP_Get_Capital_Comments" ReturnType="Collection(ProformaLiveModel.SP_Get_Capital_Comments_Result)">
-            <Parameter Name="ProjectID" Mode="In" Type="Int32" />
+          <Parameter Name="ProjectID" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="SP_Get_CapitalExpenditureWBS" ReturnType="Collection(String)">
-            <Parameter Name="PROJECTID" Mode="In" Type="Int32" />
+          <Parameter Name="PROJECTID" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="SP_Get_CapitalLabor_Comments" ReturnType="Collection(ProformaLiveModel.SP_Get_CapitalLabor_Comments_Result)">
-            <Parameter Name="ProjectID" Mode="In" Type="Int32" />
+          <Parameter Name="ProjectID" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="SP_GET_CompleteNotificationData" ReturnType="Collection(ProformaLiveModel.SP_GET_CompleteNotificationData_Result)">
-            <Parameter Name="Type" Mode="In" Type="String" />
+          <Parameter Name="Type" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="SP_Get_Configure_RateCard" ReturnType="Collection(ProformaLiveModel.SP_Get_Configure_RateCard_Result)" />
           <FunctionImport Name="SP_Get_DE_CJI3_Data" ReturnType="Collection(ProformaLiveModel.SP_Get_DE_CJI3_Data_Result)">
@@ -1872,7 +1890,7 @@ warning 6013: The table/view 'ProformaLive.dbo.Sheet1$' does not have a primary 
             <Parameter Name="FisYear" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="SP_Get_DE_FiscalYear" ReturnType="Collection(String)">
-            <Parameter Name="ProjectID" Mode="In" Type="Int32" />
+          <Parameter Name="ProjectID" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="SP_Get_DefaultFisYear" ReturnType="Collection(String)" />
           <FunctionImport Name="SP_Get_DeltaSummary" ReturnType="Collection(ProformaLiveModel.SP_Get_DeltaSummary_Result)">
@@ -1885,7 +1903,7 @@ warning 6013: The table/view 'ProformaLive.dbo.Sheet1$' does not have a primary 
             <Parameter Name="fisyear" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="SP_Get_DirectExpenses_Comments" ReturnType="Collection(ProformaLiveModel.SP_Get_DirectExpenses_Comments_Result)">
-            <Parameter Name="ProjectID" Mode="In" Type="Int32" />
+          <Parameter Name="ProjectID" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="SP_Get_DirectExpensesInfo_CJI3_Selection" ReturnType="Collection(ProformaLiveModel.SP_Get_DirectExpensesInfo_CJI3_Selection_Result)">
             <Parameter Name="ProjectID" Mode="In" Type="Int32" />
@@ -1895,7 +1913,7 @@ warning 6013: The table/view 'ProformaLive.dbo.Sheet1$' does not have a primary 
             <Parameter Name="Description" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="SP_Get_FiscalYear" ReturnType="Collection(String)">
-            <Parameter Name="ProjectID" Mode="In" Type="Int32" />
+          <Parameter Name="ProjectID" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="SP_GET_HelpData" ReturnType="Collection(ProformaLiveModel.SP_GET_HelpData_Result)">
             <Parameter Name="Title" Mode="In" Type="String" />
@@ -1915,13 +1933,13 @@ warning 6013: The table/view 'ProformaLive.dbo.Sheet1$' does not have a primary 
           </FunctionImport>
           <FunctionImport Name="SP_GET_Notification" ReturnType="Collection(ProformaLiveModel.SP_GET_Notification_Result)" />
           <FunctionImport Name="SP_GET_NotificationData" ReturnType="Collection(ProformaLiveModel.SP_GET_NotificationData_Result)">
-            <Parameter Name="notificationid" Mode="In" Type="Int32" />
+          <Parameter Name="notificationid" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="SP_Get_OperatingExpenseWBS" ReturnType="Collection(String)">
-            <Parameter Name="PROJECTID" Mode="In" Type="Int32" />
+          <Parameter Name="PROJECTID" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="SP_Get_PrimaryProjectData" ReturnType="Collection(ProformaLiveModel.SP_Get_PrimaryProjectData_Result)">
-            <Parameter Name="ProjectID" Mode="In" Type="String" />
+          <Parameter Name="ProjectID" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="SP_Get_Projects" ReturnType="Collection(ProformaLiveModel.SP_Get_Projects_Result)" />
           <FunctionImport Name="SP_Get_RequiredSkills" ReturnType="Collection(String)">
@@ -1932,7 +1950,7 @@ warning 6013: The table/view 'ProformaLive.dbo.Sheet1$' does not have a primary 
             <Parameter Name="Team" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="SP_Get_Resource_Comments" ReturnType="Collection(ProformaLiveModel.SP_Get_Resource_Comments_Result)">
-            <Parameter Name="ProjectID" Mode="In" Type="Int32" />
+          <Parameter Name="ProjectID" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="SP_Get_ResourceCheckBook" ReturnType="Collection(ProformaLiveModel.SP_Get_ResourceCheckBook_Result)">
             <Parameter Name="ProjectID" Mode="In" Type="Int32" />
@@ -1981,13 +1999,13 @@ warning 6013: The table/view 'ProformaLive.dbo.Sheet1$' does not have a primary 
           </FunctionImport>
           <FunctionImport Name="SP_Get_Year" ReturnType="Collection(String)" />
           <FunctionImport Name="SP_GetCapitalData" ReturnType="Collection(ProformaLiveModel.SP_GetCapitalData_Result)">
-            <Parameter Name="projectid" Mode="In" Type="Int32" />
+          <Parameter Name="projectid" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="SP_GetCapitalLaborData" ReturnType="Collection(ProformaLiveModel.SP_GetCapitalLaborData_Result)">
-            <Parameter Name="projectid" Mode="In" Type="Int32" />
+          <Parameter Name="projectid" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="SP_GetDirectExpensesData" ReturnType="Collection(ProformaLiveModel.SP_GetDirectExpensesData_Result)">
-            <Parameter Name="projectid" Mode="In" Type="Int32" />
+          <Parameter Name="projectid" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="SP_GetDirectExpensesData_forcheckbookedit" ReturnType="Collection(ProformaLiveModel.SP_GetDirectExpensesData_forcheckbookedit_Result)">
             <Parameter Name="ProjectID" Mode="In" Type="Int32" />
@@ -1997,7 +2015,7 @@ warning 6013: The table/view 'ProformaLive.dbo.Sheet1$' does not have a primary 
             <Parameter Name="Description" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="SP_Getlastmodifiedinfo" ReturnType="Collection(ProformaLiveModel.SP_Getlastmodifiedinfo_Result)">
-            <Parameter Name="ProjectID" Mode="In" Type="Int32" />
+          <Parameter Name="ProjectID" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="SP_GetProject_Summary" ReturnType="Collection(ProformaLiveModel.SP_GetProject_Summary_Result)">
             <Parameter Name="ProjectID" Mode="In" Type="String" />
@@ -2006,7 +2024,7 @@ warning 6013: The table/view 'ProformaLive.dbo.Sheet1$' does not have a primary 
             <Parameter Name="Qtr" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="SP_GetResourceData" ReturnType="Collection(ProformaLiveModel.SP_GetResourceData_Result)">
-            <Parameter Name="projectid" Mode="In" Type="Int32" />
+          <Parameter Name="projectid" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="SP_GetResourceData_forCheckBook" ReturnType="Collection(ProformaLiveModel.SP_GetResourceData_forCheckBook_Result)">
             <Parameter Name="projectid" Mode="In" Type="Int32" />
@@ -2041,13 +2059,16 @@ warning 6013: The table/view 'ProformaLive.dbo.Sheet1$' does not have a primary 
             <Parameter Name="TabName" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="SP_validate_CloneProject" ReturnType="Collection(String)">
-            <Parameter Name="CloneprojectID" Mode="In" Type="String" />
+          <Parameter Name="CloneprojectID" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="SP_Validate_Notification" ReturnType="Collection(String)">
-            <Parameter Name="userID" Mode="In" Type="String" />
+          <Parameter Name="userID" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="SP_Validate_ProjectCode" ReturnType="Collection(String)">
-            <Parameter Name="ProjectNumber" Mode="In" Type="String" />
+          <Parameter Name="ProjectNumber" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="SP_Get_Assignment_Comments" ReturnType="Collection(ProformaLiveModel.SP_Get_Assignment_Comments_Result)">
+            <Parameter Name="Team" Mode="In" Type="String" />
           </FunctionImport>
         </EntityContainer>
         <ComplexType Name="Get_DirectExpensesInfo_CJI3_Selection_Validation_Result">
@@ -2142,6 +2163,7 @@ warning 6013: The table/view 'ProformaLive.dbo.Sheet1$' does not have a primary 
         </ComplexType>
         <ComplexType Name="SP_Get_Assign_Live_MainView_Result">
           <Property Type="Int32" Name="ProjectID" Nullable="true" />
+          <Property Type="String" Name="WBSNumber" Nullable="true" MaxLength="100" />
           <Property Type="String" Name="Project" Nullable="true" />
           <Property Type="Decimal" Name="MAY" Nullable="false" Precision="38" Scale="6" />
           <Property Type="Decimal" Name="JUN" Nullable="false" Precision="38" Scale="6" />
@@ -2159,6 +2181,7 @@ warning 6013: The table/view 'ProformaLive.dbo.Sheet1$' does not have a primary 
         <ComplexType Name="SP_Get_Assignments_Result">
           <Property Type="Int32" Name="ID" Nullable="false" />
           <Property Type="Int32" Name="ProjectID" Nullable="true" />
+          <Property Type="String" Name="WBSNumber" Nullable="true" MaxLength="200" />
           <Property Type="String" Name="Project" Nullable="true" />
           <Property Type="String" Name="Team" Nullable="true" MaxLength="500" />
           <Property Type="String" Name="RequiredSkill" Nullable="true" MaxLength="500" />
@@ -2176,6 +2199,17 @@ warning 6013: The table/view 'ProformaLive.dbo.Sheet1$' does not have a primary 
           <Property Type="Decimal" Name="MAR" Nullable="true" Precision="38" Scale="6" />
           <Property Type="Decimal" Name="APR" Nullable="true" Precision="38" Scale="6" />
           <Property Type="String" Name="RequestType" Nullable="false" MaxLength="8" />
+        </ComplexType>
+        <ComplexType Name="SP_Get_Assignments_ResourceData_Result">
+          <Property Type="Int32" Name="Sysid" Nullable="false" />
+          <Property Type="Int32" Name="ProjectID" Nullable="true" />
+          <Property Type="String" Name="WBSNumber" Nullable="true" MaxLength="200" />
+          <Property Type="String" Name="ProjectName" Nullable="true" />
+          <Property Type="String" Name="Team" Nullable="true" MaxLength="500" />
+          <Property Type="String" Name="RequiredSkills" Nullable="true" MaxLength="500" />
+          <Property Type="String" Name="ResourceName" Nullable="true" MaxLength="500" />
+          <Property Type="String" Name="Month" Nullable="true" MaxLength="10" />
+          <Property Type="Decimal" Name="value" Nullable="true" Precision="18" Scale="2" />
         </ComplexType>
         <ComplexType Name="SP_Get_Capital_Comments_Result">
           <Property Type="Int32" Name="Sysid" Nullable="false" />
@@ -2683,6 +2717,15 @@ warning 6013: The table/view 'ProformaLive.dbo.Sheet1$' does not have a primary 
           <Property Type="String" Name="FisMonth" Nullable="true" MaxLength="20" />
           <Property Type="Decimal" Name="value" Nullable="false" Precision="18" Scale="2" />
         </ComplexType>
+        <ComplexType Name="SP_Get_Assignment_Comments_Result">
+          <Property Type="Int32" Name="Sysid" Nullable="false" />
+          <Property Type="Int32" Name="ProjectID" Nullable="true" />
+          <Property Type="Int32" Name="MasterID" Nullable="true" />
+          <Property Type="Int32" Name="ColumnID" Nullable="true" />
+          <Property Type="String" Name="Comments" Nullable="true" />
+          <Property Type="String" Name="Team" Nullable="true" MaxLength="500" />
+          <Property Type="String" Name="RequiredSkills" Nullable="true" MaxLength="500" />
+        </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -2724,10 +2767,28 @@ warning 6013: The table/view 'ProformaLive.dbo.Sheet1$' does not have a primary 
               <MappingFragment StoreEntitySet="Assignments">
                 <ScalarProperty Name="Sysid" ColumnName="Sysid" />
                 <ScalarProperty Name="ProjectID" ColumnName="ProjectID" />
+                <ScalarProperty Name="WBSNumber" ColumnName="WBSNumber" />
                 <ScalarProperty Name="Team" ColumnName="Team" />
                 <ScalarProperty Name="RequiredSkills" ColumnName="RequiredSkills" />
                 <ScalarProperty Name="ResourceName" ColumnName="ResourceName" />
                 <ScalarProperty Name="RequestType" ColumnName="RequestType" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AssignmentsComments">
+            <EntityTypeMapping TypeName="ProformaLiveModel.AssignmentsComment">
+              <MappingFragment StoreEntitySet="AssignmentsComments">
+                <ScalarProperty Name="Sysid" ColumnName="Sysid" />
+                <ScalarProperty Name="ProjectID" ColumnName="ProjectID" />
+                <ScalarProperty Name="MasterID" ColumnName="MasterID" />
+                <ScalarProperty Name="ColumnID" ColumnName="ColumnID" />
+                <ScalarProperty Name="Team" ColumnName="Team" />
+                <ScalarProperty Name="RequiredSkills" ColumnName="RequiredSkills" />
+                <ScalarProperty Name="Comments" ColumnName="Comments" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="ModifiedOn" ColumnName="ModifiedOn" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -3513,6 +3574,7 @@ warning 6013: The table/view 'ProformaLive.dbo.Sheet1$' does not have a primary 
             <ResultMapping>
               <ComplexTypeMapping TypeName="ProformaLiveModel.SP_Get_Assign_Live_MainView_Result">
                 <ScalarProperty Name="ProjectID" ColumnName="ProjectID" />
+                <ScalarProperty Name="WBSNumber" ColumnName="WBSNumber" />
                 <ScalarProperty Name="Project" ColumnName="Project" />
                 <ScalarProperty Name="MAY" ColumnName="MAY" />
                 <ScalarProperty Name="JUN" ColumnName="JUN" />
@@ -3534,6 +3596,7 @@ warning 6013: The table/view 'ProformaLive.dbo.Sheet1$' does not have a primary 
               <ComplexTypeMapping TypeName="ProformaLiveModel.SP_Get_Assignments_Result">
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="ProjectID" ColumnName="ProjectID" />
+                <ScalarProperty Name="WBSNumber" ColumnName="WBSNumber" />
                 <ScalarProperty Name="Project" ColumnName="Project" />
                 <ScalarProperty Name="Team" ColumnName="Team" />
                 <ScalarProperty Name="RequiredSkill" ColumnName="RequiredSkill" />
@@ -3551,6 +3614,21 @@ warning 6013: The table/view 'ProformaLive.dbo.Sheet1$' does not have a primary 
                 <ScalarProperty Name="MAR" ColumnName="MAR" />
                 <ScalarProperty Name="APR" ColumnName="APR" />
                 <ScalarProperty Name="RequestType" ColumnName="RequestType" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="SP_Get_Assignments_ResourceData" FunctionName="ProformaLiveModel.Store.SP_Get_Assignments_ResourceData">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="ProformaLiveModel.SP_Get_Assignments_ResourceData_Result">
+                <ScalarProperty Name="Sysid" ColumnName="Sysid" />
+                <ScalarProperty Name="ProjectID" ColumnName="ProjectID" />
+                <ScalarProperty Name="WBSNumber" ColumnName="WBSNumber" />
+                <ScalarProperty Name="ProjectName" ColumnName="ProjectName" />
+                <ScalarProperty Name="Team" ColumnName="Team" />
+                <ScalarProperty Name="RequiredSkills" ColumnName="RequiredSkills" />
+                <ScalarProperty Name="ResourceName" ColumnName="ResourceName" />
+                <ScalarProperty Name="Month" ColumnName="Month" />
+                <ScalarProperty Name="value" ColumnName="value" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
@@ -4225,6 +4303,19 @@ warning 6013: The table/view 'ProformaLive.dbo.Sheet1$' does not have a primary 
           <FunctionImportMapping FunctionImportName="SP_validate_CloneProject" FunctionName="ProformaLiveModel.Store.SP_validate_CloneProject" />
           <FunctionImportMapping FunctionImportName="SP_Validate_Notification" FunctionName="ProformaLiveModel.Store.SP_Validate_Notification" />
           <FunctionImportMapping FunctionImportName="SP_Validate_ProjectCode" FunctionName="ProformaLiveModel.Store.SP_Validate_ProjectCode" />
+          <FunctionImportMapping FunctionImportName="SP_Get_Assignment_Comments" FunctionName="ProformaLiveModel.Store.SP_Get_Assignment_Comments">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="ProformaLiveModel.SP_Get_Assignment_Comments_Result">
+                <ScalarProperty Name="Sysid" ColumnName="Sysid" />
+                <ScalarProperty Name="ProjectID" ColumnName="ProjectID" />
+                <ScalarProperty Name="MasterID" ColumnName="MasterID" />
+                <ScalarProperty Name="ColumnID" ColumnName="ColumnID" />
+                <ScalarProperty Name="Comments" ColumnName="Comments" />
+                <ScalarProperty Name="Team" ColumnName="Team" />
+                <ScalarProperty Name="RequiredSkills" ColumnName="RequiredSkills" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

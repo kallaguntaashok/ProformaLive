@@ -4,14 +4,22 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<link href="~/assets/Jexcel/jexcel_44.css?ID=94000" rel="stylesheet" />
-<link href="~/assets/Jexcel/jsuites38.css?ID=94000" rel="stylesheet" />
-<link href="~/assets/css/delete-confirmation.css?ID=94000" rel="stylesheet" />
-<script src="~/assets/Jexcel/jexcelv44.js?ID=94000"></script>
-<script src="~/assets/Jexcel/jsuites38.js?ID=94000"></script>
-<script src="~/assets/scripts/Assignments.js"></script>
+<link href="~/assets/Jexcel/jexcel_44.css?ID=9300" rel="stylesheet" />
+<link href="~/assets/Jexcel/jsuites38.css?ID=9300" rel="stylesheet" />
+<link href="~/assets/css/delete-confirmation.css?ID=9300" rel="stylesheet" />
+<script src="~/assets/Jexcel/jexcelv44.js?ID=9300"></script>
+<script src="~/assets/Jexcel/jsuites38.js?ID=9300"></script>
+<script src="~/assets/scripts/Assignments.js?ID=9300"></script>
 
 <div ng-controller="AssignmentController" class="container-fluid">
+
+    <div id="alertbox" class="alert_modal fade-up">
+        <div class="alert_modal-content alert_container">
+            <div class="clearfix">
+                <p><i class="fa fa-times" aria-hidden="true"></i>&nbsp;&nbsp;<span id="alerttext"></span> </p>
+            </div>
+        </div>
+    </div>
 
     <div id="progressbar" style="z-index:999999" class="confirmation_modal fade-up">
         <div class="confirmation_modal-content confirmation_container">
@@ -63,13 +71,16 @@
             <div style="padding-top: 4px;" class="col-md-3">
                 <i class="fa fa-th" style="color:#043a7c;" aria-hidden="true"></i>&nbsp;&nbsp;<span style="font-size:14px; font-weight:500;">Assign-Live</span>
             </div>
-            <div class="col-md-5">
+            <div class="col-md-4">
                 <div class="pull-left" id="dropTeams"></div>
             </div>
             <div class="col-md-1">
                 <div class="pull-left" id="dropfisyear"></div>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-4">
+                <button type="button" id="exporttoexcel" ng-click="exportassigndata();" class="btn btn-success btn-sm exporttoexcel float-right"><i class="fa fa-file-excel-o" aria-hidden="true"></i>&nbsp;&nbsp;Export To Excel</button>
+                <button type="button" id="saveallchanges" style="zoom: 80%; display:none; margin-left: 10px;" ng-click="saveallchanges();" class="btn btn-primary btn-sm float-right"><i class="fa fa fa-floppy-o" aria-hidden="true"></i>&nbsp;&nbsp;Save All Changes</button> &nbsp;
+                <button type="button" id="discardallchanges" style="zoom: 80%; display:none; margin-left: 10px;" ng-click="discardallchanges();" class="btn btn-danger btn-sm float-right"><i class="fa fa-undo" aria-hidden="true"></i>&nbsp;&nbsp;Discard All Changes</button> &nbsp;
             </div>
         </div>
         <div id="maintableview" class="card-body">
@@ -119,11 +130,87 @@
                                 </tr>
                             </tbody>
                         </table>
-                    </div>                   
+                    </div>
                     <table ng-style="{ 'width' : MainAssignmentswidth }" id="tblMainAssignments">
                         <thead>
+                            <tr ng-show="totalExpanded">
+                                <th style="text-align:right; background: #023c77;">
+                                    Total Supply
+                                </th>
+                                <th style="background: #0155ab;"></th>
+                                <th style="background: #0155ab;"></th>
+                                <th style="background: #0155ab;"></th>
+                                <th style="background: #0155ab;"></th>
+                                <th style="background: #0155ab;"></th>
+                                <th style="background: #0155ab;"></th>
+                                <th style="background: #0155ab;"></th>
+                                <th style="background: #0155ab;"></th>
+                                <th style="background: #0155ab;"></th>
+                                <th style="background: #0155ab;"></th>
+                                <th style="background: #0155ab;"></th>
+                                <th style="background: #0155ab;"></th>
+                                <th style="background: #0155ab;"></th>
+                            </tr>
+                            <tr ng-show="totalExpanded">
+                                <th style="text-align:right; background: #023c77;">
+                                    Total Demand
+                                </th>
+                                <th style="background: #004a96;"></th>
+                                <th style="background: #004a96;"></th>
+                                <th style="background: #004a96;"></th>
+                                <th style="background: #004a96;"></th>
+                                <th style="background: #004a96;"></th>
+                                <th style="background: #004a96;"></th>
+                                <th style="background: #004a96;"></th>
+                                <th style="background: #004a96;"></th>
+                                <th style="background: #004a96;"></th>
+                                <th style="background: #004a96;"></th>
+                                <th style="background: #004a96;"></th>
+                                <th style="background: #004a96;"></th>
+                                <th style="background: #004a96;"></th>
+                            </tr>
+                            <tr ng-show="totalExpanded">
+                                <th style="text-align:right; background: #023c77;">
+                                    Total Assigned
+                                </th>
+                                <th style="background: #0155ab;"></th>
+                                <th style="background: #0155ab;"></th>
+                                <th style="background: #0155ab;"></th>
+                                <th style="background: #0155ab;"></th>
+                                <th style="background: #0155ab;"></th>
+                                <th style="background: #0155ab;"></th>
+                                <th style="background: #0155ab;"></th>
+                                <th style="background: #0155ab;"></th>
+                                <th style="background: #0155ab;"></th>
+                                <th style="background: #0155ab;"></th>
+                                <th style="background: #0155ab;"></th>
+                                <th style="background: #0155ab;"></th>
+                                <th style="background: #0155ab;"></th>
+                            </tr>
+                            <tr ng-show="totalExpanded">
+                                <th style="text-align:right; background: #023c77;">
+                                    Total Unassigned
+                                </th>
+                                <th style="background: #004a96;"></th>
+                                <th style="background: #004a96;"></th>
+                                <th style="background: #004a96;"></th>
+                                <th style="background: #004a96;"></th>
+                                <th style="background: #004a96;"></th>
+                                <th style="background: #004a96;"></th>
+                                <th style="background: #004a96;"></th>
+                                <th style="background: #004a96;"></th>
+                                <th style="background: #004a96;"></th>
+                                <th style="background: #004a96;"></th>
+                                <th style="background: #004a96;"></th>
+                                <th style="background: #004a96;"></th>
+                                <th style="background: #004a96;"></th>
+                            </tr>
                             <tr>
-                                <th ng-style="{ 'width' : AssignmentProjectWidth }"> <i title="Expand Unassigned" ng-click="viewUnAssignment();" style="padding-top: 3px; padding-left: 5px; font-size: 12px;" class="fa fa-window-restore pull-left" aria-hidden="true"><span style="font-family: system-ui; padding-left:5px; cursor:pointer;">View Unassigned Remaining</span></i> Project Name</th>
+                                <th ng-style="{ 'width' : AssignmentProjectWidth }">
+                                    <i style="color: white; padding-top: 3px; padding-left: 5px; font-size: 12px;" title="Expand All" ng-click="expandAll(allExpanded = !allExpanded)" expand ng-class="allExpanded ? 'fa fa-minus-square resourcecheckbookfontminus' : 'fa fa-plus-square resourcecheckbookfontplus'" class="fa fa-plus-square pull-left" aria-hidden="true"><span style="font-family: system-ui; padding-left:5px; cursor:pointer; border-right: 2px solid #406286; padding-right: 8px;">Expand All</span></i> &nbsp;&nbsp;
+                                    <i title="Expand Unassigned" ng-click="viewUnAssignment();" style="padding-top: 3px; padding-left: 5px; font-size: 12px;" class="fa fa-window-restore pull-left" aria-hidden="true"><span style="font-family: system-ui; padding-left:5px; cursor:pointer; border-right: 2px solid #406286; padding-right: 8px;">View Unassigned Remaining</span></i> &nbsp;&nbsp;
+                                    <i style="color: white; padding-top: 3px; padding-left: 5px; font-size: 12px;" title="Expand All" ng-click="totalExpanded = !totalExpanded" expand ng-class="totalExpanded ? 'fa fa-minus-square resourcecheckbookfontminus' : 'fa fa-plus-square resourcecheckbookfontplus'" class="fa fa-plus-square pull-left" aria-hidden="true"><span style="font-family: system-ui; padding-left:5px; cursor:pointer; border-right: 2px solid #406286; padding-right: 8px;">Expand Total</span></i> Project Name
+                                </th>
                                 <th width="70px">MAY</th>
                                 <th width="70px">JUN</th>
                                 <th width="70px">JUL</th>
@@ -136,7 +223,7 @@
                                 <th width="70px">FEB</th>
                                 <th width="70px">MAR</th>
                                 <th width="70px">APR</th>
-                                <th width="140px">Request Type</th>
+                                <th width="140px" style="text-align:center;">Request Type</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -145,24 +232,24 @@
                                     <table ng-style="{ 'width' : MainAssignmentswidth }" id="tbldecheckbooksub">
                                         <tr>
                                             <td class="mintblAssignmentstd" style="text-align:center; width: 30px; background-color: #f3f9ff;">
-                                                <i title="Expand" id="assign-{{$index}}" ng-click="expandeddecji3 = !expandeddecji3; expandde(expandeddecji3,$index);" expand ng-class="expandeddecji3 ? 'fa fa-minus-square resourcecheckbookfontminus' : 'fa fa-plus-square resourcecheckbookfontplus'" class="fa fa-plus-square" aria-hidden="true"></i>
+                                                <i title="Expand" id="assign-{{$index}}" ng-click="expanded = !expanded; expandde();" expand ng-class="expanded ? 'fa fa-minus-square resourcecheckbookfontminus' : 'fa fa-plus-square resourcecheckbookfontplus'" class="fa fa-plus-square" aria-hidden="true"></i>
                                             </td>
-                                            <td class="mintblAssignmentstd" ng-style="{ 'width' : AssignmentProjectWidth-30 }">{{master.Project}}</td>
-                                            <td id="{{master.ProjectID}}_6_{{$index}}" class="mintblAssignmentstd" width="70px" ng-style="setcolor(master.MAY)">{{master.MAY}}</td>
-                                            <td id="{{master.ProjectID}}_7_{{$index}}" class="mintblAssignmentstd" width="70px" ng-style="setcolor(master.JUN)">{{master.JUN}}</td>
-                                            <td id="{{master.ProjectID}}_8_{{$index}}" class="mintblAssignmentstd" width="70px" ng-style="setcolor(master.JUL)">{{master.JUL}}</td>
-                                            <td id="{{master.ProjectID}}_9_{{$index}}" class="mintblAssignmentstd" width="70px" ng-style="setcolor(master.AUG)">{{master.AUG}}</td>
-                                            <td id="{{master.ProjectID}}_10_{{$index}}" class="mintblAssignmentstd" width="70px" ng-style="setcolor(master.SEP)">{{master.SEP}}</td>
-                                            <td id="{{master.ProjectID}}_11_{{$index}}" class="mintblAssignmentstd" width="70px" ng-style="setcolor(master.OCT)">{{master.OCT}}</td>
-                                            <td id="{{master.ProjectID}}_12_{{$index}}" class="mintblAssignmentstd" width="70px" ng-style="setcolor(master.NOV)">{{master.NOV}}</td>
-                                            <td id="{{master.ProjectID}}_13_{{$index}}" class="mintblAssignmentstd" width="70px" ng-style="setcolor(master.DEC)">{{master.DEC}}</td>
-                                            <td id="{{master.ProjectID}}_14_{{$index}}" class="mintblAssignmentstd" width="70px" ng-style="setcolor(master.JAN)">{{master.JAN}}</td>
-                                            <td id="{{master.ProjectID}}_15_{{$index}}" class="mintblAssignmentstd" width="70px" ng-style="setcolor(master.FEB)">{{master.FEB}}</td>
-                                            <td id="{{master.ProjectID}}_16_{{$index}}" class="mintblAssignmentstd" width="70px" ng-style="setcolor(master.MAR)">{{master.MAR}}</td>
-                                            <td id="{{master.ProjectID}}_17_{{$index}}" class="mintblAssignmentstd" width="70px" ng-style="setcolor(master.APR)">{{master.APR}}</td>
+                                            <td class="mintblAssignmentstd" ng-style="{ 'width' : AssignmentProjectWidth-30 }">{{master.Project}} - <span style="color:#001684;">{{master.WBSNumber}}</span></td>
+                                            <td id="{{master.ProjectID}}_{{master.WBSNumber | removeDot}}_7_{{$index}}" class="mintblAssignmentstd" width="70px" ng-style="setcolor(master.MAY)">{{master.MAY}}</td>
+                                            <td id="{{master.ProjectID}}_{{master.WBSNumber | removeDot}}_8_{{$index}}" class="mintblAssignmentstd" width="70px" ng-style="setcolor(master.JUN)">{{master.JUN}}</td>
+                                            <td id="{{master.ProjectID}}_{{master.WBSNumber | removeDot}}_9_{{$index}}" class="mintblAssignmentstd" width="70px" ng-style="setcolor(master.JUL)">{{master.JUL}}</td>
+                                            <td id="{{master.ProjectID}}_{{master.WBSNumber | removeDot}}_10_{{$index}}" class="mintblAssignmentstd" width="70px" ng-style="setcolor(master.AUG)">{{master.AUG}}</td>
+                                            <td id="{{master.ProjectID}}_{{master.WBSNumber | removeDot}}_11_{{$index}}" class="mintblAssignmentstd" width="70px" ng-style="setcolor(master.SEP)">{{master.SEP}}</td>
+                                            <td id="{{master.ProjectID}}_{{master.WBSNumber | removeDot}}_12_{{$index}}" class="mintblAssignmentstd" width="70px" ng-style="setcolor(master.OCT)">{{master.OCT}}</td>
+                                            <td id="{{master.ProjectID}}_{{master.WBSNumber | removeDot}}_13_{{$index}}" class="mintblAssignmentstd" width="70px" ng-style="setcolor(master.NOV)">{{master.NOV}}</td>
+                                            <td id="{{master.ProjectID}}_{{master.WBSNumber | removeDot}}_14_{{$index}}" class="mintblAssignmentstd" width="70px" ng-style="setcolor(master.DEC)">{{master.DEC}}</td>
+                                            <td id="{{master.ProjectID}}_{{master.WBSNumber | removeDot}}_15_{{$index}}" class="mintblAssignmentstd" width="70px" ng-style="setcolor(master.JAN)">{{master.JAN}}</td>
+                                            <td id="{{master.ProjectID}}_{{master.WBSNumber | removeDot}}_16_{{$index}}" class="mintblAssignmentstd" width="70px" ng-style="setcolor(master.FEB)">{{master.FEB}}</td>
+                                            <td id="{{master.ProjectID}}_{{master.WBSNumber | removeDot}}_17_{{$index}}" class="mintblAssignmentstd" width="70px" ng-style="setcolor(master.MAR)">{{master.MAR}}</td>
+                                            <td id="{{master.ProjectID}}_{{master.WBSNumber | removeDot}}_18_{{$index}}" class="mintblAssignmentstd" width="70px" ng-style="setcolor(master.APR)">{{master.APR}}</td>
                                             <th class="mintblAssignmentstd" width="140px"></th>
                                         </tr>
-                                        <tr ng-show="expandeddecji3">
+                                        <tr ng-show="expanded">
                                             <td style="background-color: #fbfbfb; vertical-align: central; text-align: center;  cursor: pointer;" class="mintblAssignmentstd">
                                             </td>
                                             <td style="padding: 0px; background: #f3f3f3;" colspan="14">
@@ -174,7 +261,7 @@
                                 </td>
                             </tr>
                         </tbody>
-                    </table>
+                    </table>                    
                 </div>
             </div>
         </div>

@@ -1,5 +1,9 @@
-﻿using System;
+﻿using OfficeOpenXml;
+using OfficeOpenXml.Table;
+using OfficeOpenXml.Table.PivotTable;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -34,6 +38,54 @@ namespace ProformaLive.Controllers
             return Json(obj, JsonRequestBehavior.AllowGet);
         }
 
+        [HttpPost]
+        public JsonResult delete_assigncomments(int intMasterID, int intColumnID, string strTeam, string strRequiredSkills, int intProjectID)
+        {
+            AssignmentsComment data = db.AssignmentsComments.Where(x => x.ProjectID == intProjectID && x.Team == strTeam && x.RequiredSkills == strRequiredSkills && x.MasterID == intMasterID && x.ColumnID == intColumnID).SingleOrDefault();
+            if (data != null)
+            {
+                db.AssignmentsComments.Remove(data);
+                db.SaveChanges();
+            }
+            return Json("", JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpGet]
+        public JsonResult getAssignComments(string strTeams)
+        {
+            var obj = db.SP_Get_Assignment_Comments(strTeams).ToList();
+            return Json(obj, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public JsonResult insert_assigncomments(int intProjectID, int intMasterID, int intColumnID, string strTeam, string strRequiredSkills, string strComments, string userid)
+        {
+            AssignmentsComment data = db.AssignmentsComments.Where(x => x.ProjectID == intProjectID && x.Team == strTeam && x.RequiredSkills == strRequiredSkills && x.MasterID == intMasterID && x.ColumnID == intColumnID).SingleOrDefault();
+            if (data != null)
+            {
+                data.Comments = strComments;
+                data.ModifiedBy = userid;
+                data.ModifiedOn = DateTime.Now;
+                db.SaveChanges();
+            }
+            else
+            {
+                AssignmentsComment obj = new AssignmentsComment();
+                obj.ProjectID = intProjectID;
+                obj.MasterID = intMasterID;
+                obj.ColumnID = intColumnID;
+                obj.Comments = strComments;
+                obj.Team = strTeam;
+                obj.RequiredSkills = strRequiredSkills;
+                obj.CreatedOn = DateTime.Now;
+                obj.CreatedBy = userid;
+                db.AssignmentsComments.Add(obj);
+                db.SaveChanges();
+            }
+
+            return Json("", JsonRequestBehavior.AllowGet);
+        }
+
         [HttpGet]
         public JsonResult getResourceList(string strTeam, int intFisYear)
         {
@@ -46,6 +98,75 @@ namespace ProformaLive.Controllers
         {
             var obj = db.SP_Get_Assignments(intFisYear, strTeam).ToList();
             return Json(obj, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpGet]
+        [Obsolete]
+        public JsonResult export_assignlivedata(int intFisYear, string strTeam)
+        {            
+            string FileName = "";
+            var obj = db.SP_Get_Assignments_ResourceData(intFisYear, strTeam).ToList();
+            string DestinationPath = @System.Configuration.ConfigurationManager.AppSettings["UploadFiles"];
+            FileName = intFisYear + "-" + strTeam.Replace("/", "") + "-" + System.DateTime.Now.ToString("yyyy-MMM-dd-HHMMssfff") + ".xlsx";
+            string Source = @System.Configuration.ConfigurationManager.AppSettings["Assigntemplate"];
+            System.IO.File.Copy(Source, DestinationPath + FileName);
+            FileInfo file = new FileInfo(DestinationPath + FileName);
+            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+            using (ExcelPackage p = new ExcelPackage(file))
+            {
+                var sd = p.Workbook.Worksheets["AssignData"];
+                for (int i = 0; i < obj.Count; i++)
+                {
+                    sd.Cells["A" + (i + 2)].Value = obj[i].WBSNumber;
+                    sd.Cells["B" + (i + 2)].Value = obj[i].ProjectName;
+                    sd.Cells["C" + (i + 2)].Value = obj[i].Team;
+                    sd.Cells["D" + (i + 2)].Value = obj[i].RequiredSkills;
+                    sd.Cells["E" + (i + 2)].Value = obj[i].ResourceName;
+                    sd.Cells["F" + (i + 2)].Value = obj[i].Month;
+                    sd.Cells["G" + (i + 2)].Value = obj[i].value;                    
+                }
+
+                var sp = p.Workbook.Worksheets["AssignLive Pivote"];
+
+                sp.Cells["B1"].Value = strTeam + " - " + intFisYear;
+                //define the data range on the source sheet
+                var dataRange = sd.Cells[sd.Dimension.Address];
+                //create the pivot table
+                var pivotTable = sp.PivotTables.Add(sp.Cells["A2"], dataRange, "PivotTable");
+
+                //label field
+                pivotTable.RowFields.Add(pivotTable.Fields["ResourceName"]);
+                pivotTable.RowFields.Add(pivotTable.Fields["ProjectName"]);
+                pivotTable.ColumnFields.Add(pivotTable.Fields["Month"]);
+                pivotTable.DataOnRows = false;
+                pivotTable.ApplyBorderFormats = true;
+                pivotTable.TableStyle = TableStyles.Dark11;
+
+                var field = pivotTable.DataFields.Add(pivotTable.Fields["value"]);
+                field.Name = "Total Sum";
+                field.Function = DataFieldFunctions.Sum;                
+                p.Save();
+            }
+
+            return Json(FileName, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public JsonResult delete_assignment(int intID)
+        {
+            var assignList = db.AssignmentsLists.Where(x => x.MasterID == intID).ToList();
+            foreach (var item in assignList)
+            {
+                db.AssignmentsLists.Remove(item);
+                db.SaveChanges();
+            }
+            Assignment assign = db.Assignments.Where(x => x.Sysid == intID).SingleOrDefault();
+            if (assign != null)
+            {
+                db.Assignments.Remove(assign);
+                db.SaveChanges();
+            }
+            return Json("", JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
@@ -288,7 +409,7 @@ namespace ProformaLive.Controllers
 
                 }
 
-            }           
+            }
             return Json("success", JsonRequestBehavior.AllowGet);
         }
 
@@ -312,11 +433,12 @@ namespace ProformaLive.Controllers
         }
 
         [HttpPost]
-        public JsonResult insert_Assignment(int strProjectID, string strTeam, string strRequiredSkills, string strResourcename, string defaultYear)
+        public JsonResult insert_Assignment(int intProjectID, string strWBSNumber, string strTeam, string strRequiredSkills, string strResourcename, string defaultYear)
         {
             var tabledata = new Assignment
             {
-                ProjectID = strProjectID,
+                ProjectID = intProjectID,
+                WBSNumber = strWBSNumber,
                 ResourceName = strResourcename,
                 Team = strTeam,
                 RequiredSkills = strRequiredSkills,

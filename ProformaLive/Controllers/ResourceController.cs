@@ -812,6 +812,7 @@ namespace MECC_ReportPortal.Controllers
         }
 
         [HttpGet]
+        [Obsolete]
         public JsonResult export_summarydata(int ProjectID, string ProjectNumber, string strProjectName)
         {
             //pivotetable();

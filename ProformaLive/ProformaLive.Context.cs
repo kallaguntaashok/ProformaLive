@@ -29,6 +29,7 @@ namespace ProformaLive
     
         public virtual DbSet<APP_PFL_RESOURCES_SS_V> APP_PFL_RESOURCES_SS_V { get; set; }
         public virtual DbSet<Assignment> Assignments { get; set; }
+        public virtual DbSet<AssignmentsComment> AssignmentsComments { get; set; }
         public virtual DbSet<AssignmentsList> AssignmentsLists { get; set; }
         public virtual DbSet<CapitalInfo> CapitalInfoes { get; set; }
         public virtual DbSet<CapitalInfoComment> CapitalInfoComments { get; set; }
@@ -387,6 +388,19 @@ namespace ProformaLive
                 new ObjectParameter("Teams", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_Get_Assignments_Result>("SP_Get_Assignments", fisYearParameter, teamsParameter);
+        }
+    
+        public virtual ObjectResult<SP_Get_Assignments_ResourceData_Result> SP_Get_Assignments_ResourceData(Nullable<int> fisYear, string teams)
+        {
+            var fisYearParameter = fisYear.HasValue ?
+                new ObjectParameter("FisYear", fisYear) :
+                new ObjectParameter("FisYear", typeof(int));
+    
+            var teamsParameter = teams != null ?
+                new ObjectParameter("Teams", teams) :
+                new ObjectParameter("Teams", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_Get_Assignments_ResourceData_Result>("SP_Get_Assignments_ResourceData", fisYearParameter, teamsParameter);
         }
     
         public virtual ObjectResult<string> SP_Get_Business()
@@ -1131,6 +1145,15 @@ namespace ProformaLive
                 new ObjectParameter("ProjectNumber", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<string>("SP_Validate_ProjectCode", projectNumberParameter);
+        }
+    
+        public virtual ObjectResult<SP_Get_Assignment_Comments_Result> SP_Get_Assignment_Comments(string team)
+        {
+            var teamParameter = team != null ?
+                new ObjectParameter("Team", team) :
+                new ObjectParameter("Team", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_Get_Assignment_Comments_Result>("SP_Get_Assignment_Comments", teamParameter);
         }
     }
 }

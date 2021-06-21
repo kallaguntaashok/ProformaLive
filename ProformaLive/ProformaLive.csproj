@@ -772,6 +772,9 @@
     <Compile Include="Assignment.cs">
       <DependentUpon>ProformaLive.tt</DependentUpon>
     </Compile>
+    <Compile Include="AssignmentsComment.cs">
+      <DependentUpon>ProformaLive.tt</DependentUpon>
+    </Compile>
     <Compile Include="AssignmentsList.cs">
       <DependentUpon>ProformaLive.tt</DependentUpon>
     </Compile>
@@ -957,7 +960,13 @@
     <Compile Include="SP_Get_APP_PFL_RESOURCES_SS_V_Result.cs">
       <DependentUpon>ProformaLive.tt</DependentUpon>
     </Compile>
+    <Compile Include="SP_Get_Assignments_ResourceData_Result.cs">
+      <DependentUpon>ProformaLive.tt</DependentUpon>
+    </Compile>
     <Compile Include="SP_Get_Assignments_Result.cs">
+      <DependentUpon>ProformaLive.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SP_Get_Assignment_Comments_Result.cs">
       <DependentUpon>ProformaLive.tt</DependentUpon>
     </Compile>
     <Compile Include="SP_Get_Assign_Live_MainView_Result.cs">
@@ -1154,6 +1163,7 @@
     <Content Include="Scripts\angular-resource.min.js.map" />
     <Content Include="Views\Config_Snapshot\Index.cshtml" />
     <Content Include="Views\Assignments\Index.cshtml" />
+    <Content Include="Templates\AssignLive.xlsx" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

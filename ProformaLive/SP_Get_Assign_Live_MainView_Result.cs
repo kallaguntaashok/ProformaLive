@@ -14,6 +14,7 @@ namespace ProformaLive
     public partial class SP_Get_Assign_Live_MainView_Result
     {
         public Nullable<int> ProjectID { get; set; }
+        public string WBSNumber { get; set; }
         public string Project { get; set; }
         public decimal MAY { get; set; }
         public decimal JUN { get; set; }

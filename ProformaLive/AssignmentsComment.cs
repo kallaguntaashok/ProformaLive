@@ -12,14 +12,18 @@ namespace ProformaLive
     using System;
     using System.Collections.Generic;
     
-    public partial class Assignment
+    public partial class AssignmentsComment
     {
         public int Sysid { get; set; }
         public Nullable<int> ProjectID { get; set; }
-        public string WBSNumber { get; set; }
+        public Nullable<int> MasterID { get; set; }
+        public Nullable<int> ColumnID { get; set; }
         public string Team { get; set; }
         public string RequiredSkills { get; set; }
-        public string ResourceName { get; set; }
-        public string RequestType { get; set; }
+        public string Comments { get; set; }
+        public string CreatedBy { get; set; }
+        public Nullable<System.DateTime> CreatedOn { get; set; }
+        public string ModifiedBy { get; set; }
+        public Nullable<System.DateTime> ModifiedOn { get; set; }
     }
 }
