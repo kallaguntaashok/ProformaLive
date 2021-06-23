@@ -2,14 +2,14 @@
     Technologies used: MVC, Angular JS, Javascript, SQL Server, C#, Jexcel, Jsuite.*@
 
 <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
-<link href="~/assets/Jexcel/jexcel_44.css?ID=94000" rel="stylesheet" />
-<script src="~/assets/Jexcel/jexcelv44.js?ID=94000"></script>
-<script src="~/assets/jexcel/jsuites38.js?id=94000"></script>
-<link href="~/assets/jexcel/jsuites38.css?id=94000" rel="stylesheet" />
-<link href="~/assets/css/delete-confirmation.css?ID=94000" rel="stylesheet" />
-<script src="~/assets/scripts/resource.js?ID=94000"></script>
-<script src="~/assets/scripts/exportexcel/alasql.min.js?ID=94000"></script>
-<script src="~/assets/scripts/exportexcel/xlsx.core.min.js?ID=94000"></script>
+<link href="~/assets/Jexcel/jexcel_44.css?ID=95000" rel="stylesheet" />
+<script src="~/assets/Jexcel/jexcelv44.js?ID=95000"></script>
+<script src="~/assets/jexcel/jsuites38.js?id=95000"></script>
+<link href="~/assets/jexcel/jsuites38.css?id=95000" rel="stylesheet" />
+<link href="~/assets/css/delete-confirmation.css?ID=95000" rel="stylesheet" />
+<script src="~/assets/scripts/resource.js?ID=95000"></script>
+<script src="~/assets/scripts/exportexcel/alasql.min.js?ID=95000"></script>
+<script src="~/assets/scripts/exportexcel/xlsx.core.min.js?ID=95000"></script>
 
 @*alert box to display errors.*@
 <div id="alertbox" class="alert_modal fade-up">
@@ -703,9 +703,9 @@
                             <tbody ng-repeat="master in modelRresourceCheckBook">
                                 <tr>
                                     <td>
-                                        <i title="Expand" ng-click="expanded = !expanded" expand ng-class="expanded ? 'fa fa-minus-square resourcecheckbookfontminus' : 'fa fa-plus-square resourcecheckbookfontplus'" class="fa fa-plus-square" aria-hidden="true"></i>
+                                        <i title="Expand" ng-click="master.expanded = !master.expanded; expand_rc(master.expanded,$index)" ng-class="master.expanded ? 'fa fa-minus-square resourcecheckbookfontminus' : 'fa fa-plus-square resourcecheckbookfontplus'" class="fa fa-plus-square" aria-hidden="true"></i>
                                     </td>
-                                    <td>{{master.WBSNumber}}</td>
+                                    <td>{{master.WBSNumber}}-{{master.expanded}}</td>
                                     <td>{{master.BusinessUnit}}</td>
                                     <td title={{master.HighOrg}}>{{master.HighOrg | dotsFilter:20}}</td>
                                     <td title={{master.MidOrg}}>{{master.MidOrg}}</td>
@@ -724,7 +724,7 @@
                                     <td ng-style="setcolor(master.MAR)">{{master.MAR}}</td>
                                     <td ng-style="setcolor(master.APR)">{{master.APR}}</td>
                                 </tr>
-                                <tr ng-show="expanded" ng-repeat="checkbook in master.ResourceCheckBook">
+                                <tr ng-show="master.expanded" ng-repeat="checkbook in master.ResourceCheckBook">
                                     <td id="subResourcetable" colspan="20">
                                         <table>
                                             <tbody>

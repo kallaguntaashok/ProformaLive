@@ -89,7 +89,7 @@ namespace ProformaLive.Controllers
         [HttpGet]
         public JsonResult getResourceList(string strTeam, int intFisYear)
         {
-            var obj = db.SP_Get_TeamResourceInfo(strTeam, intFisYear);
+            var obj = db.SP_Get_TeamResourceInfo(strTeam, intFisYear).ToList();
             return Json(obj, JsonRequestBehavior.AllowGet);
         }
 

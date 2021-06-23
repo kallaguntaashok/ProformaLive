@@ -182,52 +182,60 @@ app.controller('AssignmentController', function ($scope, $http, $window) {
 
     function onTeamChange() {
 
-        update_assign_comments();
-        updateprogressbar(10, "Assign-Live is loading...");
-        $http({
-            method: 'GET',
-            url: '../Assignments/getAssignlivemainview',
-            params: { "intFisYear": defaultFisYear, "strTeam": jSuite_Teams.getValue() }
-        }).then(function (response) {
-            $scope.AssignmentData = response.data;
-            updateUnassignedSum(response.data);
+        var strTeam = jSuite_Teams.getValue();
+        if (strTeam.length > 0) {
 
+            update_assign_comments();
+            updateprogressbar(10, "Assign-Live is loading...");
             $http({
                 method: 'GET',
-                url: '../Assignments/getResourceList',
-                params: { "strTeam": jSuite_Teams.getValue(), "intFisYear": defaultFisYear }
-            }).then(function (response) {
-                dsResourceList = response.data;
-            }, function (error) {
-                console.log(error);
-            });
-            loadunassignedamount();
-            $http({
-                method: 'GET',
-                url: '../Assignments/getassignmentdata',
+                url: '../Assignments/getAssignlivemainview',
                 params: { "intFisYear": defaultFisYear, "strTeam": jSuite_Teams.getValue() }
             }).then(function (response) {
-                var sourcedata = response.data;
-                update_demand_sum(response.data);
-                update_assigned_sum(response.data);
-                $scope.dsAssignmentsDataSource = response.data;
-                var maindata = $scope.AssignmentData;
-                for (var i = 0; i < maindata.length; i++) {
-                    dsAssignments = sourcedata.filter(a => a.WBSNumber == maindata[i].WBSNumber && a.ProjectID == maindata[i].ProjectID);
-                    if (dsAssignments.length > 0) {
-                        loadAssignmentTable("decb_" + i);
+                $scope.AssignmentData = response.data;
+                updateUnassignedSum(response.data);
+
+                $http({
+                    method: 'GET',
+                    url: '../Assignments/getResourceList',
+                    params: { "strTeam": jSuite_Teams.getValue(), "intFisYear": defaultFisYear }
+                }).then(function (response) {
+                    dsResourceList = response.data;
+                }, function (error) {
+                    console.log(error);
+                });
+                loadunassignedamount();
+                $http({
+                    method: 'GET',
+                    url: '../Assignments/getassignmentdata',
+                    params: { "intFisYear": defaultFisYear, "strTeam": jSuite_Teams.getValue() }
+                }).then(function (response) {
+                    var sourcedata = response.data;
+                    update_demand_sum(response.data);
+                    update_assigned_sum(response.data);
+                    $scope.dsAssignmentsDataSource = response.data;
+                    var maindata = $scope.AssignmentData;
+                    for (var i = 0; i < maindata.length; i++) {
+                        dsAssignments = sourcedata.filter(a => a.WBSNumber == maindata[i].WBSNumber && a.ProjectID == maindata[i].ProjectID);
+                        if (dsAssignments.length > 0) {
+                            loadAssignmentTable("decb_" + i);
+                        }
                     }
-                }
+
+                }, function (error) {
+                    console.log(error);
+                });
+
+                document.getElementById('divAssignments').style.display = 'block';
 
             }, function (error) {
                 console.log(error);
             });
 
-            document.getElementById('divAssignments').style.display = 'block';
-
-        }, function (error) {
-            console.log(error);
-        });
+        }
+        else {
+            showalertsavechangesalert('Please Select Team');
+        }
 
     }
 
@@ -415,8 +423,17 @@ app.controller('AssignmentController', function ($scope, $http, $window) {
                     var dsAssignments = sourcedata.filter(a => a.WBSNumber == wbsNumber && a.ProjectID == projectID);
                     window[stringModelName].setData(dsAssignments);
 
-                    uniqueresource.splice(uniqueresource.indexOf(dropAssignResource), 1);
-                    jSuite_dropAssignResources.setData(uniqueresource);
+                    $http({
+                        method: 'GET',
+                        url: '../Assignments/getResourceList',
+                        params: { "strTeam": jSuite_Teams.getValue(), "intFisYear": defaultFisYear }
+                    }).then(function (response) {
+                        dsResourceList = response.data;
+                    }, function (error) {
+                        console.log(error);
+                    });
+
+                    onSkillChange();                    
 
                 }, function (error) {
                     console.log(error);
@@ -442,11 +459,11 @@ app.controller('AssignmentController', function ($scope, $http, $window) {
             url: '../Assignments/getResourceList',
             params: { "strTeam": jSuite_Teams.getValue(), "intFisYear": defaultFisYear }
         }).then(function (response) {
-            dsResourceList = response.data;
+            dsResourceList = response.data;            
         }, function (error) {
             console.log(error);
         });
-
+                
         uniqueresource = dsResourceList;
         var resource_lookup = {};
         var resource_result = [];
@@ -455,10 +472,12 @@ app.controller('AssignmentController', function ($scope, $http, $window) {
             var resource_name = item.ResourceName;
             if (!(resource_name in resource_lookup)) {
                 resource_lookup[resource_name] = 1;
-                resource_result.push(resource_name);
+                if (resource_name.length > 0) {
+                    resource_result.push(resource_name);
+                }                
             }
         }
-
+                
         for (var i = 0; i < resource_result.length; i++) {
             uniqueresource.splice(uniqueresource.indexOf(resource_result[i]), 1);
         }
@@ -970,7 +989,7 @@ app.controller('AssignmentController', function ($scope, $http, $window) {
                                         var res = obj.el.getAttribute('id').split("_");
                                         var rowobj = jsonobj[y];
                                         if (rowobj.ID > 0) {
-                                            if (confirm('Are you sure do you want to delete?')) {
+                                            if (confirm('Are you sure you want to delete?')) {
                                                 deleterow(rowobj.ID);
                                                 obj.deleteRow(y);
                                                 console.log(res[1]);
@@ -978,7 +997,7 @@ app.controller('AssignmentController', function ($scope, $http, $window) {
                                             }
                                         }
                                         else {
-                                            showalertsavechangesalert("Your not allowed to delete a demand row.")
+                                            //showalertsavechangesalert("Your not allowed to delete a demand row.")
                                         }
                                     }
 

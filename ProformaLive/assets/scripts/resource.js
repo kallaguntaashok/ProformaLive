@@ -8,6 +8,11 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
     var capitallabor_mainwidth = (proforma_mainwidth - 938) / 6;
     var de_mainwidth = (proforma_mainwidth - 1230) / 2;
 
+    $scope.expandRC = function (id) {      
+        console.log(id);
+        $scope.id = false;
+    }
+
     //End Dynamic width code.
     loadmastersettings();
     //Default config items.
@@ -82,6 +87,7 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
     var capitallabor_comments = [];
     var directexpenses_comments = [];
     var decbsource = { deitems: [] };
+    var rcbsource = { rcitems: [] };
     var de_cb_readonly_status = false;
     $scope.showExporttoexcel = true;
     localStorage.setItem("decellID", null);
@@ -1977,7 +1983,23 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
             url: '../Resource/getResourceCheckBookData',
             params: { "intProjectID": localStorage.getItem("projectid"), "intFisYear": Fisyear }
         }).then(function (response) {
-            $scope.modelRresourceCheckBook = response.data;
+
+            var tempResourceCheckBook = response.data;
+            Object.keys(tempResourceCheckBook).map(
+                function (object) {
+                    tempResourceCheckBook[object]["expanded"] = false;
+                });
+                        
+            rcbsource = JSON.parse(localStorage.getItem("rc_expandid"));
+            if (rcbsource != null) {
+                for (var i = 0; i < rcbsource.rcitems.length; i++) {
+                    var value = rcbsource.rcitems[i].fid;
+                    tempResourceCheckBook[value]["expanded"] = true;
+                }                
+            }
+                        
+            $scope.modelRresourceCheckBook = tempResourceCheckBook;
+
             if (response.data.length === 0)
                 showalert('No records found!');
             
@@ -2078,10 +2100,6 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
             }
         }
     }
-
-    $scope.expandAll = function (expanded) {
-        $scope.$broadcast('onExpandAll', { expanded: expanded });
-    };
 
     $scope.celldefalutstyle = function () {
         return {
@@ -2379,6 +2397,8 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
         document.getElementById('capitaltotal').innerHTML = "0";
         document.getElementById('capitallabortotal').innerHTML = "0";
         document.getElementById('detotal').innerHTML = "0";
+        rcbsource = { rcitems: [] };
+        localStorage.setItem("rc_expandid", JSON.stringify(rcbsource));
 
         if (PID === "") {
             showalert('Please select a project!');
@@ -2819,7 +2839,7 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
                         title: obj.options.text.deleteSelectedRows,
                         onclick: function () {
 
-                            if (confirm('Are you sure do you want to delete?')) {
+                            if (confirm('Are you sure you want to delete?')) {
 
                                 var rowsElement = obj.getSelectedRows();
 
@@ -3932,7 +3952,7 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
                         title: obj.options.text.deleteSelectedRows,
                         onclick: function () {
 
-                            if (confirm('Are you sure do you want to delete?')) {
+                            if (confirm('Are you sure you want to delete?')) {
 
                                 var rowsElement = obj.getSelectedRows();
                                 //console.log(rowsElement);
@@ -4603,7 +4623,7 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
                         onclick: function () {
 
 
-                            if (confirm('Are you sure do you want to delete?')) {
+                            if (confirm('Are you sure you want to delete?')) {
 
                                 var rowsElement = obj.getSelectedRows();
                                 //console.log(rowsElement);
@@ -5178,7 +5198,7 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
                         items.push({
                             title: obj.options.text.deleteSelectedRows,
                             onclick: function () {
-                                if (confirm('Are you sure do you want to delete?')) {
+                                if (confirm('Are you sure you want to delete?')) {
 
                                     var rowsElement = obj.getSelectedRows();
                                     for (var indexRow = 0; indexRow < rowsElement.length; indexRow++) {
@@ -6523,7 +6543,7 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
         });
 
         objdirectexpenses_checkbook.hideIndex();
-    }
+    }    
 
     function loadresourcetable_PC() {
 
@@ -6717,6 +6737,7 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
 
         }
 
+
         //editor: new InputMaxLenght(4)
         obj_PC = jexcel(document.getElementById('tbl_resource_checkbook'), {
             data: dsResource_PC,
@@ -6854,6 +6875,42 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
         obj_PC.hideIndex();
     }
 
+    $scope.expandAll = function (expanded) {
+        var obj = $scope.modelRresourceCheckBook;                
+        obj.forEach(o => {
+            for (let k in o)
+                o["expanded"] = expanded;
+        });        
+    };
+
+    $scope.expand_rc = function (status, id) {
+        
+        rcbsource = JSON.parse(localStorage.getItem("rc_expandid"));
+        if (status == false) {
+            if (rcbsource != null) {
+                if (rcbsource.rcitems.find(x => x.fid === id)) {
+                    const index = rcbsource.rcitems.findIndex(c => c.fid === id);
+                    rcbsource.rcitems.splice(index, 1)
+                    localStorage.setItem("rc_expandid", JSON.stringify(rcbsource));
+                }
+            }
+        }
+        else {
+            if (rcbsource == null) {
+                rcbsource = { rcitems: [] };
+            }
+            else {
+                if (rcbsource.rcitems.find(x => x.fid === id)) {
+                    const index = rcbsource.rcitems.findIndex(c => c.fid === id);
+                    rcbsource.rcitems.splice(index, 1)
+                    localStorage.setItem("rc_expandid", JSON.stringify(rcbsource));
+                }
+            }
+            rcbsource.rcitems.push({ "fid": id });
+            localStorage.setItem("rc_expandid", JSON.stringify(rcbsource));
+        }
+    }
+
 });
 app.factory('FileUploadService', function ($http, $q) {
 
@@ -6918,14 +6975,5 @@ app.filter('dotsFilter', [
         return dotsFilter;
     }
 ]);
-app.directive('expand', function () {
-    function link(scope, element, attrs) {
-        scope.$on('onExpandAll', function (event, args) {
-            scope.expanded = args.expanded;
-        });
-    }
-    return {
-        link: link
-    };
-});
+
 
