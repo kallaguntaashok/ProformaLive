@@ -216,7 +216,11 @@ app.controller('AssignmentController', function ($scope, $http, $window) {
                     $scope.dsAssignmentsDataSource = response.data;
                     var maindata = $scope.AssignmentData;
                     for (var i = 0; i < maindata.length; i++) {
+                        dsAssignments = [];
                         dsAssignments = sourcedata.filter(a => a.WBSNumber == maindata[i].WBSNumber && a.ProjectID == maindata[i].ProjectID);
+                        if (maindata[i].ProjectID == 241) {
+                            console.log(dsAssignments);
+                        }
                         if (dsAssignments.length > 0) {
                             loadAssignmentTable("decb_" + i);
                         }
@@ -329,7 +333,18 @@ app.controller('AssignmentController', function ($scope, $http, $window) {
             params: { "intFisYear": defaultFisYear, "strTeam": jSuite_Teams.getValue() }
         }).then(function (response) {
             $scope.UnassignedRemaining = response.data;
-            update_supply_sum(response.data);
+
+                $http({
+                    method: 'GET',
+                    url: '../Assignments/gettotalsupply',
+                    params: { "intFisYear": defaultFisYear, "strTeam": jSuite_Teams.getValue() }
+                }).then(function (response) {
+                    console.log(response);
+                    update_supply_sum(response.data);
+                }, function (error) {
+                    console.log(error);
+                });
+            
             if (newWindow && !newWindow.closed) {
                 setTimeout(function () {
                     $scope.$apply(function () {

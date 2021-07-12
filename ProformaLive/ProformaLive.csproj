@@ -797,6 +797,12 @@
     <Compile Include="CapitalLaborInfoList.cs">
       <DependentUpon>ProformaLive.tt</DependentUpon>
     </Compile>
+    <Compile Include="Capital_CJI3_Selection.cs">
+      <DependentUpon>ProformaLive.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Capital_OpenPO.cs">
+      <DependentUpon>ProformaLive.tt</DependentUpon>
+    </Compile>
     <Compile Include="Configure_App_Master.cs">
       <DependentUpon>ProformaLive.tt</DependentUpon>
     </Compile>
@@ -884,6 +890,9 @@
     <Compile Include="Notification_Log.cs">
       <DependentUpon>ProformaLive.tt</DependentUpon>
     </Compile>
+    <Compile Include="PDW_Resource_Master.cs">
+      <DependentUpon>ProformaLive.tt</DependentUpon>
+    </Compile>
     <Compile Include="PFL_MDT_FISCAL_DAYS.cs">
       <DependentUpon>ProformaLive.tt</DependentUpon>
     </Compile>
@@ -930,6 +939,9 @@
     <Compile Include="SP_EXPORT_ResourceData_Result.cs">
       <DependentUpon>ProformaLive.tt</DependentUpon>
     </Compile>
+    <Compile Include="SP_GetCapitalData_forcheckbookedit_Result.cs">
+      <DependentUpon>ProformaLive.tt</DependentUpon>
+    </Compile>
     <Compile Include="SP_GetCapitalData_Result.cs">
       <DependentUpon>ProformaLive.tt</DependentUpon>
     </Compile>
@@ -973,6 +985,21 @@
       <DependentUpon>ProformaLive.tt</DependentUpon>
     </Compile>
     <Compile Include="SP_Get_CapitalLabor_Comments_Result.cs">
+      <DependentUpon>ProformaLive.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SP_Get_Capital_CheckBook_Result.cs">
+      <DependentUpon>ProformaLive.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SP_Get_CAPITAL_CJI3_Data_Result.cs">
+      <DependentUpon>ProformaLive.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SP_Get_Capital_CJI3_Data_SelectedList_Result.cs">
+      <DependentUpon>ProformaLive.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SP_Get_Capital_CJI3_Selection_Result.cs">
+      <DependentUpon>ProformaLive.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SP_Get_CAPITAL_CJI3_Total_Reconciliation_Remaining_Result.cs">
       <DependentUpon>ProformaLive.tt</DependentUpon>
     </Compile>
     <Compile Include="SP_Get_Capital_Comments_Result.cs">
@@ -1045,6 +1072,9 @@
       <DependentUpon>ProformaLive.tt</DependentUpon>
     </Compile>
     <Compile Include="SP_Get_Skillmaster_Result.cs">
+      <DependentUpon>ProformaLive.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SP_Get_TotalSupply_Result.cs">
       <DependentUpon>ProformaLive.tt</DependentUpon>
     </Compile>
     <Compile Include="SP_Get_UnassignedRemaining_Result.cs">
@@ -1227,7 +1257,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>60580</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:60331/</IISUrl>
+          <IISUrl>http://localhost:60311/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

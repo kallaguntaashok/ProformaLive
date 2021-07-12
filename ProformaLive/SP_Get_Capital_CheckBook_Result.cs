@@ -11,15 +11,13 @@ namespace ProformaLive
 {
     using System;
     
-    public partial class SP_Get_Assignments_Result
+    public partial class SP_Get_Capital_CheckBook_Result
     {
-        public int ID { get; set; }
-        public Nullable<int> ProjectID { get; set; }
         public string WBSNumber { get; set; }
-        public string Project { get; set; }
-        public string Team { get; set; }
-        public string RequiredSkill { get; set; }
-        public string ResourceName { get; set; }
+        public string CapitalCategory { get; set; }
+        public string CapitalType { get; set; }
+        public string Description { get; set; }
+        public string FinYear { get; set; }
         public decimal MAY { get; set; }
         public decimal JUN { get; set; }
         public decimal JUL { get; set; }
@@ -32,6 +30,5 @@ namespace ProformaLive
         public decimal FEB { get; set; }
         public decimal MAR { get; set; }
         public decimal APR { get; set; }
-        public string RequestType { get; set; }
     }
 }

@@ -4,50 +4,53 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="94e167e19de34b158f61b08babe23aa4" Name="Diagram1" ZoomLevel="95">
+      <Diagram DiagramId="6bb8d166e8c04e6195eb7a621138a9c8" Name="Diagram1" ZoomLevel="95">
         <EntityTypeShape EntityType="ProformaLiveModel.APP_PFL_RESOURCES_SS_V" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="ProformaLiveModel.Assignment" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="ProformaLiveModel.AssignmentsComment" Width="1.5" PointX="4.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="ProformaLiveModel.AssignmentsList" Width="1.5" PointX="2.75" PointY="4.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="ProformaLiveModel.CapitalInfo" Width="1.5" PointX="4.75" PointY="4.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="ProformaLiveModel.CapitalInfoComment" Width="1.5" PointX="6.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="ProformaLiveModel.CapitalInfoList" Width="1.5" PointX="6.75" PointY="4.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="ProformaLiveModel.CapitalLaborInfo" Width="1.5" PointX="0.75" PointY="7.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="ProformaLiveModel.CapitalLaborInfoComment" Width="1.5" PointX="6.75" PointY="7.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="ProformaLiveModel.CapitalLaborInfoList" Width="1.5" PointX="8.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="ProformaLiveModel.Configure_App_Master" Width="1.5" PointX="8.75" PointY="3.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="ProformaLiveModel.Configure_Project" Width="1.5" PointX="8.75" PointY="7.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="ProformaLiveModel.Configure_ProjectComments" Width="1.5" PointX="2.75" PointY="9.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="ProformaLiveModel.Configure_RateCard" Width="1.5" PointX="10.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="ProformaLiveModel.Configure_Skill" Width="1.5" PointX="10.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ProformaLiveModel.Capital_CJI3_Selection" Width="1.5" PointX="4.75" PointY="4.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ProformaLiveModel.CapitalInfo" Width="1.5" PointX="6.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ProformaLiveModel.CapitalInfoComment" Width="1.5" PointX="6.75" PointY="5.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ProformaLiveModel.CapitalInfoList" Width="1.5" PointX="0.75" PointY="7.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ProformaLiveModel.CapitalLaborInfo" Width="1.5" PointX="8.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ProformaLiveModel.CapitalLaborInfoComment" Width="1.5" PointX="8.75" PointY="6.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ProformaLiveModel.CapitalLaborInfoList" Width="1.5" PointX="10.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ProformaLiveModel.Configure_App_Master" Width="1.5" PointX="0.75" PointY="10.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ProformaLiveModel.Configure_Project" Width="1.5" PointX="2.75" PointY="10.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ProformaLiveModel.Configure_ProjectComments" Width="1.5" PointX="10.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ProformaLiveModel.Configure_RateCard" Width="1.5" PointX="4.75" PointY="10.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ProformaLiveModel.Configure_Skill" Width="1.5" PointX="6.75" PointY="10.75" IsExpanded="true" />
         <EntityTypeShape EntityType="ProformaLiveModel.DirectExpenses_OpenPO" Width="1.5" PointX="10.75" PointY="7.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="ProformaLiveModel.DirectExpensesInfo" Width="1.5" PointX="10.75" PointY="10.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="ProformaLiveModel.DirectExpensesInfo_CJI3_Selection" Width="1.5" PointX="4.75" PointY="11.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ProformaLiveModel.DirectExpensesInfo" Width="1.5" PointX="8.75" PointY="10.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ProformaLiveModel.DirectExpensesInfo_CJI3_Selection" Width="1.5" PointX="10.75" PointY="10.75" IsExpanded="true" />
         <EntityTypeShape EntityType="ProformaLiveModel.DirectExpensesInfoComment" Width="1.5" PointX="12.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="ProformaLiveModel.DirectExpensesInfoList" Width="1.5" PointX="12.75" PointY="4.75" IsExpanded="true" />
         <EntityTypeShape EntityType="ProformaLiveModel.Master_AOPProject" Width="1.5" PointX="12.75" PointY="7.75" IsExpanded="true" />
         <EntityTypeShape EntityType="ProformaLiveModel.Master_CJI3" Width="1.5" PointX="12.75" PointY="10.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="ProformaLiveModel.Master_Help" Width="1.5" PointX="0.75" PointY="13.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="ProformaLiveModel.Master_Months" Width="1.5" PointX="14.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="ProformaLiveModel.Master_ProjectChargeBack" Width="1.5" PointX="14.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ProformaLiveModel.Master_Help" Width="1.5" PointX="14.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ProformaLiveModel.Master_Months" Width="1.5" PointX="14.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ProformaLiveModel.Master_ProjectChargeBack" Width="1.5" PointX="4.75" PointY="14.75" IsExpanded="true" />
         <EntityTypeShape EntityType="ProformaLiveModel.Master_Qtr" Width="1.5" PointX="14.75" PointY="6.75" IsExpanded="true" />
         <EntityTypeShape EntityType="ProformaLiveModel.Master_SAP_PO_Data" Width="1.5" PointX="14.75" PointY="9.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="ProformaLiveModel.Master_Snapshot_Config" Width="1.5" PointX="14.75" PointY="15.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="ProformaLiveModel.Master_Summary" Width="1.5" PointX="16.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="ProformaLiveModel.Master_VendorList" Width="1.5" PointX="0.75" PointY="16.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="ProformaLiveModel.Notification_Log" Width="1.5" PointX="16.75" PointY="3.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="ProformaLiveModel.NotificationPanel" Width="1.5" PointX="16.75" PointY="6.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="ProformaLiveModel.PFL_MDT_FISCAL_DAYS" Width="1.5" PointX="6.75" PointY="16.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="ProformaLiveModel.PFL_MDT_PDW" Width="1.5" PointX="8.75" PointY="16.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="ProformaLiveModel.Proforma_DataFrasfer_DuplicateData" Width="1.5" PointX="16.75" PointY="10.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="ProformaLiveModel.Resource_TempData" Width="1.5" PointX="16.75" PointY="13.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="ProformaLiveModel.ResourceInfo" Width="1.5" PointX="2.75" PointY="17.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="ProformaLiveModel.ResourceInfoComment" Width="1.5" PointX="18.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="ProformaLiveModel.ResourceInfoList" Width="1.5" PointX="18.75" PointY="4.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="ProformaLiveModel.Service_log" Width="1.5" PointX="18.75" PointY="7.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="ProformaLiveModel.Tbl_PDW_CJI3" Width="1.5" PointX="18.75" PointY="10.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="ProformaLiveModel.Temp_PFL_Table" Width="1.5" PointX="10.75" PointY="18.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="ProformaLiveModel.Temp_ProjectMaster" Width="1.5" PointX="18.75" PointY="14.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ProformaLiveModel.Master_Snapshot_Config" Width="1.5" PointX="6.75" PointY="15.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ProformaLiveModel.Master_Summary" Width="1.5" PointX="14.75" PointY="15.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ProformaLiveModel.Master_VendorList" Width="1.5" PointX="16.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ProformaLiveModel.Notification_Log" Width="1.5" PointX="16.75" PointY="8.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ProformaLiveModel.NotificationPanel" Width="1.5" PointX="8.75" PointY="16.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ProformaLiveModel.PDW_Resource_Master" Width="1.5" PointX="16.75" PointY="11.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ProformaLiveModel.PFL_MDT_FISCAL_DAYS" Width="1.5" PointX="16.75" PointY="14.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ProformaLiveModel.PFL_MDT_PDW" Width="1.5" PointX="16.75" PointY="17.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ProformaLiveModel.Proforma_DataFrasfer_DuplicateData" Width="1.5" PointX="18.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ProformaLiveModel.Resource_TempData" Width="1.5" PointX="18.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ProformaLiveModel.ResourceInfo" Width="1.5" PointX="18.75" PointY="10.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ProformaLiveModel.ResourceInfoComment" Width="1.5" PointX="10.75" PointY="18.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ProformaLiveModel.ResourceInfoList" Width="1.5" PointX="12.75" PointY="18.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ProformaLiveModel.Service_log" Width="1.5" PointX="18.75" PointY="15.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ProformaLiveModel.Tbl_PDW_CJI3" Width="1.5" PointX="18.75" PointY="18.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ProformaLiveModel.Temp_PFL_Table" Width="1.5" PointX="0.75" PointY="19.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ProformaLiveModel.Temp_ProjectMaster" Width="1.5" PointX="2.75" PointY="19.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ProformaLiveModel.Capital_OpenPO" Width="1.5" PointX="4.75" PointY="19.75" IsExpanded="true" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -17,6 +17,7 @@ namespace ProformaLive
         public int Sysid { get; set; }
         public Nullable<int> FisYear { get; set; }
         public string Title { get; set; }
+        public string Description { get; set; }
         public Nullable<System.DateTime> Date { get; set; }
         public string DataCount { get; set; }
         public string DataRefreshStatus { get; set; }

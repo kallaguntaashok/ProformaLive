@@ -48,5 +48,8 @@ namespace ProformaLive
         public string CAL_MONTH_NO { get; set; }
         public string UPDATE_DT { get; set; }
         public Nullable<System.DateTime> CREATEDON { get; set; }
+        public string DAY { get; set; }
+        public string FISCAL_MONTH { get; set; }
+        public string FISCAL_YEAR { get; set; }
     }
 }

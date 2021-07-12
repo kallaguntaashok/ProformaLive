@@ -225,6 +225,13 @@ namespace MECC_ReportPortal.Controllers
         }
 
         [HttpPost]
+        public JsonResult get_capital_checkbook_fisyear(int intProjectID)
+        {
+            var obj = db.SP_Get_Capital_FiscalYear(intProjectID).ToList();
+            return Json(obj, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
         public JsonResult get_decheckbook(int intProjectID, int intFisYear)
         {
             List<de_checkbook> dc = new List<de_checkbook>();
@@ -258,6 +265,40 @@ namespace MECC_ReportPortal.Controllers
         }
 
         [HttpPost]
+        public JsonResult get_capital_checkbook(int intProjectID, int intFisYear)
+        {
+            List<capital_checkbook> dc = new List<capital_checkbook>();
+            var obj = db.SP_Get_Capital_CheckBook(intProjectID, intFisYear).ToList();
+            foreach (var item in obj)
+            {
+                dc.Add(new capital_checkbook()
+                {
+                    WBSNumber = item.WBSNumber,
+                    CapitalCategory = item.CapitalCategory,
+                    CapitalType = item.CapitalType,
+                    Description = item.Description,
+                    FinYear = item.FinYear,
+                    MAY = Convert.ToDecimal(item.MAY),
+                    JUN = Convert.ToDecimal(item.JUN),
+                    JUL = Convert.ToDecimal(item.JUL),
+                    AUG = Convert.ToDecimal(item.AUG),
+                    SEP = Convert.ToDecimal(item.SEP),
+                    OCT = Convert.ToDecimal(item.OCT),
+                    NOV = Convert.ToDecimal(item.NOV),
+                    DEC = Convert.ToDecimal(item.DEC),
+                    JAN = Convert.ToDecimal(item.JAN),
+                    FEB = Convert.ToDecimal(item.FEB),
+                    MAR = Convert.ToDecimal(item.MAR),
+                    APR = Convert.ToDecimal(item.APR),
+                    capitalcheckbooksubmenu = db.SP_Get_Capital_CJI3_Selection(intProjectID, item.FinYear, item.WBSNumber, item.CapitalCategory, item.CapitalType, item.Description).ToList()
+
+                });
+            }
+
+            return Json(dc, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
         public JsonResult get_de_cji3_data(int intProjectID, string strWBSNumber, string strFisYear, string strMonth, string strExpensecategory, string strDescription, bool boolstatus, string strPONumber)
         {
             if (boolstatus == false)
@@ -268,6 +309,21 @@ namespace MECC_ReportPortal.Controllers
             else
             {
                 var obj = db.SP_Get_DE_CJI3_Data_SelectedList(intProjectID, strWBSNumber, strFisYear, strMonth, strExpensecategory, strDescription).ToList();
+                return Json(obj, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        [HttpPost]
+        public JsonResult get_capital_cji3_data(int intProjectID, string strWBSNumber, string strFisYear, string strMonth, string strCapitalCategory,string strCapitalType, string strDescription, bool boolstatus)
+        {
+            if (boolstatus == false)
+            {
+                var obj = db.SP_Get_CAPITAL_CJI3_Data(strWBSNumber, strFisYear, strMonth, strCapitalCategory, strCapitalType, strDescription).ToList();
+                return Json(obj, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                var obj = db.SP_Get_Capital_CJI3_Data_SelectedList(intProjectID, strWBSNumber, strFisYear, strMonth, strCapitalCategory, strCapitalType, strDescription).ToList();
                 return Json(obj, JsonRequestBehavior.AllowGet);
             }
         }
@@ -305,6 +361,36 @@ namespace MECC_ReportPortal.Controllers
             }
 
             var obj = db.SP_Get_DE_CJI3_Data_SelectedList(data.ProjectID, data.item.Object, data.item.FiscalYear, data.item.Month, data.item.Expensecategory, data.item.Description).ToList();
+            return Json(obj, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public JsonResult remove_capitalcheckbook_cji3(CapitalcheckbookSelectedList data)
+        {
+            Capital_CJI3_Selection ds = db.Capital_CJI3_Selection
+                .Where(x => x.FiscalYear == data.item.FiscalYear
+                && x.Month == data.item.Month
+                && x.PostingDate == data.item.PostingDate
+                && x.Object == data.item.Object
+                && x.CO_Object_Name == data.item.CO_Object_Name
+                && x.CostElementName == data.item.CostElementName
+                && x.PurchasingDocument == data.item.PurchasingDocument
+                && x.PurchaseOrderText == data.item.PurchaseOrderText
+                && x.NameOfOffsettingaccount == data.item.NameOfOffsettingaccount
+                && x.TotalQuantity == data.item.TotalQuantity
+                && x.Val_COAreaCrcy == data.item.Val_COAreaCrcy
+                && x.PO_Amount == data.item.PO_Amount
+                && x.UserName == data.item.UserName
+                && x.CapitalCategory == data.item.CapitalCategory
+                && x.CapitalType == data.item.CapitalType
+                && x.Description == data.item.Description).SingleOrDefault();
+            if (ds != null)
+            {
+                db.Capital_CJI3_Selection.Remove(ds);
+                db.SaveChanges();
+            }
+
+            var obj = db.SP_Get_Capital_CJI3_Data_SelectedList(data.ProjectID, data.item.Object, data.item.FiscalYear, data.item.Month, data.item.CapitalCategory, data.item.CapitalType, data.item.Description).ToList();
             return Json(obj, JsonRequestBehavior.AllowGet);
         }
 
@@ -358,6 +444,57 @@ namespace MECC_ReportPortal.Controllers
         }
 
         [HttpPost]
+        public JsonResult insert_capital_cji3_selection(objcapitalcji3data data)
+        {
+            string strWBSNumber = "";
+            string strFisyear = "";
+            string strMonth = "";
+            string CapitalCategory = "";
+            string CapitalType = "";
+            string Description = "";
+            
+            if (data.insert != null)
+            {
+                foreach (var item in data.insert)
+                {
+                    if (item.FiscalYear != null)
+                    {
+                        strWBSNumber = item.Object;
+                        strFisyear = item.FiscalYear;
+                        strMonth = item.Month;
+                        CapitalCategory = item.CapitalCategory;
+                        CapitalType = item.CapitalType;
+                        Description = item.Description;
+
+                        Capital_CJI3_Selection DCS = new Capital_CJI3_Selection();
+                        DCS.ProjectID = data.ProjectID;
+                        DCS.FiscalYear = item.FiscalYear;
+                        DCS.Month = item.Month;
+                        DCS.PostingDate = item.PostingDate;
+                        DCS.Object = item.Object;
+                        DCS.CO_Object_Name = item.CO_Object_Name;
+                        DCS.CostElementName = item.CostElementName;
+                        DCS.PurchasingDocument = item.PurchasingDocument;
+                        DCS.PurchaseOrderText = item.PurchaseOrderText;
+                        DCS.NameOfOffsettingaccount = item.NameOfOffsettingaccount;
+                        DCS.TotalQuantity = item.TotalQuantity;
+                        DCS.Val_COAreaCrcy = item.Val_COAreaCrcy;
+                        DCS.PO_Amount = item.PO_Amount;
+                        DCS.UserName = item.UserName;
+                        DCS.CapitalCategory = item.CapitalCategory;
+                        DCS.CapitalType = item.CapitalType;
+                        DCS.Description = item.Description;
+                        db.Capital_CJI3_Selection.Add(DCS);
+                        db.SaveChanges();
+                    }
+                }
+            }
+
+            var obj = db.SP_Get_CAPITAL_CJI3_Data(strWBSNumber, strFisyear, strMonth, CapitalCategory, CapitalType, Description).ToList();
+            return Json(obj, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
         public JsonResult getde_cji3_total_reconciliation_remaining(int intProjectID, int intFisYear)
         {
             var obj = db.SP_Get_DE_CJI3_Total_Reconciliation_Remaining(intProjectID, intFisYear).ToList();
@@ -365,9 +502,23 @@ namespace MECC_ReportPortal.Controllers
         }
 
         [HttpPost]
+        public JsonResult getde_capital_total_reconciliation_remaining(int intProjectID, int intFisYear)
+        {
+            var obj = db.SP_Get_CAPITAL_CJI3_Total_Reconciliation_Remaining(intProjectID, intFisYear).ToList();
+            return Json(obj, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
         public JsonResult get_directExpensesdata_forcheckbookedit(int intProjectID, string strWBSnumber, int intFisYear, string strExpensecategory, string strDescription)
         {
             var obj = db.SP_GetDirectExpensesData_forcheckbookedit(intProjectID, strWBSnumber, intFisYear, strExpensecategory, strDescription).ToList();
+            return Json(obj, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public JsonResult get_capitaldata_forcheckbookedit(int intProjectID, string strWBSnumber, int intFisYear, string strCapitalCategory, string strCapitalType, string strDescription)
+        {
+            var obj = db.SP_GetCapitalData_forcheckbookedit(intProjectID, strWBSnumber, intFisYear, strCapitalCategory, strCapitalType, strDescription).ToList();
             return Json(obj, JsonRequestBehavior.AllowGet);
         }
 
@@ -3142,6 +3293,12 @@ namespace MECC_ReportPortal.Controllers
             public int ProjectID { get; set; }
         }
 
+        public class objcapitalcji3data
+        {
+            public List<SP_Get_CAPITAL_CJI3_Data_Result> insert { get; set; }
+            public int ProjectID { get; set; }
+        }
+
         public class objcapitallabor
         {
             public List<SP_GetCapitalLaborData_Result> update { get; set; }
@@ -3397,6 +3554,29 @@ namespace MECC_ReportPortal.Controllers
             public List<SP_Get_DirectExpensesInfo_CJI3_Selection_Result> decheckbooksubmenu { get; set; }
         }
 
+        public class capital_checkbook
+        {
+            public string WBSNumber { get; set; }
+            public string CapitalCategory { get; set; }
+            public string CapitalType { get; set; }
+            public string Description { get; set; }
+            public string FinYear { get; set; }
+            public decimal MAY { get; set; }
+            public decimal JUN { get; set; }
+            public decimal JUL { get; set; }
+            public decimal AUG { get; set; }
+            public decimal SEP { get; set; }
+            public decimal OCT { get; set; }
+            public decimal NOV { get; set; }
+            public decimal DEC { get; set; }
+            public decimal JAN { get; set; }
+            public decimal FEB { get; set; }
+            public decimal MAR { get; set; }
+            public decimal APR { get; set; }
+
+            public List<SP_Get_Capital_CJI3_Selection_Result> capitalcheckbooksubmenu { get; set; }
+        }
+
         public class ResourceCheckbookChar
         {
             public string name { get; set; }
@@ -3407,6 +3587,12 @@ namespace MECC_ReportPortal.Controllers
         {
             public int ProjectID { get; set; }
             public SP_Get_DE_CJI3_Data_Result item { get; set; }
+        }
+
+        public class CapitalcheckbookSelectedList
+        {
+            public int ProjectID { get; set; }
+            public SP_Get_CAPITAL_CJI3_Data_Result item { get; set; }
         }
 
         public class ResourceCheckBook

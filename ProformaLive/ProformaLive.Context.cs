@@ -31,6 +31,7 @@ namespace ProformaLive
         public virtual DbSet<Assignment> Assignments { get; set; }
         public virtual DbSet<AssignmentsComment> AssignmentsComments { get; set; }
         public virtual DbSet<AssignmentsList> AssignmentsLists { get; set; }
+        public virtual DbSet<Capital_CJI3_Selection> Capital_CJI3_Selection { get; set; }
         public virtual DbSet<CapitalInfo> CapitalInfoes { get; set; }
         public virtual DbSet<CapitalInfoComment> CapitalInfoComments { get; set; }
         public virtual DbSet<CapitalInfoList> CapitalInfoLists { get; set; }
@@ -59,6 +60,7 @@ namespace ProformaLive
         public virtual DbSet<Master_VendorList> Master_VendorList { get; set; }
         public virtual DbSet<Notification_Log> Notification_Log { get; set; }
         public virtual DbSet<NotificationPanel> NotificationPanels { get; set; }
+        public virtual DbSet<PDW_Resource_Master> PDW_Resource_Master { get; set; }
         public virtual DbSet<PFL_MDT_FISCAL_DAYS> PFL_MDT_FISCAL_DAYS { get; set; }
         public virtual DbSet<PFL_MDT_PDW> PFL_MDT_PDW { get; set; }
         public virtual DbSet<Proforma_DataFrasfer_DuplicateData> Proforma_DataFrasfer_DuplicateData { get; set; }
@@ -70,6 +72,7 @@ namespace ProformaLive
         public virtual DbSet<Tbl_PDW_CJI3> Tbl_PDW_CJI3 { get; set; }
         public virtual DbSet<Temp_PFL_Table> Temp_PFL_Table { get; set; }
         public virtual DbSet<Temp_ProjectMaster> Temp_ProjectMaster { get; set; }
+        public virtual DbSet<Capital_OpenPO> Capital_OpenPO { get; set; }
     
         public virtual ObjectResult<Get_DirectExpensesInfo_CJI3_Selection_Validation_Result> Get_DirectExpensesInfo_CJI3_Selection_Validation(Nullable<int> projectID)
         {
@@ -377,6 +380,15 @@ namespace ProformaLive
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_Get_Assign_Live_MainView_Result>("SP_Get_Assign_Live_MainView", fisYearParameter, teamsParameter);
         }
     
+        public virtual ObjectResult<SP_Get_Assignment_Comments_Result> SP_Get_Assignment_Comments(string team)
+        {
+            var teamParameter = team != null ?
+                new ObjectParameter("Team", team) :
+                new ObjectParameter("Team", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_Get_Assignment_Comments_Result>("SP_Get_Assignment_Comments", teamParameter);
+        }
+    
         public virtual ObjectResult<SP_Get_Assignments_Result> SP_Get_Assignments(Nullable<int> fisYear, string teams)
         {
             var fisYearParameter = fisYear.HasValue ?
@@ -417,6 +429,123 @@ namespace ProformaLive
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<string>("SP_Get_BusinessUnit", businessParameter);
         }
     
+        public virtual ObjectResult<SP_Get_Capital_CheckBook_Result> SP_Get_Capital_CheckBook(Nullable<int> projectid, Nullable<int> fisyear)
+        {
+            var projectidParameter = projectid.HasValue ?
+                new ObjectParameter("projectid", projectid) :
+                new ObjectParameter("projectid", typeof(int));
+    
+            var fisyearParameter = fisyear.HasValue ?
+                new ObjectParameter("fisyear", fisyear) :
+                new ObjectParameter("fisyear", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_Get_Capital_CheckBook_Result>("SP_Get_Capital_CheckBook", projectidParameter, fisyearParameter);
+        }
+    
+        public virtual ObjectResult<SP_Get_CAPITAL_CJI3_Data_Result> SP_Get_CAPITAL_CJI3_Data(string wBSnumber, string fisYear, string month, string capitalCategory, string capitalType, string description)
+        {
+            var wBSnumberParameter = wBSnumber != null ?
+                new ObjectParameter("WBSnumber", wBSnumber) :
+                new ObjectParameter("WBSnumber", typeof(string));
+    
+            var fisYearParameter = fisYear != null ?
+                new ObjectParameter("FisYear", fisYear) :
+                new ObjectParameter("FisYear", typeof(string));
+    
+            var monthParameter = month != null ?
+                new ObjectParameter("Month", month) :
+                new ObjectParameter("Month", typeof(string));
+    
+            var capitalCategoryParameter = capitalCategory != null ?
+                new ObjectParameter("CapitalCategory", capitalCategory) :
+                new ObjectParameter("CapitalCategory", typeof(string));
+    
+            var capitalTypeParameter = capitalType != null ?
+                new ObjectParameter("CapitalType", capitalType) :
+                new ObjectParameter("CapitalType", typeof(string));
+    
+            var descriptionParameter = description != null ?
+                new ObjectParameter("Description", description) :
+                new ObjectParameter("Description", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_Get_CAPITAL_CJI3_Data_Result>("SP_Get_CAPITAL_CJI3_Data", wBSnumberParameter, fisYearParameter, monthParameter, capitalCategoryParameter, capitalTypeParameter, descriptionParameter);
+        }
+    
+        public virtual ObjectResult<SP_Get_Capital_CJI3_Data_SelectedList_Result> SP_Get_Capital_CJI3_Data_SelectedList(Nullable<int> projectID, string wBSnumber, string fisYear, string month, string capitalCategory, string capitalType, string description)
+        {
+            var projectIDParameter = projectID.HasValue ?
+                new ObjectParameter("ProjectID", projectID) :
+                new ObjectParameter("ProjectID", typeof(int));
+    
+            var wBSnumberParameter = wBSnumber != null ?
+                new ObjectParameter("WBSnumber", wBSnumber) :
+                new ObjectParameter("WBSnumber", typeof(string));
+    
+            var fisYearParameter = fisYear != null ?
+                new ObjectParameter("FisYear", fisYear) :
+                new ObjectParameter("FisYear", typeof(string));
+    
+            var monthParameter = month != null ?
+                new ObjectParameter("Month", month) :
+                new ObjectParameter("Month", typeof(string));
+    
+            var capitalCategoryParameter = capitalCategory != null ?
+                new ObjectParameter("CapitalCategory", capitalCategory) :
+                new ObjectParameter("CapitalCategory", typeof(string));
+    
+            var capitalTypeParameter = capitalType != null ?
+                new ObjectParameter("CapitalType", capitalType) :
+                new ObjectParameter("CapitalType", typeof(string));
+    
+            var descriptionParameter = description != null ?
+                new ObjectParameter("Description", description) :
+                new ObjectParameter("Description", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_Get_Capital_CJI3_Data_SelectedList_Result>("SP_Get_Capital_CJI3_Data_SelectedList", projectIDParameter, wBSnumberParameter, fisYearParameter, monthParameter, capitalCategoryParameter, capitalTypeParameter, descriptionParameter);
+        }
+    
+        public virtual ObjectResult<SP_Get_Capital_CJI3_Selection_Result> SP_Get_Capital_CJI3_Selection(Nullable<int> projectID, string fisYear, string wBSNumber, string capitalCategory, string capitalType, string description)
+        {
+            var projectIDParameter = projectID.HasValue ?
+                new ObjectParameter("ProjectID", projectID) :
+                new ObjectParameter("ProjectID", typeof(int));
+    
+            var fisYearParameter = fisYear != null ?
+                new ObjectParameter("FisYear", fisYear) :
+                new ObjectParameter("FisYear", typeof(string));
+    
+            var wBSNumberParameter = wBSNumber != null ?
+                new ObjectParameter("WBSNumber", wBSNumber) :
+                new ObjectParameter("WBSNumber", typeof(string));
+    
+            var capitalCategoryParameter = capitalCategory != null ?
+                new ObjectParameter("CapitalCategory", capitalCategory) :
+                new ObjectParameter("CapitalCategory", typeof(string));
+    
+            var capitalTypeParameter = capitalType != null ?
+                new ObjectParameter("CapitalType", capitalType) :
+                new ObjectParameter("CapitalType", typeof(string));
+    
+            var descriptionParameter = description != null ?
+                new ObjectParameter("Description", description) :
+                new ObjectParameter("Description", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_Get_Capital_CJI3_Selection_Result>("SP_Get_Capital_CJI3_Selection", projectIDParameter, fisYearParameter, wBSNumberParameter, capitalCategoryParameter, capitalTypeParameter, descriptionParameter);
+        }
+    
+        public virtual ObjectResult<SP_Get_CAPITAL_CJI3_Total_Reconciliation_Remaining_Result> SP_Get_CAPITAL_CJI3_Total_Reconciliation_Remaining(Nullable<int> projectID, Nullable<int> fisYear)
+        {
+            var projectIDParameter = projectID.HasValue ?
+                new ObjectParameter("ProjectID", projectID) :
+                new ObjectParameter("ProjectID", typeof(int));
+    
+            var fisYearParameter = fisYear.HasValue ?
+                new ObjectParameter("FisYear", fisYear) :
+                new ObjectParameter("FisYear", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_Get_CAPITAL_CJI3_Total_Reconciliation_Remaining_Result>("SP_Get_CAPITAL_CJI3_Total_Reconciliation_Remaining", projectIDParameter, fisYearParameter);
+        }
+    
         public virtual ObjectResult<SP_Get_Capital_Comments_Result> SP_Get_Capital_Comments(Nullable<int> projectID)
         {
             var projectIDParameter = projectID.HasValue ?
@@ -424,6 +553,15 @@ namespace ProformaLive
                 new ObjectParameter("ProjectID", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_Get_Capital_Comments_Result>("SP_Get_Capital_Comments", projectIDParameter);
+        }
+    
+        public virtual ObjectResult<string> SP_Get_Capital_FiscalYear(Nullable<int> projectID)
+        {
+            var projectIDParameter = projectID.HasValue ?
+                new ObjectParameter("ProjectID", projectID) :
+                new ObjectParameter("ProjectID", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<string>("SP_Get_Capital_FiscalYear", projectIDParameter);
         }
     
         public virtual ObjectResult<string> SP_Get_CapitalExpenditureWBS(Nullable<int> pROJECTID)
@@ -890,6 +1028,19 @@ namespace ProformaLive
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<string>("SP_Get_TeamResourceInfo", tEAMParameter, fISYEARParameter);
         }
     
+        public virtual ObjectResult<SP_Get_TotalSupply_Result> SP_Get_TotalSupply(string tEAM, Nullable<int> fISYEAR)
+        {
+            var tEAMParameter = tEAM != null ?
+                new ObjectParameter("TEAM", tEAM) :
+                new ObjectParameter("TEAM", typeof(string));
+    
+            var fISYEARParameter = fISYEAR.HasValue ?
+                new ObjectParameter("FISYEAR", fISYEAR) :
+                new ObjectParameter("FISYEAR", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_Get_TotalSupply_Result>("SP_Get_TotalSupply", tEAMParameter, fISYEARParameter);
+        }
+    
         public virtual ObjectResult<SP_Get_UnassignedRemaining_Result> SP_Get_UnassignedRemaining(string tEAM, Nullable<int> fISYEAR)
         {
             var tEAMParameter = tEAM != null ?
@@ -915,6 +1066,35 @@ namespace ProformaLive
                 new ObjectParameter("projectid", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_GetCapitalData_Result>("SP_GetCapitalData", projectidParameter);
+        }
+    
+        public virtual ObjectResult<SP_GetCapitalData_forcheckbookedit_Result> SP_GetCapitalData_forcheckbookedit(Nullable<int> projectID, string wBSnumber, Nullable<int> fisyear, string capitalCategory, string capitalType, string description)
+        {
+            var projectIDParameter = projectID.HasValue ?
+                new ObjectParameter("ProjectID", projectID) :
+                new ObjectParameter("ProjectID", typeof(int));
+    
+            var wBSnumberParameter = wBSnumber != null ?
+                new ObjectParameter("WBSnumber", wBSnumber) :
+                new ObjectParameter("WBSnumber", typeof(string));
+    
+            var fisyearParameter = fisyear.HasValue ?
+                new ObjectParameter("Fisyear", fisyear) :
+                new ObjectParameter("Fisyear", typeof(int));
+    
+            var capitalCategoryParameter = capitalCategory != null ?
+                new ObjectParameter("CapitalCategory", capitalCategory) :
+                new ObjectParameter("CapitalCategory", typeof(string));
+    
+            var capitalTypeParameter = capitalType != null ?
+                new ObjectParameter("CapitalType", capitalType) :
+                new ObjectParameter("CapitalType", typeof(string));
+    
+            var descriptionParameter = description != null ?
+                new ObjectParameter("Description", description) :
+                new ObjectParameter("Description", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_GetCapitalData_forcheckbookedit_Result>("SP_GetCapitalData_forcheckbookedit", projectIDParameter, wBSnumberParameter, fisyearParameter, capitalCategoryParameter, capitalTypeParameter, descriptionParameter);
         }
     
         public virtual ObjectResult<SP_GetCapitalLaborData_Result> SP_GetCapitalLaborData(Nullable<int> projectid)
@@ -1145,15 +1325,6 @@ namespace ProformaLive
                 new ObjectParameter("ProjectNumber", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<string>("SP_Validate_ProjectCode", projectNumberParameter);
-        }
-    
-        public virtual ObjectResult<SP_Get_Assignment_Comments_Result> SP_Get_Assignment_Comments(string team)
-        {
-            var teamParameter = team != null ?
-                new ObjectParameter("Team", team) :
-                new ObjectParameter("Team", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_Get_Assignment_Comments_Result>("SP_Get_Assignment_Comments", teamParameter);
         }
     }
 }

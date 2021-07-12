@@ -31,11 +31,12 @@ namespace ProformaLive.Controllers
         }
 
         [HttpPost]
-        public JsonResult insert_snapshot(int intFisYear, string strTitle, string strDate)
+        public JsonResult insert_snapshot(int intFisYear, string strTitle, string strDesc, string strDate)
         {
             Master_Snapshot_Config obj = new Master_Snapshot_Config();
             obj.FisYear = intFisYear;
             obj.Title = strTitle;
+            obj.Description = strDesc;
             obj.Date = Convert.ToDateTime(strDate);
             obj.DataRefreshStatus = "updating....";
             db.Master_Snapshot_Config.Add(obj);
@@ -45,11 +46,12 @@ namespace ProformaLive.Controllers
         }
 
         [HttpPost]
-        public JsonResult update_snapshot(int intFisYear, string strTitle, string strDate, int intsysid)
+        public JsonResult update_snapshot(int intFisYear, string strTitle, string strDesc, string strDate, int intsysid)
         {            
             Master_Snapshot_Config row = db.Master_Snapshot_Config.Where(x => x.Sysid == intsysid).SingleOrDefault();
             row.FisYear = intFisYear;
             row.Title = strTitle;
+            row.Description = strDesc;
             row.Date = Convert.ToDateTime(strDate);
             row.DataRefreshStatus = "updating....";            
             db.SaveChanges();

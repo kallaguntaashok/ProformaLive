@@ -426,6 +426,13 @@ namespace ProformaLive.Controllers
         }
 
         [HttpGet]
+        public JsonResult gettotalsupply(int intFisYear, string strTeam)
+        {
+            var obj = db.SP_Get_TotalSupply(strTeam, intFisYear).ToList();
+            return Json(obj, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpGet]
         public JsonResult getAssignlivemainview(int intFisYear, string strTeam)
         {
             var obj = db.SP_Get_Assign_Live_MainView(intFisYear, strTeam).ToList();

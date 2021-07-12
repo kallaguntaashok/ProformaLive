@@ -10,16 +10,15 @@
 namespace ProformaLive
 {
     using System;
+    using System.Collections.Generic;
     
-    public partial class SP_Get_Master_Snapshot_Config_Result
+    public partial class PDW_Resource_Master
     {
         public int Sysid { get; set; }
-        public Nullable<int> FisYear { get; set; }
-        public string Title { get; set; }
-        public string Description { get; set; }
-        public string Date { get; set; }
-        public string DataCount { get; set; }
-        public string DataRefreshStatus { get; set; }
-        public string RefreshDate { get; set; }
+        public string PWD_ResourceName { get; set; }
+        public string PWD_BusinessUnit { get; set; }
+        public string PWD_HighOrg { get; set; }
+        public string PWD_MidOrg { get; set; }
+        public string PWD_Team { get; set; }
     }
 }

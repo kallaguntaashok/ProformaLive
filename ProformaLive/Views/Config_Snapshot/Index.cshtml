@@ -1,11 +1,11 @@
 ﻿
 <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
-<script src="~/assets/Jexcel/jsuites38.js?ID=90000"></script>
-<link href="~/assets/Jexcel/jsuites38.css?ID=90000" rel="stylesheet" />
-<link href="~/assets/css/delete-confirmation.css?ID=90000" rel="stylesheet" />
-<script src="~/assets/scripts/Master_Snapshot.js?ID=90000"></script>
-<script src="~/assets/scripts/exportexcel/alasql.min.js?ID=90000"></script>
-<script src="~/assets/scripts/exportexcel/xlsx.core.min.js?ID=90000"></script>
+<script src="~/assets/Jexcel/jsuites38.js?ID=96000"></script>
+<link href="~/assets/Jexcel/jsuites38.css?ID=96000" rel="stylesheet" />
+<link href="~/assets/css/delete-confirmation.css?ID=96000" rel="stylesheet" />
+<script src="~/assets/scripts/Master_Snapshot.js?ID=96000"></script>
+<script src="~/assets/scripts/exportexcel/alasql.min.js?ID=96000"></script>
+<script src="~/assets/scripts/exportexcel/xlsx.core.min.js?ID=96000"></script>
 
 <style type="text/css">
     .notification {
@@ -165,9 +165,12 @@
                     <input type="text" id="textFisYear" maxlength="4" class="form-control form-control-sm" placeholder="Enter FisYear">
                 </div>
                 <div class="col-md-2 mb-2">
+                    <input type="text" id="textDesc" maxlength="4" class="form-control form-control-sm" placeholder="Enter Description">
+                </div>
+                <div class="col-md-2 mb-2">
                     <div style="zoom: 90%" id="drop_title"></div>
                 </div>
-                <div class="col-md-8 mb-2">
+                <div class="col-md-6 mb-2">
                     <input type="date" id="textCalender" style="width: 150px;" class="form-control form-control-sm pull-left">
                     <button type="submit" ng-show="updatesnapshot" style="zoom:80%; color: white; background: #ef7a60; border: 1px solid #da6d55; margin-left: 15px; font-size: 15px;  font-weight: 500; padding-bottom: 6px; padding-left: 15px; padding-right: 15px;" ng-click="updatesnapshotdata();" class="btn btn-warning btn-sm float-left"><i class="fa fa-plus-circle" aria-hidden="true"></i>&nbsp;&nbsp;Update Snapshot</button>
                     <button type="submit" ng-show="updatesnapshot" style="zoom:80%; margin-left: 15px; font-size: 15px;  font-weight: 500; padding-bottom: 6px; padding-left: 15px; padding-right: 15px;" ng-click="btnresetSnapshotData();" class="btn btn-danger btn-sm float-left"><i class="fa fa-times" aria-hidden="true"></i>&nbsp;&nbsp;Cancel</button>
@@ -179,6 +182,7 @@
                     <tr style="background-color: #115094 !important; color: white; font-size: 12px;" class="bg-primary">
                         <th>Sysid</th>
                         <th>FisYear</th>
+                        <th>Description</th>
                         <th>Title</th>
                         <th>Date</th>
                         <th>DataCount</th>
@@ -191,6 +195,7 @@
                     <tr ng-repeat="item in master_snapshot">
                         <td><span class="badge badge-light-primary">{{item.Sysid}}</span></td>
                         <td><span class="badge badge-light-primary">{{item.FisYear}}</span></td>
+                        <td><span class="badge badge-light-primary">{{item.Description}}</span></td>
                         <td><span class="badge badge-light-primary">{{item.Title}}</span></td>
                         <td><span style="padding-bottom: 5px;" class="badge badge-secondary">{{item.Date}}</span></td>
                         <td><span style="padding-bottom: 5px;" ng-class="item.DataCount=='Records not found.' ? 'badge badge-danger' : 'badge badge-success'">{{item.DataCount}}</span></td>
@@ -198,7 +203,7 @@
                         <td><span class="badge badge-light-primary">{{item.RefreshDate}}</span></td>
                         <td>
                             <a href="#" title="refresh snapshot data" ng-click="refresh(item.Date,item.Sysid)" style="width: 80px; color: #1f1e1e; background-color: #cae2fb; zoom: 80%;" class="btn btn-sm btn-primary"><i class="fa fa-refresh" aria-hidden="true"></i>&nbsp; refresh</a> &nbsp;
-                            <a href="#" title="edit snapshot" ng-click="editsnapshot(item.FisYear,item.Title,item.Date)" style="width: 80px; color: #1f1e1e; background-color: #fff4d4; zoom: 80%;" class="btn btn-sm btn-warning"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>&nbsp; edit</a> &nbsp;
+                            <a href="#" title="edit snapshot" ng-click="editsnapshot(item.FisYear,item.Title,item.Description,item.Date)" style="width: 80px; color: #1f1e1e; background-color: #fff4d4; zoom: 80%;" class="btn btn-sm btn-warning"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>&nbsp; edit</a> &nbsp;
                             <a href="#" title="delete snapshot" ng-click="deletesnapshot(item.Sysid)" style="width: 80px; color: #1f1e1e; background-color: #ffcfd7; zoom: 80%;" class="btn btn-sm btn-warning"><i class="fa fa-trash" aria-hidden="true"></i>&nbsp;delete</a>
                         </td>
                     </tr>

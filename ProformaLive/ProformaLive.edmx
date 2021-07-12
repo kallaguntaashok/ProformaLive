@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="ProformaLiveModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="ProformaLiveModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="APP_PFL_RESOURCES_SS_V">
           <Key>
             <PropertyRef Name="SYSID" />
@@ -71,6 +71,41 @@
           <Property Name="FisYear" Type="varchar" MaxLength="50" />
           <Property Name="Month" Type="varchar" MaxLength="10" />
           <Property Name="value" Type="decimal" Precision="18" Scale="2" />
+        </EntityType>
+        <EntityType Name="Capital_CJI3_Selection">
+          <Key>
+            <PropertyRef Name="Sysid" />
+          </Key>
+          <Property Name="Sysid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ProjectID" Type="int" />
+          <Property Name="FiscalYear" Type="varchar" MaxLength="4" />
+          <Property Name="Month" Type="varchar" MaxLength="10" />
+          <Property Name="PostingDate" Type="varchar" MaxLength="100" />
+          <Property Name="Object" Type="varchar" MaxLength="500" />
+          <Property Name="CO_Object_Name" Type="varchar" MaxLength="500" />
+          <Property Name="CostElementName" Type="varchar" MaxLength="500" />
+          <Property Name="PurchasingDocument" Type="varchar" MaxLength="500" />
+          <Property Name="PurchaseOrderText" Type="varchar" MaxLength="1000" />
+          <Property Name="NameOfOffsettingaccount" Type="varchar" MaxLength="1000" />
+          <Property Name="TotalQuantity" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="Val_COAreaCrcy" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="PO_Amount" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="UserName" Type="varchar" MaxLength="500" />
+          <Property Name="CapitalCategory" Type="varchar" MaxLength="500" />
+          <Property Name="CapitalType" Type="varchar" MaxLength="500" />
+          <Property Name="Description" Type="varchar" MaxLength="2000" />
+          <Property Name="Status" Type="bit" StoreGeneratedPattern="Computed" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'ProformaLive.dbo.Capital_OpenPO' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="Capital_OpenPO">
+          <Key>
+            <PropertyRef Name="Sysid" />
+          </Key>
+          <Property Name="Sysid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="WBSNumber" Type="varchar" MaxLength="50" />
+          <Property Name="PONumber" Type="varchar" MaxLength="50" />
+          <Property Name="Value" Type="decimal" Precision="18" Scale="2" />
         </EntityType>
         <EntityType Name="CapitalInfo">
           <Key>
@@ -431,6 +466,7 @@
           <Property Name="Sysid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="FisYear" Type="int" />
           <Property Name="Title" Type="varchar" MaxLength="50" />
+          <Property Name="Description" Type="varchar" MaxLength="500" />
           <Property Name="Date" Type="datetime" />
           <Property Name="DataCount" Type="varchar" MaxLength="100" />
           <Property Name="DataRefreshStatus" Type="varchar" MaxLength="100" />
@@ -499,6 +535,17 @@
           <Property Name="CreatedOn" Type="datetime" />
           <Property Name="CreatedBy" Type="varchar" MaxLength="50" />
         </EntityType>
+        <EntityType Name="PDW_Resource_Master">
+          <Key>
+            <PropertyRef Name="Sysid" />
+          </Key>
+          <Property Name="Sysid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PWD_ResourceName" Type="varchar" MaxLength="500" />
+          <Property Name="PWD_BusinessUnit" Type="varchar" MaxLength="500" />
+          <Property Name="PWD_HighOrg" Type="varchar" MaxLength="500" />
+          <Property Name="PWD_MidOrg" Type="varchar" MaxLength="500" />
+          <Property Name="PWD_Team" Type="varchar" MaxLength="500" />
+        </EntityType>
         <EntityType Name="PFL_MDT_FISCAL_DAYS">
           <Key>
             <PropertyRef Name="SYSID" />
@@ -548,6 +595,9 @@
           <Property Name="CAL_MONTH_NO" Type="varchar" MaxLength="100" />
           <Property Name="UPDATE_DT" Type="varchar" MaxLength="100" />
           <Property Name="CREATEDON" Type="datetime" />
+          <Property Name="DAY" Type="varchar" MaxLength="50" />
+          <Property Name="FISCAL_MONTH" Type="varchar" MaxLength="50" />
+          <Property Name="FISCAL_YEAR" Type="varchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="Proforma_DataFrasfer_DuplicateData">
           <Key>
@@ -638,6 +688,34 @@
           <Property Name="RowsMoved" Type="int" />
           <Property Name="CreatedOn" Type="datetime" />
         </EntityType>
+        <!--Errors Found During Generation:
+warning 6013: The table/view 'ProformaLive.dbo.Sheet1$' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+        <EntityType Name="Sheet1$">
+          <Property Name="Fiscal Year" Type="nvarchar" MaxLength="255" />
+          <Property Name="Posting Date" Type="datetime" />
+          <Property Name="Created on" Type="datetime" />
+          <Property Name="Document Date" Type="datetime" />
+          <Property Name="Period" Type="nvarchar" MaxLength="255" />
+          <Property Name="Object" Type="nvarchar" MaxLength="255" />
+          <Property Name="CO object name" Type="nvarchar" MaxLength="255" />
+          <Property Name="Partner-CCtr" Type="nvarchar" MaxLength="255" />
+          <Property Name="Cost Element" Type="nvarchar" MaxLength="255" />
+          <Property Name="Cost element name" Type="nvarchar" MaxLength="255" />
+          <Property Name="Name" Type="nvarchar" MaxLength="255" />
+          <Property Name="Document Header Text" Type="nvarchar" MaxLength="255" />
+          <Property Name="Purchasing Document" Type="nvarchar" MaxLength="255" />
+          <Property Name="Purchase order text" Type="nvarchar" MaxLength="255" />
+          <Property Name="Name of offsetting account" Type="nvarchar" MaxLength="255" />
+          <Property Name="Total quantity" Type="float" />
+          <Property Name="Posted unit of meas#" Type="nvarchar" MaxLength="255" />
+          <Property Name="CO area currency" Type="nvarchar" MaxLength="255" />
+          <Property Name="Val/COArea Crcy" Type="float" />
+          <Property Name="User Name" Type="nvarchar" MaxLength="255" />
+          <Property Name="Value Type" Type="nvarchar" MaxLength="255" />
+          <Property Name="Object Currency" Type="nvarchar" MaxLength="255" />
+          <Property Name="Document type" Type="nvarchar" MaxLength="255" />
+          <Property Name="Document Number" Type="nvarchar" MaxLength="255" />
+        </EntityType>-->
         <EntityType Name="Tbl_PDW_CJI3">
           <Key>
             <PropertyRef Name="Sysid" />
@@ -646,11 +724,11 @@
           <Property Name="CJI3_FinYear" Type="varchar" MaxLength="4" />
           <Property Name="CJI3_Month" Type="varchar" MaxLength="50" />
           <Property Name="CJI3_WBSNumber" Type="varchar" MaxLength="500" />
-          <Property Name="PWD_BusinessUnit" Type="varchar" MaxLength="100" />
-          <Property Name="PWD_HighOrg" Type="varchar" MaxLength="1000" />
-          <Property Name="PWD_MidOrg" Type="varchar" MaxLength="1000" />
-          <Property Name="PWD_Team" Type="varchar" MaxLength="100" />
-          <Property Name="PWD_ResourceName" Type="varchar" MaxLength="100" />
+          <Property Name="PWD_BusinessUnit" Type="varchar" MaxLength="500" />
+          <Property Name="PWD_HighOrg" Type="varchar" MaxLength="500" />
+          <Property Name="PWD_MidOrg" Type="varchar" MaxLength="500" />
+          <Property Name="PWD_Team" Type="varchar" MaxLength="500" />
+          <Property Name="PWD_ResourceName" Type="varchar" MaxLength="500" />
           <Property Name="CJI3_TimeSpentInProject" Type="decimal" Precision="38" Scale="2" />
           <Property Name="CJI3_Amount" Type="decimal" Precision="38" Scale="2" />
         </EntityType>
@@ -780,7 +858,43 @@
         <Function Name="SP_Get_BusinessUnit" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="Business" Type="varchar" Mode="In" />
         </Function>
+        <Function Name="SP_Get_Capital_CheckBook" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="projectid" Type="int" Mode="In" />
+          <Parameter Name="fisyear" Type="int" Mode="In" />
+        </Function>
+        <Function Name="SP_Get_CAPITAL_CJI3_Data" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="WBSnumber" Type="varchar" Mode="In" />
+          <Parameter Name="FisYear" Type="varchar" Mode="In" />
+          <Parameter Name="Month" Type="varchar" Mode="In" />
+          <Parameter Name="CapitalCategory" Type="varchar" Mode="In" />
+          <Parameter Name="CapitalType" Type="varchar" Mode="In" />
+          <Parameter Name="Description" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="SP_Get_Capital_CJI3_Data_SelectedList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="ProjectID" Type="int" Mode="In" />
+          <Parameter Name="WBSnumber" Type="varchar" Mode="In" />
+          <Parameter Name="FisYear" Type="varchar" Mode="In" />
+          <Parameter Name="Month" Type="varchar" Mode="In" />
+          <Parameter Name="CapitalCategory" Type="varchar" Mode="In" />
+          <Parameter Name="CapitalType" Type="varchar" Mode="In" />
+          <Parameter Name="Description" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="SP_Get_Capital_CJI3_Selection" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="ProjectID" Type="int" Mode="In" />
+          <Parameter Name="FisYear" Type="varchar" Mode="In" />
+          <Parameter Name="WBSNumber" Type="varchar" Mode="In" />
+          <Parameter Name="CapitalCategory" Type="varchar" Mode="In" />
+          <Parameter Name="CapitalType" Type="varchar" Mode="In" />
+          <Parameter Name="Description" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="SP_Get_CAPITAL_CJI3_Total_Reconciliation_Remaining" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="ProjectID" Type="int" Mode="In" />
+          <Parameter Name="FisYear" Type="int" Mode="In" />
+        </Function>
         <Function Name="SP_Get_Capital_Comments" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="ProjectID" Type="int" Mode="In" />
+        </Function>
+        <Function Name="SP_Get_Capital_FiscalYear" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="ProjectID" Type="int" Mode="In" />
         </Function>
         <Function Name="SP_Get_CapitalExpenditureWBS" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
@@ -917,6 +1031,10 @@
           <Parameter Name="TEAM" Type="varchar(max)" Mode="In" />
           <Parameter Name="FISYEAR" Type="int" Mode="In" />
         </Function>
+        <Function Name="SP_Get_TotalSupply" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="TEAM" Type="varchar(max)" Mode="In" />
+          <Parameter Name="FISYEAR" Type="int" Mode="In" />
+        </Function>
         <Function Name="SP_Get_UnassignedRemaining" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="TEAM" Type="varchar(max)" Mode="In" />
           <Parameter Name="FISYEAR" Type="int" Mode="In" />
@@ -924,6 +1042,14 @@
         <Function Name="SP_Get_Year" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="SP_GetCapitalData" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="projectid" Type="int" Mode="In" />
+        </Function>
+        <Function Name="SP_GetCapitalData_forcheckbookedit" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="ProjectID" Type="int" Mode="In" />
+          <Parameter Name="WBSnumber" Type="varchar" Mode="In" />
+          <Parameter Name="Fisyear" Type="int" Mode="In" />
+          <Parameter Name="CapitalCategory" Type="varchar" Mode="In" />
+          <Parameter Name="CapitalType" Type="varchar" Mode="In" />
+          <Parameter Name="Description" Type="varchar" Mode="In" />
         </Function>
         <Function Name="SP_GetCapitalLaborData" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="projectid" Type="int" Mode="In" />
@@ -999,6 +1125,7 @@
           <EntitySet Name="Assignments" EntityType="Self.Assignments" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AssignmentsComments" EntityType="Self.AssignmentsComments" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AssignmentsList" EntityType="Self.AssignmentsList" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Capital_CJI3_Selection" EntityType="Self.Capital_CJI3_Selection" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CapitalInfo" EntityType="Self.CapitalInfo" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CapitalInfoComments" EntityType="Self.CapitalInfoComments" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CapitalInfoList" EntityType="Self.CapitalInfoList" Schema="dbo" store:Type="Tables" />
@@ -1027,6 +1154,7 @@
           <EntitySet Name="Master_VendorList" EntityType="Self.Master_VendorList" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Notification_Log" EntityType="Self.Notification_Log" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="NotificationPanel" EntityType="Self.NotificationPanel" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PDW_Resource_Master" EntityType="Self.PDW_Resource_Master" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PFL_MDT_FISCAL_DAYS" EntityType="Self.PFL_MDT_FISCAL_DAYS" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PFL_MDT_PDW" EntityType="Self.PFL_MDT_PDW" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Proforma_DataFrasfer_DuplicateData" EntityType="Self.Proforma_DataFrasfer_DuplicateData" Schema="dbo" store:Type="Tables" />
@@ -1038,8 +1166,17 @@
           <EntitySet Name="Tbl_PDW_CJI3" EntityType="Self.Tbl_PDW_CJI3" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Temp_PFL_Table" EntityType="Self.Temp_PFL_Table" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Temp_ProjectMaster" EntityType="Self.Temp_ProjectMaster" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Capital_OpenPO" EntityType="Self.Capital_OpenPO" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [Capital_OpenPO].[Sysid] AS [Sysid], 
+    [Capital_OpenPO].[WBSNumber] AS [WBSNumber], 
+    [Capital_OpenPO].[PONumber] AS [PONumber], 
+    [Capital_OpenPO].[Value] AS [Value]
+    FROM [dbo].[Capital_OpenPO] AS [Capital_OpenPO]</DefiningQuery>
+          </EntitySet>
         </EntityContainer>
-      </Schema></edmx:StorageModels>
+      </Schema>
+    </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="ProformaLiveModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -1109,6 +1246,30 @@
           <Property Name="FisYear" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Month" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
           <Property Name="value" Type="Decimal" Precision="18" Scale="2" />
+        </EntityType>
+        <EntityType Name="Capital_CJI3_Selection">
+          <Key>
+            <PropertyRef Name="Sysid" />
+          </Key>
+          <Property Name="Sysid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ProjectID" Type="Int32" />
+          <Property Name="FiscalYear" Type="String" MaxLength="4" FixedLength="false" Unicode="false" />
+          <Property Name="Month" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="PostingDate" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Object" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="CO_Object_Name" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="CostElementName" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="PurchasingDocument" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="PurchaseOrderText" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <Property Name="NameOfOffsettingaccount" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <Property Name="TotalQuantity" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="Val_COAreaCrcy" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="PO_Amount" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="UserName" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="CapitalCategory" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="CapitalType" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="Description" Type="String" MaxLength="2000" FixedLength="false" Unicode="false" />
+          <Property Name="Status" Type="Boolean" annotation:StoreGeneratedPattern="Computed" />
         </EntityType>
         <EntityType Name="CapitalInfo">
           <Key>
@@ -1469,6 +1630,7 @@
           <Property Name="Sysid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="FisYear" Type="Int32" />
           <Property Name="Title" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Description" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="Date" Type="DateTime" Precision="3" />
           <Property Name="DataCount" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="DataRefreshStatus" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
@@ -1537,6 +1699,17 @@
           <Property Name="CreatedOn" Type="DateTime" Precision="3" />
           <Property Name="CreatedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
+        <EntityType Name="PDW_Resource_Master">
+          <Key>
+            <PropertyRef Name="Sysid" />
+          </Key>
+          <Property Name="Sysid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PWD_ResourceName" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="PWD_BusinessUnit" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="PWD_HighOrg" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="PWD_MidOrg" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="PWD_Team" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+        </EntityType>
         <EntityType Name="PFL_MDT_FISCAL_DAYS">
           <Key>
             <PropertyRef Name="SYSID" />
@@ -1586,6 +1759,9 @@
           <Property Name="CAL_MONTH_NO" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="UPDATE_DT" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="CREATEDON" Type="DateTime" Precision="3" />
+          <Property Name="DAY" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="FISCAL_MONTH" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="FISCAL_YEAR" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="Proforma_DataFrasfer_DuplicateData">
           <Key>
@@ -1684,11 +1860,11 @@
           <Property Name="CJI3_FinYear" Type="String" MaxLength="4" FixedLength="false" Unicode="false" />
           <Property Name="CJI3_Month" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="CJI3_WBSNumber" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="PWD_BusinessUnit" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="PWD_HighOrg" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
-          <Property Name="PWD_MidOrg" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
-          <Property Name="PWD_Team" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="PWD_ResourceName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="PWD_BusinessUnit" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="PWD_HighOrg" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="PWD_MidOrg" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="PWD_Team" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="PWD_ResourceName" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="CJI3_TimeSpentInProject" Type="Decimal" Precision="38" Scale="2" />
           <Property Name="CJI3_Amount" Type="Decimal" Precision="38" Scale="2" />
         </EntityType>
@@ -1711,11 +1887,21 @@
           <Property Name="Type" Type="String" MaxLength="50" FixedLength="true" Unicode="true" />
           <Property Name="Value" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
         </EntityType>
+        <EntityType Name="Capital_OpenPO">
+          <Key>
+            <PropertyRef Name="Sysid" />
+          </Key>
+          <Property Name="Sysid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="WBSNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PONumber" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Value" Type="Decimal" Precision="18" Scale="2" />
+        </EntityType>
         <EntityContainer Name="ProformaLiveEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="APP_PFL_RESOURCES_SS_V" EntityType="Self.APP_PFL_RESOURCES_SS_V" />
           <EntitySet Name="Assignments" EntityType="Self.Assignment" />
           <EntitySet Name="AssignmentsComments" EntityType="Self.AssignmentsComment" />
           <EntitySet Name="AssignmentsLists" EntityType="Self.AssignmentsList" />
+          <EntitySet Name="Capital_CJI3_Selection" EntityType="Self.Capital_CJI3_Selection" />
           <EntitySet Name="CapitalInfoes" EntityType="Self.CapitalInfo" />
           <EntitySet Name="CapitalInfoComments" EntityType="Self.CapitalInfoComment" />
           <EntitySet Name="CapitalInfoLists" EntityType="Self.CapitalInfoList" />
@@ -1744,6 +1930,7 @@
           <EntitySet Name="Master_VendorList" EntityType="Self.Master_VendorList" />
           <EntitySet Name="Notification_Log" EntityType="Self.Notification_Log" />
           <EntitySet Name="NotificationPanels" EntityType="Self.NotificationPanel" />
+          <EntitySet Name="PDW_Resource_Master" EntityType="Self.PDW_Resource_Master" />
           <EntitySet Name="PFL_MDT_FISCAL_DAYS" EntityType="Self.PFL_MDT_FISCAL_DAYS" />
           <EntitySet Name="PFL_MDT_PDW" EntityType="Self.PFL_MDT_PDW" />
           <EntitySet Name="Proforma_DataFrasfer_DuplicateData" EntityType="Self.Proforma_DataFrasfer_DuplicateData" />
@@ -1755,8 +1942,9 @@
           <EntitySet Name="Tbl_PDW_CJI3" EntityType="Self.Tbl_PDW_CJI3" />
           <EntitySet Name="Temp_PFL_Table" EntityType="Self.Temp_PFL_Table" />
           <EntitySet Name="Temp_ProjectMaster" EntityType="Self.Temp_ProjectMaster" />
+          <EntitySet Name="Capital_OpenPO" EntityType="Self.Capital_OpenPO" />
           <FunctionImport Name="Get_DirectExpensesInfo_CJI3_Selection_Validation" ReturnType="Collection(ProformaLiveModel.Get_DirectExpensesInfo_CJI3_Selection_Validation_Result)">
-          <Parameter Name="ProjectID" Mode="In" Type="Int32" />
+            <Parameter Name="ProjectID" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="Insert_DirectExpensesInfo_CJI3_Selection">
             <Parameter Name="ProjectID" Mode="In" Type="Int32" />
@@ -1776,7 +1964,7 @@
             <Parameter Name="Description" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="SP_APP_PFL_RESOURCES_SS_V_BulkInsert">
-          <Parameter Name="date" Mode="In" Type="DateTime" />
+            <Parameter Name="date" Mode="In" Type="DateTime" />
           </FunctionImport>
           <FunctionImport Name="SP_Clone_Proforma">
             <Parameter Name="ProjectID" Mode="In" Type="Int32" />
@@ -1797,19 +1985,19 @@
             <Parameter Name="CreatedBy" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="SP_Delete_CapitalData">
-          <Parameter Name="ID" Mode="In" Type="Int32" />
+            <Parameter Name="ID" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="SP_Delete_CapitalLaborInfo">
-          <Parameter Name="ID" Mode="In" Type="Int32" />
+            <Parameter Name="ID" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="SP_Delete_DirectExpensesInfo">
-          <Parameter Name="ID" Mode="In" Type="Int32" />
+            <Parameter Name="ID" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="SP_Delete_ResourceData">
-          <Parameter Name="ID" Mode="In" Type="Int32" />
+            <Parameter Name="ID" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="SP_DeleteProjectData">
-          <Parameter Name="ProjectID" Mode="In" Type="Int32" />
+            <Parameter Name="ProjectID" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="SP_Duplicate_CapitallaborRows">
             <Parameter Name="ID" Mode="In" Type="Int32" />
@@ -1824,25 +2012,28 @@
             <Parameter Name="UserID" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="SP_DuplicateRows">
-          <Parameter Name="ID" Mode="In" Type="Int32" />
+            <Parameter Name="ID" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="SP_EXPORT_ResourceData" ReturnType="Collection(ProformaLiveModel.SP_EXPORT_ResourceData_Result)">
-          <Parameter Name="projectid" Mode="In" Type="Int32" />
+            <Parameter Name="projectid" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="SP_Filter_GetFinYear" ReturnType="Collection(String)">
-          <Parameter Name="ProjectID" Mode="In" Type="Int32" />
+            <Parameter Name="ProjectID" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="SP_Filter_GetMonths" ReturnType="Collection(String)">
             <Parameter Name="ProjectID" Mode="In" Type="Int32" />
             <Parameter Name="FisYear" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="SP_Filter_GetQuarter" ReturnType="Collection(String)">
-          <Parameter Name="Month" Mode="In" Type="String" />
+            <Parameter Name="Month" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="SP_Get_APP_PFL_RESOURCES_SS_V" ReturnType="Collection(ProformaLiveModel.SP_Get_APP_PFL_RESOURCES_SS_V_Result)" />
           <FunctionImport Name="SP_Get_Assign_Live_MainView" ReturnType="Collection(ProformaLiveModel.SP_Get_Assign_Live_MainView_Result)">
             <Parameter Name="FisYear" Mode="In" Type="Int32" />
             <Parameter Name="Teams" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="SP_Get_Assignment_Comments" ReturnType="Collection(ProformaLiveModel.SP_Get_Assignment_Comments_Result)">
+            <Parameter Name="Team" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="SP_Get_Assignments" ReturnType="Collection(ProformaLiveModel.SP_Get_Assignments_Result)">
             <Parameter Name="FisYear" Mode="In" Type="Int32" />
@@ -1854,19 +2045,55 @@
           </FunctionImport>
           <FunctionImport Name="SP_Get_Business" ReturnType="Collection(String)" />
           <FunctionImport Name="SP_Get_BusinessUnit" ReturnType="Collection(String)">
-          <Parameter Name="Business" Mode="In" Type="String" />
+            <Parameter Name="Business" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="SP_Get_Capital_CheckBook" ReturnType="Collection(ProformaLiveModel.SP_Get_Capital_CheckBook_Result)">
+            <Parameter Name="projectid" Mode="In" Type="Int32" />
+            <Parameter Name="fisyear" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="SP_Get_CAPITAL_CJI3_Data" ReturnType="Collection(ProformaLiveModel.SP_Get_CAPITAL_CJI3_Data_Result)">
+            <Parameter Name="WBSnumber" Mode="In" Type="String" />
+            <Parameter Name="FisYear" Mode="In" Type="String" />
+            <Parameter Name="Month" Mode="In" Type="String" />
+            <Parameter Name="CapitalCategory" Mode="In" Type="String" />
+            <Parameter Name="CapitalType" Mode="In" Type="String" />
+            <Parameter Name="Description" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="SP_Get_Capital_CJI3_Data_SelectedList" ReturnType="Collection(ProformaLiveModel.SP_Get_Capital_CJI3_Data_SelectedList_Result)">
+            <Parameter Name="ProjectID" Mode="In" Type="Int32" />
+            <Parameter Name="WBSnumber" Mode="In" Type="String" />
+            <Parameter Name="FisYear" Mode="In" Type="String" />
+            <Parameter Name="Month" Mode="In" Type="String" />
+            <Parameter Name="CapitalCategory" Mode="In" Type="String" />
+            <Parameter Name="CapitalType" Mode="In" Type="String" />
+            <Parameter Name="Description" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="SP_Get_Capital_CJI3_Selection" ReturnType="Collection(ProformaLiveModel.SP_Get_Capital_CJI3_Selection_Result)">
+            <Parameter Name="ProjectID" Mode="In" Type="Int32" />
+            <Parameter Name="FisYear" Mode="In" Type="String" />
+            <Parameter Name="WBSNumber" Mode="In" Type="String" />
+            <Parameter Name="CapitalCategory" Mode="In" Type="String" />
+            <Parameter Name="CapitalType" Mode="In" Type="String" />
+            <Parameter Name="Description" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="SP_Get_CAPITAL_CJI3_Total_Reconciliation_Remaining" ReturnType="Collection(ProformaLiveModel.SP_Get_CAPITAL_CJI3_Total_Reconciliation_Remaining_Result)">
+            <Parameter Name="ProjectID" Mode="In" Type="Int32" />
+            <Parameter Name="FisYear" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="SP_Get_Capital_Comments" ReturnType="Collection(ProformaLiveModel.SP_Get_Capital_Comments_Result)">
-          <Parameter Name="ProjectID" Mode="In" Type="Int32" />
+            <Parameter Name="ProjectID" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="SP_Get_Capital_FiscalYear" ReturnType="Collection(String)">
+            <Parameter Name="ProjectID" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="SP_Get_CapitalExpenditureWBS" ReturnType="Collection(String)">
-          <Parameter Name="PROJECTID" Mode="In" Type="Int32" />
+            <Parameter Name="PROJECTID" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="SP_Get_CapitalLabor_Comments" ReturnType="Collection(ProformaLiveModel.SP_Get_CapitalLabor_Comments_Result)">
-          <Parameter Name="ProjectID" Mode="In" Type="Int32" />
+            <Parameter Name="ProjectID" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="SP_GET_CompleteNotificationData" ReturnType="Collection(ProformaLiveModel.SP_GET_CompleteNotificationData_Result)">
-          <Parameter Name="Type" Mode="In" Type="String" />
+            <Parameter Name="Type" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="SP_Get_Configure_RateCard" ReturnType="Collection(ProformaLiveModel.SP_Get_Configure_RateCard_Result)" />
           <FunctionImport Name="SP_Get_DE_CJI3_Data" ReturnType="Collection(ProformaLiveModel.SP_Get_DE_CJI3_Data_Result)">
@@ -1890,7 +2117,7 @@
             <Parameter Name="FisYear" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="SP_Get_DE_FiscalYear" ReturnType="Collection(String)">
-          <Parameter Name="ProjectID" Mode="In" Type="Int32" />
+            <Parameter Name="ProjectID" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="SP_Get_DefaultFisYear" ReturnType="Collection(String)" />
           <FunctionImport Name="SP_Get_DeltaSummary" ReturnType="Collection(ProformaLiveModel.SP_Get_DeltaSummary_Result)">
@@ -1903,7 +2130,7 @@
             <Parameter Name="fisyear" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="SP_Get_DirectExpenses_Comments" ReturnType="Collection(ProformaLiveModel.SP_Get_DirectExpenses_Comments_Result)">
-          <Parameter Name="ProjectID" Mode="In" Type="Int32" />
+            <Parameter Name="ProjectID" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="SP_Get_DirectExpensesInfo_CJI3_Selection" ReturnType="Collection(ProformaLiveModel.SP_Get_DirectExpensesInfo_CJI3_Selection_Result)">
             <Parameter Name="ProjectID" Mode="In" Type="Int32" />
@@ -1913,7 +2140,7 @@
             <Parameter Name="Description" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="SP_Get_FiscalYear" ReturnType="Collection(String)">
-          <Parameter Name="ProjectID" Mode="In" Type="Int32" />
+            <Parameter Name="ProjectID" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="SP_GET_HelpData" ReturnType="Collection(ProformaLiveModel.SP_GET_HelpData_Result)">
             <Parameter Name="Title" Mode="In" Type="String" />
@@ -1933,13 +2160,13 @@
           </FunctionImport>
           <FunctionImport Name="SP_GET_Notification" ReturnType="Collection(ProformaLiveModel.SP_GET_Notification_Result)" />
           <FunctionImport Name="SP_GET_NotificationData" ReturnType="Collection(ProformaLiveModel.SP_GET_NotificationData_Result)">
-          <Parameter Name="notificationid" Mode="In" Type="Int32" />
+            <Parameter Name="notificationid" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="SP_Get_OperatingExpenseWBS" ReturnType="Collection(String)">
-          <Parameter Name="PROJECTID" Mode="In" Type="Int32" />
+            <Parameter Name="PROJECTID" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="SP_Get_PrimaryProjectData" ReturnType="Collection(ProformaLiveModel.SP_Get_PrimaryProjectData_Result)">
-          <Parameter Name="ProjectID" Mode="In" Type="String" />
+            <Parameter Name="ProjectID" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="SP_Get_Projects" ReturnType="Collection(ProformaLiveModel.SP_Get_Projects_Result)" />
           <FunctionImport Name="SP_Get_RequiredSkills" ReturnType="Collection(String)">
@@ -1950,7 +2177,7 @@
             <Parameter Name="Team" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="SP_Get_Resource_Comments" ReturnType="Collection(ProformaLiveModel.SP_Get_Resource_Comments_Result)">
-          <Parameter Name="ProjectID" Mode="In" Type="Int32" />
+            <Parameter Name="ProjectID" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="SP_Get_ResourceCheckBook" ReturnType="Collection(ProformaLiveModel.SP_Get_ResourceCheckBook_Result)">
             <Parameter Name="ProjectID" Mode="In" Type="Int32" />
@@ -1993,19 +2220,31 @@
             <Parameter Name="TEAM" Mode="In" Type="String" />
             <Parameter Name="FISYEAR" Mode="In" Type="Int32" />
           </FunctionImport>
+          <FunctionImport Name="SP_Get_TotalSupply" ReturnType="Collection(ProformaLiveModel.SP_Get_TotalSupply_Result)">
+            <Parameter Name="TEAM" Mode="In" Type="String" />
+            <Parameter Name="FISYEAR" Mode="In" Type="Int32" />
+          </FunctionImport>
           <FunctionImport Name="SP_Get_UnassignedRemaining" ReturnType="Collection(ProformaLiveModel.SP_Get_UnassignedRemaining_Result)">
             <Parameter Name="TEAM" Mode="In" Type="String" />
             <Parameter Name="FISYEAR" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="SP_Get_Year" ReturnType="Collection(String)" />
           <FunctionImport Name="SP_GetCapitalData" ReturnType="Collection(ProformaLiveModel.SP_GetCapitalData_Result)">
-          <Parameter Name="projectid" Mode="In" Type="Int32" />
+            <Parameter Name="projectid" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="SP_GetCapitalData_forcheckbookedit" ReturnType="Collection(ProformaLiveModel.SP_GetCapitalData_forcheckbookedit_Result)">
+            <Parameter Name="ProjectID" Mode="In" Type="Int32" />
+            <Parameter Name="WBSnumber" Mode="In" Type="String" />
+            <Parameter Name="Fisyear" Mode="In" Type="Int32" />
+            <Parameter Name="CapitalCategory" Mode="In" Type="String" />
+            <Parameter Name="CapitalType" Mode="In" Type="String" />
+            <Parameter Name="Description" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="SP_GetCapitalLaborData" ReturnType="Collection(ProformaLiveModel.SP_GetCapitalLaborData_Result)">
-          <Parameter Name="projectid" Mode="In" Type="Int32" />
+            <Parameter Name="projectid" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="SP_GetDirectExpensesData" ReturnType="Collection(ProformaLiveModel.SP_GetDirectExpensesData_Result)">
-          <Parameter Name="projectid" Mode="In" Type="Int32" />
+            <Parameter Name="projectid" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="SP_GetDirectExpensesData_forcheckbookedit" ReturnType="Collection(ProformaLiveModel.SP_GetDirectExpensesData_forcheckbookedit_Result)">
             <Parameter Name="ProjectID" Mode="In" Type="Int32" />
@@ -2015,7 +2254,7 @@
             <Parameter Name="Description" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="SP_Getlastmodifiedinfo" ReturnType="Collection(ProformaLiveModel.SP_Getlastmodifiedinfo_Result)">
-          <Parameter Name="ProjectID" Mode="In" Type="Int32" />
+            <Parameter Name="ProjectID" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="SP_GetProject_Summary" ReturnType="Collection(ProformaLiveModel.SP_GetProject_Summary_Result)">
             <Parameter Name="ProjectID" Mode="In" Type="String" />
@@ -2024,7 +2263,7 @@
             <Parameter Name="Qtr" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="SP_GetResourceData" ReturnType="Collection(ProformaLiveModel.SP_GetResourceData_Result)">
-          <Parameter Name="projectid" Mode="In" Type="Int32" />
+            <Parameter Name="projectid" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="SP_GetResourceData_forCheckBook" ReturnType="Collection(ProformaLiveModel.SP_GetResourceData_forCheckBook_Result)">
             <Parameter Name="projectid" Mode="In" Type="Int32" />
@@ -2059,16 +2298,13 @@
             <Parameter Name="TabName" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="SP_validate_CloneProject" ReturnType="Collection(String)">
-          <Parameter Name="CloneprojectID" Mode="In" Type="String" />
+            <Parameter Name="CloneprojectID" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="SP_Validate_Notification" ReturnType="Collection(String)">
-          <Parameter Name="userID" Mode="In" Type="String" />
+            <Parameter Name="userID" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="SP_Validate_ProjectCode" ReturnType="Collection(String)">
-          <Parameter Name="ProjectNumber" Mode="In" Type="String" />
-          </FunctionImport>
-          <FunctionImport Name="SP_Get_Assignment_Comments" ReturnType="Collection(ProformaLiveModel.SP_Get_Assignment_Comments_Result)">
-            <Parameter Name="Team" Mode="In" Type="String" />
+            <Parameter Name="ProjectNumber" Mode="In" Type="String" />
           </FunctionImport>
         </EntityContainer>
         <ComplexType Name="Get_DirectExpensesInfo_CJI3_Selection_Validation_Result">
@@ -2178,6 +2414,15 @@
           <Property Type="Decimal" Name="MAR" Nullable="false" Precision="38" Scale="6" />
           <Property Type="Decimal" Name="APR" Nullable="false" Precision="38" Scale="6" />
         </ComplexType>
+        <ComplexType Name="SP_Get_Assignment_Comments_Result">
+          <Property Type="Int32" Name="Sysid" Nullable="false" />
+          <Property Type="Int32" Name="ProjectID" Nullable="true" />
+          <Property Type="Int32" Name="MasterID" Nullable="true" />
+          <Property Type="Int32" Name="ColumnID" Nullable="true" />
+          <Property Type="String" Name="Comments" Nullable="true" />
+          <Property Type="String" Name="Team" Nullable="true" MaxLength="500" />
+          <Property Type="String" Name="RequiredSkills" Nullable="true" MaxLength="500" />
+        </ComplexType>
         <ComplexType Name="SP_Get_Assignments_Result">
           <Property Type="Int32" Name="ID" Nullable="false" />
           <Property Type="Int32" Name="ProjectID" Nullable="true" />
@@ -2186,18 +2431,18 @@
           <Property Type="String" Name="Team" Nullable="true" MaxLength="500" />
           <Property Type="String" Name="RequiredSkill" Nullable="true" MaxLength="500" />
           <Property Type="String" Name="ResourceName" Nullable="true" MaxLength="500" />
-          <Property Type="Decimal" Name="MAY" Nullable="true" Precision="38" Scale="6" />
-          <Property Type="Decimal" Name="JUN" Nullable="true" Precision="38" Scale="6" />
-          <Property Type="Decimal" Name="JUL" Nullable="true" Precision="38" Scale="6" />
-          <Property Type="Decimal" Name="AUG" Nullable="true" Precision="38" Scale="6" />
-          <Property Type="Decimal" Name="SEP" Nullable="true" Precision="38" Scale="6" />
-          <Property Type="Decimal" Name="OCT" Nullable="true" Precision="38" Scale="6" />
-          <Property Type="Decimal" Name="NOV" Nullable="true" Precision="38" Scale="6" />
-          <Property Type="Decimal" Name="DEC" Nullable="true" Precision="38" Scale="6" />
-          <Property Type="Decimal" Name="JAN" Nullable="true" Precision="38" Scale="6" />
-          <Property Type="Decimal" Name="FEB" Nullable="true" Precision="38" Scale="6" />
-          <Property Type="Decimal" Name="MAR" Nullable="true" Precision="38" Scale="6" />
-          <Property Type="Decimal" Name="APR" Nullable="true" Precision="38" Scale="6" />
+          <Property Type="Decimal" Name="MAY" Nullable="false" Precision="38" Scale="6" />
+          <Property Type="Decimal" Name="JUN" Nullable="false" Precision="38" Scale="6" />
+          <Property Type="Decimal" Name="JUL" Nullable="false" Precision="38" Scale="6" />
+          <Property Type="Decimal" Name="AUG" Nullable="false" Precision="38" Scale="6" />
+          <Property Type="Decimal" Name="SEP" Nullable="false" Precision="38" Scale="6" />
+          <Property Type="Decimal" Name="OCT" Nullable="false" Precision="38" Scale="6" />
+          <Property Type="Decimal" Name="NOV" Nullable="false" Precision="38" Scale="6" />
+          <Property Type="Decimal" Name="DEC" Nullable="false" Precision="38" Scale="6" />
+          <Property Type="Decimal" Name="JAN" Nullable="false" Precision="38" Scale="6" />
+          <Property Type="Decimal" Name="FEB" Nullable="false" Precision="38" Scale="6" />
+          <Property Type="Decimal" Name="MAR" Nullable="false" Precision="38" Scale="6" />
+          <Property Type="Decimal" Name="APR" Nullable="false" Precision="38" Scale="6" />
           <Property Type="String" Name="RequestType" Nullable="false" MaxLength="8" />
         </ComplexType>
         <ComplexType Name="SP_Get_Assignments_ResourceData_Result">
@@ -2210,6 +2455,97 @@
           <Property Type="String" Name="ResourceName" Nullable="true" MaxLength="500" />
           <Property Type="String" Name="Month" Nullable="true" MaxLength="10" />
           <Property Type="Decimal" Name="value" Nullable="true" Precision="18" Scale="2" />
+        </ComplexType>
+        <ComplexType Name="SP_Get_Capital_CheckBook_Result">
+          <Property Type="String" Name="WBSNumber" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="CapitalCategory" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="CapitalType" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="Description" Nullable="true" MaxLength="5000" />
+          <Property Type="String" Name="FinYear" Nullable="true" MaxLength="50" />
+          <Property Type="Decimal" Name="MAY" Nullable="false" Precision="38" Scale="6" />
+          <Property Type="Decimal" Name="JUN" Nullable="false" Precision="38" Scale="6" />
+          <Property Type="Decimal" Name="JUL" Nullable="false" Precision="38" Scale="6" />
+          <Property Type="Decimal" Name="AUG" Nullable="false" Precision="38" Scale="6" />
+          <Property Type="Decimal" Name="SEP" Nullable="false" Precision="38" Scale="6" />
+          <Property Type="Decimal" Name="OCT" Nullable="false" Precision="38" Scale="6" />
+          <Property Type="Decimal" Name="NOV" Nullable="false" Precision="38" Scale="6" />
+          <Property Type="Decimal" Name="DEC" Nullable="false" Precision="38" Scale="6" />
+          <Property Type="Decimal" Name="JAN" Nullable="false" Precision="38" Scale="6" />
+          <Property Type="Decimal" Name="FEB" Nullable="false" Precision="38" Scale="6" />
+          <Property Type="Decimal" Name="MAR" Nullable="false" Precision="38" Scale="6" />
+          <Property Type="Decimal" Name="APR" Nullable="false" Precision="38" Scale="6" />
+        </ComplexType>
+        <ComplexType Name="SP_Get_CAPITAL_CJI3_Data_Result">
+          <Property Type="String" Name="CapitalCategory" Nullable="true" MaxLength="5000" />
+          <Property Type="String" Name="CapitalType" Nullable="true" MaxLength="500" />
+          <Property Type="String" Name="Description" Nullable="true" MaxLength="5000" />
+          <Property Type="String" Name="Selected" Nullable="false" MaxLength="5" />
+          <Property Type="String" Name="FiscalYear" Nullable="true" MaxLength="4" />
+          <Property Type="String" Name="Month" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="PostingDate" Nullable="true" MaxLength="4000" />
+          <Property Type="String" Name="Object" Nullable="true" MaxLength="500" />
+          <Property Type="String" Name="CO_Object_Name" Nullable="true" MaxLength="500" />
+          <Property Type="String" Name="CostElementName" Nullable="true" MaxLength="500" />
+          <Property Type="String" Name="PurchasingDocument" Nullable="true" MaxLength="500" />
+          <Property Type="String" Name="PurchaseOrderText" Nullable="true" MaxLength="1000" />
+          <Property Type="String" Name="NameOfOffsettingaccount" Nullable="true" MaxLength="1000" />
+          <Property Type="Decimal" Name="TotalQuantity" Nullable="true" Precision="38" Scale="2" />
+          <Property Type="Decimal" Name="Val_COAreaCrcy" Nullable="true" Precision="38" Scale="2" />
+          <Property Type="Decimal" Name="PO_Amount" Nullable="false" Precision="38" Scale="2" />
+          <Property Type="String" Name="UserName" Nullable="true" MaxLength="500" />
+        </ComplexType>
+        <ComplexType Name="SP_Get_Capital_CJI3_Data_SelectedList_Result">
+          <Property Type="String" Name="CapitalCategory" Nullable="true" MaxLength="500" />
+          <Property Type="String" Name="CapitalType" Nullable="true" MaxLength="500" />
+          <Property Type="String" Name="Description" Nullable="true" MaxLength="2000" />
+          <Property Type="String" Name="Selected" Nullable="false" MaxLength="4" />
+          <Property Type="String" Name="FiscalYear" Nullable="true" MaxLength="4" />
+          <Property Type="String" Name="Month" Nullable="true" MaxLength="10" />
+          <Property Type="String" Name="PostingDate" Nullable="true" MaxLength="4000" />
+          <Property Type="String" Name="Object" Nullable="true" MaxLength="500" />
+          <Property Type="String" Name="CO_Object_Name" Nullable="true" MaxLength="500" />
+          <Property Type="String" Name="CostElementName" Nullable="true" MaxLength="500" />
+          <Property Type="String" Name="PurchasingDocument" Nullable="true" MaxLength="500" />
+          <Property Type="String" Name="PurchaseOrderText" Nullable="true" MaxLength="1000" />
+          <Property Type="String" Name="NameOfOffsettingaccount" Nullable="true" MaxLength="1000" />
+          <Property Type="Decimal" Name="TotalQuantity" Nullable="true" Precision="18" Scale="2" />
+          <Property Type="Decimal" Name="Val_COAreaCrcy" Nullable="true" Precision="18" Scale="2" />
+          <Property Type="Decimal" Name="PO_Amount" Nullable="true" Precision="18" Scale="2" />
+          <Property Type="String" Name="UserName" Nullable="true" MaxLength="500" />
+        </ComplexType>
+        <ComplexType Name="SP_Get_Capital_CJI3_Selection_Result">
+          <Property Type="String" Name="ID" Nullable="false" MaxLength="1" />
+          <Property Type="String" Name="WBSNumber" Nullable="true" MaxLength="500" />
+          <Property Type="String" Name="CapitalCategory" Nullable="true" MaxLength="500" />
+          <Property Type="String" Name="CapitalType" Nullable="true" MaxLength="500" />
+          <Property Type="String" Name="Description" Nullable="true" MaxLength="5000" />
+          <Property Type="String" Name="FiscalYear" Nullable="true" MaxLength="50" />
+          <Property Type="Decimal" Name="MAY" Nullable="false" Precision="38" Scale="6" />
+          <Property Type="Decimal" Name="JUN" Nullable="false" Precision="38" Scale="6" />
+          <Property Type="Decimal" Name="JUL" Nullable="false" Precision="38" Scale="6" />
+          <Property Type="Decimal" Name="AUG" Nullable="false" Precision="38" Scale="6" />
+          <Property Type="Decimal" Name="SEP" Nullable="false" Precision="38" Scale="6" />
+          <Property Type="Decimal" Name="OCT" Nullable="false" Precision="38" Scale="6" />
+          <Property Type="Decimal" Name="NOV" Nullable="false" Precision="38" Scale="6" />
+          <Property Type="Decimal" Name="DEC" Nullable="false" Precision="38" Scale="6" />
+          <Property Type="Decimal" Name="JAN" Nullable="false" Precision="38" Scale="6" />
+          <Property Type="Decimal" Name="FEB" Nullable="false" Precision="38" Scale="6" />
+          <Property Type="Decimal" Name="MAR" Nullable="false" Precision="38" Scale="6" />
+          <Property Type="Decimal" Name="APR" Nullable="false" Precision="38" Scale="6" />
+        </ComplexType>
+        <ComplexType Name="SP_Get_CAPITAL_CJI3_Total_Reconciliation_Remaining_Result">
+          <Property Type="Decimal" Name="MAY" Nullable="true" Precision="38" Scale="6" />
+          <Property Type="Decimal" Name="JUN" Nullable="true" Precision="38" Scale="6" />
+          <Property Type="Decimal" Name="JUL" Nullable="true" Precision="38" Scale="6" />
+          <Property Type="Decimal" Name="AUG" Nullable="true" Precision="38" Scale="6" />
+          <Property Type="Decimal" Name="SEP" Nullable="true" Precision="38" Scale="6" />
+          <Property Type="Decimal" Name="OCT" Nullable="true" Precision="38" Scale="6" />
+          <Property Type="Decimal" Name="NOV" Nullable="true" Precision="38" Scale="6" />
+          <Property Type="Decimal" Name="DEC" Nullable="true" Precision="38" Scale="6" />
+          <Property Type="Decimal" Name="JAN" Nullable="true" Precision="38" Scale="6" />
+          <Property Type="Decimal" Name="FEB" Nullable="true" Precision="38" Scale="6" />
+          <Property Type="Decimal" Name="MAR" Nullable="true" Precision="38" Scale="6" />
+          <Property Type="Decimal" Name="APR" Nullable="true" Precision="38" Scale="6" />
         </ComplexType>
         <ComplexType Name="SP_Get_Capital_Comments_Result">
           <Property Type="Int32" Name="Sysid" Nullable="false" />
@@ -2373,6 +2709,7 @@
           <Property Type="Int32" Name="Sysid" Nullable="false" />
           <Property Type="Int32" Name="FisYear" Nullable="true" />
           <Property Type="String" Name="Title" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="Description" Nullable="true" MaxLength="500" />
           <Property Type="String" Name="Date" Nullable="true" MaxLength="10" />
           <Property Type="String" Name="DataCount" Nullable="true" MaxLength="100" />
           <Property Type="String" Name="DataRefreshStatus" Nullable="true" MaxLength="100" />
@@ -2415,9 +2752,9 @@
           <Property Type="String" Name="Type" Nullable="false" MaxLength="1" />
           <Property Type="Int32" Name="ProjectID" Nullable="true" />
           <Property Type="String" Name="WBSNumber" Nullable="true" MaxLength="500" />
-          <Property Type="String" Name="BusinessUnit" Nullable="true" MaxLength="100" />
-          <Property Type="String" Name="HighOrg" Nullable="true" MaxLength="1000" />
-          <Property Type="String" Name="MidOrg" Nullable="true" MaxLength="1000" />
+          <Property Type="String" Name="BusinessUnit" Nullable="true" MaxLength="500" />
+          <Property Type="String" Name="HighOrg" Nullable="true" MaxLength="500" />
+          <Property Type="String" Name="MidOrg" Nullable="true" MaxLength="500" />
           <Property Type="String" Name="Team" Nullable="true" MaxLength="8000" />
           <Property Type="String" Name="FinYear" Nullable="true" MaxLength="50" />
           <Property Type="Decimal" Name="MAY" Nullable="true" Precision="38" Scale="6" />
@@ -2471,7 +2808,7 @@
         </ComplexType>
         <ComplexType Name="SP_Get_ResourceCheckBookData_Result">
           <Property Type="String" Name="CJI3_WBSNumber" Nullable="true" MaxLength="500" />
-          <Property Type="String" Name="CJI3_ResourceName" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="CJI3_ResourceName" Nullable="true" MaxLength="500" />
           <Property Type="String" Name="CJI3_FinYear" Nullable="true" MaxLength="4" />
           <Property Type="Decimal" Name="MAY" Nullable="true" Precision="38" Scale="2" />
           <Property Type="Decimal" Name="JUN" Nullable="true" Precision="38" Scale="2" />
@@ -2498,6 +2835,21 @@
           <Property Type="String" Name="ModifiedBy" Nullable="true" MaxLength="50" />
           <Property Type="DateTime" Name="ModifiedOn" Nullable="true" Precision="23" />
         </ComplexType>
+        <ComplexType Name="SP_Get_TotalSupply_Result">
+          <Property Type="String" Name="ResourceName" Nullable="true" MaxLength="100" />
+          <Property Type="Decimal" Name="MAY" Nullable="false" Precision="38" Scale="6" />
+          <Property Type="Decimal" Name="JUN" Nullable="false" Precision="38" Scale="6" />
+          <Property Type="Decimal" Name="JUL" Nullable="false" Precision="38" Scale="6" />
+          <Property Type="Decimal" Name="AUG" Nullable="false" Precision="38" Scale="6" />
+          <Property Type="Decimal" Name="SEP" Nullable="false" Precision="38" Scale="6" />
+          <Property Type="Decimal" Name="OCT" Nullable="false" Precision="38" Scale="6" />
+          <Property Type="Decimal" Name="NOV" Nullable="false" Precision="38" Scale="6" />
+          <Property Type="Decimal" Name="DEC" Nullable="false" Precision="38" Scale="6" />
+          <Property Type="Decimal" Name="JAN" Nullable="false" Precision="38" Scale="6" />
+          <Property Type="Decimal" Name="FEB" Nullable="false" Precision="38" Scale="6" />
+          <Property Type="Decimal" Name="MAR" Nullable="false" Precision="38" Scale="6" />
+          <Property Type="Decimal" Name="APR" Nullable="false" Precision="38" Scale="6" />
+        </ComplexType>
         <ComplexType Name="SP_Get_UnassignedRemaining_Result">
           <Property Type="String" Name="RESOURCENAME" Nullable="true" MaxLength="100" />
           <Property Type="Decimal" Name="MAY" Nullable="true" Precision="38" Scale="6" />
@@ -2514,6 +2866,35 @@
           <Property Type="Decimal" Name="APR" Nullable="true" Precision="38" Scale="6" />
         </ComplexType>
         <ComplexType Name="SP_GetCapitalData_Result">
+          <Property Type="Int32" Name="MasterID" Nullable="false" />
+          <Property Type="String" Name="Type" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="WBSNumber" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="Priority" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="Impactofnotinvesting" Nullable="true" MaxLength="500" />
+          <Property Type="String" Name="CapitalCategory" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="CapitalType" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="AOPProject" Nullable="true" MaxLength="5000" />
+          <Property Type="String" Name="Description" Nullable="true" MaxLength="5000" />
+          <Property Type="String" Name="FinYear" Nullable="true" MaxLength="50" />
+          <Property Type="Decimal" Name="MAY" Nullable="true" Precision="38" Scale="6" />
+          <Property Type="Decimal" Name="JUN" Nullable="true" Precision="38" Scale="6" />
+          <Property Type="Decimal" Name="JUL" Nullable="true" Precision="38" Scale="6" />
+          <Property Type="Decimal" Name="AUG" Nullable="true" Precision="38" Scale="6" />
+          <Property Type="Decimal" Name="SEP" Nullable="true" Precision="38" Scale="6" />
+          <Property Type="Decimal" Name="OCT" Nullable="true" Precision="38" Scale="6" />
+          <Property Type="Decimal" Name="NOV" Nullable="true" Precision="38" Scale="6" />
+          <Property Type="Decimal" Name="DEC" Nullable="true" Precision="38" Scale="6" />
+          <Property Type="Decimal" Name="JAN" Nullable="true" Precision="38" Scale="6" />
+          <Property Type="Decimal" Name="FEB" Nullable="true" Precision="38" Scale="6" />
+          <Property Type="Decimal" Name="MAR" Nullable="true" Precision="38" Scale="6" />
+          <Property Type="Decimal" Name="APR" Nullable="true" Precision="38" Scale="6" />
+          <Property Type="String" Name="CreatedBy" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="CreatedOn" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="ModifiedBy" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="ModifiedOn" Nullable="true" MaxLength="20" />
+          <Property Type="Int32" Name="RowID" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="SP_GetCapitalData_forcheckbookedit_Result">
           <Property Type="Int32" Name="MasterID" Nullable="false" />
           <Property Type="String" Name="Type" Nullable="true" MaxLength="50" />
           <Property Type="String" Name="WBSNumber" Nullable="true" MaxLength="50" />
@@ -2717,15 +3098,6 @@
           <Property Type="String" Name="FisMonth" Nullable="true" MaxLength="20" />
           <Property Type="Decimal" Name="value" Nullable="false" Precision="18" Scale="2" />
         </ComplexType>
-        <ComplexType Name="SP_Get_Assignment_Comments_Result">
-          <Property Type="Int32" Name="Sysid" Nullable="false" />
-          <Property Type="Int32" Name="ProjectID" Nullable="true" />
-          <Property Type="Int32" Name="MasterID" Nullable="true" />
-          <Property Type="Int32" Name="ColumnID" Nullable="true" />
-          <Property Type="String" Name="Comments" Nullable="true" />
-          <Property Type="String" Name="Team" Nullable="true" MaxLength="500" />
-          <Property Type="String" Name="RequiredSkills" Nullable="true" MaxLength="500" />
-        </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -2800,6 +3172,31 @@
                 <ScalarProperty Name="FisYear" ColumnName="FisYear" />
                 <ScalarProperty Name="Month" ColumnName="Month" />
                 <ScalarProperty Name="value" ColumnName="value" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Capital_CJI3_Selection">
+            <EntityTypeMapping TypeName="ProformaLiveModel.Capital_CJI3_Selection">
+              <MappingFragment StoreEntitySet="Capital_CJI3_Selection">
+                <ScalarProperty Name="Sysid" ColumnName="Sysid" />
+                <ScalarProperty Name="ProjectID" ColumnName="ProjectID" />
+                <ScalarProperty Name="FiscalYear" ColumnName="FiscalYear" />
+                <ScalarProperty Name="Month" ColumnName="Month" />
+                <ScalarProperty Name="PostingDate" ColumnName="PostingDate" />
+                <ScalarProperty Name="Object" ColumnName="Object" />
+                <ScalarProperty Name="CO_Object_Name" ColumnName="CO_Object_Name" />
+                <ScalarProperty Name="CostElementName" ColumnName="CostElementName" />
+                <ScalarProperty Name="PurchasingDocument" ColumnName="PurchasingDocument" />
+                <ScalarProperty Name="PurchaseOrderText" ColumnName="PurchaseOrderText" />
+                <ScalarProperty Name="NameOfOffsettingaccount" ColumnName="NameOfOffsettingaccount" />
+                <ScalarProperty Name="TotalQuantity" ColumnName="TotalQuantity" />
+                <ScalarProperty Name="Val_COAreaCrcy" ColumnName="Val_COAreaCrcy" />
+                <ScalarProperty Name="PO_Amount" ColumnName="PO_Amount" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="CapitalCategory" ColumnName="CapitalCategory" />
+                <ScalarProperty Name="CapitalType" ColumnName="CapitalType" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -3184,6 +3581,7 @@
                 <ScalarProperty Name="Sysid" ColumnName="Sysid" />
                 <ScalarProperty Name="FisYear" ColumnName="FisYear" />
                 <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="Date" ColumnName="Date" />
                 <ScalarProperty Name="DataCount" ColumnName="DataCount" />
                 <ScalarProperty Name="DataRefreshStatus" ColumnName="DataRefreshStatus" />
@@ -3258,6 +3656,18 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="PDW_Resource_Master">
+            <EntityTypeMapping TypeName="ProformaLiveModel.PDW_Resource_Master">
+              <MappingFragment StoreEntitySet="PDW_Resource_Master">
+                <ScalarProperty Name="Sysid" ColumnName="Sysid" />
+                <ScalarProperty Name="PWD_ResourceName" ColumnName="PWD_ResourceName" />
+                <ScalarProperty Name="PWD_BusinessUnit" ColumnName="PWD_BusinessUnit" />
+                <ScalarProperty Name="PWD_HighOrg" ColumnName="PWD_HighOrg" />
+                <ScalarProperty Name="PWD_MidOrg" ColumnName="PWD_MidOrg" />
+                <ScalarProperty Name="PWD_Team" ColumnName="PWD_Team" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="PFL_MDT_FISCAL_DAYS">
             <EntityTypeMapping TypeName="ProformaLiveModel.PFL_MDT_FISCAL_DAYS">
               <MappingFragment StoreEntitySet="PFL_MDT_FISCAL_DAYS">
@@ -3307,6 +3717,9 @@
                 <ScalarProperty Name="CAL_MONTH_NO" ColumnName="CAL_MONTH_NO" />
                 <ScalarProperty Name="UPDATE_DT" ColumnName="UPDATE_DT" />
                 <ScalarProperty Name="CREATEDON" ColumnName="CREATEDON" />
+                <ScalarProperty Name="DAY" ColumnName="DAY" />
+                <ScalarProperty Name="FISCAL_MONTH" ColumnName="FISCAL_MONTH" />
+                <ScalarProperty Name="FISCAL_YEAR" ColumnName="FISCAL_YEAR" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -3439,6 +3852,16 @@
               <MappingFragment StoreEntitySet="Temp_ProjectMaster">
                 <ScalarProperty Name="Sysid" ColumnName="Sysid" />
                 <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="Value" ColumnName="Value" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Capital_OpenPO">
+            <EntityTypeMapping TypeName="ProformaLiveModel.Capital_OpenPO">
+              <MappingFragment StoreEntitySet="Capital_OpenPO">
+                <ScalarProperty Name="Sysid" ColumnName="Sysid" />
+                <ScalarProperty Name="WBSNumber" ColumnName="WBSNumber" />
+                <ScalarProperty Name="PONumber" ColumnName="PONumber" />
                 <ScalarProperty Name="Value" ColumnName="Value" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -3591,6 +4014,19 @@
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="SP_Get_Assignment_Comments" FunctionName="ProformaLiveModel.Store.SP_Get_Assignment_Comments">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="ProformaLiveModel.SP_Get_Assignment_Comments_Result">
+                <ScalarProperty Name="Sysid" ColumnName="Sysid" />
+                <ScalarProperty Name="ProjectID" ColumnName="ProjectID" />
+                <ScalarProperty Name="MasterID" ColumnName="MasterID" />
+                <ScalarProperty Name="ColumnID" ColumnName="ColumnID" />
+                <ScalarProperty Name="Comments" ColumnName="Comments" />
+                <ScalarProperty Name="Team" ColumnName="Team" />
+                <ScalarProperty Name="RequiredSkills" ColumnName="RequiredSkills" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="SP_Get_Assignments" FunctionName="ProformaLiveModel.Store.SP_Get_Assignments">
             <ResultMapping>
               <ComplexTypeMapping TypeName="ProformaLiveModel.SP_Get_Assignments_Result">
@@ -3634,6 +4070,117 @@
           </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="SP_Get_Business" FunctionName="ProformaLiveModel.Store.SP_Get_Business" />
           <FunctionImportMapping FunctionImportName="SP_Get_BusinessUnit" FunctionName="ProformaLiveModel.Store.SP_Get_BusinessUnit" />
+          <FunctionImportMapping FunctionImportName="SP_Get_Capital_CheckBook" FunctionName="ProformaLiveModel.Store.SP_Get_Capital_CheckBook">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="ProformaLiveModel.SP_Get_Capital_CheckBook_Result">
+                <ScalarProperty Name="WBSNumber" ColumnName="WBSNumber" />
+                <ScalarProperty Name="CapitalCategory" ColumnName="CapitalCategory" />
+                <ScalarProperty Name="CapitalType" ColumnName="CapitalType" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="FinYear" ColumnName="FinYear" />
+                <ScalarProperty Name="MAY" ColumnName="MAY" />
+                <ScalarProperty Name="JUN" ColumnName="JUN" />
+                <ScalarProperty Name="JUL" ColumnName="JUL" />
+                <ScalarProperty Name="AUG" ColumnName="AUG" />
+                <ScalarProperty Name="SEP" ColumnName="SEP" />
+                <ScalarProperty Name="OCT" ColumnName="OCT" />
+                <ScalarProperty Name="NOV" ColumnName="NOV" />
+                <ScalarProperty Name="DEC" ColumnName="DEC" />
+                <ScalarProperty Name="JAN" ColumnName="JAN" />
+                <ScalarProperty Name="FEB" ColumnName="FEB" />
+                <ScalarProperty Name="MAR" ColumnName="MAR" />
+                <ScalarProperty Name="APR" ColumnName="APR" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="SP_Get_CAPITAL_CJI3_Data" FunctionName="ProformaLiveModel.Store.SP_Get_CAPITAL_CJI3_Data">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="ProformaLiveModel.SP_Get_CAPITAL_CJI3_Data_Result">
+                <ScalarProperty Name="CapitalCategory" ColumnName="CapitalCategory" />
+                <ScalarProperty Name="CapitalType" ColumnName="CapitalType" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Selected" ColumnName="Selected" />
+                <ScalarProperty Name="FiscalYear" ColumnName="FiscalYear" />
+                <ScalarProperty Name="Month" ColumnName="Month" />
+                <ScalarProperty Name="PostingDate" ColumnName="PostingDate" />
+                <ScalarProperty Name="Object" ColumnName="Object" />
+                <ScalarProperty Name="CO_Object_Name" ColumnName="CO_Object_Name" />
+                <ScalarProperty Name="CostElementName" ColumnName="CostElementName" />
+                <ScalarProperty Name="PurchasingDocument" ColumnName="PurchasingDocument" />
+                <ScalarProperty Name="PurchaseOrderText" ColumnName="PurchaseOrderText" />
+                <ScalarProperty Name="NameOfOffsettingaccount" ColumnName="NameOfOffsettingaccount" />
+                <ScalarProperty Name="TotalQuantity" ColumnName="TotalQuantity" />
+                <ScalarProperty Name="Val_COAreaCrcy" ColumnName="Val_COAreaCrcy" />
+                <ScalarProperty Name="PO_Amount" ColumnName="PO_Amount" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="SP_Get_Capital_CJI3_Data_SelectedList" FunctionName="ProformaLiveModel.Store.SP_Get_Capital_CJI3_Data_SelectedList">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="ProformaLiveModel.SP_Get_Capital_CJI3_Data_SelectedList_Result">
+                <ScalarProperty Name="CapitalCategory" ColumnName="CapitalCategory" />
+                <ScalarProperty Name="CapitalType" ColumnName="CapitalType" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Selected" ColumnName="Selected" />
+                <ScalarProperty Name="FiscalYear" ColumnName="FiscalYear" />
+                <ScalarProperty Name="Month" ColumnName="Month" />
+                <ScalarProperty Name="PostingDate" ColumnName="PostingDate" />
+                <ScalarProperty Name="Object" ColumnName="Object" />
+                <ScalarProperty Name="CO_Object_Name" ColumnName="CO_Object_Name" />
+                <ScalarProperty Name="CostElementName" ColumnName="CostElementName" />
+                <ScalarProperty Name="PurchasingDocument" ColumnName="PurchasingDocument" />
+                <ScalarProperty Name="PurchaseOrderText" ColumnName="PurchaseOrderText" />
+                <ScalarProperty Name="NameOfOffsettingaccount" ColumnName="NameOfOffsettingaccount" />
+                <ScalarProperty Name="TotalQuantity" ColumnName="TotalQuantity" />
+                <ScalarProperty Name="Val_COAreaCrcy" ColumnName="Val_COAreaCrcy" />
+                <ScalarProperty Name="PO_Amount" ColumnName="PO_Amount" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="SP_Get_Capital_CJI3_Selection" FunctionName="ProformaLiveModel.Store.SP_Get_Capital_CJI3_Selection">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="ProformaLiveModel.SP_Get_Capital_CJI3_Selection_Result">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="WBSNumber" ColumnName="WBSNumber" />
+                <ScalarProperty Name="CapitalCategory" ColumnName="CapitalCategory" />
+                <ScalarProperty Name="CapitalType" ColumnName="CapitalType" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="FiscalYear" ColumnName="FiscalYear" />
+                <ScalarProperty Name="MAY" ColumnName="MAY" />
+                <ScalarProperty Name="JUN" ColumnName="JUN" />
+                <ScalarProperty Name="JUL" ColumnName="JUL" />
+                <ScalarProperty Name="AUG" ColumnName="AUG" />
+                <ScalarProperty Name="SEP" ColumnName="SEP" />
+                <ScalarProperty Name="OCT" ColumnName="OCT" />
+                <ScalarProperty Name="NOV" ColumnName="NOV" />
+                <ScalarProperty Name="DEC" ColumnName="DEC" />
+                <ScalarProperty Name="JAN" ColumnName="JAN" />
+                <ScalarProperty Name="FEB" ColumnName="FEB" />
+                <ScalarProperty Name="MAR" ColumnName="MAR" />
+                <ScalarProperty Name="APR" ColumnName="APR" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="SP_Get_CAPITAL_CJI3_Total_Reconciliation_Remaining" FunctionName="ProformaLiveModel.Store.SP_Get_CAPITAL_CJI3_Total_Reconciliation_Remaining">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="ProformaLiveModel.SP_Get_CAPITAL_CJI3_Total_Reconciliation_Remaining_Result">
+                <ScalarProperty Name="MAY" ColumnName="MAY" />
+                <ScalarProperty Name="JUN" ColumnName="JUN" />
+                <ScalarProperty Name="JUL" ColumnName="JUL" />
+                <ScalarProperty Name="AUG" ColumnName="AUG" />
+                <ScalarProperty Name="SEP" ColumnName="SEP" />
+                <ScalarProperty Name="OCT" ColumnName="OCT" />
+                <ScalarProperty Name="NOV" ColumnName="NOV" />
+                <ScalarProperty Name="DEC" ColumnName="DEC" />
+                <ScalarProperty Name="JAN" ColumnName="JAN" />
+                <ScalarProperty Name="FEB" ColumnName="FEB" />
+                <ScalarProperty Name="MAR" ColumnName="MAR" />
+                <ScalarProperty Name="APR" ColumnName="APR" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="SP_Get_Capital_Comments" FunctionName="ProformaLiveModel.Store.SP_Get_Capital_Comments">
             <ResultMapping>
               <ComplexTypeMapping TypeName="ProformaLiveModel.SP_Get_Capital_Comments_Result">
@@ -3645,6 +4192,7 @@
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="SP_Get_Capital_FiscalYear" FunctionName="ProformaLiveModel.Store.SP_Get_Capital_FiscalYear" />
           <FunctionImportMapping FunctionImportName="SP_Get_CapitalExpenditureWBS" FunctionName="ProformaLiveModel.Store.SP_Get_CapitalExpenditureWBS" />
           <FunctionImportMapping FunctionImportName="SP_Get_CapitalLabor_Comments" FunctionName="ProformaLiveModel.Store.SP_Get_CapitalLabor_Comments">
             <ResultMapping>
@@ -3859,6 +4407,7 @@
                 <ScalarProperty Name="Sysid" ColumnName="Sysid" />
                 <ScalarProperty Name="FisYear" ColumnName="FisYear" />
                 <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="Date" ColumnName="Date" />
                 <ScalarProperty Name="DataCount" ColumnName="DataCount" />
                 <ScalarProperty Name="DataRefreshStatus" ColumnName="DataRefreshStatus" />
@@ -4033,6 +4582,25 @@
           <FunctionImportMapping FunctionImportName="SP_Get_SwapProjects" FunctionName="ProformaLiveModel.Store.SP_Get_SwapProjects" />
           <FunctionImportMapping FunctionImportName="SP_Get_Team" FunctionName="ProformaLiveModel.Store.SP_Get_Team" />
           <FunctionImportMapping FunctionImportName="SP_Get_TeamResourceInfo" FunctionName="ProformaLiveModel.Store.SP_Get_TeamResourceInfo" />
+          <FunctionImportMapping FunctionImportName="SP_Get_TotalSupply" FunctionName="ProformaLiveModel.Store.SP_Get_TotalSupply">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="ProformaLiveModel.SP_Get_TotalSupply_Result">
+                <ScalarProperty Name="ResourceName" ColumnName="ResourceName" />
+                <ScalarProperty Name="MAY" ColumnName="MAY" />
+                <ScalarProperty Name="JUN" ColumnName="JUN" />
+                <ScalarProperty Name="JUL" ColumnName="JUL" />
+                <ScalarProperty Name="AUG" ColumnName="AUG" />
+                <ScalarProperty Name="SEP" ColumnName="SEP" />
+                <ScalarProperty Name="OCT" ColumnName="OCT" />
+                <ScalarProperty Name="NOV" ColumnName="NOV" />
+                <ScalarProperty Name="DEC" ColumnName="DEC" />
+                <ScalarProperty Name="JAN" ColumnName="JAN" />
+                <ScalarProperty Name="FEB" ColumnName="FEB" />
+                <ScalarProperty Name="MAR" ColumnName="MAR" />
+                <ScalarProperty Name="APR" ColumnName="APR" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="SP_Get_UnassignedRemaining" FunctionName="ProformaLiveModel.Store.SP_Get_UnassignedRemaining">
             <ResultMapping>
               <ComplexTypeMapping TypeName="ProformaLiveModel.SP_Get_UnassignedRemaining_Result">
@@ -4056,6 +4624,39 @@
           <FunctionImportMapping FunctionImportName="SP_GetCapitalData" FunctionName="ProformaLiveModel.Store.SP_GetCapitalData">
             <ResultMapping>
               <ComplexTypeMapping TypeName="ProformaLiveModel.SP_GetCapitalData_Result">
+                <ScalarProperty Name="MasterID" ColumnName="MasterID" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="WBSNumber" ColumnName="WBSNumber" />
+                <ScalarProperty Name="Priority" ColumnName="Priority" />
+                <ScalarProperty Name="Impactofnotinvesting" ColumnName="Impactofnotinvesting" />
+                <ScalarProperty Name="CapitalCategory" ColumnName="CapitalCategory" />
+                <ScalarProperty Name="CapitalType" ColumnName="CapitalType" />
+                <ScalarProperty Name="AOPProject" ColumnName="AOPProject" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="FinYear" ColumnName="FinYear" />
+                <ScalarProperty Name="MAY" ColumnName="MAY" />
+                <ScalarProperty Name="JUN" ColumnName="JUN" />
+                <ScalarProperty Name="JUL" ColumnName="JUL" />
+                <ScalarProperty Name="AUG" ColumnName="AUG" />
+                <ScalarProperty Name="SEP" ColumnName="SEP" />
+                <ScalarProperty Name="OCT" ColumnName="OCT" />
+                <ScalarProperty Name="NOV" ColumnName="NOV" />
+                <ScalarProperty Name="DEC" ColumnName="DEC" />
+                <ScalarProperty Name="JAN" ColumnName="JAN" />
+                <ScalarProperty Name="FEB" ColumnName="FEB" />
+                <ScalarProperty Name="MAR" ColumnName="MAR" />
+                <ScalarProperty Name="APR" ColumnName="APR" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="ModifiedOn" ColumnName="ModifiedOn" />
+                <ScalarProperty Name="RowID" ColumnName="RowID" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="SP_GetCapitalData_forcheckbookedit" FunctionName="ProformaLiveModel.Store.SP_GetCapitalData_forcheckbookedit">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="ProformaLiveModel.SP_GetCapitalData_forcheckbookedit_Result">
                 <ScalarProperty Name="MasterID" ColumnName="MasterID" />
                 <ScalarProperty Name="Type" ColumnName="Type" />
                 <ScalarProperty Name="WBSNumber" ColumnName="WBSNumber" />
@@ -4303,19 +4904,6 @@
           <FunctionImportMapping FunctionImportName="SP_validate_CloneProject" FunctionName="ProformaLiveModel.Store.SP_validate_CloneProject" />
           <FunctionImportMapping FunctionImportName="SP_Validate_Notification" FunctionName="ProformaLiveModel.Store.SP_Validate_Notification" />
           <FunctionImportMapping FunctionImportName="SP_Validate_ProjectCode" FunctionName="ProformaLiveModel.Store.SP_Validate_ProjectCode" />
-          <FunctionImportMapping FunctionImportName="SP_Get_Assignment_Comments" FunctionName="ProformaLiveModel.Store.SP_Get_Assignment_Comments">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="ProformaLiveModel.SP_Get_Assignment_Comments_Result">
-                <ScalarProperty Name="Sysid" ColumnName="Sysid" />
-                <ScalarProperty Name="ProjectID" ColumnName="ProjectID" />
-                <ScalarProperty Name="MasterID" ColumnName="MasterID" />
-                <ScalarProperty Name="ColumnID" ColumnName="ColumnID" />
-                <ScalarProperty Name="Comments" ColumnName="Comments" />
-                <ScalarProperty Name="Team" ColumnName="Team" />
-                <ScalarProperty Name="RequiredSkills" ColumnName="RequiredSkills" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

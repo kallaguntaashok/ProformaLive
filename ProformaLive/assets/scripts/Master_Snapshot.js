@@ -96,6 +96,7 @@ app.controller('Master_SnapshotController', function ($scope, $http) {
 
     $scope.btnresetSnapshotData = function () {
         document.getElementById('textFisYear').value = "";
+        document.getElementById('textDesc').value = "";
         jSuite_dropTitle.setValue("");
         document.getElementById('textCalender').value = "";
         $scope.addsnapshot = true;
@@ -104,11 +105,15 @@ app.controller('Master_SnapshotController', function ($scope, $http) {
 
     $scope.btnInsertSnapshotData = function () {
         var textFisYearData = document.getElementById('textFisYear').value;
+        var textDescData = document.getElementById('textDesc').value;
         var dropTitle = jSuite_dropTitle.getText();
         var textCalenderData = document.getElementById('textCalender').value;
 
         if (textFisYearData == "" || textFisYearData == undefined) {
             showalert('Please enter fisyear!');
+        }
+        else if (textDescData == "" || textDescData == undefined) {
+            showalert('Please enter description!');
         }
         else if (dropTitle == "" || dropTitle == undefined) {
             showalert('Please select title!');
@@ -117,7 +122,7 @@ app.controller('Master_SnapshotController', function ($scope, $http) {
             showalert('Please select date!');
         }
         else {
-            insertSnapshotdata(textFisYearData, dropTitle, textCalenderData);
+            insertSnapshotdata(textFisYearData, dropTitle, textDescData, textCalenderData);
             document.getElementById('textFisYear').value = "";
             jSuite_dropTitle.setValue("");
             document.getElementById('textCalender').value = "";
@@ -139,13 +144,14 @@ app.controller('Master_SnapshotController', function ($scope, $http) {
         }        
     }
 
-    $scope.editsnapshot = function (fisyear, title, calender, sysid) {
+    $scope.editsnapshot = function (fisyear, title, desc , calender, sysid) {
 
         $scope.addsnapshot = false;
         $scope.updatesnapshot = true;
         localStorage.setItem("snapshotID", sysid);
         const now = new Date(calender);
         document.getElementById('textFisYear').value = fisyear;
+        document.getElementById('textDesc').value = desc;
         jSuite_dropTitle.setValue(title);
         document.getElementById('textCalender').value = now.getFullYear() + '-' + ((now.getMonth() > 8) ? (now.getMonth() + 1) : ('0' + (now.getMonth() + 1))) + '-' + ((now.getDate() > 9) ? now.getDate() : ('0' + now.getDate()));
     }
@@ -178,11 +184,15 @@ app.controller('Master_SnapshotController', function ($scope, $http) {
     $scope.updatesnapshotdata = function () {
 
         var textFisYearData = document.getElementById('textFisYear').value;
+        var textDescData = document.getElementById('textDesc').value;
         var dropTitle = jSuite_dropTitle.getText();
         var textCalenderData = document.getElementById('textCalender').value;
 
         if (textFisYearData == "" || textFisYearData == undefined) {
             showalert('Please enter fisyear!');
+        }
+        else if (textDescData == "" || textDescData == undefined) {
+            showalert('Please enter description!');
         }
         else if (dropTitle == "" || dropTitle == undefined) {
             showalert('Please select title!');
@@ -196,7 +206,8 @@ app.controller('Master_SnapshotController', function ($scope, $http) {
             $http({
                 method: 'POST',
                 url: '../Config_Snapshot/update_snapshot',
-                params: { "intFisYear": textFisYearData, "strTitle": dropTitle, "strDate": textCalenderData, "intsysid": localStorage.getItem("snapshotID") }
+                params: {
+                    "intFisYear": textFisYearData, "strTitle": dropTitle, "strDesc": textDescData,  "strDate": textCalenderData, "intsysid": localStorage.getItem("snapshotID") }
             }).then(function (response) {
                 loadmaster_snapshot();
                 updateprogressbar(100, "Snapshot creation has been done...");
@@ -208,12 +219,13 @@ app.controller('Master_SnapshotController', function ($scope, $http) {
         }
     }
 
-    function insertSnapshotdata(FisYear, Title, Date) {
+    function insertSnapshotdata(FisYear, Title, Desc, Date) {
         updateprogressbar(50, "Updating Snapshot...");
         $http({
             method: 'POST',
             url: '../Config_Snapshot/insert_snapshot',
-            params: { "intFisYear": FisYear, "strTitle": Title, "strDate": Date }
+            params: {
+                "intFisYear": FisYear, "strTitle": Title, "strDesc": Desc, "strDate": Date }
         }).then(function (response) {
             loadmaster_snapshot();
             updateprogressbar(100, "Snapshot creation has been done...");

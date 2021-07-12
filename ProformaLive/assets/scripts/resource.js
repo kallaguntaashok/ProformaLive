@@ -32,6 +32,7 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
     var dsCapital = [];
     var dsResource_PC = [];
     var dsde_checkbook = [];
+    var dscapital_checkbook = [];
     var jSuite_dropSummaryFisYear = [];
     var jSuite_drop_Summary_Months = [];
     var jSuite_drop_Summary_Quarter = [];
@@ -41,6 +42,7 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
     var obj_PC = [];
     var objdirectexpenses = [];
     var objdirectexpenses_checkbook = [];
+    var objcapital_checkbook = [];
     var projectname = [];
     var rowRequiredSkills = [];
     var updatedInfo = [];
@@ -59,6 +61,7 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
     var capitallabor_duplicateInfo = [];
     var directexpenses_updatedInfo = [];
     var directexpenses_cb_updatedInfo = [];
+    var capital_cb_updatedInfo = [];
     var directexpenses_deleteInfo = [];
     var directexpenses_duplicateInfo = [];
     var jSuite_dropOperatingExpenseWBSDE = [];
@@ -87,10 +90,13 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
     var capitallabor_comments = [];
     var directexpenses_comments = [];
     var decbsource = { deitems: [] };
+    var capitalcbsource = { capitalitems: [] };
     var rcbsource = { rcitems: [] };
     var de_cb_readonly_status = false;
+    var capital_cb_readonly_status = false;
     $scope.showExporttoexcel = true;
     localStorage.setItem("decellID", null);
+    localStorage.setItem("capitalcellID", null);
     var defaultFisYear = '';
     document.getElementById('resourcetotal').innerHTML = "0";
     document.getElementById('capitaltotal').innerHTML = "0";
@@ -254,12 +260,243 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
         });
     }
 
+    function load_capital_checkbookdata() {
+
+        update_capital_comments();
+        $http({
+            method: 'GET',
+            url: '../Resource/getpriority'
+        }).then(function (response) {
+            datasourcePriority = response.data;
+
+            $http({
+                method: 'GET',
+                url: '../Resource/getCapitalCategory'
+            }).then(function (response) {
+                datasourceCapitalCategory = response.data;
+
+                $http({
+                    method: 'GET',
+                    url: '../Resource/getCapitalType'
+                }).then(function (response) {
+                    datasourceCapitalType = response.data;
+
+                    $http({
+                        method: 'GET',
+                        url: '../Resource/getCapitalExpenditureWBS',
+                        params: { "ProjectID": localStorage.getItem("projectid") }
+                    }).then(function (response) {
+                        datasourceCapitalExpenditureWBSCapital = response.data;
+
+                        $http({
+                            method: 'GET',
+                            url: '../Resource/getAOPProject'
+                        }).then(function (response) {
+                            datasourceAOPProject = response.data;
+                            load_capitalcheckbookdata();
+                        }, function (error) {
+                            console.log(error);
+                        });
+
+                    }, function (error) {
+                        console.log(error);
+                    });
+
+                }, function (error) {
+                    console.log(error);
+                });
+
+            }, function (error) {
+                console.log(error);
+            });
+
+        }, function (error) {
+            console.log(error);
+        });
+    }
+
+    function load_capitalcheckbookdata() {
+       
+        document.getElementById('tbl_capital_checkbook').innerHTML = "";
+        var load_capital = function (instance) {
+
+            var datavalues = document.getElementById("tbl_capital_checkbook").getElementsByTagName("thead");
+            var subchilditem = datavalues[0].lastChild.getElementsByTagName("td");
+            subchilditem[1].style = "display:none";
+            subchilditem[2].style = "display:none";
+
+            var height = parseInt(window.innerHeight) - 280;
+            var subelms = document.getElementById("tbl_capital_checkbook").getElementsByTagName("*");
+            var vartable = subelms[5].getAttribute("style");
+            var newstyle = vartable + "; max-height: " + height + "px;"
+            subelms[5].setAttribute("style", newstyle);
+
+            updateprogressbar(100, "Completed....");
+
+            document.getElementById('capitalcheckbookpanel').style.display = 'block';
+        }
+        var capital_update = function (instance, cell, col, row, value) {
+
+            //creates json object of jexcel
+            var jsonobj = objcapital_checkbook.getJson(false);
+            //getting particular row from json object       
+            var rowobj = jsonobj[row]; //row id getting from event
+
+            //check for existance of respective rec in global object
+            if (capital_cb_updatedInfo.find(x => x.MasterID === rowobj.MasterID)) {
+                index = capital_cb_updatedInfo.indexOf(capital_cb_updatedInfo.find(x => x.MasterID === rowobj.MasterID)); //getting index of that rec
+                capital_cb_updatedInfo.splice(index, 1); //remove the existing rec from object 
+                capital_cb_updatedInfo.push(rowobj); //pushing newly updated rec
+            }
+            else
+                capital_cb_updatedInfo.push(rowobj); //pushing updated rec for the first time
+
+            document.getElementById('update_capital_checkbook1').innerHTML = capital_cb_updatedInfo.length;
+            if (parseInt(capital_cb_updatedInfo.length) > 0) {
+                document.getElementById('notification_capital_checkbook').style.display = 'block';
+                document.getElementById('update_capital_checkbook1').style.display = 'initial';
+                document.getElementById('update_capital_checkbook2').style.display = 'initial';
+            }
+            else {
+                document.getElementById('notification_capital_checkbook').style.display = 'none';
+                document.getElementById('update_capital_checkbook1').style.display = 'none';
+                document.getElementById('update_capital_checkbook2').style.display = 'none';
+            }
+        }
+
+        objcapital_checkbook = jexcel(document.getElementById('tbl_capital_checkbook'), {
+            data: dscapital_checkbook,
+            search: false,
+            tableOverflow: true,
+            filters: false,
+            tableWidth: mainwidth_PC,
+            allowManualInsertRow: false,
+            onchange: capital_update,
+            contextMenu: false,
+            onload: load_capital,
+            columns: [
+                { type: 'hidden', title: 'ID', width: 30 },
+                { type: 'hidden', title: 'Type', width: 100, source: datasourceCapitalType, autocomplete: true },
+                { type: 'dropdown', title: 'WBS Number', width: 80, source: datasourceCapitalExpenditureWBSCapital, autocomplete: true },
+                { type: 'dropdown', title: 'Priority', width: 40, source: datasourcePriority, autocomplete: true },
+                { type: 'text', title: 'Impact Of Not Investing', width: capital_mainwidth },
+                { type: 'dropdown', title: 'Capital Category', width: capital_mainwidth, source: datasourceCapitalCategory, autocomplete: true },
+                { type: 'dropdown', title: 'Capital Type', width: capital_mainwidth, source: datasourceCapitalType, autocomplete: true },
+                { type: 'dropdown', title: 'AOP Project', width: capital_mainwidth, source: datasourceAOPProject, autocomplete: true },
+                { type: 'text', title: 'Description', width: capital_mainwidth },
+                { type: 'number', title: 'FYear', width: 50, maxlength: 4 },
+                { type: 'number', title: 'MAY', width: 65 },
+                { type: 'number', title: 'JUN', width: 65 },
+                { type: 'number', title: 'JULY', width: 65 },
+                { type: 'number', title: 'AUG', width: 65 },
+                { type: 'number', title: 'SEP', width: 65 },
+                { type: 'number', title: 'OCT', width: 65 },
+                { type: 'number', title: 'NOV', width: 65 },
+                { type: 'number', title: 'DEC', width: 65 },
+                { type: 'number', title: 'JAN', width: 65 },
+                { type: 'number', title: 'FEB', width: 65 },
+                { type: 'number', title: 'MAR', width: 65 },
+                { type: 'number', title: 'APR', width: 65 },
+                { type: 'text', readOnly: true, title: 'CreatedBy', width: 80 },
+                { type: 'date', readOnly: true, title: 'CreatedOn', width: 80 },
+                { type: 'text', readOnly: true, title: 'ModifiedBy', width: 80 },
+                { type: 'date', readOnly: true, title: 'ModifiedOn', width: 80 },
+                { type: 'hidden', readOnly: true, title: 'RowID', width: 80 }
+            ],
+            contextMenu: function (obj, x, y, e) {
+                var items = [];
+                if (x) {
+                    if (obj.options.allowComments == true) {
+                        items.push({ type: 'line' });
+
+                        var title = obj.records[y][x].getAttribute('title') || '';
+                        var innervalue = obj.records[y][x].innerHTML;
+
+                        items.push({
+                            title: (obj.records[y][x].innerHTML != title && title != "") ? obj.options.text.editComments : obj.options.text.addComments,
+                            onclick: function () {
+                                if (title == innervalue) {
+                                    title = "";
+                                }
+                                var comment = prompt(obj.options.text.comments, title);
+                                if (comment) {
+                                    insert_capital_comments(obj.records[y][0].innerHTML, x, comment)
+                                    obj.setComments([x, y], comment);
+                                }
+                            }
+                        });
+
+                        if (title != obj.records[y][x].innerHTML && title != "") {
+                            items.push({
+                                title: obj.options.text.clearComments,
+                                onclick: function () {
+                                    delete_capital_comments(obj.records[y][0].innerHTML, x);
+                                    obj.setComments([x, y], '');
+                                    obj.records[y][x].title = obj.records[y][x].innerHTML;
+                                }
+                            });
+                        }
+                    }
+                }
+                return items;
+            },
+            updateTable: function (instance, cell, col, row, val, label, cellName) {
+
+                if (col == 0) {
+                    var filtered = capital_comments.filter(a => a.MasterID == val);
+                    if (filtered.length > 0) {
+                        for (var k = 0; k < filtered.length; k++) {
+                            instance.jexcel.setComments([parseInt(filtered[k].ColumnID), row], filtered[k].Comments);
+                        }
+                    }
+                    else {
+                        cell.setAttribute('title', cell.innerHTML);
+                    }
+                }
+                else {
+                    if (cell.getAttribute('title') == null) {
+                        cell.setAttribute('title', cell.innerHTML);
+                    }
+                }
+                                
+                if (col == 9 || col == 10 || col == 11 || col == 12 || col == 13 || col == 14 || col == 15 || col == 16 || col == 17 || col == 18 || col == 19 || col == 20 || col == 21) {
+                    cell.onkeypress = function isNumberKey(evt) {
+                        var charCode = (evt.which) ? evt.which : evt.keyCode;
+                        if (charCode != 46 && charCode != 45 && charCode > 31
+                            && (charCode < 48 || charCode > 57))
+                            return false;
+                        return true;
+                    };
+                                        
+                    if (val === "") {
+                        cell.innerHTML = '0.00';
+                    }
+
+                    if (val < 0) {
+                        cell.style.color = 'red';
+                    }
+                    else {
+                        cell.style.color = 'black';
+                    }
+                }
+            },
+            oncreateeditor: function (el, cell, x, y) {
+                if (x == 5) {
+                    var config = el.jexcel.options.columns[x].maxlength;
+                    cell.children[0].setAttribute('maxlength', config);
+                }
+            }
+        });
+
+        objcapital_checkbook.hideIndex();
+    }    
+
     $scope.closepopup = function (value) {
 
         document.getElementById(value).style.display = 'none';
         if (value == "decheckbookcji3panel" || value == "decheckbookpanel") {
 
-            updateprogressbar(25, "DE checkbook is loading....");
+            updateprogressbar(25, "checkbook is loading....");
             var Fisyear = jSuite_dropResourceCheckboo_FisYear.getValue();
 
             $http({
@@ -292,10 +529,76 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
                 console.log(error);
             });
         }
+        else if (value == "capitalcheckbookcji3panel" || value == "capitalcheckbookpanel") {
+
+            updateprogressbar(25, "Capital checkbook is loading....");
+            var Fisyear = jSuite_dropResourceCheckboo_FisYear.getValue();
+
+            $http({
+                method: 'POST',
+                url: '../Resource/get_capital_checkbook',
+                params: { "intProjectID": localStorage.getItem("projectid"), "intFisYear": Fisyear }
+            }).then(function (response) {
+                $scope.modelCapitalCheckBook = response.data;
+                if (response.data.length === 0)
+                    showalert('No records found!');
+
+                if (response.data.length > 0) {
+                    updateprogressbar(75, "Capital checkbook is loading....");
+                    setTimeout(function () {
+                        $scope.$apply(function () {
+                            if (capitalcbsource != null) {
+                                for (var i = 0; i < capitalcbsource.deitems.length; i++) {
+                                    document.getElementById("capitalcb-" + capitalcbsource.deitems[0].fid).click();
+                                }
+                                updateprogressbar(100, "Completed...");
+                            }
+                        });
+                    }, 1000);
+                    updateprogressbar(100, "Completed...");
+                }
+                else {
+                    capital_cb_updatedInfo = [];
+                    updateprogressbar(100, "Completed...");
+                }
+            }, function (error) {
+                console.log(error);
+            });
+        }
 
     }
 
+    $scope.viewcapitalinfo = function (wbsnumber, fisyear, capitalcategory, capitaltype, description, rowinfo) {
 
+        var sum = 0.00
+        if (rowinfo != null && rowinfo.ID == 'A') {
+            sum = rowinfo.MAY + rowinfo.JUN + rowinfo.JUL + rowinfo.AUG + rowinfo.SEP + rowinfo.OCT + rowinfo.NOV + rowinfo.DEC + rowinfo.JAN + rowinfo.FEB + rowinfo.MAR + rowinfo.APR;
+        }
+        capital_cb_readonly_status = sum > 0 ? true : false;
+
+        updateprogressbar(20, "Capital is loading...");
+        $http({
+            method: 'POST',
+            url: '../Resource/get_capitaldata_forcheckbookedit',
+            params: {
+                "intProjectID": localStorage.getItem("projectid"),
+                "strWBSnumber": wbsnumber,
+                "intFisYear": fisyear,
+                "strCapitalCategory": capitalcategory,
+                "strCapitalType": capitaltype,
+                "strDescription": description
+            }
+        }).then(function (response) {
+            dscapital_checkbook = response.data;
+            load_capital_checkbookdata();
+            document.getElementById('notification_capital_checkbook').style.display = 'none';
+            document.getElementById('update_capital_checkbook1').innerHTML = 0;
+            dragElement(document.getElementById("capitalcheckbookpanel"));
+        }, function (error) {
+            console.log(error);
+        });
+
+    }
 
     $scope.showResourceCheckbookSummaryChart = function () {
 
@@ -498,12 +801,14 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
                     url: '../notification/get_notification'
                 }).then(function (response) {
                     if (response.data != null) {
-                        var encodenotification = atob(response.data[0].Data);
-                        document.getElementById("notificationBody").innerHTML = encodenotification;
-                        document.getElementById('notificationpanel').style.display = 'block';
-                        document.getElementById("closeNotification").style.display = 'none';
-                        document.getElementById("clearNotification").style.display = 'block';
-                        document.getElementById("notificationID").innerHTML = response.data[0].Sysid;
+                        if (response.data.length > 0) {
+                            var encodenotification = atob(response.data[0].Data);
+                            document.getElementById("notificationBody").innerHTML = encodenotification;
+                            document.getElementById('notificationpanel').style.display = 'block';
+                            document.getElementById("closeNotification").style.display = 'none';
+                            document.getElementById("clearNotification").style.display = 'block';
+                            document.getElementById("notificationID").innerHTML = response.data[0].Sysid;
+                        }                        
                     }
                 }, function (error) {
                     console.log(error);
@@ -1434,6 +1739,7 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
         $scope.tabresourcecheckbookclass = "nav-link";
         $scope.tabcapitalclass = "nav-link";
         $scope.tabdecheckbookclass = "nav-link";
+        $scope.tabcapitalcheckbookclass = "nav-link";
 
         //tab-pane active
         document.getElementById('summary').className = "tab-pane fade";
@@ -1443,6 +1749,7 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
         document.getElementById('directexpenses').className = "tab-pane fade";
         document.getElementById('resourcecheckbook').className = "tab-pane fade";
         document.getElementById('decheckbook').className = "tab-pane fade";
+        document.getElementById('capitalcheckbook').className = "tab-pane fade";
 
         var tabclass = "nav-link active";
 
@@ -1466,6 +1773,9 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
         }
         else if (value === "decheckbook") {
             $scope.tabdecheckbookclass = tabclass;
+        }
+        else if (value === "capitalcheckbook") {
+            $scope.tabcapitalcheckbookclass = tabclass;
         }
 
         document.getElementById(value).className = "tab-pane active";
@@ -1512,6 +1822,47 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
         });
     }
 
+    $scope.removecapitalcheckbookcji3 = function (row) {
+
+        var data = {
+            item: row,
+            ProjectID: localStorage.getItem("projectid")
+        };
+
+        $http({
+            method: 'POST',
+            url: '../Resource/remove_capitalcheckbook_cji3',
+            data: data,
+            headers: {
+                "Content-Type": "application/json"
+            }
+        }).then(function (response) {
+            $scope.modelCAPITALCJI3 = response.data;
+            if (response.data.length === 0) {
+                document.getElementById('capitalcheckbookcji3panel').style.display = 'none';
+                showalert('No records found!');
+
+                var Fisyear = jSuite_dropResourceCheckboo_FisYear.getValue();
+                $http({
+                    method: 'POST',
+                    url: '../Resource/get_capital_checkbook',
+                    params: { "intProjectID": localStorage.getItem("projectid"), "intFisYear": Fisyear }
+                }).then(function (response) {
+                    $scope.modelCapitalCheckBook = response.data;
+                }, function (error) {
+                    console.log(error);
+                });
+            }
+
+            calculatetotal_capital_checkbook();
+            calculatevalue_capital_checkbook();
+            calculatetotal_capital_openpo();
+
+        }, function (error) {
+            console.log(error);
+        });
+    }
+
     $scope.expandde = function (status, id) {
 
         decbsource = JSON.parse(localStorage.getItem("decb_expandid"));
@@ -1537,6 +1888,34 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
             }
             decbsource.deitems.push({ "fid": id });
             localStorage.setItem("decb_expandid", JSON.stringify(decbsource));
+        }
+    }
+
+    $scope.expandcapital = function (status, id) {
+
+        capitalcbsource = JSON.parse(localStorage.getItem("capitalcb_expandid"));
+        if (status == false) {
+            if (capitalcbsource != null) {
+                if (capitalcbsource.capitalitems.find(x => x.fid === id)) {
+                    const index = capitalcbsource.capitalitems.findIndex(c => c.fid === id);
+                    capitalcbsource.capitalitems.splice(index, 1)
+                    localStorage.setItem("capitalcb_expandid", JSON.stringify(capitalcbsource));
+                }
+            }
+        }
+        else {
+            if (capitalcbsource == null) {
+                capitalcbsource = { capitalitems: [] };
+            }
+            else {
+                if (capitalcbsource.capitalitems.find(x => x.fid === id)) {
+                    const index = capitalcbsource.capitalitems.findIndex(c => c.fid === id);
+                    capitalcbsource.capitalitems.splice(index, 1)
+                    localStorage.setItem("capitalcb_expandid", JSON.stringify(capitalcbsource));
+                }
+            }
+            capitalcbsource.capitalitems.push({ "fid": id });
+            localStorage.setItem("capitalcb_expandid", JSON.stringify(capitalcbsource));
         }
     }
 
@@ -1596,14 +1975,82 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
 
     }
 
+    $scope.show_capital_cji3data = function (wbsnumber, fisyear, month, capitalcategory, capitaltype, description, status, show, rowstr, rowid) {
+
+        updateprogressbar(20, "loading...");
+        $http({
+            method: 'POST',
+            url: '../Resource/get_capital_cji3_data',
+            params: { "intProjectID": localStorage.getItem("projectid"), "strWBSNumber": wbsnumber, "strFisYear": fisyear, "strMonth": month, "strCapitalCategory": capitalcategory, "strCapitalType": capitaltype, "strDescription": description, "boolstatus": status}
+        }).then(function (response) {
+            console.log(response.data);
+            console.log(response.data.length);
+            $scope.modelCAPITALCJI3 = response.data;
+            if (response.data.length === 0) {
+                showalert('No records found!');
+                document.getElementById('capitalcheckbookcji3panel').style.display = 'none';
+                remove_capitalcheckbook_cell_highlight();
+
+            }
+            else {
+
+                if (show == "save") {
+                    remove_capitalcheckbook_cell_highlight();
+                    localStorage.setItem("capitalcellID", rowstr + '-' + rowid)
+                    document.getElementById(rowstr + '-' + rowid).setAttribute("style", "background-color: #0853c3; color: white;");
+                    $scope.show_capital_cji3save = true;
+                    $scope.hidcheckboxde = true;
+                }
+                else {
+                    $scope.show_capital_cji3save = false;
+                    $scope.hidcheckboxde = false;
+                }
+                $scope.IsAllChecked = false;
+                $scope.selected_capital_cb_Total = 0;
+                $scope.selected_capital_cb_value = 0;
+
+                calculatetotal_capital_checkbook();
+                calculatevalue_capital_checkbook();
+                calculatetotal_capital_openpo();
+
+                setTimeout(function () {
+                    $scope.$apply(function () {
+                        $scope.Capital_CheckUncheckHeader(response.data);
+                    });
+                }, 500);
+
+                dragElement(document.getElementById("capitalcheckbookcji3panel"));
+                document.getElementById('capitalcheckbookcji3panel').style.display = 'block';
+            }
+
+            updateprogressbar(100, "Completed...");
+
+        }, function (error) {
+            console.log(error);
+        });
+
+
+    }
+
     //The medthod will remove the DE Checkbook cell highlight color    
     function remove_decheckbook_cell_highlight() {        
         /* once user click on cell, it store the cell ID, next time if user click different cell system will 
          * replace the cell ID which is stored and stored cell style will be removed. */
         var decellid = localStorage.getItem("decellID") 
         console.log(decellid);
-        if (decellid != 'null') {
+        if (decellid != "null") {
             document.getElementById(decellid).removeAttribute("style");
+        }
+    }
+
+    //The medthod will remove the DE Checkbook cell highlight color    
+    function remove_capitalcheckbook_cell_highlight() {
+        /* once user click on cell, it store the cell ID, next time if user click different cell system will 
+         * replace the cell ID which is stored and stored cell style will be removed. */
+        
+        var capitalcellid = localStorage.getItem("capitalcellID")       
+        if (capitalcellid != "null") {
+            document.getElementById(capitalcellid).removeAttribute("style");
         }
     }
 
@@ -1633,6 +2080,45 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
             }
         }).then(function (response) {
             $scope.modelDECJI3 = response.data;
+            updateprogressbar(100, "Completed...");
+
+            calculatetotal_de_checkbook();
+            calculatevalue_de_checkbook();
+            calculatetotal_de_openpo();
+
+            $scope.selected_de_cb_Total = 0;
+            $scope.selected_de_cb_value = 0;
+        }, function (error) {
+            console.log(error);
+        });
+    }
+
+    $scope.insert_capital_cji3data = function () {
+               
+        updateprogressbar(20, "Saving Changes...");
+
+        var capital_cji3data = [];
+        for (var i = 0; i < $scope.modelCAPITALCJI3.length; i++) {
+            if ($scope.modelCAPITALCJI3[i].Selected == true) {
+                var rowcji3 = $scope.modelCAPITALCJI3[i];
+                capital_cji3data.push(rowcji3);
+            }
+        };
+
+        var data = {
+            insert: capital_cji3data,
+            ProjectID: localStorage.getItem("projectid")
+        };
+
+        $http({
+            method: 'POST',
+            url: '../Resource/insert_capital_cji3_selection',
+            data: data,
+            headers: {
+                "Content-Type": "application/json"
+            }
+        }).then(function (response) {
+            $scope.modelCAPITALCJI3 = response.data;
             updateprogressbar(100, "Completed...");
 
             calculatetotal_de_checkbook();
@@ -1743,6 +2229,97 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
             default_tabsetting("decheckbook");
             refresh_decheckbook();
         }
+        else if (value === "capitalcheckbook") {
+            updateprogressbar(25, "Capital checkbook is loading....");
+            //$scope.showExporttoexcel = false;
+            default_tabsetting("capitalcheckbook");
+            refresh_capitalcheckbook();
+        }
+    }
+
+    function refresh_capitalcheckbook() {
+
+        updateprogressbar(20, "Loading Capital CheckBook...");
+        var summaryheight = parseInt(window.innerHeight);
+        summaryheight = summaryheight - 220;
+        document.getElementById('capitalcheckbookcontainer').setAttribute('style', 'height: ' + summaryheight + 'px; overflow: scroll;');
+        $scope.Drop_ProjectClass = "col-md-5";
+        document.getElementById('Display_FisYearFilter').style.display = "block";
+
+        $http({
+            method: 'POST',
+            url: '../Resource/get_capital_checkbook_fisyear',
+            params: { "intProjectID": localStorage.getItem("projectid") }
+        }).then(function (response) {
+            var resourcecheckbookyear = response.data;
+            document.getElementById('dropResourceCheckboo_FisYear').innerHTML = "";
+
+            jSuite_dropResourceCheckboo_FisYear = jSuites.dropdown(document.getElementById('dropResourceCheckboo_FisYear'), {
+                data: resourcecheckbookyear,
+                autocomplete: true,
+                lazyLoading: false,
+                multiple: false,
+                value: defaultFisYear,
+                width: '100%',
+                onchange: changeCheckBookFisYear
+            });
+
+            if (resourcecheckbookyear.length > 0) {
+                var Fisyear = jSuite_dropResourceCheckboo_FisYear.getValue();
+                load_capital_checkbook(Fisyear);
+            }
+            else {
+                showalert('No records found!');
+                updateprogressbar(100, "Completed...");
+                $scope.modelCapitalCheckBook = null;
+                $scope.modelCapitalCJI3reconciliation = null;
+            }
+
+        }, function (error) {
+            console.log(error);
+        });
+
+    }
+
+    function load_capital_checkbook(Fisyear) {
+
+        $http({
+            method: 'POST',
+            url: '../Resource/get_capital_checkbook',
+            params: { "intProjectID": localStorage.getItem("projectid"), "intFisYear": Fisyear }
+        }).then(function (response) {
+
+            $scope.modelCapitalCheckBook = response.data;
+
+            if (response.data.length === 0)
+                showalert('No records found!');
+            updateprogressbar(100, "Completed...");
+
+            var tablewidth = document.getElementById('capitalcheckbook').offsetWidth;
+            tablewidth = tablewidth - 52;
+            var tablezoom = '100%';
+            if (tablewidth < 1512) {
+                tablewidth = 1512;
+                tablezoom = '80%';
+            }
+            $scope.capitalcheckbookzoom = tablezoom;
+            $scope.capitalcheckbookwidth = tablewidth + "px";
+            $scope.capital_dynamic_checkbook_width = parseInt((tablewidth - 1046) / 3) + "px";
+            $scope.capitalfiltercount = Math.round(parseInt((tablewidth - 1000) / 3) / 8);
+
+            $http({
+                method: 'POST',
+                url: '../Resource/getde_capital_total_reconciliation_remaining',
+                params: { "intProjectID": localStorage.getItem("projectid"), "intFisYear": Fisyear }
+            }).then(function (response) {
+                $scope.modelcapitalCJI3reconciliation = response.data;
+            }, function (error) {
+                console.log(error);
+            });
+
+        }, function (error) {
+            console.log(error);
+        });
     }
 
     //it will load DE checkbook data
@@ -1889,12 +2466,60 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
         $scope.select_de_openpo = select_de_openpo;
     };
 
+    $scope.Capital_CheckUncheckHeader = function (data) {
+
+        $scope.modelCAPITALCJI3 = data;
+        var count = 0;
+        var select_capital_cb_total = 0;
+        var select_capital_cb_value = 0;
+        var select_capital_openpo = 0;
+        for (var i = 0; i < $scope.modelCAPITALCJI3.length; i++) {
+
+            if (!$scope.modelCAPITALCJI3[i].Selected) {
+                $scope.IsAllChecked = false;
+            }
+            if ($scope.modelCAPITALCJI3[i].Selected == true) {
+                count++;
+                select_capital_cb_total = select_capital_cb_total + $scope.modelCAPITALCJI3[i].TotalQuantity;
+                select_capital_cb_value = select_capital_cb_value + $scope.modelCAPITALCJI3[i].Val_COAreaCrcy;
+                select_capital_openpo = select_capital_openpo + $scope.modelCAPITALCJI3[i].PO_Amount;
+                document.getElementById("capitalcbcji3-" + i).setAttribute("style", "background: #cce9ff8c;");
+            }
+            else {
+                document.getElementById("capitalcbcji3-" + i).removeAttribute("style");
+            }
+
+        };
+        if ($scope.modelCAPITALCJI3.length == count) {
+            $scope.IsAllChecked = true;
+        }
+        $scope.selected_capital_cb_Total = select_capital_cb_total;
+        $scope.selected_capital_cb_value = select_capital_cb_value;
+        $scope.select_capital_openpo = select_capital_openpo;
+    };
+
     function calculatetotal_de_checkbook() {
         var total = 0.00;
         for (var i = 0; i < $scope.modelDECJI3.length; i++) {
             total = total + $scope.modelDECJI3[i].TotalQuantity;
         }
         $scope.de_cb_total = total;
+    }
+
+    function calculatetotal_capital_checkbook() {
+        var total = 0.00;
+        for (var i = 0; i < $scope.modelCAPITALCJI3.length; i++) {
+            total = total + $scope.modelCAPITALCJI3[i].TotalQuantity;
+        }
+        $scope.de_capital_total = total;
+    }
+
+    function calculatetotal_capital_openpo() {
+        var total = 0.00;
+        for (var i = 0; i < $scope.modelCAPITALCJI3.length; i++) {
+            total = total + $scope.modelCAPITALCJI3[i].PO_Amount;
+        }
+        $scope.select_capital_openpo = total;
     }
 
     function calculatetotal_de_openpo() {
@@ -1904,13 +2529,21 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
         }
         $scope.select_de_openpo = total;
     }
-
+    
     function calculatevalue_de_checkbook() {
         var total = 0.00;
         for (var i = 0; i < $scope.modelDECJI3.length; i++) {
             total = total + $scope.modelDECJI3[i].Val_COAreaCrcy;
         }
         $scope.de_cb_value = total;
+    }
+
+    function calculatevalue_capital_checkbook() {
+        var total = 0.00;
+        for (var i = 0; i < $scope.modelCAPITALCJI3.length; i++) {
+            total = total + $scope.modelCAPITALCJI3[i].Val_COAreaCrcy;
+        }
+        $scope.de_capital_value = total;
     }
 
     $scope.CheckUncheckAll = function () {
@@ -1925,6 +2558,20 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
         }
         $scope.selected_de_cb_Total = select_de_cb_total;
         $scope.selected_de_cb_value = select_de_cb_value;
+    };
+
+    $scope.CapitalCheckUncheckAll = function () {
+        var select_capital_cb_total = 0;
+        var select_capital_cb_value = 0;
+        for (var i = 0; i < $scope.modelCAPITALCJI3.length; i++) {
+            $scope.modelCAPITALCJI3[i].Selected = $scope.IsAllChecked;
+            if ($scope.IsAllChecked == true) {
+                select_capital_cb_total = select_capital_cb_total + $scope.modelCAPITALCJI3[i].TotalQuantity;
+                select_capital_cb_value = select_capital_cb_value + $scope.modelCAPITALCJI3[i].Val_COAreaCrcy;
+            }
+        }
+        $scope.selected_capital_cb_Total = select_capital_cb_total;
+        $scope.selected_capital_cb_value = select_capital_cb_value;
     };
 
     function refresh_resourcecheckbook() {
@@ -1965,7 +2612,7 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
     }
 
     function changeCheckBookFisYear() {
-        updateprogressbar(20, "Loading Resource Checkbook...");
+        updateprogressbar(20, "Loading Checkbook...");
         var Fisyear = jSuite_dropResourceCheckboo_FisYear.getValue();
         var activeTabName = document.getElementById('activetabid').innerHTML;
         if (activeTabName === "resourcecheckbook") {
@@ -1974,6 +2621,9 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
         }
         else if (activeTabName === "decheckbook") {
             load_de_checkbook(Fisyear);
+        }
+        else if (activeTabName === "capitalcheckbook") {
+            load_capital_checkbook(Fisyear);
         }
     }
 
@@ -2425,6 +3075,7 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
                 else if (activeTabName === "directexpenses") { update_directexpenses_comments(); refresh_OperatingExpenseWBSDE(); }
                 else if (activeTabName === "resourcecheckbook") { update_resource_comments(); refresh_resourcecheckbook(); }
                 else if (activeTabName === "decheckbook") { refresh_decheckbook(); }
+                else if (activeTabName === "capitalcheckbook") { refresh_capitalcheckbook(); }
 
             }, function (error) {
                 console.log(error);
@@ -2922,7 +3573,8 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
 
                 if (col == 2 || col == 3 || col == 4 || col == 5) {
                     var row = instance.jexcel.getRowData(row);
-                    if (row[23] == true) {
+                    console.log(row);
+                    if (row[24] == true) {
                         cell.setAttribute("class", "readonly");
                     }
                 }
@@ -3022,6 +3674,33 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
             document.getElementById('notification_de_checkbook').style.display = 'none';
             document.getElementById('update_de_checkbook1').innerHTML = 0;
             directexpenses_cb_updatedInfo = [];
+        }, function (error) {
+            console.log(error);
+        });
+    }
+
+    $scope.save_capital_checkbookchanges = function () {
+
+        updateprogressbar(45, "Saving changes....");
+        var data = {
+            update: capital_cb_updatedInfo,
+            delete: null,
+            duplicate: null,
+            userid: localStorage.getItem("userID")
+        };
+
+        $http({
+            method: 'POST',
+            url: '../Resource/submitcapitalchanges',
+            data: data,
+            headers: {
+                "Content-Type": "application/json"
+            }
+        }).then(function (response) {
+            updateprogressbar(100, "Completed...");
+            document.getElementById('notification_capital_checkbook').style.display = 'none';
+            document.getElementById('update_capital_checkbook1').innerHTML = 0;
+            capital_cb_updatedInfo = [];
         }, function (error) {
             console.log(error);
         });
@@ -4522,36 +5201,6 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
             }
         }
 
-        function insert_capital_comments(MasterID, ColumnID, Comments) {
-            updateprogressbar(50, "Updating comments...");
-            $http({
-                method: 'POST',
-                url: '../Resource/insert_capitalcomments',
-                params: { "intProjectID": localStorage.getItem("projectid"), "intMasterID": MasterID, "intColumnID": ColumnID, "strComments": Comments, "userid": localStorage.getItem("userID") }
-            }).then(function (response) {
-                update_capital_comments();
-                updateprogressbar(100, "Completed...");
-
-            }, function (error) {
-                console.log(error);
-            });
-        }
-
-        function delete_capital_comments(MasterID, ColumnID) {
-            updateprogressbar(50, "Updating comments...");
-            $http({
-                method: 'POST',
-                url: '../Resource/delete_capitalcomments',
-                params: { "intMasterID": MasterID, "intColumnID": ColumnID, "intColumnID": ColumnID }
-            }).then(function (response) {
-                update_capital_comments();
-                updateprogressbar(100, "Completed...");
-
-            }, function (error) {
-                console.log(error);
-            });
-        }
-
         objcapital = jexcel(document.getElementById('tbl_capital'), {
 
             data: dsCapital,
@@ -4755,6 +5404,36 @@ app.controller('MECCController', function ($scope, $sce, FileUploadService, $htt
         }
 
         refreshtablesum();
+    }
+
+    function insert_capital_comments(MasterID, ColumnID, Comments) {
+        updateprogressbar(50, "Updating comments...");
+        $http({
+            method: 'POST',
+            url: '../Resource/insert_capitalcomments',
+            params: { "intProjectID": localStorage.getItem("projectid"), "intMasterID": MasterID, "intColumnID": ColumnID, "strComments": Comments, "userid": localStorage.getItem("userID") }
+        }).then(function (response) {
+            update_capital_comments();
+            updateprogressbar(100, "Completed...");
+
+        }, function (error) {
+            console.log(error);
+        });
+    }
+
+    function delete_capital_comments(MasterID, ColumnID) {
+        updateprogressbar(50, "Updating comments...");
+        $http({
+            method: 'POST',
+            url: '../Resource/delete_capitalcomments',
+            params: { "intMasterID": MasterID, "intColumnID": ColumnID, "intColumnID": ColumnID }
+        }).then(function (response) {
+            update_capital_comments();
+            updateprogressbar(100, "Completed...");
+
+        }, function (error) {
+            console.log(error);
+        });
     }
 
     function updateprogressbar(value, item) {
